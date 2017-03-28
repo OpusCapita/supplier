@@ -27,14 +27,11 @@ services:
       PORT: '${SUPPLIERS_PORT}'
     expose:
      - '${SUPPLIERS_PORT}'
-    volumes:
-      - ./src:/home/node/supplierDir/src:rw
-      - ./node_modules:/home/node/node_modules:rw
     labels:
       SERVICE_NAME: 'supplier'  # Service name used by Registrator for adding to Consul's service discovery registry.
       SERVICE_TAGS: 'external'
     volumes:
-     - .:/home/node/supplierDir
+     - .:/home/node/supplier
   mysql:
     image: gr4per/mysql
     depends_on:

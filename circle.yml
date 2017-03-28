@@ -9,7 +9,6 @@ machine:
 dependencies:
   override:
     - docker info
-    - docker info
     - >
       if [ -n "${RUN_NIGHTLY_BUILD}" ]; then
         echo "running base img build..." && docker build --rm=false -t opuscapita/supplier-base:latest -f Dockerfile.base .
@@ -41,8 +40,15 @@ deployment:
       - >
         if [ -n "${RUN_NIGHTLY_BUILD}" ]; then
           echo "running base img deploy..." && docker push opuscapita/supplier-base:latest
-        fi 
+        fi
       - docker push opuscapita/supplier
       - cd wiki ; git add --all . ; git commit -am 'Updated documentation.' ; git push ; (exit 0)
       - chmod +x deploy.sh
       - ./deploy.sh
+  wiki:
+    branch: wiki-test
+    commands:
+      - docker run opuscapita/supplier:latest npm run doc
+      - ls
+      - cd wiki ; ls ; git add --all . ; git commit -am 'Updated documentation.' ; git push ; (exit 0)
+
