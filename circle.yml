@@ -44,12 +44,7 @@ deployment:
           echo "running base img deploy..." && docker push opuscapita/supplier-base:latest
         fi
       - docker push opuscapita/supplier
+      - docker-compose run main npm run doc
       - cd wiki ; git add --all . ; git commit -am 'Updated documentation.' ; git push ; (exit 0)
       - chmod +x deploy.sh
       - ./deploy.sh
-  wiki:
-    branch: wiki-test
-    commands:
-      - docker-compose run main npm run doc
-      - cd wiki ; git add --all . ; git commit -am 'Updated documentation.' ; git push ; (exit 0)
-
