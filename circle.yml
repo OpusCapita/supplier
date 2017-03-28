@@ -1,7 +1,7 @@
 machine:
   pre:
    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
-   - sudo pip install docker-compose
+   - pip install --force-reinstall -U docker-compose==1.10.0
    - cd supplier ; rm -Rf wiki ; git clone https://github.com/OpusCapita/supplier.wiki.git wiki
   services:
     - docker
@@ -47,7 +47,7 @@ deployment:
   wiki:
     branch: wiki-test
     commands:
-      - docker run opuscapita/supplier:latest npm run doc
+      - docker run -v $(pwd):/home/node/supplier opuscapita/supplier:latest npm run doc
       - ls
       - cd wiki ; ls ; git add --all . ; git commit -am 'Updated documentation.' ; git push ; (exit 0)
 
