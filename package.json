@@ -14,7 +14,7 @@
     "start:development": "nodemon --watch src/server src/server/index --exec babel-node --presets es2015,stage-0,react --plugins transform-decorators-legacy",
     "start:production": "node build/server",
     "migratedb": "./node_modules/.bin/sequelize db:migrate --url \"${DB_DIALECT}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}\" --migrations-path src/server/db/migrations",
-    "test": "npm run clean && cross-env nyc mocha --recursive 'src/**/*.spec.js' -R mocha-junit-reporter",
+    "test": "npm run clean && ${NODE_PATH}/.bin/nyc ${NODE_PATH}/.bin/mocha --recursive 'src/**/*.spec.js' -R mocha-junit-reporter",
     "domain-doc": "mkdir -p wiki/domain-doc ; ${NODE_PATH}/.bin/sq2md --path-bl=index.js -o file-per-src -p wiki/domain-doc --field-bl=createdAt,updatedAt --output-ext=.model.md src/server/db/models",
     "doc" : "npm run domain-doc"
   },
@@ -89,7 +89,6 @@
     "babel-preset-stage-0": "6.16.0",
     "babel-register": "6.18.0",
     "chai": "3.5.0",
-    "cross-env": "3.1.3",
     "css-loader": "0.26.0",
     "esdoc": "0.4.8",
     "esdoc-es7-plugin": "0.0.3",
