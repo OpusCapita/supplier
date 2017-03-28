@@ -1,24 +1,6 @@
 version: '2'
 services:
-  nginx:
-    image: gr4per/nginx-rp:latest
-    ports:
-     - '3100:${NGINX_PORT}'
-    depends_on:
-     - bnp
-    environment:
-      PORT: '${NGINX_PORT}'
-    labels:
-      SERVICE_NAME: 'nginx'
-  bnp:
-    image: gr4per/bnp
-    #restart: on-failure:5
-    depends_on:  # as of version 1.9.0 Dockerfile's HEALTHCHECK is not supported yet.
-     - mysql
-     - suppliers
-    labels:
-      SERVICE_NAME: 'bnp'  # Service name used by Registrator for adding to Consul's service discovery registry.
-  suppliers:
+  main:
     build: .
     #restart: on-failure:5
     depends_on:  # as of version 1.9.0 Dockerfile's HEALTHCHECK is not supported yet.
@@ -32,12 +14,34 @@ services:
       SERVICE_TAGS: 'external'
     volumes:
      - .:/home/node/supplier
+
+  nginx:
+    image: gr4per/nginx-rp:latest
+    ports:
+     - '3100:${NGINX_PORT}'
+    depends_on:
+     - bnp
+    environment:
+      PORT: '${NGINX_PORT}'
+    labels:
+      SERVICE_NAME: 'nginx'
+
+  bnp:
+    image: gr4per/bnp
+    #restart: on-failure:5
+    depends_on:  # as of version 1.9.0 Dockerfile's HEALTHCHECK is not supported yet.
+     - mysql
+     - main
+    labels:
+      SERVICE_NAME: 'bnp'  # Service name used by Registrator for adding to Consul's service discovery registry.
+
   mysql:
     image: gr4per/mysql
     depends_on:
      - registrator
     labels:
       SERVICE_NAME: 'mysql'  # Service name used by Registrator for adding to Consul's service discovery registry.
+
   registrator:
     image: gliderlabs/registrator:latest
     network_mode: host
@@ -47,6 +51,7 @@ services:
     volumes:
      - /var/run/docker.sock:/tmp/docker.sock
     command: ['-internal', 'consul://localhost:8500']
+
   consul:
     image: consul:latest
     network_mode: host
