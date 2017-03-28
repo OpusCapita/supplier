@@ -17,6 +17,7 @@ WORKDIR /home/node/supplier
 COPY . tmp
 
 # Change owner since COPY/ADD assignes UID/GID 0 to all copied content.
+RUN apk add --no-cache rsync curl
 RUN chown -Rf node:node tmp; rsync -a tmp/ ./ && rm -rf tmp
 
 # Set the user name or UID to use when running the image and for any RUN, CMD and ENTRYPOINT instructions that follow
