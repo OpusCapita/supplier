@@ -16,7 +16,7 @@
     "migratedb": "./node_modules/.bin/sequelize db:migrate --url \"${DB_DIALECT}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}\" --migrations-path src/server/db/migrations",
     "test": "npm run clean && cross-env nyc mocha --recursive 'src/**/*.spec.js' -R mocha-junit-reporter",
     "domain-doc": "mkdir -p wiki/domain-doc ; ${NODE_PATH}/.bin/sq2md --path-bl=index.js -o file-per-src -p wiki/domain-doc --field-bl=createdAt,updatedAt --output-ext=.model.md src/server/db/models",
-    "doc" : "npm run domain-doc"
+    "doc" : "npm run domain-doc ; ls src/server/db/models ; ls wiki"
   },
   "repository": {
     "type": "git",

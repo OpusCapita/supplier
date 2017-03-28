@@ -18,7 +18,6 @@ dependencies:
 test:
   override:
     - docker run opuscapita/supplier:latest npm run test
-    - docker run opuscapita/supplier:latest npm run doc
   post:
     - sudo mkdir $CIRCLE_TEST_REPORTS/junit
     - sudo cp test-results.xml $CIRCLE_TEST_REPORTS/junit
