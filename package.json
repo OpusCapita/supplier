@@ -3,10 +3,10 @@
   "version": "2.0.3-SNAPSHOT",
   "description": "Supplier Microservice. Provides base CRUD Rest API for basic Supplier data manipulation.",
   "scripts": {
-    "clean": "rimraf build esdoc testdb.sqlite .nyc_output coverage",
+    "clean": "${NODE_PATH}/.bin/rimraf esdoc testdb.sqlite  .nyc_output coverage test-results.xml",
     "lint": "eslint src",
-    "esdoc": "rimraf esdoc && esdoc -c esdoc.json",
-    "build": "rimraf build && npm run build-client && npm run build-client-server && npm run build-server",
+    "esdoc": "${NODE_PATH}/.bin/rimraf esdoc && esdoc -c esdoc.json",
+    "build": "${NODE_PATH}/.bin/rimraf build && npm run build-client && npm run build-client-server && npm run build-server",
     "build-client": "./node_modules/.bin/webpack --config ./webpack.production.config.js --progress --profile --colors --bail",
     "build-client-server": "babel src/client-server -d build/client-server --copy-files --presets es2015,stage-0,react --plugins transform-decorators-legacy",
     "build-server": "babel src/server -d build/server --copy-files --presets es2015,stage-0,react --plugins transform-decorators-legacy",
@@ -16,7 +16,7 @@
     "migratedb": "./node_modules/.bin/sequelize db:migrate --url \"${DB_DIALECT}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}\" --migrations-path src/server/db/migrations",
     "test": "npm run clean && cross-env nyc mocha --recursive 'src/**/*.spec.js' -R mocha-junit-reporter",
     "domain-doc": "mkdir -p wiki/domain-doc ; ${NODE_PATH}/.bin/sq2md --path-bl=index.js -o file-per-src -p wiki/domain-doc --field-bl=createdAt,updatedAt --output-ext=.model.md src/server/db/models",
-    "doc" : "npm run domain-doc ; ls src/server/db/models ; ls wiki"
+    "doc" : "npm run domain-doc"
   },
   "repository": {
     "type": "git",
