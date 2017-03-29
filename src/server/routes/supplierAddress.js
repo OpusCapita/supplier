@@ -236,23 +236,16 @@
  * ]
  */
 function cloneSupplier2Attributes(supplier2Address) {
-  let changedOn = Math.max(supplier2Address.changedOn, supplier2Address.address.changedOn);
+  const changedOn = Math.max(supplier2Address.changedOn, supplier2Address.address.changedOn);
 
-  return {
-    ...supplier2Address,
-    changedOn,
-    address: {
-      ...supplier2Address.address,
-      changedOn
-    }
-  }
+  return Object.assign({}, supplier2Address, changedOn, { address: supplier2Address.address, changedOn });
 }
 
 module.exports = function(epilogue, db) {
   let supplierAddressResource = epilogue.resource({
-    model: db.Supplier2Address,
+    model: db.models.Supplier2Address,
     endpoints: ['/suppliers/:supplierId/addresses', '/suppliers/:supplierId/addresses/:addressId'],
-    include: [{ model: db.Address, as: 'address' }]
+    include: [{ model: db.models.Address, as: 'address' }]
   });
 
   supplierAddressResource.use({
@@ -260,9 +253,9 @@ module.exports = function(epilogue, db) {
     list: {
       fetch: {
         before(req, res, context) {
-          db.Supplier2Address.findAll({
+          db.models.Supplier2Address.findAll({
             include: {
-              model: db.Address,
+              model: db.models.Address,
               as: "address"
             },
             where: {
@@ -293,13 +286,13 @@ module.exports = function(epilogue, db) {
               addressId: addressId
             }
           };
-          db.Address.findOne(criteria).then(address => {
+          db.models.Address.findOne(criteria).then(address => {
             if (address) {
               console.log(`Updating address: ${JSON.stringify(addressInstance)}`);
-              return db.Address.update(addressInstance, criteria);
+              return db.models.Address.update(addressInstance, criteria);
             } else {
               console.log(`Create new address: ${JSON.stringify(addressInstance)}`);
-              return db.Address.create(addressInstance);
+              return db.models.Address.create(addressInstance);
             }
           }).then(address => address ? context.continue() : context.skip());
         }
@@ -312,7 +305,7 @@ module.exports = function(epilogue, db) {
           let instance = req.body;
           let address = instance.address;
           if (address) {
-            db.Address.update(address, {
+            db.models.Address.update(address, {
               where: {
                 addressId: address.addressId
               }
@@ -324,9 +317,9 @@ module.exports = function(epilogue, db) {
           }
         },
         after(req, res, context) {
-          db.Supplier2Address.findById(context.instance.id, {
+          db.models.Supplier2Address.findById(context.instance.id, {
             include: [{
-              model: db.Address,
+              model: db.models.Address,
               as: 'address'
             }]
           }).then(supplierAddress => {

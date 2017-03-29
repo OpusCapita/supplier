@@ -127,7 +127,7 @@ const _ = require('lodash');
 
 module.exports = function(epilogue, db) {
   let supplier = epilogue.resource({
-    model: db.Supplier,
+    model: db.models.Supplier,
     endpoints: ['/suppliers', '/suppliers/:supplierId']
   });
 
@@ -139,9 +139,9 @@ module.exports = function(epilogue, db) {
             return context.continue;
           }
 
-          return db.Supplier.findAll({
+          return db.models.Supplier.findAll({
             include: [{
-              model: db.User2Supplier,
+              model: db.models.User2Supplier,
               where: {
                 LoginName: req.query.userId
               }
@@ -163,7 +163,7 @@ module.exports = function(epilogue, db) {
             return context.error(422, 'inconsistent data');
           }
 
-          return db.Supplier.findById(supplierId).then(supplier => {
+          return db.models.Supplier.findById(supplierId).then(supplier => {
             if (supplier.dataValues.createdBy !== req.body.changedBy) {
               return context.error(403, 'operation is not authorized');
             }
@@ -176,19 +176,19 @@ module.exports = function(epilogue, db) {
     create: {
       write: {
         before(req, res, context) {
-          // eslint-disable-next-line no-unused-vars
-          let { createdBy, changedBy, createdOn, changedOn, ...findProps } = req.body;
+          const { createdBy, changedBy } = req.body;
+
           return db.sequelize.
-            transaction(t => db.Supplier.
+            transaction(t => db.models.Supplier.
               findOrCreate({
-                where: _.omit(findProps, ['_objectLabel']),  // Comparison is case-insensitive (at least in MySQL).
+                where: _.omit(findProps, ['_objectLabel', 'createdBy', 'changedBy', 'createdOn', 'changedOn']),  // Comparison is case-insensitive (at least in MySQL).
                 transaction: t,
                 defaults: {
                   createdBy,
                   changedBy
                 }
               }).
-              spread(supplier => db.User2Supplier.
+              spread(supplier => db.models.User2Supplier.
                 destroy({
                   where: {
                     SupplierID: {
@@ -198,7 +198,7 @@ module.exports = function(epilogue, db) {
                   },
                   transaction: t
                 }).
-                then(rowsDeletedCount => db.User2Supplier.create({
+                then(rowsDeletedCount => db.models.User2Supplier.create({
                   SupplierID: supplier.dataValues.supplierId,
                   loginName: changedBy
                 }, {

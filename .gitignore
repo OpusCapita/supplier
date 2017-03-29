@@ -22,6 +22,7 @@ base-image/node_modules/
 /esdoc
 /lib
 /apidoc
+/src/server/static/bundle.js
 
 # All the below is taken from
 # https://github.com/github/gitignore/blob/master/Node.gitignore

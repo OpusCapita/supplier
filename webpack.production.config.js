@@ -6,7 +6,8 @@ module.exports = {
     app: './src/client/index.js'
   },
   output: {
-    path: path.resolve(__dirname, 'build/client'),
+    path: path.resolve(__dirname, './src/server/static'),
+    publicPath: '/static',
     filename: `bundle.js`,
     library: 'supplier',
     libraryTarget: 'umd',
@@ -49,12 +50,12 @@ module.exports = {
   ],
 
   resolve: {
-    modules: ['node_modules'],
+    modules: [process.env.NODE_PATH, 'node_modules'],
     extensions: ['.json', '.jsx', '.js']
   },
 
   resolveLoader: {
-    modules: ['node_modules'],
+    modules: [process.env.NODE_PATH, 'node_modules'],
     extensions: ['.js']
   },
 

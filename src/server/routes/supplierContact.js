@@ -137,13 +137,13 @@
  */
 module.exports = function(epilogue, db) {
   epilogue.resource({
-    model: db.SupplierContact,
+    model: db.models.SupplierContact,
     endpoints: ['/suppliers/:supplierId/contacts', '/suppliers/:supplierId/contacts/:contactId']
   }).use({
     list: {
       fetch: {
         before: function(req, res, context) {
-          db.SupplierContact.findAll({
+          db.models.SupplierContact.findAll({
             where: {
               supplierId: req.params.supplierId
             }
