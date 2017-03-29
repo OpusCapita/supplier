@@ -7,7 +7,7 @@
     "dev": "npm run setup-consul ; ${NODE_PATH}/.bin/nodemon --watch src/server src/server/index.js",
     "build": "npm run build:client",
     "build:client": "${NODE_PATH}/.bin/webpack --config ./webpack.production.config.js --progress --profile --colors --bail",
-    "test": "npm run clean ; npm run setup-consul ; ${NODE_PATH}/.bin/nyc ${NODE_PATH}/.bin/mocha --recursive -R mocha-junit-reporter",
+    "test": "npm run clean ; npm run setup-consul ; ${NODE_PATH}/.bin/nyc ${NODE_PATH}/.bin/mocha -R mocha-junit-reporter src/**/*.test.js",
     "clean": "${NODE_PATH}/.bin/rimraf esdoc testdb.sqlite .nyc_output coverage test-results.xml",
     "setup-consul": "curl -X PUT -d 'bnp' http://${HOST_IP}:8500/v1/kv/supplier/db-init/database ; curl -X PUT -d 'root' http://${HOST_IP}:8500/v1/kv/supplier/db-init/user ; curl -X PUT -d 'notSecurePa55w0rd' http://${HOST_IP}:8500/v1/kv/supplier/db-init/password",
     "lint": "${NODE_PATH}/.bin/eslint src",
