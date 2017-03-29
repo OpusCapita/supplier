@@ -22,16 +22,16 @@ services:
       - '${PORT}:${PORT}'
     command: "npm run dev"
 
-#  nginx:
-#    image: gr4per/nginx-rp:latest
-#    ports:
-#     - '3100:${NGINX_PORT}'
-#    depends_on:
-#     - bnp
-#    environment:
-#      PORT: '${NGINX_PORT}'
-#    labels:
-#      SERVICE_NAME: 'nginx'
+  nginx:
+    image: gr4per/nginx-rp:latest
+    ports:
+     - '3100:${NGINX_PORT}'
+    depends_on:
+     - bnp
+    environment:
+      PORT: '${NGINX_PORT}'
+    labels:
+      SERVICE_NAME: 'nginx'
 
   bnp:
     image: gr4per/bnp:latest
