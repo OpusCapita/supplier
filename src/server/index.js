@@ -1,6 +1,5 @@
 const server = require('ocbesbn-web-init'); // Web server
 const db = require('ocbesbn-db-init'); // Database
-const express = require('express');
 
 const developmentServerConfig = (db) => ({
   server: {
@@ -16,7 +15,7 @@ const developmentServerConfig = (db) => ({
 
 const productionServerConfig = (db) => ({
   server: {
-    staticFilePath: express.static(__dirname + '/static')
+    staticFilePath: __dirname + '/static'
   },
   routes: {
     dbInstance: db
