@@ -9,7 +9,7 @@
     "build:client": "${NODE_PATH}/.bin/webpack --config ./webpack.production.config.js --progress --profile --colors --bail",
     "test": "npm run clean ; npm run setup-consul ; ${NODE_PATH}/.bin/nyc ${NODE_PATH}/.bin/mocha -R mocha-junit-reporter src/**/*.test.js",
     "clean": "${NODE_PATH}/.bin/rimraf esdoc testdb.sqlite .nyc_output coverage test-results.xml",
-    "setup-consul": "curl -X PUT -d 'bnp' http://${HOST_IP}:8500/v1/kv/supplier/db-init/database ; curl -X PUT -d 'root' http://${HOST_IP}:8500/v1/kv/supplier/db-init/user ; curl -X PUT -d '1111' http://${HOST_IP}:8500/v1/kv/supplier/db-init/password ; curl -X PUT -d 'true' http://${HOST_IP}:8500/v1/kv/supplier/db-init/populate-test-data",
+    "setup-consul": "curl -X PUT -d ${MYSQL_DATABASE} http://${HOST_IP}:8500/v1/kv/supplier/db-init/database ; curl -X PUT -d 'root' http://${HOST_IP}:8500/v1/kv/supplier/db-init/user ; curl -X PUT -d ${MYSQL_ROOT_PASSWORD} http://${HOST_IP}:8500/v1/kv/supplier/db-init/password ; curl -X PUT -d 'true' http://${HOST_IP}:8500/v1/kv/supplier/db-init/populate-test-data",
     "lint": "${NODE_PATH}/.bin/eslint src",
     "esdoc": "${NODE_PATH}/.bin/rimraf esdoc && esdoc -c esdoc.json",
     "domain-doc": "mkdir -p wiki/domain-doc ; ${NODE_PATH}/.bin/sq2md --path-bl=index.js -o file-per-src -p wiki/domain-doc --field-bl=createdAt,updatedAt --output-ext=.model.md src/server/db/models",
