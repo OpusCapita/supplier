@@ -442,7 +442,7 @@ class SupplierEditorForm extends Component {
         username={this.props.username}
         i18n={i18n}
       >
-        { this.renderField({
+        { isOnboarding || this.renderField({
           fieldName: 'isNewSupplier',
           component: (
             <div className="checkbox">
@@ -456,7 +456,7 @@ class SupplierEditorForm extends Component {
               />
             </div>
           )
-        }) }
+        })  }
 
         {/* TODO: search for role==='selling' when isOnboarding===true */}
         { this.state.isNewSupplier ?
@@ -562,10 +562,10 @@ class SupplierEditorForm extends Component {
           )
         }) }
 
-        { isOnboarding || this.renderField({ fieldName: 'taxId', readOnly }) }
-        { isOnboarding || this.renderField({ fieldName: 'vatRegNo', readOnly }) }
-        { isOnboarding || this.renderField({ fieldName: 'globalLocationNo', readOnly }) }
-        { isOnboarding || this.renderField({ fieldName: 'dunsNo', readOnly }) }
+        {  this.renderField({ fieldName: 'taxId', readOnly }) }
+        {  this.renderField({ fieldName: 'vatRegNo', readOnly }) }
+        {  this.renderField({ fieldName: 'globalLocationNo', readOnly }) }
+        {  this.renderField({ fieldName: 'dunsNo', readOnly }) }
 
         {!this.props.readOnly && <div style={{ paddingTop: '20px' }}>
           <div className={`text-right form-submit${isOnboarding ? '' : ' col-sm-10 col-md-8'}`}>
