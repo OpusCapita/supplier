@@ -237,7 +237,7 @@
  */
 module.exports = function(epilogue, db) {
   let userSupplierResource = epilogue.resource({
-    model: db.User2Supplier,
+    model: db.models.User2Supplier,
     endpoints: ['/suppliers/:supplierId/users', '/suppliers/:supplierId/users/:userId'],
     actions: ['list', 'create', 'delete']
   });
@@ -247,7 +247,7 @@ module.exports = function(epilogue, db) {
     list: {
       fetch: {
         before(req, res, context) {
-          db.User2Supplier.findAll({
+          db.models.User2Supplier.findAll({
             attributes: [
               'LoginName'
             ],

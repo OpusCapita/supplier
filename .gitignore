@@ -3,6 +3,7 @@ awsProject.zip
 *~
 *.swp
 *.kate-swp
+ test-results.xml
 
 base-image/node_modules/
 #/resources/jcatalog/less/jquery-ui-bundle.css
@@ -22,6 +23,7 @@ base-image/node_modules/
 /esdoc
 /lib
 /apidoc
+/src/server/static/bundle.js
 
 # All the below is taken from
 # https://github.com/github/gitignore/blob/master/Node.gitignore

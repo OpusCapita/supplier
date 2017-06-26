@@ -4,44 +4,43 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const Promise = require('bluebird');
 
-const NODE_ENV = process.env.NODE_ENV || 'development';
+const Address = require('./Address');
+const BankAccount = require('./BankAccount');
+const Certification = require('./Certification');
+const CertificationGroup = require('./CertificationGroup');
+const Country = require('./Country');
+const Supplier = require('./Supplier');
+const Supplier2Address = require('./Supplier2Address');
+const SupplierCertification = require('./SupplierCertification');
+const SupplierContact = require('./SupplierContact');
+const SupplierFinancials = require('./SupplierFinancials');
+const TradingPartner = require('./TradingPartner');
+const User2Supplier = require('./User2Supplier');
 
-function findModels(base, dir) {
-  return fs.readdirSync(dir).reduce((list, file) => {
-    let name = path.join(dir, file);
-    let isDir = fs.statSync(name).isDirectory();
-    let moduleName = file.replace(/\.[^/.]+$/, '');
+module.exports.init = function(db, config)
+{
+  // Register Sequelize database models here.
+  // Use require in order to separate models into multiple js files.
+  // http://docs.sequelizejs.com/en/latest/api/model/
+  //
+  // db.define(...);
 
-    return list.concat(isDir ?
-      findModels(base + moduleName + '/', name) :
-      (moduleName === 'index' || moduleName.charAt(0) === '.' ? [] : [base + moduleName])
-    );
-  }, []);
+  db.import('Address', Address);
+  db.import('BankAccount', BankAccount);
+  db.import('Certification', Certification);
+  db.import('CertificationGroup', CertificationGroup);
+  db.import('Country', Country);
+  db.import('Supplier', Supplier);
+  db.import('Supplier2Address', Supplier2Address);
+  db.import('SupplierCertification', SupplierCertification);
+  db.import('SupplierContact', SupplierContact);
+  db.import('SupplierFinancials', SupplierFinancials);
+  db.import('TradingPartner', TradingPartner);
+  db.import('User2Supplier', User2Supplier);
+  db.import('Address', Address);
+  db.import('Address', Address);
+
+
+  // Always return a promise.
+  return Promise.resolve();
 }
-
-function associateModels(db) {
-  var promises = [];
-  findModels('', __dirname).forEach(moduleName => {
-    let m = require(`./${moduleName}`)(db);
-    db[m.name] = m;
-
-    db[m.name].beforeCreate(object => {
-      if (!object.createdBy) {
-        object.createdBy = 'jcadmin';  // eslint-disable-line no-param-reassign
-      }
-
-      if (!object.changedBy) {
-        object.changedBy = 'jcadmin';  // eslint-disable-line no-param-reassign
-      }
-    });
-  });
-
-
-  Object.keys(db).forEach(function (modelName) {
-    db[modelName].associate && promises.push(db[modelName].associate(db));
-  });
-
-  return Promise.all(promises);
-}
-
-export default associateModels;

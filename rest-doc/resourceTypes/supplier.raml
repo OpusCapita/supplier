@@ -1,0 +1,154 @@
+displayName: Suppliers
+description: Work with `Supplier` objects.
+get:
+    description: List of `Supplier` objects.
+    responses:
+        200:
+            body:
+                application/json:
+                    type: SupplierArray
+post:
+    description: Adds a new supplier.
+    body:
+        application/json:
+            type: Supplier
+    responses:
+        200:
+            body:
+                application/json:
+                    type: Supplier
+        409:
+            description:
+                A supplier with the same supplierId but different set of properties already exists.
+/{supplierId}:
+    uriParameters:
+        supplierId:
+            type: string
+            description: Identifier of a supplier.
+    get:
+        description: Single `Supplier` object.
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: Supplier
+    put:
+        description: Updates a supplier.
+        body:
+            application/json:
+                type: Supplier
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: Supplier
+            403:
+                description: Operation is not authorized
+            422:
+                description: Inconsistent data
+/{supplierId}/addresses:
+    uriParameters:
+        supplierId:
+            type: string
+            description: Identifier of a supplier.
+    get:
+        description: Get all addresses assigned to the Supplier
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierAddressArray
+    put:
+        description: Insert Supplier to Address association
+        body:
+            application/json:
+                type: SupplierAddress
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierAddressArray
+            403:
+                description: Operation is not authorized
+            422:
+                description: Inconsistent data
+/{supplierId}/addresses/{addressId}:
+    uriParameters:
+        supplierId:
+            type: string
+            description: Identifier of a supplier.
+        addressId:
+            type: number
+            description: Identifeir of supplier address
+    post:
+        description: Update Supplier to Address association
+        body:
+            application/json:
+                type: SupplierAddress
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierAddressArray
+            409:
+                description:
+                    A supplier with the same supplierId but different set of properties already exists.
+/{supplierId}/contacts:
+    uriParameters:
+        supplierId:
+            type: string
+            description: Identifier of a supplier.
+    get:
+        description: Get all contacts assigned to the Supplier
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierContactsArray
+    put:
+        description: Insert new Contact association fro Supplier
+        body:
+            application/json:
+                type: SupplierContact
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierContact
+            403:
+                description: Operation is not authorized
+            422:
+                description: Inconsistent data
+/{supplierId}/contacts/{contactId}:
+    uriParameters:
+        supplierId:
+            type: string
+            description: Identifier of a supplier.
+        contactId:
+            type: string
+            description: Identifier of Supplier to Contact association
+    post:
+        description: Update SupplierContact association
+            body:
+                application/json:
+                    type: SupplierContact
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierContact
+            409:
+                description:
+                    A supplier with the same supplierId but different set of properties already exists.
+
+    delete:
+        description: Delete SupplierContact association
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: {}
+            403:
+                description: Operation is not authorized
+            422:
+                description: Inconsistent data

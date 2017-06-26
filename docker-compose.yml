@@ -1,5 +1,30 @@
 version: '2'
 services:
+  main:
+    build: .
+    image: opuscapita/supplier
+    #restart: on-failure:5
+    depends_on:  # as of version 1.9.0 Dockerfile's HEALTHCHECK is not supported yet.
+      - mysql
+      - consul
+      - registrator
+    labels:
+      SERVICE_NAME: 'supplier'  # Service name used by Registrator for adding to Consul's service discovery registry.
+      SERVICE_TAGS: 'external'
+    volumes:
+      - .:/home/node/supplier
+    extra_hosts:
+      - 'consul:${HOST_IP}'
+    environment:
+      PORT: $PORT
+      HOST_IP: $HOST_IP
+      NODE_ENV: $NODE_ENV
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - '${PORT}:${PORT}'
+    command: 'npm run dev'
+
   nginx:
     image: gr4per/nginx-rp:latest
     ports:
@@ -10,55 +35,46 @@ services:
       PORT: '${NGINX_PORT}'
     labels:
       SERVICE_NAME: 'nginx'
+
   bnp:
-    image: gr4per/bnp
+    image: opuscapita/bnp:dev
     #restart: on-failure:5
     depends_on:  # as of version 1.9.0 Dockerfile's HEALTHCHECK is not supported yet.
      - mysql
-     - suppliers
+     - main
     labels:
       SERVICE_NAME: 'bnp'  # Service name used by Registrator for adding to Consul's service discovery registry.
-  suppliers:
-    build: .
-    #restart: on-failure:5
-    depends_on:  # as of version 1.9.0 Dockerfile's HEALTHCHECK is not supported yet.
-     - mysql
     environment:
-      PORT: '${SUPPLIERS_PORT}'
-    expose:
-     - '${SUPPLIERS_PORT}'
-    volumes:
-      - ./src:/home/node/supplierDir/src:rw
-      - ./node_modules:/home/node/node_modules:rw
-    labels:
-      SERVICE_NAME: 'supplier'  # Service name used by Registrator for adding to Consul's service discovery registry.
-      SERVICE_TAGS: 'external'
-    volumes:
-     - .:/home/node/supplierDir
+      PORT: '3000'
+    ports:
+      - '3000:3000'
+
   mysql:
-    image: gr4per/mysql
+    image: 'mysql:5.6'
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     depends_on:
-     - registrator
-    labels:
-      SERVICE_NAME: 'mysql'  # Service name used by Registrator for adding to Consul's service discovery registry.
+      - registrator
+
   registrator:
     image: gliderlabs/registrator:latest
     network_mode: host
-    #restart: always
     depends_on:
      - consul
     volumes:
      - /var/run/docker.sock:/tmp/docker.sock
-    command: ['-internal', 'consul://localhost:8500']
+    command: ['consul://localhost:8500']
+
   consul:
     image: consul:latest
     network_mode: host
-    #restart: always
     ports:
       - '8400:8400'
       - '8500:8500'
       - '8600:53/udp'
     labels:
       SERVICE_IGNORE: 'true'  # Do not add any of Consul's services to Consul's service discovery registry.
-    command: [agent, '-server', '-ui', '-bootstrap-expect=1', '-bind=127.0.0.1', '-client=0.0.0.0']
-
+    command: [agent, '-server', '-ui', '-bootstrap-expect=1', '-bind=${HOST_IP}', '-client=0.0.0.0']

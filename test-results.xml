@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Mocha Tests" time="0.001" tests="1" failures="0">
-  <testsuite name="Root Suite" timestamp="2017-01-12T12:28:05" tests="0" failures="0" time="0">
-  </testsuite>
-  <testsuite name="discoverSynonymFieldNames" timestamp="2017-01-12T12:28:05" tests="1" file="/home/andreim/tmpGit/supplierDir/src/test/mockTest.spec.js" failures="0" time="0.001">
-    <testcase name="discoverSynonymFieldNames mock test" time="0.001" classname="mock test">
-    </testcase>
-  </testsuite>
-</testsuites>

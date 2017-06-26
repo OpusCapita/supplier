@@ -1,0 +1,39 @@
+type: object
+displayName: SupplierConstact
+description: Object representing all contacts associated with a given supplier.
+properties:
+    supplierId:
+        type: string
+    supplierName:
+        type: string
+    foundedOn:
+        type: string
+    legalForm:
+        type: string
+    registrationNumber:
+        type: string
+    cityOfRegistration:
+        type: string
+    countryOfRegistration:
+        type: string
+    taxId:
+        type: string
+    vatRegNo:
+        type: string
+        required: false
+    globalLocationNo:
+        type: string
+    homePage:
+        type: string
+    dunsNo:
+        type: string
+        required: false
+    createdOn:
+        type: string
+    changedOn:
+        type: string
+    changedBy:
+        type: string
+    createdBy:
+        type: string
+example: !include ../examples/SupplierContact.json

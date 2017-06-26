@@ -6,7 +6,8 @@ module.exports = {
     app: './src/client/index.js'
   },
   output: {
-    path: path.resolve(__dirname, 'build/client'),
+    path: path.resolve(__dirname, './src/server/static'),
+    publicPath: '/static',
     filename: `bundle.js`,
     library: 'supplier',
     libraryTarget: 'umd',
@@ -29,10 +30,7 @@ module.exports = {
   // devtool: 'source-map',
 
   plugins: [
-    new webpack.ContextReplacementPlugin(
-      new RegExp('\\' + path.sep + 'node_modules\\' + path.sep + 'moment\\' + path.sep + 'locale'),
-      /en|de/
-    ),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|de|ru|fi|sv/),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,  // TODO: del if sourceMap is removed with devtool
       compressor: {
@@ -49,12 +47,12 @@ module.exports = {
   ],
 
   resolve: {
-    modules: ['node_modules'],
+    modules: [process.env.NODE_PATH, 'node_modules'],
     extensions: ['.json', '.jsx', '.js']
   },
 
   resolveLoader: {
-    modules: ['node_modules'],
+    modules: [process.env.NODE_PATH, 'node_modules'],
     extensions: ['.js']
   },
 

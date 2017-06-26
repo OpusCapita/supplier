@@ -6,7 +6,9 @@
     "lastName": "Mustermann",
     "email": "dirk.fischbach@jcatalog.com",
     "mobile": "0136/456789",
-    "supplierId": "hard001"
+    "supplierId": "hard001",
+    "createdBy": "john.doe@ncc.com",
+    "changedBy": "john.doe@ncc.com"
   },
   {
     "contactId": "Product Manager",
@@ -16,6 +18,8 @@
     "email": "dirk.fischbach@jcatalog.com",
     "phone": "0231/3967-224",
     "mobile": "0173-5101302",
-    "supplierId": "hard001"
+    "supplierId": "hard001",
+    "createdBy": "john.doe@ncc.com",
+    "changedBy": "john.doe@ncc.com"
   }
 ]

@@ -10,7 +10,9 @@
     "homePage": "http://hard.ware.ag",
     "legalForm": "KG",
     "registrationNumber": "MI651355",
-    "status": "new"
+    "status": "new",
+    "createdBy": "john.doe@ncc.com",
+    "changedBy": "john.doe@ncc.com"
   },
   {
     "supplierId": "car001",
@@ -23,7 +25,9 @@
     "homePage": "automobile.de",
     "legalForm": "KG",
     "registrationNumber": "MI3464564356",
-    "status": "new"
+    "status": "new",
+    "createdBy": "john.doe@ncc.com",
+    "changedBy": "john.doe@ncc.com"
   },
   {
     "supplierId": "hwi",

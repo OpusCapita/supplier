@@ -1,14 +1,13 @@
 machine:
   pre:
    - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
-   - sudo pip install docker-compose
+   - pip install --force-reinstall -U docker-compose==1.10.0
    - cd supplier ; rm -Rf wiki ; git clone https://github.com/OpusCapita/supplier.wiki.git wiki
   services:
     - docker
 
 dependencies:
   override:
-    - docker info
     - docker info
     - >
       if [ -n "${RUN_NIGHTLY_BUILD}" ]; then
@@ -18,8 +17,10 @@ dependencies:
 
 test:
   override:
-    - docker run opuscapita/supplier:latest npm run test
-    - docker run opuscapita/supplier:latest npm run doc
+    - >
+      sudo service mysql stop ;
+      export HOST_IP=$(ifconfig | grep "docker0" -A1 | grep -o -P "inet addr:.*? " | grep -o -P "\d+\.\d+\.\d+\.\d+") ;
+      docker-compose run main npm run test
   post:
     - sudo mkdir $CIRCLE_TEST_REPORTS/junit
     - sudo cp test-results.xml $CIRCLE_TEST_REPORTS/junit
@@ -41,8 +42,9 @@ deployment:
       - >
         if [ -n "${RUN_NIGHTLY_BUILD}" ]; then
           echo "running base img deploy..." && docker push opuscapita/supplier-base:latest
-        fi 
+        fi
       - docker push opuscapita/supplier
+      - docker-compose run main npm run doc
       - cd wiki ; git add --all . ; git commit -am 'Updated documentation.' ; git push ; (exit 0)
       - chmod +x deploy.sh
       - ./deploy.sh

@@ -1,0 +1,37 @@
+type: object
+displayName: Supplier
+description: Object representing a single supplier item.
+properties:
+    supplierId:
+        type: string
+    supplierName:
+        type: string
+    foundedOn:
+        type: string
+    legalForm:
+        type: string
+    registrationNumber:
+        type: string
+    countryOfRegistration:
+        type: string
+    taxId:
+        type: string
+    vatRegNo:
+        type: string
+        required: false
+    globalLocationNo:
+        type: string
+    homePage:
+        type: string
+    dunsNo:
+        type: string
+        required: false
+    createdOn:
+        type: string
+    changedOn:
+        type: string
+    changedBy:
+        type: string
+    createdBy:
+        type: string
+example: !include ../examples/Supplier.json
