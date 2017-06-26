@@ -30,10 +30,7 @@ module.exports = {
   // devtool: 'source-map',
 
   plugins: [
-    new webpack.ContextReplacementPlugin(
-      new RegExp('\\' + path.sep + 'node_modules\\' + path.sep + 'moment\\' + path.sep + 'locale'),
-      /en|de/
-    ),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|de|ru|fi|sv/),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,  // TODO: del if sourceMap is removed with devtool
       compressor: {
