@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import request from 'superagent-bluebird-promise';
-import i18n from '../../i18n/I18nDecorator.react.js';
+import i18nRegister from '../../i18n/register.js';
+import i18nMessages from './i18n';
 import Alert from '../Alert';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';
 import SupplierExistsView from './SupplierExistsView.react';
@@ -8,10 +9,6 @@ import SupplierExistsView from './SupplierExistsView.react';
 /**
  * Provide general company information.
  */
-@i18n({
-  componentName: 'SupplierRegistrationEditor',
-  messages: require('./i18n').default,
-})
 class SupplierRegistrationEditor extends Component {
 
   static propTypes = {
@@ -38,11 +35,19 @@ class SupplierRegistrationEditor extends Component {
 
   createSupplierPromise = null;
 
-  componentWillReceiveProps(/* nextProps*/) {
+  componentWillMount(){
+    this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierRegistrationEditor', i18nMessages) });
+  }
+
+  componentWillReceiveProps(nextProps) {
     this.setState({
       globalInfoMessage: '',
       globalErrorMessage: ''
     });
+
+    if(this.state.i18n && nextProps.locale != this.props.locale){
+      this.setState({ i18n: i18nRegister(nextProps.locale, 'SupplierRegistrationEditor', i18nMessages) });
+    }
   }
 
   componentWillUnmount() {
@@ -75,8 +80,6 @@ class SupplierRegistrationEditor extends Component {
       changedBy: this.props.user.id
     };
 
-    const { i18n } = this.context;
-
     this.createSupplierPromise = request.post(`${this.props.actionUrl}/supplier/api/suppliers`).
       set('Accept', 'application/json').
       send(newSupplier).
@@ -85,7 +88,7 @@ class SupplierRegistrationEditor extends Component {
     this.createSupplierPromise.then(response => {
       this.setState({
         supplier: response.body,
-        globalInfoMessage: i18n.getMessage('SupplierRegistrationEditor.Messages.saved'),
+        globalInfoMessage: this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'),
         globalErrorMessage: ''
       });
 
@@ -138,7 +141,7 @@ class SupplierRegistrationEditor extends Component {
         default:
           this.setState({
             globalInfoMessage: '',
-            globalErrorMessage: i18n.getMessage('SupplierRegistrationEditor.Messages.failed'),
+            globalErrorMessage: this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'),
           });
       }
     });
@@ -150,6 +153,7 @@ class SupplierRegistrationEditor extends Component {
     } else {
       return <SupplierRegistrationEditorForm
                {...this.props}
+               i18n={this.state.i18n}
                supplier={ this.state.supplier }
                onSupplierChange={ this.handleUpdate }
                onChange={ this.handleChange }
@@ -159,12 +163,11 @@ class SupplierRegistrationEditor extends Component {
   }
 
   render() {
-    const { i18n } = this.context;
     const { hasErrors, globalInfoMessage = '', globalErrorMessage = '' } = this.state;
 
     if (hasErrors) {
       return (
-        <div>{ i18n.getMessage('SupplierRegistrationEditor.Messages.unableToRender') }</div>
+        <div>{ this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.unableToRender') }</div>
       );
     }
 

@@ -1,8 +1,6 @@
 import React, {Component} from "react";
-import i18n from "../../i18n/I18nDecorator.react.js";
 
-@i18n
-class DisplayRow extends Component {
+class DisplayField extends Component {
 
   render() {
     return (
@@ -11,4 +9,4 @@ class DisplayRow extends Component {
   }
 }
 
-export default DisplayRow;
+export default DisplayField;

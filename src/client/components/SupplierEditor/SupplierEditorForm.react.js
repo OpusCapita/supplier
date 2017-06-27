@@ -3,9 +3,8 @@ import _ from 'underscore';
 import validatejs from 'validate.js';
 import SupplierEditorFormRow from '../AttributeValueEditorRow.react.js';
 import './SupplierEditor.css';
-import validationMessages from '../../utils/validatejs/i18n';
 import SupplierFormConstraints from './SupplierFormConstraints';
-import DateInput from 'opuscapita-react-dates/lib/DateInput';
+import DateInput from '@opuscapita/react-dates/lib/DateInput';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import customValidation from '../../utils/validatejs/custom.js';
 
@@ -69,23 +68,21 @@ class SupplierEditorForm extends Component {
 
     this.externalComponents = { CountryField };
 
-    this.props.i18n.register('validatejs', validationMessages);
+    this.SUPPLIER_CONSTRAINTS = SupplierFormConstraints(this.props.i18n);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (_.isEqual(this.props.supplier, nextProps.supplier)) {
-      return;
+    if (!_.isEqual(this.props.supplier, nextProps.supplier)) {
+      this.setState({
+        supplier: {
+          ...nextProps.supplier
+        },
+        fieldErrors: {},
+      });
     }
 
-    this.setState({
-      supplier: {
-        ...nextProps.supplier
-      },
-      fieldErrors: {},
-    });
+    this.SUPPLIER_CONSTRAINTS = SupplierFormConstraints(nextProps.i18n);
   }
-
-  SUPPLIER_CONSTRAINTS = SupplierFormConstraints(this.props.i18n);
 
   handleDateChange = (fieldName, date) => {
     if (this.props.onChange) {
@@ -218,8 +215,7 @@ class SupplierEditorForm extends Component {
   };
 
   render() {
-    const { i18n, dateTimePattern } = this.props;
-    const locale = i18n.locale;
+    const { locale, i18n, dateTimePattern } = this.props;
     const { supplier } = this.state;
     const { CountryField } = this.externalComponents;
     const foundedOn = supplier['foundedOn'] ? new Date(supplier['foundedOn']) : '';
@@ -242,6 +238,7 @@ class SupplierEditorForm extends Component {
                 value={foundedOn}
                 onChange={this.handleDateChange.bind(this, 'foundedOn')}
                 onBlur={this.handleBlur.bind(this, 'foundedOn')}
+                variants={[]}
               />
             )
           }) }
@@ -268,7 +265,7 @@ class SupplierEditorForm extends Component {
           { this.renderField({ fieldName: 'dunsNo' }) }
 
           <div className='supplier-form-submit'>
-            <div className='text-right form-submit col-sm-10 col-md-8'>
+            <div className='text-right form-submit'>
               <button className="btn btn-primary" onClick={ this.handleUpdate }>
                 { i18n.getMessage('SupplierEditor.ButtonLabel.save') }
               </button>

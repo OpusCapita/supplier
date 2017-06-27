@@ -1,11 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'underscore';
 import validatejs from 'validate.js';
-import i18n from '../../i18n/I18nDecorator.react.js';
-import AttributeValueEditorRow from '../AttributeValueEditorRow.react.js';
+import SupplierRegistrationEditorFormRow from '../AttributeValueEditorRow.react.js';
 import './SupplierRegistrationEditor.css';
-import { I18nManager } from 'opuscapita-i18n';
-import globalMessages from '../../utils/validatejs/i18n';
 import SupplierFormConstraints from './SupplierFormConstraints';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import customValidation from '../../utils/validatejs/custom.js';
@@ -14,9 +11,8 @@ function getValidator() {
   customValidation.vatNumber(validatejs);
 
   return validatejs;
-}
+};
 
-@i18n
 class SupplierRegistrationEditorForm extends Component {
   static propTypes = {
     supplier: PropTypes.object,
@@ -38,6 +34,8 @@ class SupplierRegistrationEditorForm extends Component {
     const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
 
     this.externalComponents = { CountryField };
+
+    this.SUPPLIER_CONSTRAINTS = SupplierFormConstraints(this.props.i18n);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -51,11 +49,9 @@ class SupplierRegistrationEditorForm extends Component {
       },
       fieldErrors: {},
     });
+
+    this.SUPPLIER_CONSTRAINTS = SupplierFormConstraints(nextProps.i18n);
   }
-
-  validatejsI18N = new I18nManager(this.props.locale, globalMessages)
-
-  SUPPLIER_CONSTRAINTS = SupplierFormConstraints(this.validatejsI18N);
 
   handleChange = (fieldName, event) => {
     let newValue = event.target.value;
@@ -170,19 +166,17 @@ class SupplierRegistrationEditorForm extends Component {
     );
 
     return (
-      <AttributeValueEditorRow
-        labelText={ this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
+      <SupplierRegistrationEditorFormRow
+        labelText={ this.props.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
         required={ isRequired }
         rowErrors={ rowErrors }
       >
         { component }
-      </AttributeValueEditorRow>
+      </SupplierRegistrationEditorFormRow>
     );
   };
 
   render() {
-    const { i18n } = this.context;
-    const locale = i18n.locale;
     const { supplier } = this.state;
     const { CountryField } = this.externalComponents;
 

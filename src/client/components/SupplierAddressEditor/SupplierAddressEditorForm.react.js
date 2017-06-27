@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import validator from 'validate.js';
-import i18n from '../../i18n/I18nDecorator.react.js';
 import './SupplierAddressEditorForm.css';
 import SupplierAddressFormConstraints from './SupplierAddressFormConstraints';
-import { I18nManager } from 'opuscapita-i18n';
-import globalMessages from '../../utils/validatejs/i18n';
 import SupplierAddressEditorFormRow from '../AttributeValueEditorRow.react.js';
 const ADDRESS_TYPES = ['default', 'invoice', 'rma', 'plant'];
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
@@ -13,7 +10,6 @@ import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 /**
  * Supplier address edit form
  */
-@i18n
 class SupplierAddressEditorForm extends Component {
   static propTypes = {
     supplierAddress: React.PropTypes.object.isRequired,
@@ -40,17 +36,16 @@ class SupplierAddressEditorForm extends Component {
     const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
 
     this.externalComponents = { CountryField };
+    this.constraints = SupplierAddressFormConstraints(this.props.i18n);
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.supplierAddress) {
       this.setState({ supplierAddress: newProps.supplierAddress, errors: newProps.errors || {} });
     }
+
+    this.constraints = SupplierAddressFormConstraints(newProps.i18n);
   }
-
-  validatejsI18N = new I18nManager(this.props.locale, globalMessages);
-
-  constraints = SupplierAddressFormConstraints(this.validatejsI18N);
 
   handleSaveOrUpdate = (event) => {
     event.preventDefault();
@@ -147,7 +142,7 @@ class SupplierAddressEditorForm extends Component {
 
     return (
       <SupplierAddressEditorFormRow
-        labelText={ this.context.i18n.getMessage(`SupplierAddressEditor.Label.${fieldName}`) }
+        labelText={ this.props.i18n.getMessage(`SupplierAddressEditor.Label.${fieldName}`) }
         required={ isRequired }
         rowErrors={ rowErrors }
       >
@@ -162,7 +157,7 @@ class SupplierAddressEditorForm extends Component {
     const { supplierAddress } = this.state;
     const { CountryField } = this.externalComponents;
 
-    let message = this.context.i18n.getMessage;
+    let message = this.props.i18n.getMessage;
 
     let typeOptions = [];
 
@@ -233,14 +228,14 @@ class SupplierAddressEditorForm extends Component {
               onClick={this.handleCancel}
             >
             {
-              this.context.i18n.getMessage('SupplierAddressEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
+              this.props.i18n.getMessage('SupplierAddressEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
             }
             </Button>
           ) : null}
           {editMode !== 'view' ? (
             <Button bsStyle="primary"
               type="submit"
-            >{this.context.i18n.getMessage('SupplierAddressEditor.Button.save')}</Button>
+            >{this.props.i18n.getMessage('SupplierAddressEditor.Button.save')}</Button>
           ) : null}
         </div>
       </form>

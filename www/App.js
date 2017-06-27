@@ -37,7 +37,6 @@ let editor = (
     key='company'
     actionUrl={actionUrl}
     supplierId={supplier.supplierId}
-    supplierName={supplier.supplierName}
     locale='de'
     username={username}
     dateTimePattern='MM/dd/yyyy'

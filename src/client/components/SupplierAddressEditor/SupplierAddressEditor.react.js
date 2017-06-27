@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import request from 'superagent-bluebird-promise';
 import utils from 'underscore';
-import i18n from '../../i18n/I18nDecorator.react.js';
+import i18nRegister from '../../i18n/register.js';
+import i18nMessages from './i18n';
 import Button from 'react-bootstrap/lib/Button';
 import Alert from '../Alert';
 import SupplierAddressListTable from './SupplierAddressListTable.react.js';
@@ -10,10 +11,6 @@ import SupplierAddressEditorForm from './SupplierAddressEditorForm.react.js';
 /**
  * Supplier address editor
  */
-@i18n({
-  componentName: 'SupplierAddressEditor',
-  messages: require('./i18n').default,
-})
 class SupplierAddressEditor extends Component {
 
   static propTypes = {
@@ -46,6 +43,10 @@ class SupplierAddressEditor extends Component {
     supplierAddress: null,
     loadErrors: false
   };
+
+  componentWillMount(){
+    this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierAddressEditor', i18nMessages) });
+  }
 
   componentDidMount() {
     if (this.state.isLoaded) {
@@ -93,6 +94,10 @@ class SupplierAddressEditor extends Component {
         newState.editMode = 'edit';
       }
       this.setState(newState);
+    }
+
+    if(this.state.i18n && newProps.locale != this.props.locale){
+      this.setState({ i18n: i18nRegister(newProps.locale, 'SupplierAddressEditor', i18nMessages) });
     }
   }
 
@@ -149,7 +154,7 @@ class SupplierAddressEditor extends Component {
 
       supplierAddresses.splice(index, 1);
 
-      const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectDeleted');
+      const message = this.state.i18n.getMessage('SupplierAddressEditor.Message.objectDeleted');
       this.setState({
         supplierAddresses: supplierAddresses,
         supplierAddress: null,
@@ -192,7 +197,7 @@ class SupplierAddressEditor extends Component {
 
       this.props.onChange({ isDirty: false });
 
-      const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectUpdated');
+      const message = this.state.i18n.getMessage('SupplierAddressEditor.Message.objectUpdated');
       this.setState({
         supplierAddresses: supplierAddresses,
         supplierAddress: null,
@@ -234,7 +239,7 @@ class SupplierAddressEditor extends Component {
 
             this.props.onChange({ isDirty: false });
 
-            const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectSaved');
+            const message = this.state.i18n.getMessage('SupplierAddressEditor.Message.objectSaved');
             this.setState({
               supplierAddresses: supplierAddresses,
               supplierAddress: null,
@@ -269,7 +274,7 @@ class SupplierAddressEditor extends Component {
 
     return (
       <div>
-        <Button onClick={this.handleCreate}>{this.context.i18n.getMessage('SupplierAddressEditor.Button.add')}
+        <Button onClick={this.handleCreate}>{this.state.i18n.getMessage('SupplierAddressEditor.Button.add')}
         </Button>
       </div>
     )
@@ -297,6 +302,7 @@ class SupplierAddressEditor extends Component {
           <SupplierAddressListTable
             actionUrl={this.props.actionUrl}
             supplierAddresses={supplierAddresses}
+            i18n={this.state.i18n}
             readOnly={readOnly}
             onEdit={this.handleEdit}
             onDelete={this.handleDelete}
@@ -309,7 +315,7 @@ class SupplierAddressEditor extends Component {
     return (
       <div>
         <div>
-          <h4 className="tab-description">{this.context.i18n.getMessage('SupplierAddressEditor.Title')}</h4>
+          <h4 className="tab-description">{this.state.i18n.getMessage('SupplierAddressEditor.Title')}</h4>
         </div>
 
         {this.state.globalMessage && !readOnly ? (
@@ -329,6 +335,7 @@ class SupplierAddressEditor extends Component {
                 actionUrl={this.props.actionUrl}
                 onChange={this.handleChange}
                 supplierAddress={supplierAddress}
+                i18n={this.state.i18n}
                 errors={errors}
                 editMode={editMode}
                 onSave={this.handleSave}

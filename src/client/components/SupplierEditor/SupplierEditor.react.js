@@ -14,7 +14,6 @@ class SupplierEditor extends Component {
   static propTypes = {
     actionUrl: PropTypes.string.isRequired,
     supplierId: PropTypes.string.isRequired,
-    supplierName: PropTypes.string,
     username: React.PropTypes.string.isRequired,
     dateTimePattern: PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
@@ -37,7 +36,7 @@ class SupplierEditor extends Component {
   }
 
   componentWillMount(){
-    this.i18n = i18nRegister(this.props.locale, 'SupplierEditor', i18nMessages);
+    this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierEditor', i18nMessages) });
   }
 
   componentDidMount() {
@@ -79,8 +78,8 @@ class SupplierEditor extends Component {
       globalErrorMessage: ''
     });
 
-    if(this.i18n && this.i18n.locale && nextProps.locale != this.i18n.locale){
-      this.i18n = i18nRegister(nextProps.locale, 'SupplierEditor', i18nMessages);
+    if(this.state.i18n && nextProps.locale != this.props.locale){
+      this.setState({ i18n: i18nRegister(nextProps.locale, 'SupplierEditor', i18nMessages) });
     }
   }
 
@@ -99,7 +98,6 @@ class SupplierEditor extends Component {
     if (!date) {
       return;
     }
-
     const momentFormat = this.props.dateTimePattern.replace('dd', 'DD').replace('yyyy', 'YYYY');
     return moment(date).format(momentFormat);
   }
@@ -136,17 +134,11 @@ class SupplierEditor extends Component {
         response.body.foundedOn = this.formatedDate(response.body.foundedOn);
         this.setState({
           supplier: response.body,
-          globalInfoMessage: this.this.i18n.getMessage('SupplierEditor.Messages.saved'),
+          globalInfoMessage: this.state.i18n.getMessage('SupplierEditor.Messages.saved'),
           globalErrorMessage: ''
         });
 
-        if (
-          this.props.onUpdate &&
-          (
-            this.props.supplierId !== response.body.supplierId ||
-            this.props.supplierName !== response.body.supplierName
-          )
-        ) {
+        if (this.props.onUpdate && this.props.supplierId !== response.body.supplierId) {
           // Informing wrapper app (BNP/SIM) about supplier change.
           this.props.onUpdate({
             supplierId: response.body.supplierId,
@@ -166,19 +158,19 @@ class SupplierEditor extends Component {
           case 403:
             this.setState({
               globalInfoMessage: '',
-              globalErrorMessage: this.i18n.getMessage('SupplierEditor.Messages.failedModifyingNotAuthoredSupplier'),
+              globalErrorMessage: this.state.i18n.getMessage('SupplierEditor.Messages.failedModifyingNotAuthoredSupplier'),
             });
             break;
           case 409:
             this.setState({
               globalInfoMessage: '',
-              globalErrorMessage: this.i18n.getMessage('SupplierEditor.Messages.failedCreatingExistingSupplier'),
+              globalErrorMessage: this.state.i18n.getMessage('SupplierEditor.Messages.failedCreatingExistingSupplier'),
             });
             break;
           default:
             this.setState({
               globalInfoMessage: '',
-              globalErrorMessage: this.i18n.getMessage('SupplierEditor.Messages.failed'),
+              globalErrorMessage: this.state.i18n.getMessage('SupplierEditor.Messages.failed'),
             });
         }
       });
@@ -189,13 +181,13 @@ class SupplierEditor extends Component {
 
     if (!isLoaded) {
       return (
-        <div>{ this.i18n.getMessage('SupplierEditor.Messages.loading') }</div>
+        <div>{ this.state.i18n.getMessage('SupplierEditor.Messages.loading') }</div>
       );
     }
 
     if (hasErrors) {
       return (
-        <div>{ this.i18n.getMessage('SupplierEditor.Messages.unableToRender') }</div>
+        <div>{ this.state.i18n.getMessage('SupplierEditor.Messages.unableToRender') }</div>
       );
     }
 
@@ -216,7 +208,7 @@ class SupplierEditor extends Component {
 
           <SupplierEditorForm
             {...this.props}
-            i18n={this.i18n}
+            i18n={this.state.i18n}
             supplier={ supplier }
             onSupplierChange={ this.handleUpdate }
             onChange={ this.handleChange }

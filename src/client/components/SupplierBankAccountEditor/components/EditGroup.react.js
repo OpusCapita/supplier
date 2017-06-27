@@ -1,14 +1,14 @@
 import React, {Component} from "react";
 import Button from "react-bootstrap/lib/Button";
-import i18n from "../../../i18n/I18nDecorator.react";
 import DisplayField from '../../DisplayTable/DisplayField.react.js';
 
-@i18n
 class EditGroup extends Component {
 
   static propTypes = {
     editAction: React.PropTypes.func,
+    editLabel: React.PropTypes.string,
     deleteAction: React.PropTypes.func,
+    deleteLabel: React.PropTypes.string
   };
 
   static defaultProps = {
@@ -20,11 +20,11 @@ class EditGroup extends Component {
     return (<DisplayField>
       <Button onClick={this.props.editAction.bind(this)} bsSize="sm">
         <span className="glyphicon glyphicon-edit"/>&nbsp;
-        {this.context.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
+        { this.props.editLabel }
       </Button>
       <Button onClick={this.props.deleteAction.bind(this)} bsSize="sm">
         <span className="glyphicon glyphicon-trash"/>&nbsp;
-        {this.context.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}
+        { this.props.deleteLabel }
       </Button>
     </DisplayField>)
   }
