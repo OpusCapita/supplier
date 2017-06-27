@@ -28,7 +28,7 @@ let Select = {};
 Select.country = 'Bitte ein Land auswählen ...';
 
 let Description = {};
-Description.viewSupplierOrChooseAnother = 'General company information.';
+Description.viewSupplierOrChooseAnother = 'Allgemeine Firmeninformationen.';
 
 let Label = {
   supplierName: {},
@@ -52,9 +52,9 @@ let Label = {
 Label.supplierName.label = 'Name des Unternehmens';
 Label.supplierId.label = 'Firmen-ID';
 Label.homePage.label = 'Homepage';
-Label.role.label = 'Role';  // TODO: substitute with EN.
-Label.buying.label = 'Buying';  // TODO: substitute with EN.
-Label.selling.label = 'Selling';  // TODO: substitute with EN.
+Label.role.label = 'Rolle';
+Label.buying.label = 'Kauf';
+Label.selling.label = 'Verkauf';
 Label.foundedOn.label = 'Datum der Firmengründung';
 Label.legalForm.label = 'Rechtform des Unternehmens';
 Label.commercialRegisterNo.label = 'Handelsregisternummer';
@@ -76,10 +76,10 @@ Messages.loading = 'Laden...';
 Messages.unableToRender = 'Der Editor kann nicht geöffnet werden';
 Messages.saved = 'Die Daten wurden erfolgreich gespeichert';
 Messages.failed = 'Speichern von Objekten fehlgeschlagen';
-Messages.failedModifyingNotAuthoredSupplier = 'Data saving failed:' +  // TODO: substitute with EN.
-  ' only the author can update company information';
-Messages.failedCreatingExistingSupplier = 'Data saving failed:' +  // TODO: substitute with EN.
-  ' a company with the same "Company ID" but different details already exists';
+Messages.failedModifyingNotAuthoredSupplier = 'Speichern von Objekten fehlgeschlagen:' +
+  ' nur der Autor kann die Firmeninformationen aktualisieren';
+Messages.failedCreatingExistingSupplier = 'Speichern von Objekten fehlgeschlagen:' +
+  ' ein Unternehmen mit gleiche Firmenname existiert bereits';
 
 export default {
   SupplierEditor: {
