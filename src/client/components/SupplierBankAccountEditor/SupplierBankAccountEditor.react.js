@@ -9,14 +9,9 @@ import SupplierBankAccountEditForm from "./SupplierBankAccountEditForm.react.js"
 import DisplayTable from "../DisplayTable/DisplayTable.react.js";
 import DisplayRow from "../DisplayTable/DisplayRow.react.js";
 import DisplayField from "../DisplayTable/DisplayField.react.js";
-import ViewGroup from "./components/ViewGroup.react.js";
 import EditGroup from "./components/EditGroup.react.js";
+import generateUUID from "../../utils/generateUUID";
 
-/**
- * Supplier contact editor
- *
- * @author Dmitry Divin
- */
 class SupplierBankAccountEditor extends Component {
 
   static propTypes = {
@@ -30,13 +25,6 @@ class SupplierBankAccountEditor extends Component {
 
   static defaultProps = {
     readOnly: false,
-    onChange: function(event) {
-      if (event.isDirty) {
-        console.log('data in form changed');
-      } else {
-        console.log('data in form committed or canceled')
-      }
-    }
   };
 
   state = {
@@ -108,7 +96,7 @@ class SupplierBankAccountEditor extends Component {
 
   handleCreate = () => {
     this.props.onChange({ isDirty: true });
-    this.setState({ account: {}, editMode: "create", errors: null });
+    this.setState({ account: {}, editMode: 'create', errors: null });
   };
 
   handleUpdate = (account) => {
@@ -149,13 +137,6 @@ class SupplierBankAccountEditor extends Component {
       });
   };
 
-  generateUUID() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return s4() + s4() + '-' + s4() + s4();
-  }
-
   handleSave = (account) => {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
@@ -166,7 +147,7 @@ class SupplierBankAccountEditor extends Component {
     account.changedBy = this.props.username;
 
     // generate unique value
-    account.bankAccountId = this.generateUUID();
+    account.bankAccountId = generateUUID();
     /* eslint-enable no-param-reassign*/
 
     request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/bank_accounts`).
@@ -198,16 +179,13 @@ class SupplierBankAccountEditor extends Component {
   };
 
   handleChange = (account, name, oldValue, newValue) => {
-    // check only updated objects
-    // if (account.bankAccountId) {
     this.props.onChange({ isDirty: true });
-    // }
   };
 
   handleView = (account) => {
     this.setState({
       account: utils.clone(account),
-      editMode: "view",
+      editMode: 'view',
       globalError: null,
       globalMessage: null,
       errors: null
@@ -217,7 +195,7 @@ class SupplierBankAccountEditor extends Component {
   handleEdit = (account) => {
     this.setState({
       account: utils.clone(account),
-      editMode: "edit",
+      editMode: 'edit',
       globalError: null,
       globalMessage: null,
       errors: null
@@ -259,10 +237,10 @@ class SupplierBankAccountEditor extends Component {
     let readOnly = this.props.readOnly;
     let result;
 
-    if (accounts !== undefined) {
+    if (accounts) {
       if (accounts.length > 0) {
         result = (
-          <div className="table-responsive">
+          <div className='table-responsive'>
             <DisplayTable headers={[{label: this.state.i18n.getMessage('SupplierBankAccountEditor.Label.accountNumber')},
               {label: this.state.i18n.getMessage('SupplierBankAccountEditor.Label.bankName')},
               {label: this.state.i18n.getMessage('SupplierBankAccountEditor.Label.bankIdentificationCode')},
@@ -280,12 +258,10 @@ class SupplierBankAccountEditor extends Component {
                   <DisplayField>{ account.bankCode }</DisplayField>
                   <DisplayField>{ account.extBankControlKey }</DisplayField>
                   <DisplayField>{ account.swiftCode }</DisplayField>
-                  { readOnly && <ViewGroup viewAction={this.handleView(this, account)}
-                                           viewLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.view')} /> }
-                  { !readOnly && <EditGroup editAction={this.handleEdit.bind(this, account)}
-                                            editLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
-                                            deleteAction={this.onDelete.bind(this, account)}
-                                            deleteLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}/>}
+                  <EditGroup editAction={this.handleEdit.bind(this, account)}
+                             editLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
+                             deleteAction={this.onDelete.bind(this, account)}
+                             deleteLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}/>
 
                 </DisplayRow>))
               }
@@ -307,19 +283,19 @@ class SupplierBankAccountEditor extends Component {
 
     return (
       <div>
-        <h4 className="tab-description">{this.state.i18n.getMessage('SupplierBankAccountEditor.Title')}</h4>
+        <h4 className='tab-description'>{this.state.i18n.getMessage('SupplierBankAccountEditor.Title')}</h4>
 
         {this.state.globalMessage && !readOnly ? (
-          <Alert bsStyle="info" message={this.state.globalMessage}/>
+          <Alert bsStyle='info' message={this.state.globalMessage}/>
         ) : null}
 
         {result}
 
         {account ? (
-          <div className="row">
-            <div className="col-sm-6">
+          <div className='row'>
+            <div className='col-sm-6'>
               {this.state.globalError && !readOnly ? (
-                <Alert bsStyle="danger" message={this.state.globalError}/>
+                <Alert bsStyle='danger' message={this.state.globalError}/>
               ) : null}
 
               <SupplierBankAccountEditForm
