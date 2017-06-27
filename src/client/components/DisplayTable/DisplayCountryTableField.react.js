@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import request from 'superagent-bluebird-promise';
+import DisplayField from "./DisplayField.react";
 
-/**
- * Supplier address list table
- *
- * @author Dmitry Divin
- */
-class CountryTableField extends Component {
+class DisplayCountryTableField extends Component {
+
   static propTypes = {
     actionUrl: React.PropTypes.string.isRequired,
     countryId: React.PropTypes.string.isRequired
@@ -60,8 +57,8 @@ class CountryTableField extends Component {
   };
 
   render() {
-    return (<td>{this.state.country}</td>);
+    return (<DisplayField>{this.state.country}</DisplayField>);
   }
 }
 
-export default CountryTableField;
+export default DisplayCountryTableField;

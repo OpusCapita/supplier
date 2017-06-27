@@ -11,6 +11,7 @@ import DisplayRow from "../DisplayTable/DisplayRow.react.js";
 import DisplayField from "../DisplayTable/DisplayField.react.js";
 import EditGroup from "./components/EditGroup.react.js";
 import generateUUID from "../../utils/generateUUID";
+import DisplayCountryTableField from "../DisplayTable/DisplayCountryTableField.react";
 
 class SupplierBankAccountEditor extends Component {
 
@@ -25,6 +26,13 @@ class SupplierBankAccountEditor extends Component {
 
   static defaultProps = {
     readOnly: false,
+    onChange: function(event) {
+      if (event.isDirty) {
+        console.log('data in form changed');
+      } else {
+        console.log('data in form committed or canceled')
+      }
+    }
   };
 
   state = {
@@ -95,6 +103,7 @@ class SupplierBankAccountEditor extends Component {
   };
 
   handleCreate = () => {
+    console.log(this.props);
     this.props.onChange({ isDirty: true });
     this.setState({ account: {}, editMode: 'create', errors: null });
   };
@@ -174,6 +183,7 @@ class SupplierBankAccountEditor extends Component {
   };
 
   handleCancel = () => {
+    console.log(this.props);
     this.props.onChange({ isDirty: false });
     this.setState({ account: null, globalError: null, globalMessage: null });
   };
@@ -254,7 +264,7 @@ class SupplierBankAccountEditor extends Component {
                   <DisplayField>{ account.accountNumber }</DisplayField>
                   <DisplayField>{ account.bankName }</DisplayField>
                   <DisplayField>{ account.bankIdentificationCode }</DisplayField>
-                  <DisplayField>{ account.bankCountryKey }</DisplayField>
+                  <DisplayCountryTableField actionUrl={this.props.actionUrl} countryId={account.bankCountryKey} />
                   <DisplayField>{ account.bankCode }</DisplayField>
                   <DisplayField>{ account.extBankControlKey }</DisplayField>
                   <DisplayField>{ account.swiftCode }</DisplayField>
