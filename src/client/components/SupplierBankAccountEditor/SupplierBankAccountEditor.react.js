@@ -224,6 +224,13 @@ class SupplierBankAccountEditor extends Component {
     });
   };
 
+  onDelete = (account) => {
+    if (!confirm(this.state.i18n.getMessage('SupplierBankAccountEditor.Confirmation.delete'))) {
+      return;
+    }
+    this.handleDelete(account);
+  };
+
   loadBankAccounts = () => {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
@@ -278,7 +285,7 @@ class SupplierBankAccountEditor extends Component {
                                            viewLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.view')} /> }
                   { !readOnly && <EditGroup editAction={this.handleEdit.bind(this, account)}
                                             editLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
-                                            deleteAction={this.handleDelete.bind(this, account)}
+                                            deleteAction={this.onDelete.bind(this, account)}
                                             deleteLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}/>}
 
                 </DisplayRow>))
