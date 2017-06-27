@@ -1,12 +1,16 @@
-import React, { Component } from 'react';
-import request from 'superagent-bluebird-promise';
-import utils from 'underscore';
-import Button from 'react-bootstrap/lib/Button';
-import i18nRegister from '../../i18n/register.js';
-import i18nMessages from './i18n';
-import Alert from '../Alert';
-import SupplierBankAccountListTable from './SupplierBankAccountListTable.react.js';
-import SupplierBankAccountEditForm from './SupplierBankAccountEditForm.react.js';
+import React, {Component} from "react";
+import request from "superagent-bluebird-promise";
+import utils from "underscore";
+import Button from "react-bootstrap/lib/Button";
+import i18nRegister from "../../i18n/register.js";
+import i18nMessages from "./i18n";
+import Alert from "../Alert";
+import SupplierBankAccountEditForm from "./SupplierBankAccountEditForm.react.js";
+import DisplayTable from "../DisplayTable/DisplayTable.react.js";
+import DisplayRow from "../DisplayTable/DisplayRow.react.js";
+import DisplayField from "../DisplayTable/DisplayField.react.js";
+import ViewGroup from "./components/ViewGroup.react.js";
+import EditGroup from "./components/EditGroup.react.js";
 
 /**
  * Supplier contact editor
@@ -227,6 +231,7 @@ class SupplierBankAccountEditor extends Component {
       get(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/bank_accounts`).
       set('Accept', 'application/json').
       then((response) => {
+        console.log(response);
         this.setState({ accounts: response.body });
       }).catch((response) => {
         if (response.status === 401) {
@@ -252,17 +257,34 @@ class SupplierBankAccountEditor extends Component {
       if (accounts.length > 0) {
         result = (
           <div className="table-responsive">
-            <SupplierBankAccountListTable
-              accounts={accounts}
-              readOnly={readOnly}
-              actionUrl={this.props.actionUrl}
-              i18n={this.state.i18n}
-              onEdit={this.handleEdit}
-              onDelete={this.handleDelete}
-              onView={this.handleView}
-            />
-          </div>
-        );
+            <DisplayTable headers={[{label: this.state.i18n.getMessage('SupplierBankAccountEditor.Label.accountNumber')},
+              {label: this.state.i18n.getMessage('SupplierBankAccountEditor.Label.bankName')},
+              {label: this.state.i18n.getMessage('SupplierBankAccountEditor.Label.bankIdentificationCode')},
+              {label: this.state.i18n.getMessage('SupplierBankAccountEditor.Label.bankCountryKey')},
+              {label: this.state.i18n.getMessage('SupplierBankAccountEditor.Label.bankCode')},
+              {label: this.state.i18n.getMessage('SupplierBankAccountEditor.Label.extBankControlKey')},
+              {label: this.state.i18n.getMessage('SupplierBankAccountEditor.Label.swiftCode')}
+            ]}>
+              { accounts.map((account, index) =>
+                (<DisplayRow key={index}>
+                  <DisplayField>{ account.accountNumber }</DisplayField>
+                  <DisplayField>{ account.bankName }</DisplayField>
+                  <DisplayField>{ account.bankIdentificationCode }</DisplayField>
+                  <DisplayField>{ account.bankCountryKey }</DisplayField>
+                  <DisplayField>{ account.bankCode }</DisplayField>
+                  <DisplayField>{ account.extBankControlKey }</DisplayField>
+                  <DisplayField>{ account.swiftCode }</DisplayField>
+                  { readOnly && <ViewGroup viewAction={this.handleView(this, account)}
+                                           viewLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.view')} /> }
+                  { !readOnly && <EditGroup editAction={this.handleEdit.bind(this, account)}
+                                            editLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
+                                            deleteAction={this.handleDelete.bind(this, account)}
+                                            deleteLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}/>}
+
+                </DisplayRow>))
+              }
+            </DisplayTable>
+          </div>)
       } else if (readOnly) {
         account = null;
       } else {
