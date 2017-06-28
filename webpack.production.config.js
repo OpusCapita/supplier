@@ -3,13 +3,18 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: {
-    app: './src/client/index.js'
+    registration: './src/client/components/SupplierRegistrationEditor/index.js',
+    information: './src/client/components/SupplierEditor/index.js',
+    address: './src/client/components/SupplierAddressEditor/index.js',
+    contact: './src/client/components/SupplierContactEditor/index.js',
+    profile_strength: './src/client/components/SupplierProfileStrength/index.js',
+    bank_accounts: './src/client/components/SupplierBankAccountEditor/index.js'
   },
   output: {
     path: path.resolve(__dirname, './src/server/static'),
     publicPath: '/static',
-    filename: `bundle.js`,
-    library: 'supplier',
+    filename: 'components/[name]-bundle.js',
+    library: 'supplier-[name]',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
@@ -25,32 +30,14 @@ module.exports = {
   // devtool: 'source-map',
 
   plugins: [
-    new webpack.ContextReplacementPlugin(
-      new RegExp('\\' + path.sep + 'node_modules\\' + path.sep + 'moment\\' + path.sep + 'locale'),
-      /en|de/
-    ),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,  // TODO: del if sourceMap is removed with devtool
-      compressor: {
-        // don't show unreachable variables etc
-        warnings: false,
-        // drop_console: true,  // TODO: uncomment
-        unsafe: true,
-        pure_getters: true,
-        dead_code: true,
-        unsafe_comps: true,
-        screw_ie8: true
-      }
-    })
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|de/)
   ],
 
   resolve: {
-    modules: [process.env.NODE_PATH, 'node_modules'],
     extensions: ['.json', '.jsx', '.js']
   },
 
   resolveLoader: {
-    modules: [process.env.NODE_PATH, 'node_modules'],
     extensions: ['.js']
   },
 
@@ -69,7 +56,7 @@ module.exports = {
         loader: 'style-loader!css-loader!less-loader'
       },
       {
-        test: /.js$/,
+        test: /.jsx?$/,
         loader: 'babel-loader',
         include: [
           path.join(__dirname, 'src')

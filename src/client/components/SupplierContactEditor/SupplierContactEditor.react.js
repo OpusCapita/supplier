@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import request from 'superagent-bluebird-promise';
 import utils from 'underscore';
 import Button from 'react-bootstrap/lib/Button';
@@ -24,11 +23,6 @@ class SupplierContactEditor extends Component {
     supplierId: React.PropTypes.string,
     username: React.PropTypes.string,
     readOnly: React.PropTypes.bool,
-    dateTimePattern: React.PropTypes.string.isRequired,
-    /**
-     * Subscribe to persistent data changes
-     * @arg0 - dirty state: true - if inner data changed, false if inner changes was reset
-     */
     onChange: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func
   };
@@ -70,20 +64,13 @@ class SupplierContactEditor extends Component {
     }
   }
 
-  componentDidUpdate() {
-    let formBlock = ReactDOM.findDOMNode(this.refs.editForm);
-    if (formBlock) {
-      formBlock.scrollIntoView({ block: "start", behavior: "smooth" });
-    }
-  }
-
   handleDelete = (contact) => {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
 
     let arg0 = encodeURIComponent(supplierId);
     let arg1 = encodeURIComponent(contact.contactId);
-    request.del(`${actionUrl}/api/suppliers/${arg0}/contacts/${arg1}`).
+    request.del(`${actionUrl}/supplier/api/suppliers/${arg0}/contacts/${arg1}`).
       set('Accept', 'application/json').
       then((response) => {
         let contacts = this.state.contacts;
@@ -101,7 +88,6 @@ class SupplierContactEditor extends Component {
           this.props.onUnauthorized();
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${contact.contactId}`);
-          console.log(response);
 
           const message = this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
           this.setState({ globalError: message, globalMessage: null });
@@ -117,15 +103,14 @@ class SupplierContactEditor extends Component {
   handleUpdate = (contact) => {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
-    contact.changedBy = this.props.username;// eslint-disable-line no-param-reassign
+    contact.changedBy = this.props.supplierId;// eslint-disable-line no-param-reassign
 
     let arg0 = encodeURIComponent(supplierId);
     let arg1 = encodeURIComponent(contact.contactId);
-    request.put(`${actionUrl}/api/suppliers/${arg0}/contacts/${arg1}`).
+    request.put(`${actionUrl}/supplier/api/suppliers/${arg0}/contacts/${arg1}`).
       set('Accept', 'application/json').
       send(contact).
       then((response) => {
-        console.log(response);
 
         let updatedContact = response.body;
 
@@ -146,7 +131,6 @@ class SupplierContactEditor extends Component {
           this.props.onUnauthorized();
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${contact.contactId}`);
-          console.log(response);
 
           const message = this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
           this.setState({ globalError: message, globalMessage: null });
@@ -174,11 +158,10 @@ class SupplierContactEditor extends Component {
     contact.contactId = this.generateUUID();
     /* eslint-enable no-param-reassign*/
 
-    request.post(`${actionUrl}/api/suppliers/${encodeURIComponent(supplierId)}/contacts`).
+    request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/contacts`).
       set('Accept', 'application/json').
       send(contact).
       then((response) => {
-        console.log(response);
         let contacts = this.state.contacts;
         contacts.push(response.body);
 
@@ -191,7 +174,6 @@ class SupplierContactEditor extends Component {
           this.props.onUnauthorized();
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${contact.contactId}`);
-          console.log(response);
 
           let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
           this.setState({ globalError: message, globalMessage: null });
@@ -235,18 +217,15 @@ class SupplierContactEditor extends Component {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
     request.
-      get(`${actionUrl}/api/suppliers/${encodeURIComponent(supplierId)}/contacts`).
+      get(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/contacts`).
       set('Accept', 'application/json').
       then((response) => {
-        console.log(response);
-
         this.setState({ contacts: response.body });
       }).catch((response) => {
         if (response.status === 401) {
           this.props.onUnauthorized();
         } else {
           console.log(`Error loading contacts by SupplierID=${supplierId}`);
-          console.log(response);
           this.setState({ loadErrors: true });
         }
       });
@@ -302,7 +281,7 @@ class SupplierContactEditor extends Component {
         {result}
 
         {contact ? (
-          <div className="row" ref="editForm">
+          <div className="row">
             <div className="col-sm-6">
               {this.state.globalError && !readOnly ? (
                 <Alert bsStyle="danger" message={this.state.globalError}/>
@@ -310,7 +289,6 @@ class SupplierContactEditor extends Component {
 
               <SupplierContactEditForm
                 onChange={this.handleChange}
-                dateTimePattern={this.props.dateTimePattern}
                 contact={contact}
                 errors={errors}
                 editMode={editMode}

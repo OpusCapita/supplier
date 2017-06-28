@@ -9,7 +9,7 @@ import './SupplierContactEditForm.css';
 
 import { I18nManager } from 'opuscapita-i18n';
 import globalMessages from '../../utils/validatejs/i18n';
-const CONTACT_TYPES = ['SIM', 'CatalogMan', 'Employee'];
+const CONTACT_TYPES = ['Default', 'Sales', 'Escalation', 'Product', 'Technical'];
 const DEPARTMENTS = ['Management', 'Logistics', 'Sales', 'Accounting', 'Support', 'IT', 'Others'];
 
 /**
@@ -20,49 +20,13 @@ const DEPARTMENTS = ['Management', 'Logistics', 'Sales', 'Accounting', 'Support'
 @i18n
 class SupplierContactEditForm extends Component {
   static propTypes = {
-    /**
-     * Contact to edit
-     */
     contact: React.PropTypes.object.isRequired,
     errors: React.PropTypes.object,
-    /**
-     * The edit mode is on of ('edit', 'create', 'create-first', 'view')
-     *
-     * edit - form open to update exits item
-     * create - form open to insert new item
-     * create-first - form open to insert new item without cancel button
-     * view - form open in readonly mode
-     */
     editMode: React.PropTypes.oneOf(['edit', 'create', 'create-first', 'view']),
-    /**
-     * On save handler
-     *
-     * @arg0 - contact object
-     */
     onSave: React.PropTypes.func.isRequired,
-    /**
-     * On update handler
-     *
-     * @arg0 - contact object
-     */
     onUpdate: React.PropTypes.func.isRequired,
-    /**
-     * On cancel handler
-     *
-     * @arg0 - contact object
-     */
     onCancel: React.PropTypes.func.isRequired,
-
-    /**
-     * On form field change element
-     *
-     * @arg0 - contact - object
-     * @arg1 - name - field name
-     * @arg2 - oldValue - old value
-     * @arg3 - newValue - new value
-     */
-    onChange: React.PropTypes.func.isRequired,
-    dateTimePattern: React.PropTypes.string.isRequired
+    onChange: React.PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -81,7 +45,7 @@ class SupplierContactEditForm extends Component {
     }
   }
 
-  validatejsI18N = new I18nManager(this.context.i18n.locale, globalMessages)
+  validatejsI18N = new I18nManager(this.props.locale, globalMessages)
 
   constraints = {
     contactType: {
@@ -273,9 +237,7 @@ class SupplierContactEditForm extends Component {
         {tooltipOverlay ? (
           <div className="col-sm-1 text-right">
             <OverlayTrigger trigger="click" placement="bottom" overlay={tooltipOverlay} rootClose={true}>
-              <i style={{ cursor: 'pointer', verticalAlign: 'middle' }}
-                className="glyphicon glyphicon-info-sign text-muted form-control-static"
-              />
+              <i className="glyphicon glyphicon-info-sign text-muted form-control-static contact-info-sign" />
             </OverlayTrigger>
           </div>
         ) : null}
@@ -396,7 +358,7 @@ class SupplierContactEditForm extends Component {
           required: true,
         })}
 
-        <div className="col-sm-12 text-right" style={{ 'paddingRight': '0' }}>
+        <div className="col-sm-12 text-right contact-form-submit">
           {editMode !== 'create-first' ? (
             <Button bsStyle="link"
               onClick={this.handleCancel}

@@ -1,7 +1,7 @@
 [
   {
     "contactId": "Contact (Internal Buyer)",
-    "contactType": "Employee",
+    "contactType": "Sales",
     "firstName": "Max",
     "lastName": "Mustermann",
     "email": "dirk.fischbach@jcatalog.com",
@@ -12,7 +12,7 @@
   },
   {
     "contactId": "Product Manager",
-    "contactType": "CatalogMan",
+    "contactType": "Technical",
     "firstName": "Dirk",
     "lastName": "Fischbach",
     "email": "dirk.fischbach@jcatalog.com",

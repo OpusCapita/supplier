@@ -1,18 +1,12 @@
 {
+  "contactId": "Contact (Internal Buyer)",
+  "contactType": "Sales",
+  "title": "Mr",
+  "firstName": "Max",
+  "lastName": "Mustermann",
+  "email": "dirk.fischbach@jcatalog.com",
+  "mobile": "0136/456789",
   "supplierId": "hard001",
-  "supplierName": "jCatalog",
-  "foundedOn": "2015-10-04T22:00:00.000Z",
-  "legalForm": "KG",
-  "registrationNumber": "MI651355",
-  "cityOfRegistration": "Dortmund",
-  "countryOfRegistration": "Germany",
-  "taxId": "1234567",
-  "vatRegNo": null,
-  "globalLocationNo": "123",
-  "homePage": "http://jcatalog.com/",
-  "dunsNo": null,
-  "createdOn": "2016-02-19T10:45:26.000Z",
-  "changedOn": "2016-02-19T10:45:26.000Z",
-  "changedBy": "jcadmin",
-  "createdBy": "jcadmin"
+  "createdBy": "john.doe@ncc.com",
+  "changedBy": "john.doe@ncc.com"
 }

@@ -32,7 +32,10 @@ module.exports = function(sequelize) {
     },
     email: {
       type: Sequelize.STRING(100),
-      field: 'Email'
+      field: 'Email',
+      validate: {
+        isEmail: true
+      }
     },
     phone: {
       type: Sequelize.STRING(20),
@@ -72,7 +75,7 @@ module.exports = function(sequelize) {
     createdAt: 'createdOn',
     timestamps: true,
     freezeTableName: true,
-    tableName: 'SIMSupplierContact'
+    tableName: 'SupplierContact'
   });
 
   return SupplierContact;

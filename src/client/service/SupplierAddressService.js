@@ -16,7 +16,6 @@ export default class SupplierAddressService {
     set('Accept', 'application/json').
     catch((errors) => {
       console.log('Error during retrieving SupplierAddress list:');
-      console.log(errors);
     });
   };
 
@@ -29,7 +28,6 @@ export default class SupplierAddressService {
     set('Accept', 'application/json').
     send(object).catch((errors) => {
       console.log('Error during create SupplierAddress:');
-      console.log(errors);
     });
   };
 
@@ -41,7 +39,6 @@ export default class SupplierAddressService {
     set('Accept', 'application/json').
     send(object).catch((errors) => {
       console.log('Error during updating SupplierAddress:');
-      console.log(errors);
     });
   };
 
@@ -62,7 +59,6 @@ export default class SupplierAddressService {
     set('Accept', 'application/json').
     catch(function(errors) {
       console.log('Error during deleting SupplierAddress:');
-      console.log(errors);
     });
   };
 }

@@ -17,21 +17,21 @@ let Label = {
   address: {}
 };
 Label.type = 'Typ';
-Label.address.street = 'Straße';
-Label.address.zipCode = 'Postleitzahl';
-Label.address.city = 'Stadt';
-Label.address.countryId = 'Land';
-Label.address.phoneNo = 'Telefon';
-Label.address.faxNo = 'Telefax';
-Label.address.salutation = 'Anrede';
-Label.address.name1 = 'Name 1';
-Label.address.name2 = 'Name 2';
-Label.address.name3 = 'Name 3';
-Label.address.areaCode = 'Postleitzahlbereich';
-Label.address.state = 'Bundesland';
-Label.address.pobox = 'Postfach';
-Label.address.poboxZipCode = 'PLZ des Postfachs';
-Label.address.email = 'Email';
+Label.street = 'Straße';
+Label.zipCode = 'Postleitzahl';
+Label.city = 'Stadt';
+Label.countryId = 'Land';
+Label.phoneNo = 'Telefon';
+Label.faxNo = 'Telefax';
+Label.salutation = 'Anrede';
+Label.name1 = 'Name 1';
+Label.name2 = 'Name 2';
+Label.name3 = 'Name 3';
+Label.areaCode = 'Postleitzahlbereich';
+Label.state = 'Bundesland';
+Label.pobox = 'Postfach';
+Label.poboxZipCode = 'PLZ des Postfachs';
+Label.email = 'Email';
 
 let Title = 'Bitte hinterlegen Sie hier die Unternehmensanschrift.';
 

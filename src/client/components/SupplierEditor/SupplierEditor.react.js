@@ -1,38 +1,42 @@
 import React, { PropTypes, Component } from 'react';
 import request from 'superagent-bluebird-promise';
-import i18n from '../../i18n/I18nDecorator.react.js';
+import moment from 'moment';
+import i18nRegister from '../../i18n/register.js';
+import i18nMessages from './i18n';
 import Alert from '../Alert';
 import SupplierEditorForm from './SupplierEditorForm.react.js';
 
 /**
  * Provide general company information.
  */
-@i18n({
-  componentName: 'SupplierEditor',
-  messages: require('./i18n').default,
-})
 class SupplierEditor extends Component {
 
   static propTypes = {
     actionUrl: PropTypes.string.isRequired,
-    supplierId: PropTypes.string,
-    supplierName: PropTypes.string,
-    companyRole: PropTypes.string,
-    username: React.PropTypes.string,
+    supplierId: PropTypes.string.isRequired,
+    username: React.PropTypes.string.isRequired,
     dateTimePattern: PropTypes.string.isRequired,
-    /**
-     * Subscribe to persistent data changes
-     * @arg0 - dirty state: true - if inner data changed, false if inner changes was reset
-     */
     onChange: React.PropTypes.func,
     onUpdate: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func,
     onLogout: React.PropTypes.func
   }
 
-  state = {
-    isLoaded: !this.props.supplierId,
-    hasErrors: false,
+  loadSupplierPromise = null;
+  updateSupplierPromise = null;
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoaded: false,
+      hasErrors: false,
+      supplier: {}
+    }
+  }
+
+  componentWillMount(){
+    this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierEditor', i18nMessages) });
   }
 
   componentDidMount() {
@@ -41,49 +45,62 @@ class SupplierEditor extends Component {
     }
 
     console.log('===== ABOUT TO REQUEST a PROMISE');
-    this.ajaxPromise = request.
-      get(`${this.props.actionUrl}/api/suppliers/${encodeURIComponent(this.props.supplierId)}`).
+    this.loadSupplierPromise = request.
+      get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}`).
       set('Accept', 'application/json').
       promise();
 
-    this.ajaxPromise.
-      then(response => {
-        console.log('===== a PROMISE HAS BEEN RECEIVED. ABOUT TO SET-STATE');
-        this.setState({
-          isLoaded: true,
-          supplier: response.body
-        });
-      }).
-      catch(errors => {
-        if (errors.status === 401) {
-          this.props.onUnauthorized();
-          return;
-        }
-
-        this.setState({
-          isLoaded: true,
-          hasErrors: true,
-        });
+    this.loadSupplierPromise.then(response => {
+      response.body.foundedOn = this.formatedDate(response.body.foundedOn);
+      this.setState({
+        isLoaded: true,
+        supplier: response.body
       });
+    }).
+    catch(errors => {
+      if (errors.status === 401) {
+        this.props.onUnauthorized();
+        return;
+      }
+
+      this.setState({
+        isLoaded: true,
+        hasErrors: true,
+      });
+    });
 
     return;
   }
 
-  componentWillReceiveProps(/* nextProps*/) {
+  componentWillReceiveProps(nextProps) {
     this.setState({
       globalInfoMessage: '',
       globalErrorMessage: ''
     });
-  }
 
-  componentWillUnmount() {
-    console.log('===== CANCELING ALL REQUESTS');
-    if (this.ajaxPromise && !this.state.isLoaded) {
-      this.ajaxPromise.cancel();
+    if(this.state.i18n && nextProps.locale != this.props.locale){
+      this.setState({ i18n: i18nRegister(nextProps.locale, 'SupplierEditor', i18nMessages) });
     }
   }
 
-  ajaxPromise = null;
+  componentWillUnmount() {
+    if (!this.state.isLoaded) {
+      if (this.loadSupplierPromise) {
+        this.loadSupplierPromise.cancel();
+      }
+      if (this.updateSupplierPromise) {
+        this.updateSupplierPromise.cancel();
+      }
+    }
+  }
+
+  formatedDate(date) {
+    if (!date) {
+      return;
+    }
+    const momentFormat = this.props.dateTimePattern.replace('dd', 'DD').replace('yyyy', 'YYYY');
+    return moment(date).format(momentFormat);
+  }
 
   handleChange = () => {
     if (this.props.onChange) {
@@ -106,50 +123,30 @@ class SupplierEditor extends Component {
 
     delete newSupplier.changedOn;  // eslint-disable-line no-param-reassign
     delete newSupplier.createdOn;  // eslint-disable-line no-param-reassign
-    const { i18n } = this.context;
-    let requestMethod;
 
-    console.log('===== ABOUT TO REQUEST A PROMISE');
-    if (this.props.supplierId && this.props.supplierId.toLowerCase() === newSupplier.supplierId.toLowerCase()) {
-      // Updating info of a supplier the user is linked to.
-      requestMethod = request.put(`${this.props.actionUrl}/api/suppliers/${encodeURIComponent(this.props.supplierId)}`);
-    } else {
-      // Linking the user to a new/existing supplier.
-      // or
-      // relinking the user to a new/another supplier.
-      newSupplier.createdBy = this.props.username;// eslint-disable-line no-param-reassign
-      requestMethod = request.post(`${this.props.actionUrl}/api/suppliers`);
-    }
-
-    this.ajaxPromise = requestMethod.
+    this.updateSupplierPromise = request.put(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}`).
       set('Accept', 'application/json').
       send(newSupplier).
       promise();
 
-    return this.ajaxPromise.
+    return this.updateSupplierPromise.
       then(response => {
-        console.log('===== A PROMISE HAS BEEN RECEIVED. ABOUT TO SET-STATE');
+        response.body.foundedOn = this.formatedDate(response.body.foundedOn);
         this.setState({
           supplier: response.body,
-          globalInfoMessage: i18n.getMessage('SupplierEditor.Messages.saved'),
+          globalInfoMessage: this.state.i18n.getMessage('SupplierEditor.Messages.saved'),
           globalErrorMessage: ''
         });
 
-        if (
-          this.props.onUpdate &&
-          (
-            this.props.supplierId !== response.body.supplierId ||
-            this.props.supplierName !== response.body.supplierName ||
-            this.props.companyRole !== response.body.role
-          )
-        ) {
+        if (this.props.onUpdate && this.props.supplierId !== response.body.supplierId) {
           // Informing wrapper app (BNP/SIM) about supplier change.
           this.props.onUpdate({
             supplierId: response.body.supplierId,
-            supplierName: response.body.supplierName,
-            companyRole: response.body.role
+            supplierName: response.body.supplierName
           });
-        } else if (this.props.onChange) {
+        }
+
+        if (this.props.onChange) {
           this.props.onChange({ isDirty: false });
         }
       }).
@@ -161,61 +158,63 @@ class SupplierEditor extends Component {
           case 403:
             this.setState({
               globalInfoMessage: '',
-              globalErrorMessage: i18n.getMessage('SupplierEditor.Messages.failedModifyingNotAuthoredSupplier'),
+              globalErrorMessage: this.state.i18n.getMessage('SupplierEditor.Messages.failedModifyingNotAuthoredSupplier'),
             });
             break;
           case 409:
             this.setState({
               globalInfoMessage: '',
-              globalErrorMessage: i18n.getMessage('SupplierEditor.Messages.failedCreatingExistingSupplier'),
+              globalErrorMessage: this.state.i18n.getMessage('SupplierEditor.Messages.failedCreatingExistingSupplier'),
             });
             break;
           default:
             this.setState({
               globalInfoMessage: '',
-              globalErrorMessage: i18n.getMessage('SupplierEditor.Messages.failed'),
+              globalErrorMessage: this.state.i18n.getMessage('SupplierEditor.Messages.failed'),
             });
         }
       });
   }
 
   render() {
-    const { i18n } = this.context;
     const { isLoaded, hasErrors, supplier, globalInfoMessage = '', globalErrorMessage = '' } = this.state;
 
     if (!isLoaded) {
       return (
-        <div>{ i18n.getMessage('SupplierEditor.Messages.loading') }</div>
+        <div>{ this.state.i18n.getMessage('SupplierEditor.Messages.loading') }</div>
       );
     }
 
     if (hasErrors) {
       return (
-        <div>{ i18n.getMessage('SupplierEditor.Messages.unableToRender') }</div>
+        <div>{ this.state.i18n.getMessage('SupplierEditor.Messages.unableToRender') }</div>
       );
     }
 
     return (
-      <div>
-        <Alert bsStyle="info"
-          message={globalInfoMessage}
-          visible={!!globalInfoMessage}
-          hideCloseLink={true}
-        />
+      <div className="row">
+        <div className="col-sm-6">
+          <Alert bsStyle="info"
+            message={globalInfoMessage}
+            visible={!!globalInfoMessage}
+            hideCloseLink={true}
+          />
 
-        <Alert bsStyle="danger"
-          message={globalErrorMessage}
-          visible={!!globalErrorMessage}
-          hideCloseLink={true}
-        />
+          <Alert bsStyle="danger"
+            message={globalErrorMessage}
+            visible={!!globalErrorMessage}
+            hideCloseLink={true}
+          />
 
-        <SupplierEditorForm
-          {...this.props}
-          supplier={ supplier }
-          onSupplierChange={ this.handleUpdate }
-          onChange={ this.handleChange }
-          onCancel={ this.props.onLogout }
-        />
+          <SupplierEditorForm
+            {...this.props}
+            i18n={this.state.i18n}
+            supplier={ supplier }
+            onSupplierChange={ this.handleUpdate }
+            onChange={ this.handleChange }
+            onCancel={ this.props.onLogout }
+          />
+        </div>
       </div>
     );
   }

@@ -1,12 +1,16 @@
 'use strict';
 const Sequelize = require('sequelize');
+const vatNumber = require('../../utils/validators/vatNumber.js');
 
 module.exports = function(sequelize) {
   /**
-   * <p>Supplier - organization that provides Products to buyers. Supplier has (is
-   * owner of) several ProductCatalogs.</p>
+   * Supplier - organization that provides Products to buyers.
+   * @class Supplier
    */
-  let Supplier = sequelize.define('Supplier', {
+  let Supplier = sequelize.define('Supplier',
+  /** @lends Supplier */
+  {
+    /** Unique identifier */
     supplierId: {
       type: Sequelize.STRING(30),
       primaryKey: true,
@@ -32,36 +36,46 @@ module.exports = function(sequelize) {
       type: Sequelize.STRING(250),
       field: "LegalForm"
     },
-    registrationNumber: {
+    commercialRegisterNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
-      field: "RegistrationNumber"
+      field: "CommercialRegisterNo"
     },
+    /** A supplier's city of registration */
     cityOfRegistration: {
       allowNull: true,
       type: Sequelize.STRING(250),
       field: "CityOfRegistration"
     },
+    /** A supplier's country of registration as in ISO 3166-1 alpha2 */
     countryOfRegistration: {
       allowNull: true,
       type: Sequelize.STRING(250),
       field: "CountryOfRegistration"
     },
-    taxId: {
+    /** A Tax Identification Number or TIN */
+    taxIdentificationNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
-      field: "TaxID"
+      field: "TaxIdentificationNo"
     },
-    vatRegNo: {
+    /** A value added tax identification number or VAT identification number (VATIN) */
+    vatIdentificationNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
-      field: "VatRegNo"
+      field: "VatIdentificationNo",
+      validate: {
+        isValid(value) {
+          if (vatNumber.isInvalid(value)) throw new Error('vatIdentificationNo value is invalid');
+        }
+      }
     },
     globalLocationNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
       field: "GlobalLocationNo"
     },
+    /** Company homepage url */
     homePage: {
       allowNull: true,
       type: Sequelize.STRING(250),
@@ -72,6 +86,7 @@ module.exports = function(sequelize) {
       type: Sequelize.STRING(25),
       field: "Role"
     },
+    /** Duns stands for 'Data Universal Numbering System'. It is a nine-digit number issued by D&B (Dun & Bradstreet) and assigned to each business location in the D&B database */
     dunsNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
@@ -111,14 +126,18 @@ module.exports = function(sequelize) {
     },
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        Supplier.hasMany(models.Address, {
+          as: 'addresses',
+          foreignKey: 'supplierId',
+          onDelete: 'cascade'
+        });
       }
     },
     updatedAt: 'changedOn',
     createdAt: 'createdOn',
     timestamps: true,
     freezeTableName: true,
-    tableName: 'SIMSupplier' // needs to be just supplier in future
+    tableName: 'Supplier' // needs to be just supplier in future
   });
 
   return Supplier;

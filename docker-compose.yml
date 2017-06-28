@@ -2,17 +2,19 @@ version: '2'
 services:
   main:
     build: .
-    image: opuscapita/supplier
     #restart: on-failure:5
     depends_on:  # as of version 1.9.0 Dockerfile's HEALTHCHECK is not supported yet.
       - mysql
       - consul
       - registrator
+      - isodata
+      - nginx
     labels:
       SERVICE_NAME: 'supplier'  # Service name used by Registrator for adding to Consul's service discovery registry.
       SERVICE_TAGS: 'external'
     volumes:
       - .:/home/node/supplier
+      - /home/node/supplier/node_modules
     extra_hosts:
       - 'consul:${HOST_IP}'
     environment:
@@ -21,33 +23,10 @@ services:
       NODE_ENV: $NODE_ENV
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+      REDIS_AUTH: ${REDIS_AUTH}
     ports:
       - '${PORT}:${PORT}'
-    command: 'npm run dev'
-
-  nginx:
-    image: gr4per/nginx-rp:latest
-    ports:
-     - '3100:${NGINX_PORT}'
-    depends_on:
-     - bnp
-    environment:
-      PORT: '${NGINX_PORT}'
-    labels:
-      SERVICE_NAME: 'nginx'
-
-  bnp:
-    image: opuscapita/bnp:dev
-    #restart: on-failure:5
-    depends_on:  # as of version 1.9.0 Dockerfile's HEALTHCHECK is not supported yet.
-     - mysql
-     - main
-    labels:
-      SERVICE_NAME: 'bnp'  # Service name used by Registrator for adding to Consul's service discovery registry.
-    environment:
-      PORT: '3000'
-    ports:
-      - '3000:3000'
+    command: 'npm run local'
 
   mysql:
     image: 'mysql:5.6'
@@ -78,3 +57,67 @@ services:
     labels:
       SERVICE_IGNORE: 'true'  # Do not add any of Consul's services to Consul's service discovery registry.
     command: [agent, '-server', '-ui', '-bootstrap-expect=1', '-bind=${HOST_IP}', '-client=0.0.0.0']
+
+  isodata:
+    image: opuscapita/isodata:dev
+#    build: '../isodata'
+#    volumes:
+#      - ../isodata:/home/node/isodata
+    depends_on:
+      - mysql
+      - consul
+      - registrator
+      - nginx
+    ports:
+      - '3006:3006'
+    extra_hosts:
+      - 'consul:${HOST_IP}'
+    labels:
+      SERVICE_NAME: isodata
+      SERVICE_TAGS: 'external'
+    environment:
+      HOST_IP: ${HOST_IP}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      PORT: '3006'
+    command: 'npm run dev:production'
+
+  user:
+    image: opuscapita/user:dev
+    depends_on:
+      - mysql
+      - consul
+      - registrator
+      - redis
+      - nginx
+    labels:
+      SERVICE_NAME: 'user'
+    extra_hosts:
+       - 'consul:${HOST_IP}'
+    environment:
+      PORT: 3008
+      HOST_IP: $HOST_IP
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      REDIS_AUTH: $REDIS_AUTH
+    ports:
+      - '3008:3008'
+    command: 'npm run dev'
+
+  redis:
+    image: ocbesbn/redis:latest
+    ports:
+      - '6379:6379'
+    environment:
+      REDIS_AUTH: ${REDIS_AUTH}
+    depends_on:
+      - registrator
+
+  nginx:
+    image: gr4per/nginx-rp:latest
+    extra_hosts:
+       - 'consul:${HOST_IP}'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - consul

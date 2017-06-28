@@ -7,9 +7,11 @@ let Confirmation = {
 let Title = 'Bitte hinterlegen Sie hier die Ansprechpartner aus den Bereichen Geschäftsleitung, Vertrieb, Buchhaltung und Logistik.\nGerne können Sie auch noch weitere Ansprechpartner benennen.';
 
 let ContactType = {};
-ContactType.SIM = 'LSA-Verantwortlicher';
-ContactType.CatalogMan = 'Katalog-Verantwortlicher';
-ContactType.Employee = 'Mitarbeiter';
+ContactType.Default = 'Default';
+ContactType.Sales = 'Verkauf';
+ContactType.Escalation = 'Eskalation';
+ContactType.Product = 'Produkt';
+ContactType.Technical = 'Technisch';
 
 let Department = {};
 Department.Management = 'Geschäftsführung';

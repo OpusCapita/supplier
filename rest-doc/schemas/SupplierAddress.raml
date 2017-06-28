@@ -4,13 +4,46 @@ description: Object representing all addresses assigned to a given supplier.
 properties:
     id:
         type: string
+    addressId:
+        type: string
+    supplierId:
+        type: string
     salutation:
         type: string
-        required: false
     name1:
         type: string
+    name2:
+        type: string
         required: false
-    type:
+    name3:
+        type: string
+        required: false
+    areaCode:
+        type: string
+        required: false
+    street:
+        type: string
+    state:
+        type: string
+        required: false
+    pobox:
+        type: string
+        required: false
+    poboxZipCode:
+        type: string
+        required: false
+    email:
+        type: string
+    zipCode:
+        type: string
+    city:
+        type: string
+    phoneNo:
+        type: string
+    faxNo:
+        type: string
+        required: false
+    countryId:
         type: string
     changedBy:
         type: string
@@ -20,58 +53,4 @@ properties:
         type: string
     changedOn:
         type: string
-    supplierId:
-        type: string
-    addressId:
-        type: string
-    address:
-        type: object
-        properties:
-            addressId:
-                type: string
-            salutation:
-                type: string
-            name1:
-                type: string
-            name2:
-                type: string
-                required: false
-            name3:
-                type: string
-                required: false
-            areaCode:
-                type: string
-                required: false
-            street:
-                type: string
-            state:
-                type: string
-                required: false
-            pobox:
-                type: string
-                required: false
-            poboxZipCode:
-                type: string
-                required: false
-            email:
-                type: string
-            zipCode:
-                type: string
-            city:
-                type: string
-            phoneNo:
-                type: string
-            faxNo:
-                type: string
-                required: false
-            countryId:
-                type: string
-            changedBy:
-                type: string
-            createdBy:
-                type: string
-            createdOn:
-                type: string
-            changedOn:
-                type: string
 example: !include ../examples/SupplierAddress.json

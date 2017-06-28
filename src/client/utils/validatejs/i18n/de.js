@@ -15,6 +15,10 @@ const validatejs = {
     maxSize: {},
     minSize: {},
     validator: {},
+    vatNumber: {},
+    iban: {},
+    bic: {},
+    swiftCode: {}
   },
   not: {
     inlist: {},
@@ -51,6 +55,10 @@ validatejs.blank.message = "Das Feld darf nicht leer sein";
 validatejs.not.equal.message = "Der Wert darf nicht gleich ''{limit}'' sein";
 validatejs.null.message = "Die Eigenschaft darf nicht null sein";
 validatejs.not.unique.message = "Der Wert muss eindeutig sein";
+validatejs.invalid.vatNumber.message = "Der Wert ist keine gültige EU-Umsatzsteuer-Identifikationsnummer";
+validatejs.invalid.iban.message = "Der Wert ist kein gültiger IBAN";
+validatejs.invalid.bic.message = "Der Wert ist kein gültiger BIC";
+validatejs.invalid.swiftCode.message = "Der Wert ist kein gültiger SWIFT-Code";
 
 validatejs.typeMismatch.java.net.URL = "Die Wert muss eine g\u00fcltige URL sein";
 validatejs.typeMismatch.java.net.URI = "Die Wert muss eine g\u00fcltige URI sein";

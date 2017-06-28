@@ -7,9 +7,11 @@ let Confirmation = {
 let Title = 'Please state the different contact persons from the following departments here: Management, Sales, Accounting and Logistics.';
 
 let ContactType = {};
-ContactType.SIM = 'Supplier Information Manager';
-ContactType.CatalogMan = 'Catalog Manager';
-ContactType.Employee = 'Employee';
+ContactType.Default = 'Default';
+ContactType.Sales = 'Sales';
+ContactType.Escalation = 'Escalation';
+ContactType.Product = 'Product';
+ContactType.Technical = 'Technical';
 
 let Department = {};
 Department.Management = 'Management';

@@ -1,12 +1,13 @@
 'use strict';
 
 const Promise = require('bluebird');
-const epilogue = require('epilogue');
+const express = require('express');
 
-const supplierRoutes = require('./supplier');
-const supplierAddressRoutes = require('./supplierAddress');
-const supplierContactRoutes = require('./supplierContact');
-const countries = require('./countries');
+const suppliers = require('./suppliers');
+const supplierContacts = require('./supplier_contacts');
+const supplierAddresses = require('./supplier_addresses');
+const supplierBanks = require('./supplier_banks');
+const supplierProfileStrength = require('./supplier_profile_strength');
 
 /**
  * Initializes all routes for RESTful access.
@@ -18,28 +19,10 @@ const countries = require('./countries');
  * @see [Minimum setup]{@link https://github.com/OpusCapitaBusinessNetwork/web-init#minimum-setup}
  */
 module.exports.init = function(app, db, config) {
-  // Register routes here.
-  // Use the passed db parameter in order to use Epilogue auto-routes.
-  // Use require in order to separate routes into multiple js files.
-
-  epilogue.initialize({
-    app: app,
-    sequelize: db,
-    base: '/api'
-  });
-
-  // supplier routes
-  supplierRoutes(epilogue, db);
-
-  // supplier address routes
-  supplierAddressRoutes(epilogue, db);
-
-  // supplier contacts
-  supplierContactRoutes(epilogue, db);
-
-  // countries
-  countries(epilogue, db);
-
-  // Always return a promise.
+  suppliers(app, db, config);
+  supplierContacts(app, db, config);
+  supplierAddresses(app, db, config);
+  supplierBanks(app, db, config);
+  supplierProfileStrength(app, db, config);
   return Promise.resolve();
-}
+};

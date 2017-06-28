@@ -17,21 +17,21 @@ let Label = {
   address: {}
 };
 Label.type = 'Type';
-Label.address.street = 'Street';
-Label.address.zipCode = 'Zip code';
-Label.address.city = 'City';
-Label.address.countryId = 'Country';
-Label.address.phoneNo = 'Telephone';
-Label.address.faxNo = 'Telefax';
-Label.address.salutation = 'Salutation';
-Label.address.name1 = 'Name 1';
-Label.address.name2 = 'Name 2';
-Label.address.name3 = 'Name 3';
-Label.address.areaCode = 'Area Code';
-Label.address.state = 'State';
-Label.address.pobox = 'PO Box';
-Label.address.poboxZipCode = 'PO Box Zip Code';
-Label.address.email = 'Email';
+Label.street = 'Street';
+Label.zipCode = 'Zip code';
+Label.city = 'City';
+Label.countryId = 'Country';
+Label.phoneNo = 'Telephone';
+Label.faxNo = 'Telefax';
+Label.salutation = 'Salutation';
+Label.name1 = 'Name 1';
+Label.name2 = 'Name 2';
+Label.name3 = 'Name 3';
+Label.areaCode = 'Area Code';
+Label.state = 'State';
+Label.pobox = 'PO Box';
+Label.poboxZipCode = 'PO Box Zip Code';
+Label.email = 'Email';
 
 let Title = 'Please add your company addresses here.';
 

@@ -42,40 +42,31 @@ let findDOMComponentWith = function(el, matcher = function() {return true;}) {
 describe('SupplierAddressEditForm', () => {
   let supplierAddress = {
     "id": 1,
-    "type": "default",
     "addressId": "central_office",
     "supplierId": "hard001",
-    "isDefault": null,
+    "type": "default",
+    "salutation": "Supplier",
+    "name1": "Central Office",
+    "name2": null,
+    "name3": null,
+    "street": "Fabriciusa 8, B1",
+    "zipCode": "220100",
+    "city": "Minsk",
+    "poboxZipCode": null,
+    "pobox": null,
+    "isCompany": null,
+    "areaCode": null,
+    "phoneNo": "+491234512345",
+    "faxNo": null,
+    "email": "jana.pape@jcatalog.com",
+    "corporateURL": null,
+    "numOfEmployees": null,
+    "countryId": "BY",
+    "state": null,
     "changedBy": "jcadmin",
     "createdBy": "jcadmin",
     "createdOn": "2016-03-29T05:24:58.000Z",
-    "changedOn": "2016-03-29T05:24:58.000Z",
-    "address": {
-      "id": 1,
-      "addressId": "central_office",
-      "salutation": "Supplier",
-      "name1": "Central Office",
-      "name2": null,
-      "name3": null,
-      "street": "Fabriciusa 8, B1",
-      "zipCode": "220100",
-      "city": "Minsk",
-      "poboxZipCode": null,
-      "pobox": null,
-      "isCompany": null,
-      "areaCode": null,
-      "phoneNo": "+491234512345",
-      "faxNo": null,
-      "email": "jana.pape@jcatalog.com",
-      "corporateURL": null,
-      "numOfEmployees": null,
-      "countryId": "BY",
-      "state": null,
-      "changedBy": "jcadmin",
-      "createdBy": "jcadmin",
-      "createdOn": "2016-03-29T05:24:58.000Z",
-      "changedOn": "2016-04-08T06:44:36.000Z"
-    }
+    "changedOn": "2016-04-08T06:44:36.000Z"
   };
 
   it('should change value', function() {
@@ -113,19 +104,19 @@ describe('SupplierAddressEditForm', () => {
 
 
     checkEvent('type', 'type v');
-    checkEvent('address.name1', 'name1 v');
-    checkEvent('address.name2', 'name2 v');
-    checkEvent('address.name3', 'name3 v');
-    checkEvent('address.street', 'street v');
-    checkEvent('address.zipCode', 'zipCode v');
-    checkEvent('address.city', 'city v');
-    checkEvent('address.countryId', 'AD');
-    checkEvent('address.areaCode', 'areaCode v');
-    checkEvent('address.state', 'state v');
-    checkEvent('address.pobox', 'pobox v');
-    checkEvent('address.poboxZipCode', 'poboxZipCode v');
-    checkEvent('address.phoneNo', 'phoneNo v');
-    checkEvent('address.faxNo', 'faxNo v');
-    checkEvent('address.email', 'test@gmail.com');
+    checkEvent('name1', 'name1 v');
+    checkEvent('name2', 'name2 v');
+    checkEvent('name3', 'name3 v');
+    checkEvent('street', 'street v');
+    checkEvent('zipCode', 'zipCode v');
+    checkEvent('city', 'city v');
+    checkEvent('countryId', 'AD');
+    checkEvent('areaCode', 'areaCode v');
+    checkEvent('state', 'state v');
+    checkEvent('pobox', 'pobox v');
+    checkEvent('poboxZipCode', 'poboxZipCode v');
+    checkEvent('phoneNo', 'phoneNo v');
+    checkEvent('faxNo', 'faxNo v');
+    checkEvent('email', 'test@gmail.com');
   });
 });

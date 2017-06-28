@@ -58,7 +58,7 @@ post:
                 body:
                     application/json:
                         type: SupplierAddressArray
-    put:
+    post:
         description: Insert Supplier to Address association
         body:
             application/json:
@@ -67,7 +67,7 @@ post:
             200:
                 body:
                     application/json:
-                        type: SupplierAddressArray
+                        type: SupplierAddress
             403:
                 description: Operation is not authorized
             422:
@@ -80,7 +80,14 @@ post:
         addressId:
             type: number
             description: Identifeir of supplier address
-    post:
+    get:
+        description: Get single `SupplierAddress` object assigned to the Supplier
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierAddress
+    put:
         description: Update Supplier to Address association
         body:
             application/json:
@@ -89,10 +96,22 @@ post:
             200:
                 body:
                     application/json:
-                        type: SupplierAddressArray
+                        type: SupplierAddress
             409:
                 description:
                     A supplier with the same supplierId but different set of properties already exists.
+    delete:
+        description: Delete SupplierAddress association
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: {}
+            403:
+                description: Operation is not authorized
+            422:
+                description: Inconsistent data
+
 /{supplierId}/contacts:
     uriParameters:
         supplierId:
@@ -105,7 +124,7 @@ post:
                 body:
                     application/json:
                         type: SupplierContactsArray
-    put:
+    post:
         description: Insert new Contact association fro Supplier
         body:
             application/json:
@@ -127,7 +146,14 @@ post:
         contactId:
             type: string
             description: Identifier of Supplier to Contact association
-    post:
+    get:
+        description: Get single `SupplierContact` object assigned to the Supplier
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierContact
+    put:
         description: Update SupplierContact association
             body:
                 application/json:
@@ -140,7 +166,6 @@ post:
             409:
                 description:
                     A supplier with the same supplierId but different set of properties already exists.
-
     delete:
         description: Delete SupplierContact association
         responses:
@@ -152,3 +177,82 @@ post:
                 description: Operation is not authorized
             422:
                 description: Inconsistent data
+
+/{supplierId}/bank_accounts:
+    uriParameters:
+        supplierId:
+            type: string
+            description: Identifier of a supplier.
+    get:
+        description: Get all bank accounts assigned to the Supplier
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierBankAccountArray
+    post:
+        description: Insert Bank Account to Supplier
+        body:
+            application/json:
+                type: SupplierBankAccount
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierBankAccount
+            403:
+                description: Operation is not authorized
+            422:
+                description: Inconsistent data
+/{supplierId}/bank_accounts/{bankAccountId}:
+    uriParameters:
+        supplierId:
+            type: string
+            description: Identifier of a supplier.
+        bankAccountId:
+            type: string
+            description: Identifier of supplier bank account
+    get:
+        description: Get single `SupplierBankAccount` object assigned to the Supplier
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierBankAccount
+    put:
+        description: Update Supplier to Address association
+        body:
+            application/json:
+                type: SupplierBankAccount
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: SupplierBankAccount
+            409:
+                description:
+                    A supplier with the same supplierId but different set of properties already exists.
+    delete:
+        description: Delete SupplierBankAccount association
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: {}
+            403:
+                description: Operation is not authorized
+            422:
+                description: Inconsistent data
+
+/{supplierId}/profile_strength:
+    uriParameters:
+        supplierId:
+            type: string
+            description: Identifier of a supplier.
+    get:
+        description: Get supplier profile strength. It's a percentage value - integer between 0 and 100.
+        responses:
+            200:
+                body:
+                    application/json:
+                        type: 42

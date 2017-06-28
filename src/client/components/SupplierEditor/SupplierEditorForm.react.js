@@ -1,13 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'underscore';
 import validatejs from 'validate.js';
-import i18n from '../../i18n/I18nDecorator.react.js';
-import SupplierEditorFormRow from './SupplierEditorFormRow.react.js';
-import DatePicker from '../DatePicker';
+import SupplierEditorFormRow from '../AttributeValueEditorRow.react.js';
 import './SupplierEditor.css';
-import { SupplierInput } from '../ReferenceSearch';
-import { I18nManager } from 'opuscapita-i18n';
-import globalMessages from '../../utils/validatejs/i18n';
+import SupplierFormConstraints from './SupplierFormConstraints';
+import DateInput from '@opuscapita/react-dates/lib/DateInput';
+import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
+import customValidation from '../../utils/validatejs/custom.js';
 
 function isValidDate(d) {
   if (Object.prototype.toString.call(d) !== "[object Date]") {
@@ -37,77 +36,11 @@ function getValidator(i18n) {
     }
   });
 
+  customValidation.vatNumber(validatejs);
+
   return validatejs;
 }
 
-function StandardWrapper({ supplierId, supplier, username, i18n, children }) {
-  return (
-    <div>
-      <h4 className="tab-description">
-        { i18n.getMessage(`SupplierEditor.Description.${
-                supplierId ?
-            (supplier && supplier.createdBy === username ?
-              'modifySupplierOrChooseAnother' :
-                'viewSupplierOrChooseAnother'
-            ) :
-                  'chooseSupplier'
-              }`)
-        }
-      </h4>
-      <form className="form-horizontal">
-        {children}
-      </form>
-    </div>
-  );
-}
-
-StandardWrapper.propTypes = {
-  supplier: PropTypes.object,
-  supplierId: PropTypes.string,
-  username: React.PropTypes.string,
-  i18n: PropTypes.object
-};
-
-const OnboardingWrapper = ({ children }) =>
-  <div
-    className="container"
-    style={{
-      zIndex: '2'
-    }}
-  >
-    <div
-      className="box"
-      style={{
-        width: '87%',
-        marginTop: '15px',
-        padding: '3%',
-        textAlign: 'left',
-        zIndex: '3',
-        backgroundColor: 'white'
-      }}
-    >
-      <div className="row">
-        <div className="col-md-8">
-          <h2>Company Info</h2>
-          <form className="form-horizontal">
-            <div className="row">
-              <div className="col-md-12">
-                {children}
-              </div>
-            </div>
-          </form>
-        </div>
-        <div className="col-md-4">
-          <p style={{ margin: '25% 0 0 10%', fontSize: '150%' }}>Company Info</p>
-          <br />
-          <p>Choose an existing company or provide information for a new one.</p>
-          <p>After giving this information you are ready to login.</p>
-        </div>
-      </div>
-    </div>
-  </div>;
-
-@i18n
 class SupplierEditorForm extends Component {
   static propTypes = {
     supplier: PropTypes.object,
@@ -115,181 +48,68 @@ class SupplierEditorForm extends Component {
     dateTimePattern: PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
     onCancel: React.PropTypes.func,
-    readOnly: PropTypes.bool,
-    countries: PropTypes.array,
-    supplierId: PropTypes.string,
-    username: React.PropTypes.string,
-    actionUrl: React.PropTypes.string.isRequired,
-    isOnboarding: PropTypes.bool
+    actionUrl: React.PropTypes.string.isRequired
   };
 
   static defaultProps = {
-    readOnly: false,
-    countries: []
+    readOnly: false
   };
 
   state = {
     supplier: {
       ...this.props.supplier
     },
-    fieldErrors: {},
-    isNewSupplier: true
+    fieldErrors: {}
   };
 
+  componentWillMount() {
+    let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
+    const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
+
+    this.externalComponents = { CountryField };
+
+    this.SUPPLIER_CONSTRAINTS = SupplierFormConstraints(this.props.i18n);
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (_.isEqual(this.props.supplier, nextProps.supplier)) {
-      return;
+    if (!_.isEqual(this.props.supplier, nextProps.supplier)) {
+      this.setState({
+        supplier: {
+          ...nextProps.supplier
+        },
+        fieldErrors: {},
+      });
     }
 
-    this.setState({
-      supplier: {
-        ...nextProps.supplier
-      },
-      fieldErrors: {},
-    });
+    this.SUPPLIER_CONSTRAINTS = SupplierFormConstraints(nextProps.i18n);
   }
 
-  validatejsI18N = new I18nManager(this.context.i18n.locale, globalMessages)
-
-  SUPPLIER_CONSTRAINTS = {
-    supplierName: {
-      presence: {
-        message: this.validatejsI18N.getMessage('validatejs.blank.message')
-      },
-      length: {
-        maximum: 50,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 50
-        })
-      }
-    },
-    supplierId: {
-      presence: {
-        message: this.validatejsI18N.getMessage('validatejs.blank.message')
-      },
-      length: {
-        maximum: 50,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 50
-        })
-      }
-    },
-    homePage: {
-      presence: false,
-      length: {
-        maximum: 250,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
-      }
-    },
-    role: {
-      presence: {
-        message: this.validatejsI18N.getMessage('validatejs.blank.message')
-      }
-    },
-    foundedOn: {
-      presence: false,
-      datetime: {
-        message: this.validatejsI18N.getMessage('validatejs.typeMismatch.java.util.Date')
-      }
-    },
-    legalForm: {
-      presence: false,
-      length: {
-        maximum: 250,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
-      }
-    },
-    registrationNumber: {
-      presence: false,
-      length: {
-        maximum: 250,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
-      }
-    },
-    cityOfRegistration: {
-      presence: {
-        message: this.validatejsI18N.getMessage('validatejs.blank.message')
-      },
-      length: {
-        maximum: 250,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
-      }
-    },
-    countryOfRegistration: {
-      presence: {
-        message: this.validatejsI18N.getMessage('validatejs.blank.message')
-      },
-      length: {
-        maximum: 250,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
-      }
-    },
-    taxId: {
-      presence: false,
-      length: {
-        maximum: 250,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
-      }
-    },
-    vatRegNo: {
-      presence: false,
-      length: {
-        maximum: 250,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
-      }
-    },
-    globalLocationNo: {
-      presence: false,
-      length: {
-        maximum: 250,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
-      }
-    },
-    dunsNo: {
-      presence: false,
-      length: {
-        maximum: 250,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
-      }
-    }
-  }
-
-  handleDateChange = (fieldName, event) => {
-    let date;
-    try {
-      date = this.context.i18n.parseDate(event.target.value);
-    } catch (e) {
-      date = this.state.supplier.foundedOn;
+  handleDateChange = (fieldName, date) => {
+    if (this.props.onChange) {
+      this.props.onChange(fieldName, this.state.supplier[fieldName], date);
     }
 
     this.setState({
       supplier: {
         ...this.state.supplier,
-        [fieldName]: isValidDate(date) ?
-          date.toJSON() :
-          date || ''
+        [fieldName]: date
       },
       fieldErrors: {
         ...this.state.fieldErrors,
         [fieldName]: []
+      }
+    });
+  }
+
+  handleCountryChange = (fieldName, country) => {
+    if (this.props.onChange) {
+      this.props.onChange(fieldName, this.state.supplier[fieldName], country);
+    }
+
+    this.setState({
+      supplier: {
+        ...this.state.supplier,
+        [fieldName]: country
       }
     });
   }
@@ -310,7 +130,7 @@ class SupplierEditorForm extends Component {
   }
 
   handleBlur = (fieldName/* , event*/) => {
-    const errors = getValidator(this.context.i18n)(
+    const errors = getValidator(this.props.i18n)(
       this.state.supplier, {
         [fieldName]: this.SUPPLIER_CONSTRAINTS[fieldName]
       }, {
@@ -335,20 +155,10 @@ class SupplierEditorForm extends Component {
   handleUpdate = event => {
     event.preventDefault();
 
-    const { onSupplierChange, isOnboarding } = this.props;
+    const { onSupplierChange } = this.props;
     const supplier = { ...this.state.supplier };
 
-    if (isOnboarding) {
-      if (!supplier.supplierId && supplier.supplierName) {
-        supplier.supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '');
-      }
-
-      if (!supplier.role) {
-        supplier.role = 'selling';
-      }
-    }
-
-    const errors = getValidator(this.context.i18n)(
+    const errors = getValidator(this.props.i18n)(
       supplier,
       this.SUPPLIER_CONSTRAINTS, {
         fullMessages: false
@@ -373,7 +183,7 @@ class SupplierEditorForm extends Component {
 
   renderField = attrs => {
     const { supplier, fieldErrors } = this.state;
-    const { fieldName, readOnly } = attrs;
+    const { fieldName } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
 
     let component = attrs.component ||
@@ -382,8 +192,6 @@ class SupplierEditorForm extends Component {
         value={ typeof supplier[fieldName] === 'string' ? supplier[fieldName] : '' }
         onChange={ this.handleChange.bind(this, fieldName) }
         onBlur={ this.handleBlur.bind(this, fieldName) }
-        disabled={ readOnly }
-        autoFocus={ fieldName === 'supplierName' && !this.props.supplierId }
       />;
 
     let isRequired = fieldNames.some(name => {
@@ -397,10 +205,9 @@ class SupplierEditorForm extends Component {
 
     return (
       <SupplierEditorFormRow
-        labelText={ this.context.i18n.getMessage(`SupplierEditor.Label.${fieldName}.label`) }
+        labelText={ this.props.i18n.getMessage(`SupplierEditor.Label.${fieldName}.label`) }
         required={ isRequired }
         rowErrors={ rowErrors }
-        isOnboarding={ this.props.isOnboarding }
       >
         { component }
       </SupplierEditorFormRow>
@@ -408,174 +215,64 @@ class SupplierEditorForm extends Component {
   };
 
   render() {
-    const { i18n } = this.context;
-    const locale = i18n.locale;
-    const { countries, isOnboarding } = this.props;
+    const { i18n, dateTimePattern } = this.props;
     const { supplier } = this.state;
-
-    let readOnly = this.props.readOnly || (supplier.createdBy && supplier.createdBy !== this.props.username);
-
-    let foundedOn = supplier['foundedOn'];
-    if (foundedOn) {
-      let date = new Date(foundedOn);
-      if (isValidDate(date)) {
-        foundedOn = i18n.formatDate(date);
-      }
-    }
-
-    let companiesSearchValue = {};
-
-    if (supplier.supplierId) {
-      companiesSearchValue.supplierId = supplier.supplierId;
-    }
-
-    if (Object.keys(companiesSearchValue).length === 0) {
-      companiesSearchValue = null;
-    }
-
-    let Wrapper = isOnboarding ? OnboardingWrapper : StandardWrapper;
+    const { CountryField } = this.externalComponents;
+    const foundedOn = supplier['foundedOn'] ? new Date(supplier['foundedOn']) : '';
 
     return (
-      <Wrapper
-        supplierId={this.props.supplierId}
-        supplier={this.props.supplier}
-        username={this.props.username}
-        i18n={i18n}
-      >
-        { this.renderField({
-          fieldName: 'isNewSupplier',
-          component: (
-            <div className="checkbox">
-              <input
-                type="checkbox"
-                checked={this.state.isNewSupplier}
-                onChange={() => this.setState({
-                  isNewSupplier: !this.state.isNewSupplier,
-                  supplier: !readOnly && this.props.supplier || {}
-                })}
-              />
-            </div>
-          )
-        }) }
-
-        {/* TODO: search for role==='selling' when isOnboarding===true */}
-        { this.state.isNewSupplier ?
-          this.renderField({
-            fieldName: 'supplier',
-            fieldNames: ['supplierId', 'supplierName'],
+      <div>
+        <h4 className="tab-description">
+          { i18n.getMessage(`SupplierEditor.Description.viewSupplierOrChooseAnother`) }
+        </h4>
+        <form className="form-horizontal">
+          { this.renderField({ fieldName: 'supplierName' }) }
+          { this.renderField({ fieldName: 'homePage' }) }
+          { this.renderField({
+            fieldName: 'foundedOn',
             component: (
-              <SupplierInput
-                serviceRegistry={serviceName => ({ url: this.props.actionUrl })}
-                value={companiesSearchValue}
-                onChange={supplier => this.setState({
-                  supplier: supplier || {}
-                })}
-                onBlur={() => {
-                  this.handleBlur('supplierId');
-                  this.handleBlur('supplierName');
-                }}
+              <DateInput
+                className="form-control"
+                locale={i18n.locale}
+                dateFormat={dateTimePattern}
+                value={foundedOn}
+                onChange={this.handleDateChange.bind(this, 'foundedOn')}
+                onBlur={this.handleBlur.bind(this, 'foundedOn')}
+                variants={[]}
               />
             )
-          }) :
-          (
-            <div>
-              { this.renderField({ fieldName: 'supplierName', readOnly }) }
-              { isOnboarding || this.renderField({ fieldName: 'supplierId', readOnly }) }
+          }) }
+
+          { this.renderField({ fieldName: 'legalForm' }) }
+          { this.renderField({ fieldName: 'commercialRegisterNo' }) }
+          { this.renderField({ fieldName: 'cityOfRegistration' }) }
+
+          { this.renderField({
+            fieldName: 'countryOfRegistration',
+            component: (
+              <CountryField
+                actionUrl={this.props.actionUrl}
+                value={this.state.supplier['countryOfRegistration']}
+                onChange={this.handleCountryChange.bind(this, 'countryOfRegistration')}
+                onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
+              />
+            )
+          })}
+
+          { this.renderField({ fieldName: 'taxIdentificationNo' }) }
+          { this.renderField({ fieldName: 'vatIdentificationNo' }) }
+          { this.renderField({ fieldName: 'globalLocationNo' }) }
+          { this.renderField({ fieldName: 'dunsNo' }) }
+
+          <div className='supplier-form-submit'>
+            <div className='text-right form-submit'>
+              <button className="btn btn-primary" onClick={ this.handleUpdate }>
+                { i18n.getMessage('SupplierEditor.ButtonLabel.save') }
+              </button>
             </div>
-          )
-        }
-
-        { isOnboarding || this.renderField({ fieldName: 'homePage', readOnly }) }
-
-        { isOnboarding || this.renderField({
-          fieldName: 'role',
-          readOnly,
-          component: (
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="buying"
-                  checked={ supplier.role === 'buying' }
-                  onChange={ this.handleChange.bind(this, 'role') }
-                  disabled={readOnly}
-                  className="radio-inline"
-                />
-                <span style={{ fontWeight: 'normal' }}>
-                  { this.context.i18n.getMessage('SupplierEditor.Label.buying.label') }
-                </span>
-              </label>
-              {'\u00a0\u00a0\u00a0\u00a0'}
-              <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="selling"
-                  checked={ supplier.role === 'selling' }
-                  onChange={ this.handleChange.bind(this, 'role') }
-                  disabled={readOnly}
-                  className="radio-inline"
-                />
-                <span style={{ fontWeight: 'normal' }}>
-                  { this.context.i18n.getMessage('SupplierEditor.Label.selling.label') }
-                </span>
-              </label>
-            </div>
-          )
-        }) }
-
-        { isOnboarding || this.renderField({
-          fieldName: 'foundedOn',
-          readOnly,
-          component: (
-            <DatePicker className="form-control"
-              locale={locale}
-              format={i18n.dateFormat}
-              disabled={readOnly}
-              value={foundedOn || ''}
-              onChange={this.handleDateChange.bind(this, 'foundedOn')}
-              onBlur={this.handleBlur.bind(this, 'foundedOn')}
-            />
-          )
-        }) }
-
-        { this.renderField({ fieldName: 'legalForm', readOnly }) }
-        { isOnboarding || this.renderField({ fieldName: 'registrationNumber', readOnly }) }
-        { this.renderField({ fieldName: 'cityOfRegistration', readOnly }) }
-
-        { this.renderField({
-          fieldName: 'countryOfRegistration',
-          readOnly,
-          component: (
-            <select className="form-control"
-              disabled={readOnly}
-              value={supplier['countryOfRegistration'] || ''}
-              onChange={this.handleChange.bind(this, 'countryOfRegistration')}
-              onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
-            >
-              <option disabled={true} value="">{i18n.getMessage('SupplierEditor.Select.country')}</option>
-              {countries.map((country, index) => {
-                return (<option key={index} value={country.id}>{country.name}</option>);
-              })}
-            </select>
-          )
-        }) }
-
-        { isOnboarding || this.renderField({ fieldName: 'taxId', readOnly }) }
-        { isOnboarding || this.renderField({ fieldName: 'vatRegNo', readOnly }) }
-        { isOnboarding || this.renderField({ fieldName: 'globalLocationNo', readOnly }) }
-        { isOnboarding || this.renderField({ fieldName: 'dunsNo', readOnly }) }
-
-        {!this.props.readOnly && <div style={{ paddingTop: '20px' }}>
-          <div className={`text-right form-submit${isOnboarding ? '' : ' col-sm-10 col-md-8'}`}>
-            {isOnboarding && <button className="btn btn-link" onClick={this.handleCancel}>Cancel</button>}
-            <button className="btn btn-primary" onClick={ this.handleUpdate }>
-              { isOnboarding ? 'Continue' : i18n.getMessage('SupplierEditor.ButtonLabel.save') }
-            </button>
           </div>
-        </div>}
-      </Wrapper>
+        </form>
+      </div>
     );
   }
 }

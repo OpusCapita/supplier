@@ -1,4 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import { I18nManager } from 'opuscapita-i18n';
+import globalMessages from '../utils/validatejs/i18n';
+
 import _ from 'lodash';
 
 function injectI18NToContextTypes(DecoratedComponent) {
@@ -60,6 +63,14 @@ export default function i18n(options) {
       };
 
       getChildContext = () => {
+        if (!this.context.i18n) {
+          if (!this.props.locale) {
+            console.warn('attribute [locale] must be require, because I18nManager not defined in parent context');
+          }
+
+          this.context.i18n = new I18nManager(this.props.locale, globalMessages);
+        }
+
         this.context.i18n.register(options.componentName, options.messages);
         return this.context;
       };
