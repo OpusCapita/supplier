@@ -21,3 +21,5 @@ RUN yarn run build:client
 # NOTE: a port can be any, not necessarily different from exposed ports of other containers.
 EXPOSE 3001
 CMD [ "npm", "start"]
+HEALTHCHECK --interval=15s --timeout=3s --retries=12 \
+  CMD curl --silent --fail http://localhost:3001/api/health/check || exit 1

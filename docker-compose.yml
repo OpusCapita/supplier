@@ -1,9 +1,7 @@
-version: '2'
+version: '3'
 services:
   main:
-    build: .
-    #restart: on-failure:5
-    depends_on:  # as of version 1.9.0 Dockerfile's HEALTHCHECK is not supported yet.
+    depends_on:  
       - mysql
       - consul
       - registrator
@@ -12,21 +10,16 @@ services:
     labels:
       SERVICE_NAME: 'supplier'  # Service name used by Registrator for adding to Consul's service discovery registry.
       SERVICE_TAGS: 'external'
-    volumes:
-      - .:/home/node/supplier
-      - /home/node/supplier/node_modules
-    extra_hosts:
-      - 'consul:${HOST_IP}'
     environment:
-      PORT: $PORT
-      HOST_IP: $HOST_IP
+      SERVICE_3001_CHECK_HTTP: /api/health/check
+      SERVICE_3001_CHECK_INTERVAL: 15s
+      SERVICE_3001_CHECK_TIMEOUT: 3s      
       NODE_ENV: $NODE_ENV
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       REDIS_AUTH: ${REDIS_AUTH}
     ports:
-      - '${PORT}:${PORT}'
-    command: 'npm run local'
+      - '3001:3001'
 
   mysql:
     image: 'mysql:5.6'
@@ -37,26 +30,6 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     depends_on:
       - registrator
-
-  registrator:
-    image: gliderlabs/registrator:latest
-    network_mode: host
-    depends_on:
-     - consul
-    volumes:
-     - /var/run/docker.sock:/tmp/docker.sock
-    command: ['consul://localhost:8500']
-
-  consul:
-    image: consul:latest
-    network_mode: host
-    ports:
-      - '8400:8400'
-      - '8500:8500'
-      - '8600:53/udp'
-    labels:
-      SERVICE_IGNORE: 'true'  # Do not add any of Consul's services to Consul's service discovery registry.
-    command: [agent, '-server', '-ui', '-bootstrap-expect=1', '-bind=${HOST_IP}', '-client=0.0.0.0']
 
   isodata:
     image: opuscapita/isodata:dev
@@ -70,13 +43,10 @@ services:
       - nginx
     ports:
       - '3006:3006'
-    extra_hosts:
-      - 'consul:${HOST_IP}'
     labels:
       SERVICE_NAME: isodata
       SERVICE_TAGS: 'external'
     environment:
-      HOST_IP: ${HOST_IP}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       PORT: '3006'
@@ -92,11 +62,7 @@ services:
       - nginx
     labels:
       SERVICE_NAME: 'user'
-    extra_hosts:
-       - 'consul:${HOST_IP}'
     environment:
-      PORT: 3008
-      HOST_IP: $HOST_IP
       MYSQL_DATABASE: $MYSQL_DATABASE
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
       REDIS_AUTH: $REDIS_AUTH
@@ -105,7 +71,7 @@ services:
     command: 'npm run dev'
 
   redis:
-    image: ocbesbn/redis:latest
+    image: opuscapita/redis:dev
     ports:
       - '6379:6379'
     environment:
@@ -114,10 +80,26 @@ services:
       - registrator
 
   nginx:
-    image: gr4per/nginx-rp:latest
-    extra_hosts:
-       - 'consul:${HOST_IP}'
+    image: gr4per/nginx-rp:dev
     ports:
       - '8080:8080'
     depends_on:
       - consul
+
+  registrator:
+    image: gliderlabs/registrator
+    command: consul://consul:8500
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+    depends_on:
+      - consul
+
+  consul:
+    image: consul:latest
+    ports:
+      - '8400:8400'
+      - '8500:8500'
+      - '8600:53/udp'
+    labels:
+      SERVICE_IGNORE: 'true'  # Do not add any of Consul's services to Consul's service discovery registry.
+    command: [agent, '-server', '-ui', '-bootstrap', '-client=0.0.0.0']

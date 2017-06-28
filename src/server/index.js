@@ -3,7 +3,8 @@ const db = require('ocbesbn-db-init'); // Database
 
 const serverConfig = (db) => ({
   server: {
-    staticFilePath: __dirname + '/static'
+    staticFilePath: __dirname + '/static',
+    port : process.env.PORT || 3001,
   },
   routes: {
     dbInstance: db
