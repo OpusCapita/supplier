@@ -19,6 +19,10 @@ RUN yarn run build:client
 # A container must expose a port if it wants to be registered in Consul by Registrator.
 # The port is fed both to node express server and Consul => DRY principle is observed with ENV VAR.
 # NOTE: a port can be any, not necessarily different from exposed ports of other containers.
+
+HEALTHCHECK --interval=15s --timeout=3s --retries=12 \
+  CMD curl --silent --fail http://localhost:3001/api/health/check || exit 1
+
 EXPOSE 3001
 CMD [ "npm", "start"]
 HEALTHCHECK --interval=15s --timeout=3s --retries=12 \
