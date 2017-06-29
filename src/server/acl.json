@@ -1,0 +1,61 @@
+{
+  "supplier-mgmt": {
+    "translations": {
+      "name" : {
+        "en": "Suppplier Management for supplier-tenant",
+        "de": "Lieferantenmanagement für supplier-tenant"
+      },
+      "description": {
+        "en": "Suppplier management includes all administrative functions for supplier management, such as supplier modification, contact, address and bank account creation, edit, and deletion.",
+        "de": "Das Lieferantenmanagement umfasst alle administrativen Funktionen für das Lieferantenmanagement, wie zB Lieferantenänderung, Kontakt-, Adress- und Bankkonto-Erstellung, Bearbeiten und Löschen."
+      }
+    },
+    "resources": [
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers[/]?$",
+        "actions": ["create"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[%w | %p]*",
+        "actions": ["view", "edit"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[%w | %p]*/contacts[/]?$",
+        "actions": ["view", "create"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[%w | %p]*/contacts/[%w | %p]*",
+        "actions": ["view", "edit", "delete"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[%w | %p]*/addresses[/]?$",
+        "actions": ["view", "create"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[%w | %p]*/addresses/[%w | %p]*",
+        "actions": ["view", "edit", "delete"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[%w | %p]*/bank_accounts[/]?$",
+        "actions": ["view", "create"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[%w | %p]*/bank_accounts/[%w | %p]*",
+        "actions": ["view", "edit", "delete"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[%w | %p]*/profile_strength",
+        "actions": ["view"]
+      }
+    ]
+  }
+}
