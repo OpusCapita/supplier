@@ -1,10 +1,17 @@
 const server = require('ocbesbn-web-init'); // Web server
 const db = require('ocbesbn-db-init'); // Database
+const bouncer = require('ocbesbn-bouncer');
 
 const serverConfig = (db) => ({
   server: {
     staticFilePath: __dirname + '/static',
     port : process.env.PORT || 3001,
+    middlewares : [bouncer({
+      host : 'consul',
+      serviceName : 'supplier',
+      acl : require('./acl.json'),
+      aclServiceName : 'acl'
+    }).Middleware]
   },
   routes: {
     dbInstance: db
