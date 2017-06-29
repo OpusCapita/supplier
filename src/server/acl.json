@@ -1,5 +1,5 @@
 {
-  "supplier-mgmt": {
+  "manage": {
     "translations": {
       "name" : {
         "en": "Management of own company master data",
@@ -58,7 +58,7 @@
       }
     ]
   },
-  "supplier-view": {
+  "read": {
     "translations": {
       "name" : {
         "en": "Suppplier own company data view",
@@ -70,6 +70,11 @@
       }
     },
     "resources": [
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers[/]?$",
+        "actions": ["create"]
+      },
       {
         "type": "rest",
         "resourceId": "/api/suppliers/${_current_supplier_id}",
