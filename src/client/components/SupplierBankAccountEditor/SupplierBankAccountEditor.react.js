@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import request from "superagent-bluebird-promise";
-import utils from "underscore";
 import Button from "react-bootstrap/lib/Button";
 import i18nRegister from "../../i18n/register.js";
 import i18nMessages from "./i18n";
@@ -10,8 +9,8 @@ import DisplayTable from "../DisplayTable/DisplayTable.react.js";
 import DisplayRow from "../DisplayTable/DisplayRow.react.js";
 import DisplayField from "../DisplayTable/DisplayField.react.js";
 import EditGroup from "./components/EditGroup.react.js";
-import generateUUID from "../../utils/generateUUID";
-import DisplayCountryTableField from "../DisplayTable/DisplayCountryTableField.react";
+import utils from "../../utils/utils.js";
+import DisplayCountryTableField from "../DisplayTable/DisplayCountryTableField.react.js";
 
 class SupplierBankAccountEditor extends Component {
 
@@ -156,7 +155,7 @@ class SupplierBankAccountEditor extends Component {
     account.changedBy = this.props.username;
 
     // generate unique value
-    account.bankAccountId = generateUUID();
+    account.bankAccountId = utils.generateUUID();
     /* eslint-enable no-param-reassign*/
 
     request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/bank_accounts`).

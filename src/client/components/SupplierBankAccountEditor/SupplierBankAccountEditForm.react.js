@@ -17,7 +17,7 @@ function getValidator() {
   customValidation.bic(validator);
 
   return validator;
-};
+}
 
 class SupplierBankAccountEditForm extends Component {
   static propTypes = {
