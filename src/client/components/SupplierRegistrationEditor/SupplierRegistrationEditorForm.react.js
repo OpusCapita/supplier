@@ -17,6 +17,7 @@ class SupplierRegistrationEditorForm extends Component {
   static propTypes = {
     supplier: PropTypes.object,
     onSupplierChange: PropTypes.func.isRequired,
+    i18n: PropTypes.object.isRequired,
     onChange: React.PropTypes.func,
     onCancel: React.PropTypes.func,
     actionUrl: React.PropTypes.string.isRequired
@@ -218,9 +219,11 @@ class SupplierRegistrationEditorForm extends Component {
 
                 <div className='supplier-registration-form-submit'>
                   <div className='text-right form-submit'>
-                    <button className="btn btn-link" onClick={this.handleCancel}>Cancel</button>
+                    <button className="btn btn-link" onClick={this.handleCancel}>
+                      {this.props.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.cancel')}
+                    </button>
                     <button className="btn btn-primary" onClick={ this.handleUpdate }>
-                      Continue
+                      {this.props.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.continue')}
                     </button>
                   </div>
                 </div>
@@ -229,8 +232,8 @@ class SupplierRegistrationEditorForm extends Component {
           </form>
         </div>
         <div className="col-md-4">
-          <p>Please provide information that helps us to uniquely identify your company and allows us to add it to our trading partner directory.</p>
-          <p>After giving this information you are ready to login.</p>
+          <p>{this.props.i18n.getMessage('SupplierRegistrationEditor.Messages.information1')}</p>
+          <p>{this.props.i18n.getMessage('SupplierRegistrationEditor.Messages.information2')}</p>
         </div>
       </div>
     );

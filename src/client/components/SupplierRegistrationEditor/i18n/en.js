@@ -1,27 +1,4 @@
-// Confirmation dialogs
-let Confirmation = {};
-Confirmation.cancel = 'Do you really want to cancel?';
-Confirmation.delete = 'Do you really want to delete this supplier?';
-
-let ButtonLabel = {};
-ButtonLabel.add = 'Add';
-ButtonLabel.edit = 'Edit';
-ButtonLabel.delete = 'Delete';
-ButtonLabel.save = 'Save';
-ButtonLabel.cancel = 'Cancel';
-
-let TableHeader = {};
-TableHeader.supplierName = 'Company name-';
-TableHeader.homePage = 'Home page';
-TableHeader.foundedOn = 'Founded/Established on';
-TableHeader.legalForm = 'Legal form';
-TableHeader.commercialRegisterNo = 'Company registration number';
-TableHeader.cityOfRegistration = 'City of registration';
-TableHeader.countryOfRegistration = 'Country of registration';
-TableHeader.taxIdentificationNo = 'Tax identification number';
-TableHeader.vatIdentificationNo = 'VAT registration number';
-TableHeader.dunsNo = 'D-U-N-S number';
-TableHeader.globalLocationNo = 'Global location number';
+let ButtonLabel = { continue: 'Continue', cancel: 'Cancel', back: 'Back To Form' };
 
 let Select = {};
 Select.country = 'Select country...';
@@ -68,18 +45,20 @@ SupplierRegistrationEditor.created = 'Information on this page was initially cre
 SupplierRegistrationEditor.changed = 'Information on this page was last updated on {on} by {by}.';
 
 const Messages = {};
+Messages.companyRegistration = 'Company Registration';
 Messages.loading = 'Loading...';
 Messages.unableToRender = 'Unable to render editor';
 Messages.saved = 'Data is successfully saved';
 Messages.failed = 'Data saving failed';
 Messages.failedCreatingExistingSupplier = 'Data saving failed:' +
   ' a company with the same "Company ID" but different details already exists';
+Messages.supplierExists = 'Supplier already exist';
+Messages.information1 = 'Please provide information that helps us to uniquely identify your company and allows us to add it to our trading partner directory.';
+Messages.information2 = 'After providing this information you are ready to login.';
 
 export default {
   SupplierRegistrationEditor: {
-    Confirmation: Confirmation,
     ButtonLabel: ButtonLabel,
-    TableHeader: TableHeader,
     Select: Select,
     SupplierRegistrationEditor: SupplierRegistrationEditor,
     Label: Label,

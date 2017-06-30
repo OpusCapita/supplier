@@ -1,28 +1,4 @@
-// Confirmation dialogs
-let Confirmation = {};
-Confirmation.cancel = 'Wollen Sie den Vorgang wirklich abbrechen?';
-Confirmation.delete = 'Wollen Sie diesen Lieferanten wirklich löschen?';
-
-let ButtonLabel = {};
-ButtonLabel.add = 'Hinzufügen';
-ButtonLabel.edit = 'Bearbeiten';
-ButtonLabel.delete = 'Löschen';
-ButtonLabel.attach = 'Dokument hinzufügen';
-ButtonLabel.save = 'Speichern';
-ButtonLabel.cancel = 'Abbrechen';
-
-let TableHeader = {};
-TableHeader.supplierName = 'Name des Unternehmens';
-TableHeader.homePage = 'Homepage';
-TableHeader.foundedOn = 'Datum der Firmengründung';
-TableHeader.legalForm = 'Rechtsform der Unternehmung';
-TableHeader.commercialRegisterNo = 'Handelsregisternummer';
-TableHeader.cityOfRegistration = 'Ort der Registrierung';
-TableHeader.countryOfRegistration = 'Land der Registrierung';
-TableHeader.taxIdentificationNo = 'Steuernummer';
-TableHeader.vatIdentificationNo = 'Umsatzsteuer-Ident-Nr.';
-TableHeader.dunsNo = 'D-U-N-S-Nr.';
-TableHeader.globalLocationNo = 'Global Location Number (GLN/ILN)';
+let ButtonLabel = { continue: 'Weiter', cancel: 'Abbrechen', back: 'Zurück' };
 
 let Select = {};
 Select.country = 'Bitte ein Land auswählen ...';
@@ -69,18 +45,20 @@ SupplierRegistrationEditor.created = 'Die Informationen auf diesem Reiter wurden
 SupplierRegistrationEditor.changed = 'Die Informationen wurden zuletzt am {on} durch {by} bearbeitet.';
 
 const Messages = {};
+Messages.companyRegistration = 'Unternehmensregistrierung';
 Messages.loading = 'Laden...';
 Messages.unableToRender = 'Der Editor kann nicht geöffnet werden';
 Messages.saved = 'Die Daten wurden erfolgreich gespeichert';
 Messages.failed = 'Speichern von Objekten fehlgeschlagen';
 Messages.failedCreatingExistingSupplier = 'Speichern von Objekten fehlgeschlagen:' +
   ' ein Unternehmen mit gleiche Firmenname existiert bereits';
+Messages.supplierExists = 'Lieferant bereits vorhanden';
+Messages.information1 = 'Bitte geben Sie Informationen an, die uns helfen, Ihr Unternehmen eindeutig zu identifizieren und uns zu unserem Handelspartnerverzeichnis hinzuzufügen.';
+Messages.information2 = 'Nach der Bereitstellung dieser Informationen können Sie sich anmelden.';
 
 export default {
   SupplierRegistrationEditor: {
-    Confirmation: Confirmation,
     ButtonLabel: ButtonLabel,
-    TableHeader: TableHeader,
     Select: Select,
     SupplierRegistrationEditor: SupplierRegistrationEditor,
     Label: Label,

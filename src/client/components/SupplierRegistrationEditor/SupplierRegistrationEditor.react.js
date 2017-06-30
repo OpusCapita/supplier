@@ -149,7 +149,7 @@ class SupplierRegistrationEditor extends Component {
 
   toRender = () => {
     if (this.state.supplierExist) {
-      return <SupplierExistsView onBack={ this.handleBackToForm }/>
+      return <SupplierExistsView i18n={this.state.i18n} onBack={ this.handleBackToForm }/>
     } else {
       return <SupplierRegistrationEditorForm
                {...this.props}
@@ -186,7 +186,7 @@ class SupplierRegistrationEditor extends Component {
             hideCloseLink={true}
           />
 
-          <h2>Company Registration</h2>
+          <h2>{this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.companyRegistration')}</h2>
 
           {this.toRender()}
         </div>
