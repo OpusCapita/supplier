@@ -105,22 +105,35 @@ class SupplierRegistrationEditor extends Component {
         this.props.onChange({ isDirty: false });
       }
 
-      const user = this.props.user;
-      const contact = {
-          contactId: `${user.id}_${supplier.supplierId}`,
-          contactType: "Default",
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          supplierId: supplier.supplierId,
-          createdBy: user.id,
-          changedBy: user.id
-      }
+      // we need to refresh the id token before we can do any calls to backend as supplier user
+      request.post('/refreshIdToken').set('Content-Type', 'application/json').then((resp) => {
+        console.log("id token refreshed");
 
-      request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
-      set('Accept', 'application/json').send(contact).then((response) => null)
+        const user = this.props.user;
+        const contact = {
+            contactId: `${user.id}_${supplier.supplierId}`,
+            contactType: "Default",
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            supplierId: supplier.supplierId,
+            createdBy: user.id,
+            changedBy: user.id
+        }
 
-      request.post('/refreshIdToken').set('Content-Type', 'application/json').then(() => null);
+        request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
+        set('Accept', 'application/json').send(contact).then((response) => {
+          console.log('contact created');
+          return Promise.resolve(null);
+        }).catch(err => {
+          console.error('error creating contact: ' + err);
+          throw err;          
+        })
+
+      }).catch(err => {
+        console.err('error refreshing idToken: ' + err);
+        throw err;
+      });
     }).
     catch(errors => {
       this.setState({
