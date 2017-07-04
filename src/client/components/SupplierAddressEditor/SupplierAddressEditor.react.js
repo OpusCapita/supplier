@@ -8,9 +8,6 @@ import Alert from '../Alert';
 import SupplierAddressListTable from './SupplierAddressListTable.react.js';
 import SupplierAddressEditorForm from './SupplierAddressEditorForm.react.js';
 
-/**
- * Supplier address editor
- */
 class SupplierAddressEditor extends Component {
 
   static propTypes = {

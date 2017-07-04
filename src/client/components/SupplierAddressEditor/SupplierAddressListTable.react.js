@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/lib/Button';
-import DisplayCountryTableField from '../DisplayTable/DisplayCountryTableField.react.js';
+import DisplayCountryTableField from '../../components/DisplayTable/DisplayCountryTableField.react.js';
 
 class SupplierAddressListTable extends Component {
   static propTypes = {
@@ -87,4 +87,4 @@ class SupplierAddressListTable extends Component {
   }
 }
 
-export default DisplayCountryTableField;
+export default SupplierAddressListTable;
