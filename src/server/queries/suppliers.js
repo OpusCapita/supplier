@@ -46,16 +46,16 @@ module.exports.recordExists = function(supplier)
   const options = {
     $or: [
       {
-        supplierName: { $eq: supplier.supplierName }
+        supplierName: { $eq: supplier.supplierName, $ne: null }
       },
       {
-        commercialRegisterNo: { $eq: supplier.commercialRegisterNo }
+        commercialRegisterNo: { $eq: supplier.commercialRegisterNo, $ne: null }
       },
       {
-        taxIdentificationNo: { $eq: supplier.taxIdentificationNo }
+        taxIdentificationNo: { $eq: supplier.taxIdentificationNo, $ne: null }
       },
       {
-        vatIdentificationNo: { $eq: supplier.vatIdentificationNo }
+        vatIdentificationNo: { $eq: supplier.vatIdentificationNo, $ne: null }
       }
     ]
   }
