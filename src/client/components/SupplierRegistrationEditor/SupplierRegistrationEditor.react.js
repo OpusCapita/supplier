@@ -94,17 +94,6 @@ class SupplierRegistrationEditor extends Component {
 
       const { supplier } = this.state;
 
-      if (this.props.onUpdate) {
-          this.props.onUpdate({
-            supplierId: supplier.supplierId,
-            supplierName: supplier.supplierName
-          });
-        }
-
-      if (this.props.onChange) {
-        this.props.onChange({ isDirty: false });
-      }
-
       // we need to refresh the id token before we can do any calls to backend as supplier user
       request.post('/refreshIdToken').set('Content-Type', 'application/json').then((resp) => {
         console.log("id token refreshed");
@@ -127,13 +116,27 @@ class SupplierRegistrationEditor extends Component {
           return Promise.resolve(null);
         }).catch(err => {
           console.error('error creating contact: ' + err);
-          throw err;          
+          throw err;
         })
 
+        return Promise.resolve(null);
       }).catch(err => {
         console.err('error refreshing idToken: ' + err);
         throw err;
       });
+
+      if (this.props.onUpdate) {
+          this.props.onUpdate({
+            supplierId: supplier.supplierId,
+            supplierName: supplier.supplierName
+          });
+        }
+
+      if (this.props.onChange) {
+        this.props.onChange({ isDirty: false });
+      }
+
+      return Promise.resolve(null);
     }).
     catch(errors => {
       this.setState({
