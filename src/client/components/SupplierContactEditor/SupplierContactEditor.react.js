@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import request from 'superagent-bluebird-promise';
-import utils from 'underscore';
 import Button from 'react-bootstrap/lib/Button';
-import i18n from '../../i18n/I18nDecorator.react.js';
+import i18nRegister from "../../i18n/register.js";
+import i18nMessages from "./i18n";
+import underscore from 'underscore';
+import utils from '../../utils/utils';
 import Alert from '../Alert';
-import SupplierContactListTable from './SupplierContactListTable.react.js';
-import SupplierContactEditForm from './SupplierContactEditForm.react.js';
+import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
+import DisplayField from '../../components/DisplayTable/DisplayField.react';
+import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
+import DisplayEditGroup from '../../components/DisplayTable/DisplayEditGroup.react';
+import SupplierContactEditForm from './SupplierContactEditForm.react';
 
-/**
- * Supplier contact editor
- *
- * @author Dmitry Divin
- */
-@i18n({
-  componentName: 'SupplierContactEditor',
-  messages: require('./i18n').default,
-})
 class SupplierContactEditor extends Component {
 
   static propTypes = {
@@ -41,6 +37,10 @@ class SupplierContactEditor extends Component {
   state = {
     loadErrors: false
   };
+
+  componentWillMount(){
+    this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierContactEditor', i18nMessages) });
+  }
 
   componentDidMount() {
     this.loadContacts();
@@ -74,14 +74,14 @@ class SupplierContactEditor extends Component {
       set('Accept', 'application/json').
       then((response) => {
         let contacts = this.state.contacts;
-        let index = utils.findIndex(contacts, { contactId: contact.contactId });
+        let index = underscore.findIndex(contacts, { contactId: contact.contactId });
         if (index === -1) {
           throw new Error(`Not found contact by contactId [${contact.contactId}]`);
         }
 
         contacts.splice(index, 1);
 
-        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectDeleted');
+        const message = this.state.i18n.getMessage('SupplierContactEditor.Message.objectDeleted');
         this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
       }).catch((response) => {
         if (response.status === 401) {
@@ -89,7 +89,7 @@ class SupplierContactEditor extends Component {
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${contact.contactId}`);
 
-          const message = this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
+          const message = this.state.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
           this.setState({ globalError: message, globalMessage: null });
         }
       });
@@ -115,7 +115,7 @@ class SupplierContactEditor extends Component {
         let updatedContact = response.body;
 
         let contacts = this.state.contacts;
-        let index = utils.findIndex(contacts, { contactId: contact.contactId });
+        let index = underscore.findIndex(contacts, { contactId: contact.contactId });
 
         if (index === -1) {
           throw new Error(`Not found contact by ContactID=${contact.contactId}`);
@@ -124,7 +124,7 @@ class SupplierContactEditor extends Component {
 
         this.props.onChange({ isDirty: false });
 
-        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
+        const message = this.state.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
         this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
       }).catch((response) => {
         if (response.status === 401) {
@@ -132,18 +132,11 @@ class SupplierContactEditor extends Component {
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${contact.contactId}`);
 
-          const message = this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
+          const message = this.state.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
           this.setState({ globalError: message, globalMessage: null });
         }
       });
   };
-
-  generateUUID() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return s4() + s4() + '-' + s4() + s4();
-  }
 
   handleSave = (contact) => {
     let actionUrl = this.props.actionUrl;
@@ -155,7 +148,7 @@ class SupplierContactEditor extends Component {
     contact.changedBy = this.props.username;
 
     // generate unique value
-    contact.contactId = this.generateUUID();
+    contact.contactId = utils.generateUUID();
     /* eslint-enable no-param-reassign*/
 
     request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/contacts`).
@@ -167,7 +160,7 @@ class SupplierContactEditor extends Component {
 
         this.props.onChange({ isDirty: false });
 
-        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
+        const message = this.state.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
         this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
       }).catch((response) => {
         if (response.status === 401) {
@@ -175,7 +168,7 @@ class SupplierContactEditor extends Component {
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${contact.contactId}`);
 
-          let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
+          let message = this.state.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
           this.setState({ globalError: message, globalMessage: null });
         }
       });
@@ -187,15 +180,19 @@ class SupplierContactEditor extends Component {
   };
 
   handleChange = (contact, name, oldValue, newValue) => {
-    // check only updated objects
-    // if (contact.contactId) {
     this.props.onChange({ isDirty: true });
-    // }
+  };
+
+  onDelete = (contact) => {
+    if (!confirm(this.state.i18n.getMessage('SupplierContactEditor.Confirmation.delete'))) {
+      return;
+    }
+    this.handleDelete(contact);
   };
 
   handleView = (contact) => {
     this.setState({
-      contact: utils.clone(contact),
+      contact: underscore.clone(contact),
       editMode: "view",
       globalError: null,
       globalMessage: null,
@@ -205,7 +202,7 @@ class SupplierContactEditor extends Component {
 
   handleEdit = (contact) => {
     this.setState({
-      contact: utils.clone(contact),
+      contact: underscore.clone(contact),
       editMode: "edit",
       globalError: null,
       globalMessage: null,
@@ -234,26 +231,41 @@ class SupplierContactEditor extends Component {
   render() {
     const contacts = this.state.contacts;
     const loadErrors = this.state.loadErrors;
-
     let contact = this.state.contact;
     let errors = this.state.errors;
     let editMode = this.state.editMode;
-
     let readOnly = this.props.readOnly;
-
     let result;
 
-    if (contacts !== undefined) {
+    if (contacts) {
       if (contacts.length > 0) {
         result = (
           <div className="table-responsive">
-            <SupplierContactListTable
-              contacts={contacts}
-              readOnly={readOnly}
-              onEdit={this.handleEdit}
-              onDelete={this.handleDelete}
-              onView={this.handleView}
-            />
+            <DisplayTable headers={[{label: this.state.i18n.getMessage('SupplierContactEditor.Label.contactType')},
+              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.department')},
+              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.firstName')},
+              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.lastName')},
+              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.phone')},
+              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.mobile')},
+              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.email')}
+            ]}>
+              { contacts.map((contact, index) =>
+                (<DisplayRow key={index}>
+                  <DisplayField>{ contact.contactType }</DisplayField>
+                  <DisplayField>{ contact.department || '-' }</DisplayField>
+                  <DisplayField>{ contact.firstName }</DisplayField>
+                  <DisplayField>{ contact.lastName }</DisplayField>
+                  <DisplayField>{ contact.phone || '-'}</DisplayField>
+                  <DisplayField>{ contact.mobile }</DisplayField>
+                  <DisplayField>{ contact.email }</DisplayField>
+                  <DisplayEditGroup editAction={this.handleEdit.bind(this, contact)}
+                             deleteAction={this.onDelete.bind(this,contact)}
+                             editLabel={this.state.i18n.getMessage('SupplierContactEditor.Button.edit')}
+                             deleteLabel={this.state.i18n.getMessage('SupplierContactEditor.Button.delete')}/>
+
+                </DisplayRow>))
+              }
+            </DisplayTable>
           </div>
         );
       } else if (readOnly) {
@@ -272,7 +284,7 @@ class SupplierContactEditor extends Component {
 
     return (
       <div>
-        <h4 className="tab-description">{this.context.i18n.getMessage('SupplierContactEditor.Title')}</h4>
+        <h4 className="tab-description">{this.state.i18n.getMessage('SupplierContactEditor.Title')}</h4>
 
         {this.state.globalMessage && !readOnly ? (
           <Alert bsStyle="info" message={this.state.globalMessage}/>
@@ -291,6 +303,7 @@ class SupplierContactEditor extends Component {
                 onChange={this.handleChange}
                 contact={contact}
                 errors={errors}
+                i18n={this.state.i18n}
                 editMode={editMode}
                 onSave={this.handleSave}
                 onUpdate={this.handleUpdate}
@@ -302,7 +315,7 @@ class SupplierContactEditor extends Component {
 
         {!contact && !readOnly ? (
           <div>
-            <Button onClick={this.handleCreate}>{this.context.i18n.getMessage('SupplierContactEditor.Button.add')}
+            <Button onClick={this.handleCreate}>{this.state.i18n.getMessage('SupplierContactEditor.Button.add')}
             </Button>
           </div>
         ) : null}

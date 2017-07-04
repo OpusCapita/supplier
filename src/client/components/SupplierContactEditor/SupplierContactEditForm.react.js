@@ -4,24 +4,17 @@ import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Popover from 'react-bootstrap/lib/Popover';
 import classNames from 'classnames';
 import validator from 'validate.js';
-import i18n from '../../i18n/I18nDecorator.react.js';
 import './SupplierContactEditForm.css';
-
 import { I18nManager } from 'opuscapita-i18n';
 import globalMessages from '../../utils/validatejs/i18n';
 const CONTACT_TYPES = ['Default', 'Sales', 'Escalation', 'Product', 'Technical'];
 const DEPARTMENTS = ['Management', 'Logistics', 'Sales', 'Accounting', 'Support', 'IT', 'Others'];
 
-/**
- * Supplier contact edit form
- *
- * @author Dmitry Divin
- */
-@i18n
 class SupplierContactEditForm extends Component {
   static propTypes = {
     contact: React.PropTypes.object.isRequired,
     errors: React.PropTypes.object,
+    i18n: React.PropTypes.object,
     editMode: React.PropTypes.oneOf(['edit', 'create', 'create-first', 'view']),
     onSave: React.PropTypes.func.isRequired,
     onUpdate: React.PropTypes.func.isRequired,
@@ -37,7 +30,7 @@ class SupplierContactEditForm extends Component {
   state = {
     contact: this.props.contact,
     errors: this.props.errors || {}
-  }
+  };
 
   componentWillReceiveProps(newProps) {
     if (newProps.contact) {
@@ -45,7 +38,7 @@ class SupplierContactEditForm extends Component {
     }
   }
 
-  validatejsI18N = new I18nManager(this.props.locale, globalMessages)
+  validatejsI18N = new I18nManager(this.props.locale, globalMessages);
 
   constraints = {
     contactType: {
@@ -126,7 +119,7 @@ class SupplierContactEditForm extends Component {
         })
       }
     }
-  }
+  };
 
   /**
    * On Save or Update local handler
@@ -167,7 +160,7 @@ class SupplierContactEditForm extends Component {
     }
     /* eslint-enable no-param-reassign*/
 
-    let labelValue = this.context.i18n.getMessage(`SupplierContactEditor.Label.${name}`);
+    let labelValue = this.props.i18n.getMessage(`SupplierContactEditor.Label.${name}`);
 
     /* eslint-disable no-param-reassign*/
     let tooltipOverlay;
@@ -257,7 +250,7 @@ class SupplierContactEditForm extends Component {
   render() {
     const editMode = this.props.editMode;
 
-    let message = this.context.i18n.getMessage;
+    let message = this.props.i18n.getMessage;
 
     let typeOptions = [];
 
@@ -363,13 +356,13 @@ class SupplierContactEditForm extends Component {
             <Button bsStyle="link"
               onClick={this.handleCancel}
             >
-            {this.context.i18n.getMessage('SupplierContactEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))}
+            {this.props.i18n.getMessage('SupplierContactEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))}
             </Button>
           ) : null}
           {editMode !== 'view' ? (
             <Button bsStyle="primary"
               type="submit"
-            >{this.context.i18n.getMessage('SupplierContactEditor.Button.save')}</Button>
+            >{this.props.i18n.getMessage('SupplierContactEditor.Button.save')}</Button>
           ) : null}
         </div>
       </form>

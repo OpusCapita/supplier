@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import Button from "react-bootstrap/lib/Button";
-import DisplayField from '../../DisplayTable/DisplayField.react.js';
+import DisplayField from './DisplayField.react.js';
 
-class EditGroup extends Component {
+class DisplayEditGroup extends Component {
 
   static propTypes = {
     editAction: React.PropTypes.func,
@@ -30,4 +30,4 @@ class EditGroup extends Component {
   }
 }
 
-export default EditGroup;
+export default DisplayEditGroup;

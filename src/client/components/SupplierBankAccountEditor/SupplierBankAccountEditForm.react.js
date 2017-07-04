@@ -4,18 +4,12 @@ import validator from 'validate.js';
 import './SupplierBankAccountEditForm.css';
 import SupplierBankAccountFormConstraints from './SupplierBankAccountFormConstraints';
 import SupplierBankAccountEditFormRow from '../AttributeValueEditorRow.react.js';
-const ADDRESS_TYPES = ['default', 'invoice', 'rma', 'plant'];
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import customValidation from '../../utils/validatejs/custom.js';
-
-/**
- * Supplier address edit form
- */
 
 function getValidator() {
   customValidation.iban(validator);
   customValidation.bic(validator);
-
   return validator;
 }
 
@@ -50,7 +44,6 @@ class SupplierBankAccountEditForm extends Component {
     });
 
     this.externalComponents = {CountryField};
-
     this.constraints = SupplierBankAccountFormConstraints(this.props.i18n);
   }
 

@@ -8,7 +8,7 @@ import SupplierBankAccountEditForm from "./SupplierBankAccountEditForm.react.js"
 import DisplayTable from "../DisplayTable/DisplayTable.react.js";
 import DisplayRow from "../DisplayTable/DisplayRow.react.js";
 import DisplayField from "../DisplayTable/DisplayField.react.js";
-import EditGroup from "./components/EditGroup.react.js";
+import DisplayEditGroup from "../../components/DisplayTable/DisplayEditGroup.react.js";
 import utils from "../../utils/utils.js";
 import DisplayCountryTableField from "../DisplayTable/DisplayCountryTableField.react.js";
 
@@ -267,11 +267,10 @@ class SupplierBankAccountEditor extends Component {
                   <DisplayField>{ account.bankCode }</DisplayField>
                   <DisplayField>{ account.extBankControlKey }</DisplayField>
                   <DisplayField>{ account.swiftCode }</DisplayField>
-                  <EditGroup editAction={this.handleEdit.bind(this, account)}
+                  <DisplayEditGroup editAction={this.handleEdit.bind(this, account)}
                              editLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
                              deleteAction={this.onDelete.bind(this, account)}
                              deleteLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}/>
-
                 </DisplayRow>))
               }
             </DisplayTable>
