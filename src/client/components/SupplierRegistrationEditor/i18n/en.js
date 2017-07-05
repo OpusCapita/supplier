@@ -49,9 +49,8 @@ Messages.companyRegistration = 'Company Registration';
 Messages.loading = 'Loading...';
 Messages.unableToRender = 'Unable to render editor';
 Messages.saved = 'Data is successfully saved';
-Messages.failed = 'Data saving failed';
-Messages.failedCreatingExistingSupplier = 'Data saving failed:' +
-  ' a company with the same "Company ID" but different details already exists';
+Messages.failed = 'Supplier creation failed.';
+Messages.failedUnauthorized = 'Supplier creation failed: not authorized.';
 Messages.supplierExists = 'Supplier already exist';
 Messages.information1 = 'Please provide information that helps us to uniquely identify your company and allows us to add it to our trading partner directory.';
 Messages.information2 = 'After providing this information you are ready to login.';

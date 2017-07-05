@@ -144,6 +144,12 @@ class SupplierRegistrationEditor extends Component {
       })
 
       switch (errors.status) {
+        case 403: case 405:
+          this.setState({
+            globalInfoMessage: '',
+            globalErrorMessage: this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'),
+          });
+          break;
         case 401:
           this.props.onUnauthorized();
           break;
