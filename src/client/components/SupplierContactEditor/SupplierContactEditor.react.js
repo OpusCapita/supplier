@@ -3,7 +3,7 @@ import request from 'superagent-bluebird-promise';
 import Button from 'react-bootstrap/lib/Button';
 import i18nRegister from "../../i18n/register.js";
 import i18nMessages from "./i18n";
-import underscore from 'underscore';
+import _ from 'underscore';
 import utils from '../../utils/utils';
 import Alert from '../Alert';
 import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
@@ -74,7 +74,7 @@ class SupplierContactEditor extends Component {
       set('Accept', 'application/json').
       then((response) => {
         let contacts = this.state.contacts;
-        let index = underscore.findIndex(contacts, { contactId: contact.contactId });
+        let index = _.findIndex(contacts, { contactId: contact.contactId });
         if (index === -1) {
           throw new Error(`Not found contact by contactId [${contact.contactId}]`);
         }
@@ -115,7 +115,7 @@ class SupplierContactEditor extends Component {
         let updatedContact = response.body;
 
         let contacts = this.state.contacts;
-        let index = underscore.findIndex(contacts, { contactId: contact.contactId });
+        let index = _.findIndex(contacts, { contactId: contact.contactId });
 
         if (index === -1) {
           throw new Error(`Not found contact by ContactID=${contact.contactId}`);
@@ -192,7 +192,7 @@ class SupplierContactEditor extends Component {
 
   handleView = (contact) => {
     this.setState({
-      contact: underscore.clone(contact),
+      contact: _.clone(contact),
       editMode: "view",
       globalError: null,
       globalMessage: null,
@@ -202,7 +202,7 @@ class SupplierContactEditor extends Component {
 
   handleEdit = (contact) => {
     this.setState({
-      contact: underscore.clone(contact),
+      contact: _.clone(contact),
       editMode: "edit",
       globalError: null,
       globalMessage: null,

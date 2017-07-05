@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import request from 'superagent-bluebird-promise';
-import underscore from 'underscore';
+import _ from 'underscore';
 import i18nRegister from '../../i18n/register.js';
 import i18nMessages from './i18n';
 import Button from 'react-bootstrap/lib/Button';
@@ -115,7 +115,7 @@ class SupplierAddressEditor extends Component {
 
   handleEdit = (supplierAddress) => {
     this.setState({
-      supplierAddress: underscore.clone(supplierAddress),
+      supplierAddress: _.clone(supplierAddress),
       editMode: "edit",
       globalError: null,
       globalMessage: null,
@@ -125,7 +125,7 @@ class SupplierAddressEditor extends Component {
 
   handleView = (supplierAddress) => {
     this.setState({
-      supplierAddress: underscore.clone(supplierAddress),
+      supplierAddress: _.clone(supplierAddress),
       editMode: "view",
       globalError: null,
       globalMessage: null,
@@ -145,7 +145,7 @@ class SupplierAddressEditor extends Component {
 
     return this.deleteAddressPromise.then((response) => {
       let supplierAddresses = this.state.supplierAddresses;
-      let index = underscore.findIndex(supplierAddresses, { id: supplierAddress.id });
+      let index = _.findIndex(supplierAddresses, { id: supplierAddress.id });
       if (index === -1) {
         throw new Error(`Not found SupplierAddress by id [${supplierAddress.id}]`);
       }
@@ -186,7 +186,7 @@ class SupplierAddressEditor extends Component {
       let updatedSupplierAddress = response.body;
 
       let supplierAddresses = this.state.supplierAddresses;
-      let index = underscore.findIndex(supplierAddresses, { id: supplierAddress.id });
+      let index = _.findIndex(supplierAddresses, { id: supplierAddress.id });
 
       if (index === -1) {
         throw new Error(`Not found SupplierAddress by id [${supplierAddress.id}]`);
