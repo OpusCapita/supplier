@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import Button from 'react-bootstrap/lib/Button';
-import validator from 'validate.js';
-import './SupplierBankAccountEditForm.css';
-import SupplierBankAccountFormConstraints from './SupplierBankAccountFormConstraints';
-import SupplierBankAccountEditFormRow from '../AttributeValueEditorRow.react.js';
-import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
-import customValidation from '../../utils/validatejs/custom.js';
+import React, { Component } from "react";
+import Button from "react-bootstrap/lib/Button";
+import validator from "validate.js";
+import "./SupplierBankAccountEditForm.css";
+import SupplierBankAccountFormConstraints from "./SupplierBankAccountFormConstraints";
+import SupplierBankAccountEditFormRow from "../AttributeValueEditorRow.react.js";
+import serviceComponent from "@opuscapita/react-loaders/lib/serviceComponent";
+import customValidation from "../../utils/validatejs/custom.js";
 
 function getValidator() {
   customValidation.iban(validator);
@@ -16,6 +16,8 @@ function getValidator() {
 class SupplierBankAccountEditForm extends Component {
   static propTypes = {
     account: React.PropTypes.object.isRequired,
+    actionUrl: React.PropTypes.string.isRequired,
+    i18n: React.PropTypes.string.isRequired,
     errors: React.PropTypes.object,
     editMode: React.PropTypes.oneOf(['edit', 'create', 'create-first', 'view']),
     onSave: React.PropTypes.func.isRequired,
@@ -35,7 +37,7 @@ class SupplierBankAccountEditForm extends Component {
   };
 
   componentWillMount() {
-    let serviceRegistry = (service) => ({url: `${this.props.actionUrl}/isodata`});
+    let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
     const CountryField = serviceComponent({
       serviceRegistry,
       serviceName: 'isodata',
@@ -43,13 +45,13 @@ class SupplierBankAccountEditForm extends Component {
       jsFileName: 'countries-bundle'
     });
 
-    this.externalComponents = {CountryField};
+    this.externalComponents = { CountryField };
     this.constraints = SupplierBankAccountFormConstraints(this.props.i18n);
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.account) {
-      this.setState({account: newProps.account, errors: newProps.errors || {}});
+      this.setState({ account: newProps.account, errors: newProps.errors || {} });
     }
 
     this.constraints = SupplierBankAccountFormConstraints(this.props.i18n);
@@ -59,7 +61,7 @@ class SupplierBankAccountEditForm extends Component {
     event.preventDefault();
 
     const account = this.state.account;
-    let errors = getValidator()(this.state.account, this.constraints, {fullMessages: false});
+    let errors = getValidator()(this.state.account, this.constraints, { fullMessages: false });
     if (!errors) {
       const editMode = this.props.editMode;
 
@@ -69,7 +71,7 @@ class SupplierBankAccountEditForm extends Component {
         this.props.onSave(account);
       }
     } else {
-      this.setState({errors: errors});
+      this.setState({ errors: errors });
     }
   };
 
@@ -119,24 +121,24 @@ class SupplierBankAccountEditForm extends Component {
       errors: {
         ...this.state.errors,
         [fieldName]: errors ?
-          errors[fieldName].map(msg => ({message: msg})) :
+          errors[fieldName].map(msg => ({ message: msg })) :
           []
       }
     });
   };
 
-  renderField = attrs => {
-    const {account, errors} = this.state;
-    const {fieldName, disabled} = attrs;
+  renderField = (attrs) => {
+    const { account, errors } = this.state;
+    const { fieldName, disabled } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
 
     let component = attrs.component ||
       <input className="form-control"
-             type="text"
-             value={ typeof account[fieldName] === 'string' ? account[fieldName] : '' }
-             onChange={ this.handleChange.bind(this, fieldName) }
-             onBlur={ this.handleBlur.bind(this, fieldName) }
-             disabled={disabled}
+        type="text"
+        value={ typeof account[fieldName] === 'string' ? account[fieldName] : '' }
+        onChange={ this.handleChange.bind(this, fieldName) }
+        onBlur={ this.handleBlur.bind(this, fieldName) }
+        disabled={disabled}
       />;
 
     let isRequired = fieldNames.some(name => {
@@ -162,16 +164,16 @@ class SupplierBankAccountEditForm extends Component {
   render() {
     const editMode = this.props.editMode;
     const disabled = editMode === 'view';
-    const {account} = this.state;
-    const {CountryField} = this.externalComponents;
+    const { account } = this.state;
+    const { CountryField } = this.externalComponents;
 
     return (
       <form className="form-horizontal" onSubmit={this.handleSaveOrUpdate}>
-        { this.renderField({fieldName: 'bankName', disabled: disabled}) }
-        { this.renderField({fieldName: 'accountNumber', disabled: disabled}) }
-        { this.renderField({fieldName: 'bankIdentificationCode', disabled: disabled}) }
-        { this.renderField({fieldName: 'bankCode', disabled: disabled}) }
-        { this.renderField({fieldName: 'swiftCode', disabled: disabled}) }
+        { this.renderField({ fieldName: 'bankName', disabled: disabled }) }
+        { this.renderField({ fieldName: 'accountNumber', disabled: disabled }) }
+        { this.renderField({ fieldName: 'bankIdentificationCode', disabled: disabled }) }
+        { this.renderField({ fieldName: 'bankCode', disabled: disabled }) }
+        { this.renderField({ fieldName: 'swiftCode', disabled: disabled }) }
         { this.renderField({
           fieldName: 'bankCountryKey',
           component: (
@@ -184,21 +186,22 @@ class SupplierBankAccountEditForm extends Component {
           )
         })}
 
-        { this.renderField({fieldName: 'extBankControlKey', disabled: disabled}) }
+        { this.renderField({ fieldName: 'extBankControlKey', disabled: disabled }) }
 
         <div className="col-sm-12 text-right address-form-submit">
           {editMode !== 'create-first' ? (
             <Button bsStyle="link"
-                    onClick={this.handleCancel}
+              onClick={this.handleCancel}
             >
               {
-                this.props.i18n.getMessage('SupplierBankAccountEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
+                this.props.i18n.
+                getMessage('SupplierBankAccountEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
               }
             </Button>
           ) : null}
           {editMode !== 'view' ? (
             <Button bsStyle="primary"
-                    type="submit"
+              type="submit"
             >{this.props.i18n.getMessage('SupplierBankAccountEditor.Button.save')}</Button>
           ) : null}
         </div>
