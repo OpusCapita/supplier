@@ -215,7 +215,7 @@ class SupplierEditorForm extends Component {
   };
 
   render() {
-    const { locale, i18n, dateTimePattern } = this.props;
+    const { i18n, dateTimePattern } = this.props;
     const { supplier } = this.state;
     const { CountryField } = this.externalComponents;
     const foundedOn = supplier['foundedOn'] ? new Date(supplier['foundedOn']) : '';
@@ -233,8 +233,8 @@ class SupplierEditorForm extends Component {
             component: (
               <DateInput
                 className="form-control"
-                locale={locale}
-                dateFormat={this.props.dateTimePattern}
+                locale={i18n.locale}
+                dateFormat={dateTimePattern}
                 value={foundedOn}
                 onChange={this.handleDateChange.bind(this, 'foundedOn')}
                 onBlur={this.handleBlur.bind(this, 'foundedOn')}

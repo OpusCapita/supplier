@@ -9,6 +9,7 @@ db.init({ consul : { host : 'consul' } })
     server: {
       staticFilePath: __dirname + '/../src/server/static',
       indexFilePath: __dirname + '/index.html',
+      port : process.env.PORT || 3001,
       webpack: {
         useWebpack: true,
         configFilePath: __dirname + '/../webpack.development.config.js'

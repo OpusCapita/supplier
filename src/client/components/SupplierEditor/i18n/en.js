@@ -77,7 +77,7 @@ Messages.saved = 'Data is successfully saved';
 Messages.failed = 'Data saving failed';
 Messages.failedModifyingNotAuthoredSupplier = 'Data saving failed: only the author can update company information';
 Messages.failedCreatingExistingSupplier = 'Data saving failed:' +
-  ' a company with the same "Company ID" but different details already exists';
+  ' a company with the same Company Name already exists';
 
 export default {
   SupplierEditor: {

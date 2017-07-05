@@ -68,10 +68,11 @@ class SupplierRegistrationEditor extends Component {
 
   handleUpdate = newSupplier => {
     if (!newSupplier) {
-       this.setState({
+      this.setState({
         globalInfoMessage: '',
         globalErrorMessage: '',
       });
+      return;
     }
 
     newSupplier = {  // eslint-disable-line no-param-reassign
@@ -94,6 +95,37 @@ class SupplierRegistrationEditor extends Component {
 
       const { supplier } = this.state;
 
+      // we need to refresh the id token before we can do any calls to backend as supplier user
+      request.post('/refreshIdToken').set('Content-Type', 'application/json').then((resp) => {
+        console.log("id token refreshed");
+
+        const user = this.props.user;
+        const contact = {
+            contactId: `${user.id}_${supplier.supplierId}`,
+            contactType: "Default",
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            supplierId: supplier.supplierId,
+            createdBy: user.id,
+            changedBy: user.id
+        }
+
+        request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
+        set('Accept', 'application/json').send(contact).then((response) => {
+          console.log('contact created');
+          return Promise.resolve(null);
+        }).catch(err => {
+          console.error('error creating contact: ' + err);
+          throw err;
+        })
+
+        return Promise.resolve(null);
+      }).catch(err => {
+        console.err('error refreshing idToken: ' + err);
+        throw err;
+      });
+
       if (this.props.onUpdate) {
           this.props.onUpdate({
             supplierId: supplier.supplierId,
@@ -105,22 +137,7 @@ class SupplierRegistrationEditor extends Component {
         this.props.onChange({ isDirty: false });
       }
 
-      const user = this.props.user;
-      const contact = {
-          contactId: `${user.id}_${supplier.supplierId}`,
-          contactType: "Default",
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          supplierId: supplier.supplierId,
-          createdBy: user.id,
-          changedBy: user.id
-      }
-
-      request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
-      set('Accept', 'application/json').send(contact).then((response) => null)
-
-      request.post('/refreshIdToken').set('Content-Type', 'application/json').then(() => null);
+      return Promise.resolve(null);
     }).
     catch(errors => {
       this.setState({
@@ -128,6 +145,12 @@ class SupplierRegistrationEditor extends Component {
       })
 
       switch (errors.status) {
+        case 403: case 405:
+          this.setState({
+            globalInfoMessage: '',
+            globalErrorMessage: this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'),
+          });
+          break;
         case 401:
           this.props.onUnauthorized();
           break;
@@ -149,7 +172,7 @@ class SupplierRegistrationEditor extends Component {
 
   toRender = () => {
     if (this.state.supplierExist) {
-      return <SupplierExistsView onBack={ this.handleBackToForm }/>
+      return <SupplierExistsView i18n={this.state.i18n} onBack={ this.handleBackToForm }/>
     } else {
       return <SupplierRegistrationEditorForm
                {...this.props}
@@ -186,7 +209,7 @@ class SupplierRegistrationEditor extends Component {
             hideCloseLink={true}
           />
 
-          <h2>Company Registration</h2>
+          <h2>{this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.companyRegistration')}</h2>
 
           {this.toRender()}
         </div>

@@ -43,13 +43,22 @@ module.exports.exists = function(supplierId)
 
 module.exports.recordExists = function(supplier)
 {
-  let options = { supplierName: supplier.supplierName };
-
-  ['commercialRegisterNo', 'taxIdentificationNo', 'vatIdentificationNo'].forEach(field => {
-    if (supplier[field]) {
-      options[field] = supplier[field];
-    }
-  });
+  const options = {
+    $or: [
+      {
+        supplierName: { $eq: supplier.supplierName, $ne: null }
+      },
+      {
+        commercialRegisterNo: { $eq: supplier.commercialRegisterNo, $ne: null }
+      },
+      {
+        taxIdentificationNo: { $eq: supplier.taxIdentificationNo, $ne: null }
+      },
+      {
+        vatIdentificationNo: { $eq: supplier.vatIdentificationNo, $ne: null }
+      }
+    ]
+  }
 
   return this.db.models.Supplier.findOne({ where: options }).then(supplier => Boolean(supplier));
 };
