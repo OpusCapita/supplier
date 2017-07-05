@@ -68,10 +68,11 @@ class SupplierRegistrationEditor extends Component {
 
   handleUpdate = newSupplier => {
     if (!newSupplier) {
-       this.setState({
+      this.setState({
         globalInfoMessage: '',
         globalErrorMessage: '',
       });
+      return;
     }
 
     newSupplier = {  // eslint-disable-line no-param-reassign
@@ -144,6 +145,12 @@ class SupplierRegistrationEditor extends Component {
       })
 
       switch (errors.status) {
+        case 403: case 405:
+          this.setState({
+            globalInfoMessage: '',
+            globalErrorMessage: this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'),
+          });
+          break;
         case 401:
           this.props.onUnauthorized();
           break;

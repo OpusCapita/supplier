@@ -29,32 +29,31 @@ let createSuppliers = function(req, res)
       return res.status('409').json({ message : 'A supplier already exists' });
     } else {
       newSupplier.status = 'new';
-      Supplier.create(newSupplier)
+      return Supplier.create(newSupplier)
         .then(supplier => this.events.emit(supplier, 'supplier').then(() => supplier))
         .then(supplier => {
           const userId = supplier.createdBy;
           const supplierId = supplier.supplierId;
-          const supplierToUserPromise = req.opuscapita.serviceClient.put('user', `/users/${userId}`, { supplierId: supplierId, status: 'registered' }, true);
-          const supplierAdminRolePromise = req.opuscapita.serviceClient.put('user', `/users/${userId}/roles/supplier-admin`, {}, true);
+          const supplierToUserPromise = req.opuscapita.serviceClient.put('user', `/users/${userId}`, { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] }, true);
 
-          Promise.all([supplierToUserPromise, supplierAdminRolePromise])
-            .then(() => {
+          return supplierToUserPromise.then(() => {
               supplier.status = 'assigned';
               Supplier.update(supplierId, supplier.dataValues).then(supplier => {
-                this.events.emit(supplier, 'supplier').then(() => res.status('200').json(supplier));
+                return this.events.emit(supplier, 'supplier').then(() => res.status('200').json(supplier));
               });
             })
             .catch(error => {
+              Supplier.delete(supplierId).then(() => null);
               req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
-              switch (error.response.statusCode) {
-                case 404:
-                  Supplier.delete(supplierId).then(() => null);
-                  res.status(404).json({ message : error.message });
-                  break;
-                default:
-                  res.status(400).json({ message : error.message });
-              };
+
+              return res.status(error.response.statusCode || 400).json({ message : error.message });
             });
+        })
+        .catch(error => {
+          Supplier.delete(supplierId).then(() => null);
+          req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
+
+          return res.status(error.response.statusCode || 400).json({ message : error.message });
         });
     }
   })

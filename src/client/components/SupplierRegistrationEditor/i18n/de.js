@@ -49,9 +49,8 @@ Messages.companyRegistration = 'Unternehmensregistrierung';
 Messages.loading = 'Laden...';
 Messages.unableToRender = 'Der Editor kann nicht geöffnet werden';
 Messages.saved = 'Die Daten wurden erfolgreich gespeichert';
-Messages.failed = 'Speichern von Objekten fehlgeschlagen';
-Messages.failedCreatingExistingSupplier = 'Speichern von Objekten fehlgeschlagen:' +
-  ' ein Unternehmen mit gleiche Firmenname existiert bereits';
+Messages.failed = 'Lieferantenerstellung fehlgeschlagen.';
+Messages.failedUnauthorized = 'Lieferantenerstellung fehlgeschlagen: nicht autorisiert.';
 Messages.supplierExists = 'Lieferant bereits vorhanden';
 Messages.information1 = 'Bitte geben Sie Informationen an, die uns helfen, Ihr Unternehmen eindeutig zu identifizieren und uns zu unserem Handelspartnerverzeichnis hinzuzufügen.';
 Messages.information2 = 'Nach der Bereitstellung dieser Informationen können Sie sich anmelden.';
