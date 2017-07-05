@@ -68,10 +68,11 @@ class SupplierRegistrationEditor extends Component {
 
   handleUpdate = newSupplier => {
     if (!newSupplier) {
-       this.setState({
+      this.setState({
         globalInfoMessage: '',
         globalErrorMessage: '',
       });
+      return;
     }
 
     newSupplier = {  // eslint-disable-line no-param-reassign
