@@ -10,6 +10,7 @@ import DisplayRow from "../DisplayTable/DisplayRow.react.js";
 import DisplayField from "../DisplayTable/DisplayField.react.js";
 import DisplayEditGroup from "../../components/DisplayTable/DisplayEditGroup.react.js";
 import utils from "../../utils/utils.js";
+import underscore from 'underscore';
 import DisplayCountryTableField from "../DisplayTable/DisplayCountryTableField.react.js";
 
 class SupplierBankAccountEditor extends Component {
@@ -80,7 +81,7 @@ class SupplierBankAccountEditor extends Component {
       set('Accept', 'application/json').
       then((response) => {
         let accounts = this.state.accounts;
-        let index = utils.findIndex(accounts, { bankAccountId: account.bankAccountId });
+        let index = underscore.findIndex(accounts, { bankAccountId: account.bankAccountId });
         if (index === -1) {
           throw new Error(`Not found bank account for bankAccountId [${account.bankAccountId}]`);
         }
@@ -122,7 +123,7 @@ class SupplierBankAccountEditor extends Component {
         let updatedContact = response.body;
 
         let accounts = this.state.accounts;
-        let index = utils.findIndex(accounts, { bankAccountId: account.bankAccountId });
+        let index = underscore.findIndex(accounts, { bankAccountId: account.bankAccountId });
 
         if (index === -1) {
           throw new Error(`Not found account by ContactID=${account.bankAccountId}`);
@@ -193,7 +194,7 @@ class SupplierBankAccountEditor extends Component {
 
   handleView = (account) => {
     this.setState({
-      account: utils.clone(account),
+      account: underscore.clone(account),
       editMode: 'view',
       globalError: null,
       globalMessage: null,
@@ -203,7 +204,7 @@ class SupplierBankAccountEditor extends Component {
 
   handleEdit = (account) => {
     this.setState({
-      account: utils.clone(account),
+      account: underscore.clone(account),
       editMode: 'edit',
       globalError: null,
       globalMessage: null,
@@ -212,6 +213,7 @@ class SupplierBankAccountEditor extends Component {
   };
 
   onDelete = (account) => {
+    console.log(account);
     if (!confirm(this.state.i18n.getMessage('SupplierBankAccountEditor.Confirmation.delete'))) {
       return;
     }
@@ -269,7 +271,7 @@ class SupplierBankAccountEditor extends Component {
                   <DisplayField>{ account.swiftCode }</DisplayField>
                   <DisplayEditGroup editAction={this.handleEdit.bind(this, account)}
                              editLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
-                             deleteAction={this.onDelete.bind(this, account)}
+                             deleteAction={this.handleDelete.bind(this, account)}
                              deleteLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}/>
                 </DisplayRow>))
               }
