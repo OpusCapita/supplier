@@ -75,6 +75,34 @@
       }
     ]
   },
+  "x-tenant-read-public": {
+    "translations": {
+      "name": {
+        "en": "Read all company's public data",
+        "de": ""
+      },
+      "description": {
+        "en": "View all company's public data which such as company profile, contacts, public addresses, etc.",
+        "de": ""
+      }
+    },
+    "resources": [{
+          "type": "rest",
+          "resourceId": "/api/suppliers[%w | %p]*",
+          "actions": ["view"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[^/]+/contacts[%w | %p]*",
+        "actions": ["view"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[^/]+/addresses[%w | %p]*",
+        "actions": ["view"]
+      }
+    ]
+  },
   "read": {
     "translations": {
       "name": {
