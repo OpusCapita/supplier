@@ -183,16 +183,6 @@ class SupplierBankAccountEditor extends Component {
     this.props.onChange({ isDirty: true });
   };
 
-  handleView = (account) => {
-    this.setState({
-      account: _.clone(account),
-      editMode: 'view',
-      globalError: null,
-      globalMessage: null,
-      errors: null
-    });
-  };
-
   handleEdit = (account) => {
     this.setState({
       account: _.clone(account),
