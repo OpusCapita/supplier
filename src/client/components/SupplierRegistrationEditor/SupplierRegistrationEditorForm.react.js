@@ -9,6 +9,7 @@ import customValidation from '../../utils/validatejs/custom.js';
 
 function getValidator() {
   customValidation.vatNumber(validatejs);
+  customValidation.dunsNumber(validatejs);
 
   return validatejs;
 };
