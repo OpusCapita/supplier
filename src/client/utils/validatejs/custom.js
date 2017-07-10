@@ -33,3 +33,15 @@ module.exports.bic = function(validate) {
     return options.message;
   };
 };
+
+module.exports.dunsNumber = function(validate) {
+  return validate.validators.dunsNumber = function(value, options, key, attributes) {
+    if (!value) return null;
+
+    const dunsNumber = require('../../../server/utils/validators/dunsNumber.js');
+
+    if (dunsNumber.isValid(value)) return null;
+
+    return options.message;
+  };
+};

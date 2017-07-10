@@ -53,12 +53,6 @@ module.exports = function(validatejsI18N) {
     },
     vatIdentificationNo: {
       presence: false,
-      length: {
-        maximum: 250,
-        tooLong: validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
-      },
       vatNumber: {
         message: validatejsI18N.getMessage('validatejs.invalid.vatNumber.message')
       }
@@ -74,11 +68,8 @@ module.exports = function(validatejsI18N) {
     },
     dunsNo: {
       presence: false,
-      length: {
-        maximum: 250,
-        tooLong: validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
+      dunsNumber: {
+        message: validatejsI18N.getMessage('validatejs.invalid.dunsNumber.message')
       }
     }
   };

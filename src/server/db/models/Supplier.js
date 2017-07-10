@@ -1,6 +1,7 @@
 'use strict';
 const Sequelize = require('sequelize');
 const vatNumber = require('../../utils/validators/vatNumber.js');
+const dunsNumber = require('../../utils/validators/dunsNumber.js');
 
 module.exports = function(sequelize) {
   /**
@@ -90,7 +91,12 @@ module.exports = function(sequelize) {
     dunsNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
-      field: "DUNSNo"
+      field: "DUNSNo",
+      validate: {
+        isValid(value) {
+          if (dunsNumber.isInvalid(value)) throw new Error('dunsNo value is invalid');
+        }
+      }
     },
     status: {
       allowNull: true,

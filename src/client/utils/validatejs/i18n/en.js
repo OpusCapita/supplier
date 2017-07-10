@@ -16,6 +16,7 @@ const validatejs = {
     minSize: {},
     validator: {},
     vatNumber: {},
+    dunsNumber: {},
     iban: {},
     bic: {},
     swiftCode: {}
@@ -56,6 +57,7 @@ validatejs.not.equal.message = "Value cannot equal '{limit}'";
 validatejs.null.message = "Property cannot be null";
 validatejs.not.unique.message = "Value must be unique";
 validatejs.invalid.vatNumber.message = "Value is not a valid EU VAT number";
+validatejs.invalid.dunsNumber.message = "Value is not a valid D-U-N-S number";
 validatejs.invalid.iban.message = "Value is not a valid IBAN";
 validatejs.invalid.bic.message = "Value is not a valid BIC";
 validatejs.invalid.swiftCode.message = "Value is not a valid SWIFT Code";

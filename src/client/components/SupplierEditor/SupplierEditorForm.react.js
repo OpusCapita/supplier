@@ -37,6 +37,7 @@ function getValidator(i18n) {
   });
 
   customValidation.vatNumber(validatejs);
+  customValidation.dunsNumber(validatejs);
 
   return validatejs;
 }
