@@ -78,6 +78,8 @@ module.exports = function(sequelize) {
       field: "GlobalLocationNo",
       validate: {
         isValid(value) {
+          if (value.length === 0) return;
+
           if (globalLocationNumber.isInvalid(value)) throw new Error('globalLocationNo value is invalid');
         }
       }
