@@ -59,11 +59,8 @@ module.exports = function(validatejsI18N) {
     },
     globalLocationNo: {
       presence: false,
-      length: {
-        maximum: 250,
-        tooLong: validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 250
-        })
+      globalLocationNumber: {
+        message: validatejsI18N.getMessage('validatejs.invalid.globalLocationNumber.message')
       }
     },
     dunsNo: {
