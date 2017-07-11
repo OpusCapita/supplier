@@ -2,6 +2,7 @@
 const Sequelize = require('sequelize');
 const vatNumber = require('../../utils/validators/vatNumber.js');
 const dunsNumber = require('../../utils/validators/dunsNumber.js');
+const globalLocationNumber = require('../../utils/validators/globalLocationNumber.js');
 
 module.exports = function(sequelize) {
   /**
@@ -76,7 +77,12 @@ module.exports = function(sequelize) {
     globalLocationNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
-      field: "GlobalLocationNo"
+      field: "GlobalLocationNo",
+      validate: {
+        isValid(value) {
+          if (globalLocationNumber.isInvalid(value)) throw new Error('globalLocationNo value is invalid');
+        }
+      }
     },
     /** Company homepage url */
     homePage: {

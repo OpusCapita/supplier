@@ -45,3 +45,15 @@ module.exports.dunsNumber = function(validate) {
     return options.message;
   };
 };
+
+module.exports.globalLocationNumber = function(validate) {
+  return validate.validators.globalLocationNumber = function(value, options, key, attributes) {
+    if (!value) return null;
+
+    const globalLocationNumber = require('../../../server/utils/validators/globalLocationNumber.js');
+
+    if (globalLocationNumber.isValid(value)) return null;
+
+    return options.message;
+  };
+};

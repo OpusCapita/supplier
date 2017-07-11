@@ -38,6 +38,7 @@ function getValidator(i18n) {
 
   customValidation.vatNumber(validatejs);
   customValidation.dunsNumber(validatejs);
+  customValidation.globalLocationNumber(validatejs);
 
   return validatejs;
 }
