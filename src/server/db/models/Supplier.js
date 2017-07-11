@@ -67,6 +67,8 @@ module.exports = function(sequelize) {
       field: "VatIdentificationNo",
       validate: {
         isValid(value) {
+          if (value.length === 0) return;
+
           if (vatNumber.isInvalid(value)) throw new Error('vatIdentificationNo value is invalid');
         }
       }
@@ -94,6 +96,8 @@ module.exports = function(sequelize) {
       field: "DUNSNo",
       validate: {
         isValid(value) {
+          if (value.length === 0) return;
+
           if (dunsNumber.isInvalid(value)) throw new Error('dunsNo value is invalid');
         }
       }
