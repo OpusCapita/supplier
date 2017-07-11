@@ -17,6 +17,7 @@ const validatejs = {
     validator: {},
     vatNumber: {},
     dunsNumber: {},
+    globalLocationNumber: {},
     iban: {},
     bic: {},
     swiftCode: {}
@@ -58,6 +59,7 @@ validatejs.null.message = "Property cannot be null";
 validatejs.not.unique.message = "Value must be unique";
 validatejs.invalid.vatNumber.message = "Value is not a valid EU VAT number";
 validatejs.invalid.dunsNumber.message = "Value is not a valid D-U-N-S number";
+validatejs.invalid.globalLocationNumber.message = "Value is not a valid Global Location Number";
 validatejs.invalid.iban.message = "Value is not a valid IBAN";
 validatejs.invalid.bic.message = "Value is not a valid BIC";
 validatejs.invalid.swiftCode.message = "Value is not a valid SWIFT Code";
