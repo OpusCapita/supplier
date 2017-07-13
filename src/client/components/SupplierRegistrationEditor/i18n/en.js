@@ -51,7 +51,8 @@ Messages.unableToRender = 'Unable to render editor';
 Messages.saved = 'Data is successfully saved';
 Messages.failed = 'Supplier creation failed.';
 Messages.failedUnauthorized = 'Supplier creation failed: not authorized.';
-Messages.supplierExists = 'Supplier already exist';
+Messages.supplierExistsHeader = 'Supplier already exist';
+Messages.supplierExistsText = 'It seems someone else already registered your company on the Business Network. Please reach out to our support at +49 231 3967 0 or customerservice.de@opuscapita.com in order to initiate an access request to the registered company.';
 Messages.information1 = 'Please provide information that helps us to uniquely identify your company and allows us to add it to our trading partner directory.';
 Messages.information2 = 'After providing this information you are ready to login.';
 
