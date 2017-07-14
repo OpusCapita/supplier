@@ -6,9 +6,11 @@ module.exports.init = function(db, config)
   return Promise.resolve(this);
 };
 
-module.exports.all = function()
+module.exports.all = function(queryObj)
 {
-  return this.db.models.Supplier.findAll();
+  if (Object.keys(queryObj).length === 0) return this.db.models.Supplier.findAll();
+
+  return this.db.models.Supplier.findAll({ where: queryObj });
 };
 
 module.exports.find = function(supplierId)

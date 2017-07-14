@@ -14,7 +14,26 @@ module.exports = function(app, db, config) {
 
 let sendSuppliers = function(req, res)
 {
-  Supplier.all().then(suppliers =>
+  let searchObj = {};
+  const searchFields = [
+    'commercialRegisterNo',
+    'cityOfRegistration',
+    'countryOfRegistration',
+    'taxIdentificationNo',
+    'vatIdentificationNo',
+    'globalLocationNo',
+    'dunsNo'
+  ];
+
+  for (const index in searchFields) {
+    const field = searchFields[index];
+    if (Boolean(req.query[field]))
+      searchObj[field] = req.query[field];
+  }
+
+  console.log(searchObj);
+
+  Supplier.all(searchObj).then(suppliers =>
   {
     res.json(suppliers);
   });
