@@ -37,6 +37,9 @@ const validatejs = {
       math: {},
     },
   },
+  duplicate: {
+    vatNumber: {}
+  }
 };
 
 validatejs.doesnt.match.message = "Der Wert entspricht nicht dem vorgegebenen Muster '{limit}'";
@@ -58,6 +61,7 @@ validatejs.not.equal.message = "Der Wert darf nicht gleich ''{limit}'' sein";
 validatejs.null.message = "Die Eigenschaft darf nicht null sein";
 validatejs.not.unique.message = "Der Wert muss eindeutig sein";
 validatejs.invalid.vatNumber.message = "Der Wert ist keine gültige EU-Umsatzsteuer-Identifikationsnummer";
+validatejs.duplicate.vatNumber.message = "Ein Unternehmen existiert bereits mit dieser Umsatzsteuer-Identifikationsnummer.";
 validatejs.invalid.dunsNumber.message = "Der Wert ist keine gültige D-U-N-S Nummer";
 validatejs.invalid.globalLocationNumber.message = "Der Wert ist keine gültige Global Location Number";
 validatejs.invalid.iban.message = "Der Wert ist kein gültiger IBAN";
@@ -73,6 +77,8 @@ validatejs.typeMismatch.java.lang.Long = "Die Wert muss eine g\u00fcltige Zahl s
 validatejs.typeMismatch.java.lang.Short = "Die Wert muss eine g\u00fcltige Zahl sein";
 validatejs.typeMismatch.java.math.BigDecimal = "Die Wert muss eine g\u00fcltige Zahl sein";
 validatejs.typeMismatch.java.math.BigInteger = "Die Wert muss eine g\u00fcltige Zahl sein";
+
+validatejs.supplierExists = "{message}\nBitte kontaktieren Sie unseren Support via +49 231 3967 0 or customerservice.de@opuscapita.com, um einen Zugang zu diesem Unternehmen anzufordern."
 
 export default {
   validatejs,

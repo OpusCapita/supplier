@@ -12,7 +12,7 @@ class SupplierExistsView extends Component {
 
   render() {
     return (
-      <div class="jumbotron">
+      <div className="jumbotron">
         <h4>{this.props.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierExistsHeader')}</h4>
         <p>{this.props.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierExistsText')}</p>
         <button className="btn btn-default" onClick={ this.handleClick }>

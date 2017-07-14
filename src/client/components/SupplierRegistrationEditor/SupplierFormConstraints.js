@@ -55,6 +55,11 @@ module.exports = function(validatejsI18N) {
       presence: false,
       vatNumber: {
         message: validatejsI18N.getMessage('validatejs.invalid.vatNumber.message')
+      },
+      vatNumberExists: {
+        message: validatejsI18N.getMessage('validatejs.supplierExists', {
+          message: validatejsI18N.getMessage('validatejs.duplicate.vatNumber.message')
+        })
       }
     },
     globalLocationNo: {

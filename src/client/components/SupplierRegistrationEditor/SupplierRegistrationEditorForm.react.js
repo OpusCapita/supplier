@@ -9,6 +9,7 @@ import customValidation from '../../utils/validatejs/custom.js';
 
 function getValidator() {
   customValidation.vatNumber(validatejs);
+  customValidation.vatNumberExists(validatejs);
   customValidation.dunsNumber(validatejs);
   customValidation.globalLocationNumber(validatejs);
 
@@ -84,23 +85,30 @@ class SupplierRegistrationEditorForm extends Component {
     });
   };
 
-  handleBlur = (fieldName/* , event*/) => {
-    const errors = getValidator()(
-      this.state.supplier, {
-        [fieldName]: this.SUPPLIER_CONSTRAINTS[fieldName]
-      }, {
-        fullMessages: false
-      }
-    );
+  handleBlur = (fieldName) => {
+    const success = () => {
+      console.log('Entered here');
+      this.setState({
+        fieldErrors: {
+          ...this.state.fieldErrors,
+          [fieldName]: []
+        }
+      });
+    };
 
-    this.setState({
-      fieldErrors: {
-        ...this.state.fieldErrors,
-        [fieldName]: errors ?
-          errors[fieldName].map(msg => ({ message: msg })) :
-          []
-      }
-    });
+    const error = (errors) => {
+      console.log(errors);
+      this.setState({
+        fieldErrors: {
+          ...this.state.fieldErrors,
+          [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
+        }
+      });
+    };
+
+    const constraints = { [fieldName]: this.SUPPLIER_CONSTRAINTS[fieldName] };
+
+    getValidator().async(this.state.supplier, constraints, { fullMessages: false }).then(success, error);
   };
 
   handleCancel = event => {
@@ -122,14 +130,11 @@ class SupplierRegistrationEditorForm extends Component {
       supplier.role = 'selling';
     }
 
-    const errors = validatejs(
-      supplier,
-      this.SUPPLIER_CONSTRAINTS, {
-        fullMessages: false
-      }
-    );
+    const success = () => {
+      onSupplierChange(supplier);
+    };
 
-    if (errors) {
+    const error = (errors) => {
       this.setState({
         fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
           ...rez,
@@ -138,11 +143,10 @@ class SupplierRegistrationEditorForm extends Component {
       });
 
       onSupplierChange(null);
-      return;
-    }
+    };
 
-    onSupplierChange(supplier);
-    return;
+    getValidator().async(supplier, this.SUPPLIER_CONSTRAINTS, { fullMessages: false }).
+      then(success, error);
   };
 
   renderField = attrs => {

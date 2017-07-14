@@ -10,6 +10,27 @@ module.exports.vatNumber = function(validate) {
   };
 };
 
+module.exports.vatNumberExists = function(validate) {
+  return validate.validators.vatNumberExists = function(value, options, key, attributes) {
+    const request = require('superagent-bluebird-promise');
+
+    return new validate.Promise((resolve, reject) => {
+      if (value) {
+        request.get(`/supplier/api/suppliers?vatIdentificationNo=${value}`).set('Accept', 'application/json').
+        then(response => {
+          if (response.body.length === 0) {
+            resolve();
+          } else {
+            resolve(options.message);
+          }
+        }).catch(error => reject());
+      } else {
+        resolve();
+      }
+    })
+  };
+};
+
 module.exports.iban = function(validate) {
   return validate.validators.iban = function(value, options, key, attributes) {
     if (!value) return null;
