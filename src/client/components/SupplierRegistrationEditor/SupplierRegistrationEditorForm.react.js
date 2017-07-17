@@ -108,15 +108,8 @@ class SupplierRegistrationEditorForm extends Component {
     });
   };
 
-  handleBlur = (fieldName, event) => {
+  handleBlur = (fieldName) => {
     const constraints = this.fieldConstraints(fieldName);
-    let supplier = this.state.supplier;
-
-    if (event.target) {
-      supplier[fieldName] = event.target.value;
-    } else {
-      supplier[fieldName] = event;
-    }
 
     this.setState({
       fieldErrors: Object.keys(constraints).reduce((rez, fieldName) => ({
@@ -134,7 +127,7 @@ class SupplierRegistrationEditorForm extends Component {
       });
     };
 
-    getValidator().async(supplier, constraints, { fullMessages: false }).then(null, error);
+    getValidator().async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
   };
 
   handleCancel = event => {
@@ -239,7 +232,7 @@ class SupplierRegistrationEditorForm extends Component {
                       actionUrl={this.props.actionUrl}
                       value={this.state.supplier['countryOfRegistration']}
                       onChange={this.handleChange.bind(this, 'countryOfRegistration')}
-                      onBlur={ this.handleBlur.bind(this, 'countryOfRegistration') }
+                      onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
                     />
                   )
                 }) }
