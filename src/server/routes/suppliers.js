@@ -31,8 +31,6 @@ let sendSuppliers = function(req, res)
       searchObj[field] = req.query[field];
   }
 
-  console.log(searchObj);
-
   Supplier.all(searchObj).then(suppliers =>
   {
     res.json(suppliers);

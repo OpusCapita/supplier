@@ -37,7 +37,11 @@ const validatejs = {
     },
   },
   duplicate: {
-    vatNumber: {}
+    registerationNumber: {},
+    taxIdNumber: {},
+    vatNumber: {},
+    dunsNumber: {},
+    globalLocationNumber: {}
   }
 };
 
@@ -59,12 +63,16 @@ validatejs.not.equal.message = "Value cannot equal '{limit}'";
 validatejs.null.message = "Property cannot be null";
 validatejs.not.unique.message = "Value must be unique";
 validatejs.invalid.vatNumber.message = "Value is not a valid EU VAT number";
-validatejs.duplicate.vatNumber.message = "A company already exists with this VAT number.";
 validatejs.invalid.dunsNumber.message = "Value is not a valid D-U-N-S number";
 validatejs.invalid.globalLocationNumber.message = "Value is not a valid Global Location Number";
 validatejs.invalid.iban.message = "Value is not a valid IBAN";
 validatejs.invalid.bic.message = "Value is not a valid BIC";
 validatejs.invalid.swiftCode.message = "Value is not a valid SWIFT Code";
+validatejs.duplicate.registerationNumber.message = "A company already exists with this registration number, city and country.";
+validatejs.duplicate.taxIdNumber.message = "A company already exists with this Tax Identification Number and country.";
+validatejs.duplicate.vatNumber.message = "A company already exists with this VAT number.";
+validatejs.duplicate.dunsNumber.message = "A company already exists with this D-U-N-S number.";
+validatejs.duplicate.globalLocationNumber.message = "A company already exists with this Global Location Number.";
 
 validatejs.typeMismatch.java.net.URL = "Value must be a valid URL";
 validatejs.typeMismatch.java.net.URI = "Value must be a valid URI";
