@@ -6,10 +6,11 @@ import './SupplierRegistrationEditor.css';
 import SupplierFormConstraints from './SupplierFormConstraints';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import customValidation from '../../utils/validatejs/custom.js';
+import customValidationAsync from '../../utils/validatejs/customAsync.js';
 
 function getValidator() {
   customValidation.vatNumber(validatejs);
-  customValidation.vatNumberExists(validatejs);
+  customValidationAsync.vatNumberExists(validatejs);
   customValidation.dunsNumber(validatejs);
   customValidation.globalLocationNumber(validatejs);
 
@@ -87,7 +88,6 @@ class SupplierRegistrationEditorForm extends Component {
 
   handleBlur = (fieldName) => {
     const success = () => {
-      console.log('Entered here');
       this.setState({
         fieldErrors: {
           ...this.state.fieldErrors,
@@ -97,7 +97,6 @@ class SupplierRegistrationEditorForm extends Component {
     };
 
     const error = (errors) => {
-      console.log(errors);
       this.setState({
         fieldErrors: {
           ...this.state.fieldErrors,
