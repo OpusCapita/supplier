@@ -76,11 +76,25 @@ class SupplierRegistrationEditorForm extends Component {
         countryOfRegistration: this.SUPPLIER_CONSTRAINTS['countryOfRegistration']
       };
 
+    if (fieldName === 'countryOfRegistration')
+      return {
+        commercialRegisterNo: this.SUPPLIER_CONSTRAINTS['commercialRegisterNo'],
+        taxIdentificationNo: this.SUPPLIER_CONSTRAINTS['taxIdentificationNo'],
+        cityOfRegistration: this.SUPPLIER_CONSTRAINTS['cityOfRegistration'],
+        countryOfRegistration: this.SUPPLIER_CONSTRAINTS['countryOfRegistration']
+      };
+
     return { [fieldName]: this.SUPPLIER_CONSTRAINTS[fieldName] };
   };
 
   handleChange = (fieldName, event) => {
-    let newValue = event.target.value;
+    let newValue;
+
+    if (event.target) {
+      newValue = event.target.value;
+    } else {
+      newValue = event;
+    }
 
     if (this.props.onChange) {
       this.props.onChange(fieldName, this.state.supplier[fieldName], newValue);
@@ -94,44 +108,33 @@ class SupplierRegistrationEditorForm extends Component {
     });
   };
 
-  handleCountryChange = (fieldName, country) => {
-    if (this.props.onChange) {
-      this.props.onChange(fieldName, this.state.supplier[fieldName], country);
+  handleBlur = (fieldName, event) => {
+    const constraints = this.fieldConstraints(fieldName);
+    let supplier = this.state.supplier;
+
+    if (event.target) {
+      supplier[fieldName] = event.target.value;
+    } else {
+      supplier[fieldName] = event;
     }
 
     this.setState({
-      supplier: {
-        ...this.state.supplier,
-        [fieldName]: country
-      }
+      fieldErrors: Object.keys(constraints).reduce((rez, fieldName) => ({
+        ...rez,
+        [fieldName]: []
+      }), this.state.fieldErrors)
     });
-
-    this.handleBlur('taxIdentificationNo');
-    this.handleBlur('commercialRegisterNo');
-  };
-
-  handleBlur = (fieldName) => {
-    const success = () => {
-      this.setState({
-        fieldErrors: {
-          ...this.state.fieldErrors,
-          [fieldName]: []
-        }
-      });
-    };
 
     const error = (errors) => {
       this.setState({
         fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
           ...rez,
           [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
-        }), {})
+        }), this.state.fieldErrors)
       });
     };
 
-    const constraints = this.fieldConstraints(fieldName);
-
-    getValidator().async(this.state.supplier, constraints, { fullMessages: false }).then(success, error);
+    getValidator().async(supplier, constraints, { fullMessages: false }).then(null, error);
   };
 
   handleCancel = event => {
@@ -235,7 +238,8 @@ class SupplierRegistrationEditorForm extends Component {
                     <CountryField
                       actionUrl={this.props.actionUrl}
                       value={this.state.supplier['countryOfRegistration']}
-                      onChange={this.handleCountryChange.bind(this, 'countryOfRegistration')}
+                      onChange={this.handleChange.bind(this, 'countryOfRegistration')}
+                      onBlur={ this.handleBlur.bind(this, 'countryOfRegistration') }
                     />
                   )
                 }) }
