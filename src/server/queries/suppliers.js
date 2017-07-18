@@ -11,6 +11,13 @@ module.exports.all = function()
   return this.db.models.Supplier.findAll();
 };
 
+module.exports.count = function(queryObj)
+{
+  if (Object.keys(queryObj).length === 0) return this.db.models.Supplier.count();
+
+  return this.db.models.Supplier.count({ where: queryObj });
+};
+
 module.exports.find = function(supplierId)
 {
   return this.db.models.Supplier.findById(supplierId);
@@ -46,16 +53,26 @@ module.exports.recordExists = function(supplier)
   const options = {
     $or: [
       {
-        supplierName: { $eq: supplier.supplierName, $ne: null }
+        dunsNo: { $eq: supplier.dunsNo, $ne: null, $notIn: [''] }
       },
       {
-        commercialRegisterNo: { $eq: supplier.commercialRegisterNo, $ne: null }
+        globalLocationNo: { $eq: supplier.globalLocationNo, $ne: null, $notIn: [''] }
       },
       {
-        taxIdentificationNo: { $eq: supplier.taxIdentificationNo, $ne: null }
+        vatIdentificationNo: { $eq: supplier.vatIdentificationNo, $ne: null, $notIn: [''] }
       },
       {
-        vatIdentificationNo: { $eq: supplier.vatIdentificationNo, $ne: null }
+        $and: {
+          commercialRegisterNo: { $eq: supplier.commercialRegisterNo, $ne: null, $notIn: [''] },
+          cityOfRegistration: { $eq: supplier.cityOfRegistration },
+          countryOfRegistration: { $eq: supplier.countryOfRegistration }
+        }
+      },
+      {
+        $and: {
+          taxIdentificationNo: { $eq: supplier.taxIdentificationNo, $ne: null, $notIn: [''] },
+          countryOfRegistration: { $eq: supplier.countryOfRegistration }
+        }
       }
     ]
   }
