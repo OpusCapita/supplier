@@ -25,8 +25,23 @@ module.exports.find = function(supplierId)
 
 module.exports.create = function(supplier)
 {
-  return this.db.models.Supplier.create(supplier).then(supplier => {
-    return supplier;
+  const self = this;
+  let supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '');
+
+  function generateSupplierId(id)
+  {
+    return self.exists(id).then(exists => {
+      if (exists) {
+        return generateSupplierId(supplierId + randomNumber());
+      } else {
+        return id;
+      }
+    });
+  }
+
+  return generateSupplierId(supplierId).then(id => {
+    supplier.supplierId = id;
+    return this.db.models.Supplier.create(supplier);
   });
 };
 
@@ -84,3 +99,8 @@ module.exports.isAuthorized = function(supplierId, changedBy)
 {
   return this.db.models.Supplier.findById(supplierId).then(supplier => supplier && supplier.changedBy === changedBy);
 };
+
+let randomNumber = function()
+{
+  return Math.floor((Math.random() * 1000));
+}

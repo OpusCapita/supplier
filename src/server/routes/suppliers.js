@@ -76,7 +76,6 @@ let createSuppliers = function(req, res)
             });
         })
         .catch(error => {
-          Supplier.delete(supplierId).then(() => null);
           req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
 
           return res.status(error.response.statusCode || 400).json({ message : error.message });

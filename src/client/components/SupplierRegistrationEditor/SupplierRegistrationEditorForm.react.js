@@ -141,10 +141,6 @@ class SupplierRegistrationEditorForm extends Component {
     const { onSupplierChange } = this.props;
     const supplier = { ...this.state.supplier };
 
-    if (supplier.supplierName) {
-      supplier.supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '');
-    }
-
     if (!supplier.role) {
       supplier.role = 'selling';
     }
@@ -179,7 +175,6 @@ class SupplierRegistrationEditorForm extends Component {
         value={ typeof supplier[fieldName] === 'string' ? supplier[fieldName] : '' }
         onChange={ this.handleChange.bind(this, fieldName) }
         onBlur={ this.handleBlur.bind(this, fieldName) }
-        autoFocus={ fieldName === 'supplierName' && !this.props.supplierId }
       />;
 
     let isRequired = fieldNames.some(name => {
@@ -205,16 +200,6 @@ class SupplierRegistrationEditorForm extends Component {
   render() {
     const { supplier } = this.state;
     const { CountryField } = this.externalComponents;
-
-    let companiesSearchValue = {};
-
-    if (supplier.supplierId) {
-      companiesSearchValue.supplierId = supplier.supplierId;
-    }
-
-    if (Object.keys(companiesSearchValue).length === 0) {
-      companiesSearchValue = null;
-    }
 
     return (
       <div className="row">
