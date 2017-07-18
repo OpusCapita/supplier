@@ -6,6 +6,7 @@ module.exports = function(app, db, config) {
   {
     this.events = new RedisEvents({ consul : { host : 'consul' } });
     app.get('/api/suppliers', (req, res) => sendSuppliers(req, res));
+    app.get('/api/suppliers/exists', (req, res) => existsSuppliers(req, res));
     app.post('/api/suppliers', (req, res) => createSuppliers(req, res));
     app.get('/api/suppliers/:supplierId', (req, res) => sendSupplier(req, res));
     app.put('/api/suppliers/:supplierId', (req, res) => updateSupplier(req, res));
@@ -14,8 +15,16 @@ module.exports = function(app, db, config) {
 
 let sendSuppliers = function(req, res)
 {
-  let searchObj = {};
-  const searchFields = [
+  Supplier.all().then(suppliers =>
+  {
+    res.json(suppliers);
+  });
+};
+
+let existsSuppliers = function(req, res)
+{
+  let queryObj = {};
+  const queryFields = [
     'commercialRegisterNo',
     'cityOfRegistration',
     'countryOfRegistration',
@@ -25,17 +34,17 @@ let sendSuppliers = function(req, res)
     'dunsNo'
   ];
 
-  for (const index in searchFields) {
-    const field = searchFields[index];
+  for (const index in queryFields) {
+    const field = queryFields[index];
     if (Boolean(req.query[field]))
-      searchObj[field] = req.query[field];
+      queryObj[field] = req.query[field];
   }
 
-  Supplier.all(searchObj).then(suppliers =>
+  Supplier.count(queryObj).then(count =>
   {
-    res.json(suppliers);
+    res.json(count > 0);
   });
-};
+}
 
 let createSuppliers = function(req, res)
 {

@@ -72,6 +72,11 @@
         "type": "rest",
         "resourceId": "/api/suppliers/${_current_supplier_id}/profile_strength",
         "actions": ["view"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/exists",
+        "actions": ["view"]
       }
     ]
   },
@@ -142,6 +147,11 @@
       {
         "type": "rest",
         "resourceId": "/api/suppliers/${_current_supplier_id}/profile_strength",
+        "actions": ["view"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/exists",
         "actions": ["view"]
       }
     ]

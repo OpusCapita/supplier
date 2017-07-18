@@ -1,5 +1,5 @@
 const request = require('superagent-bluebird-promise');
-const url = '/supplier/api/suppliers';
+const url = '/supplier/api/suppliers/exists';
 
 
 
@@ -52,10 +52,10 @@ let recordExists = function(value, validate, queryParams, errorMessage) {
     }
 
     request.get(url).query(queryParams).set('Accept', 'application/json').then(response => {
-      if (response.body.length === 0) {
-        resolve();
-      } else {
+      if (response.body) {
         resolve(errorMessage);
+      } else {
+        resolve();
       }
     }).catch(error => reject());
   });

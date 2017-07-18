@@ -6,11 +6,16 @@ module.exports.init = function(db, config)
   return Promise.resolve(this);
 };
 
-module.exports.all = function(queryObj)
+module.exports.all = function()
 {
-  if (Object.keys(queryObj).length === 0) return this.db.models.Supplier.findAll();
+  return this.db.models.Supplier.findAll();
+};
 
-  return this.db.models.Supplier.findAll({ where: queryObj });
+module.exports.count = function(queryObj)
+{
+  if (Object.keys(queryObj).length === 0) return this.db.models.Supplier.count();
+
+  return this.db.models.Supplier.count({ where: queryObj });
 };
 
 module.exports.find = function(supplierId)
