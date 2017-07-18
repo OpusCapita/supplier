@@ -24,9 +24,12 @@ module.exports = function(sequelize) {
       field: "SupplierID"
     },
     supplierName: {
-      allowNull: true,
+      allowNull: false,
       type: Sequelize.STRING(50),
-      field: "SupplierName"
+      field: "SupplierName",
+      validate: {
+        notEmpty: true
+      }
     },
     foundedOn: {
       allowNull: true,
@@ -45,15 +48,21 @@ module.exports = function(sequelize) {
     },
     /** A supplier's city of registration */
     cityOfRegistration: {
-      allowNull: true,
+      allowNull: false,
       type: Sequelize.STRING(250),
-      field: "CityOfRegistration"
+      field: "CityOfRegistration",
+      validate: {
+        notEmpty: true
+      }
     },
     /** A supplier's country of registration as in ISO 3166-1 alpha2 */
     countryOfRegistration: {
-      allowNull: true,
+      allowNull: false,
       type: Sequelize.STRING(250),
-      field: "CountryOfRegistration"
+      field: "CountryOfRegistration",
+      validate: {
+        notEmpty: true
+      }
     },
     /** A Tax Identification Number or TIN */
     taxIdentificationNo: {

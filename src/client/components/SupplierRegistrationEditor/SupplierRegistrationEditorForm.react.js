@@ -6,11 +6,17 @@ import './SupplierRegistrationEditor.css';
 import SupplierFormConstraints from './SupplierFormConstraints';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import customValidation from '../../utils/validatejs/custom.js';
+import customValidationAsync from '../../utils/validatejs/customAsync.js';
 
 function getValidator() {
   customValidation.vatNumber(validatejs);
   customValidation.dunsNumber(validatejs);
   customValidation.globalLocationNumber(validatejs);
+  customValidationAsync.registerationNumberExists(validatejs);
+  customValidationAsync.taxIdNumberExists(validatejs);
+  customValidationAsync.vatNumberExists(validatejs);
+  customValidationAsync.dunsNumberExists(validatejs);
+  customValidationAsync.globalLocationNumberExists(validatejs);
 
   return validatejs;
 };
@@ -56,8 +62,39 @@ class SupplierRegistrationEditorForm extends Component {
     this.SUPPLIER_CONSTRAINTS = SupplierFormConstraints(nextProps.i18n);
   }
 
+  fieldConstraints = (fieldName) => {
+    if (fieldName === 'taxIdentificationNo')
+      return {
+        taxIdentificationNo: this.SUPPLIER_CONSTRAINTS['taxIdentificationNo'],
+        countryOfRegistration: this.SUPPLIER_CONSTRAINTS['countryOfRegistration']
+      };
+
+    if (['commercialRegisterNo', 'cityOfRegistration'].indexOf(fieldName) > -1)
+      return {
+        commercialRegisterNo: this.SUPPLIER_CONSTRAINTS['commercialRegisterNo'],
+        cityOfRegistration: this.SUPPLIER_CONSTRAINTS['cityOfRegistration'],
+        countryOfRegistration: this.SUPPLIER_CONSTRAINTS['countryOfRegistration']
+      };
+
+    if (fieldName === 'countryOfRegistration')
+      return {
+        commercialRegisterNo: this.SUPPLIER_CONSTRAINTS['commercialRegisterNo'],
+        taxIdentificationNo: this.SUPPLIER_CONSTRAINTS['taxIdentificationNo'],
+        cityOfRegistration: this.SUPPLIER_CONSTRAINTS['cityOfRegistration'],
+        countryOfRegistration: this.SUPPLIER_CONSTRAINTS['countryOfRegistration']
+      };
+
+    return { [fieldName]: this.SUPPLIER_CONSTRAINTS[fieldName] };
+  };
+
   handleChange = (fieldName, event) => {
-    let newValue = event.target.value;
+    let newValue;
+
+    if (event.target) {
+      newValue = event.target.value;
+    } else {
+      newValue = event;
+    }
 
     if (this.props.onChange) {
       this.props.onChange(fieldName, this.state.supplier[fieldName], newValue);
@@ -71,36 +108,26 @@ class SupplierRegistrationEditorForm extends Component {
     });
   };
 
-  handleCountryChange = (fieldName, country) => {
-    if (this.props.onChange) {
-      this.props.onChange(fieldName, this.state.supplier[fieldName], country);
-    }
+  handleBlur = (fieldName) => {
+    const constraints = this.fieldConstraints(fieldName);
 
     this.setState({
-      supplier: {
-        ...this.state.supplier,
-        [fieldName]: country
-      }
+      fieldErrors: Object.keys(constraints).reduce((rez, fieldName) => ({
+        ...rez,
+        [fieldName]: []
+      }), this.state.fieldErrors)
     });
-  };
 
-  handleBlur = (fieldName/* , event*/) => {
-    const errors = getValidator()(
-      this.state.supplier, {
-        [fieldName]: this.SUPPLIER_CONSTRAINTS[fieldName]
-      }, {
-        fullMessages: false
-      }
-    );
+    const error = (errors) => {
+      this.setState({
+        fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
+          ...rez,
+          [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
+        }), this.state.fieldErrors)
+      });
+    };
 
-    this.setState({
-      fieldErrors: {
-        ...this.state.fieldErrors,
-        [fieldName]: errors ?
-          errors[fieldName].map(msg => ({ message: msg })) :
-          []
-      }
-    });
+    getValidator().async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
   };
 
   handleCancel = event => {
@@ -122,27 +149,23 @@ class SupplierRegistrationEditorForm extends Component {
       supplier.role = 'selling';
     }
 
-    const errors = validatejs(
-      supplier,
-      this.SUPPLIER_CONSTRAINTS, {
-        fullMessages: false
-      }
-    );
+    const success = () => {
+      onSupplierChange(supplier);
+    };
 
-    if (errors) {
+    const error = (errors) => {
       this.setState({
         fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
           ...rez,
           [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
-        }), {}),
+        }), {})
       });
 
       onSupplierChange(null);
-      return;
-    }
+    };
 
-    onSupplierChange(supplier);
-    return;
+    getValidator().async(supplier, this.SUPPLIER_CONSTRAINTS, { fullMessages: false }).
+      then(success, error);
   };
 
   renderField = attrs => {
@@ -208,7 +231,7 @@ class SupplierRegistrationEditorForm extends Component {
                     <CountryField
                       actionUrl={this.props.actionUrl}
                       value={this.state.supplier['countryOfRegistration']}
-                      onChange={this.handleCountryChange.bind(this, 'countryOfRegistration')}
+                      onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                       onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
                     />
                   )
