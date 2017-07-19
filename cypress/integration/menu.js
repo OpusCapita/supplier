@@ -28,5 +28,10 @@ describe('Supplier', function() {
       cy.get('.nav-tabs > li:nth-child(5) > a').focus().click();
       cy.url().should('include', '/bank');
     });
+
+    it('should direct to profile strength', function() {
+      cy.get('.nav-tabs > li:nth-child(6) > a').focus().click();
+      cy.url().should('include', '/profile_strength');
+    });
   });
 });
