@@ -3,7 +3,7 @@ import _ from 'underscore';
 import validatejs from 'validate.js';
 import SupplierEditorFormRow from '../AttributeValueEditorRow.react.js';
 import './SupplierEditor.css';
-import SupplierFormConstraints from './SupplierFormConstraints';
+import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import DateInput from '@opuscapita/react-dates/lib/DateInput';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import customValidation from '../../utils/validatejs/custom.js';
@@ -76,7 +76,7 @@ class SupplierEditorForm extends Component {
 
     this.externalComponents = { CountryField };
 
-    this.SUPPLIER_CONSTRAINTS = SupplierFormConstraints(this.props.i18n);
+    this.constraints = new SupplierConstraints(this.props.i18n);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -89,33 +89,8 @@ class SupplierEditorForm extends Component {
       });
     }
 
-    this.SUPPLIER_CONSTRAINTS = SupplierFormConstraints(nextProps.i18n);
+    this.constraints = new SupplierConstraints(nextProps.i18n);
   }
-
-  fieldConstraints = (fieldName) => {
-    if (fieldName === 'taxIdentificationNo')
-      return {
-        taxIdentificationNo: this.SUPPLIER_CONSTRAINTS['taxIdentificationNo'],
-        countryOfRegistration: this.SUPPLIER_CONSTRAINTS['countryOfRegistration'],
-      };
-
-    if (['commercialRegisterNo', 'cityOfRegistration'].indexOf(fieldName) > -1)
-      return {
-        commercialRegisterNo: this.SUPPLIER_CONSTRAINTS['commercialRegisterNo'],
-        cityOfRegistration: this.SUPPLIER_CONSTRAINTS['cityOfRegistration'],
-        countryOfRegistration: this.SUPPLIER_CONSTRAINTS['countryOfRegistration'],
-      };
-
-    if (fieldName === 'countryOfRegistration')
-      return {
-        commercialRegisterNo: this.SUPPLIER_CONSTRAINTS['commercialRegisterNo'],
-        taxIdentificationNo: this.SUPPLIER_CONSTRAINTS['taxIdentificationNo'],
-        cityOfRegistration: this.SUPPLIER_CONSTRAINTS['cityOfRegistration'],
-        countryOfRegistration: this.SUPPLIER_CONSTRAINTS['countryOfRegistration'],
-      };
-
-    return { [fieldName]: this.SUPPLIER_CONSTRAINTS[fieldName] };
-  };
 
   setFieldErrorsStates = (errors) => {
     this.setState({
@@ -148,7 +123,7 @@ class SupplierEditorForm extends Component {
   };
 
   handleBlur = (fieldName) => {
-    const constraints = this.fieldConstraints(fieldName);
+    const constraints = this.constraints.forField(fieldName);
 
     this.setState({
       fieldErrors: Object.keys(constraints).reduce((rez, fieldName) => ({
@@ -177,7 +152,7 @@ class SupplierEditorForm extends Component {
 
     const { onSupplierChange } = this.props;
     const supplier = { ...this.state.supplier };
-    const constraints = { ...this.SUPPLIER_CONSTRAINTS, supplierId: {} };
+    const constraints = { ...this.constraints.forUpdate(), supplierId: {} };
 
     const success = () => {
       onSupplierChange(supplier);
@@ -195,6 +170,7 @@ class SupplierEditorForm extends Component {
     const { supplier, fieldErrors } = this.state;
     const { fieldName } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
+    const constraints = this.constraints.forUpdate();
 
     let component = attrs.component ||
       <input className="form-control"
@@ -205,7 +181,7 @@ class SupplierEditorForm extends Component {
       />;
 
     let isRequired = fieldNames.some(name => {
-      return this.SUPPLIER_CONSTRAINTS[name] && this.SUPPLIER_CONSTRAINTS[name].presence;
+      return constraints[name] && constraints[name].presence;
     });
 
     let rowErrors = fieldNames.reduce((rez, name) => rez.concat(fieldErrors[name] || []), []);
