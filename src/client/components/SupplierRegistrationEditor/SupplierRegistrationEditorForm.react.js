@@ -140,7 +140,6 @@ class SupplierRegistrationEditorForm extends Component {
 
     const { onSupplierChange } = this.props;
     const supplier = { ...this.state.supplier };
-    supplier.role = 'selling';
 
     const success = () => {
       onSupplierChange(supplier);

@@ -40,6 +40,7 @@ module.exports.create = function(supplier)
 
   return generateSupplierId(supplierId).then(id => {
     supplier.supplierId = id;
+    supplier.role = 'selling';
     return this.db.models.Supplier.create(supplier);
   });
 };
