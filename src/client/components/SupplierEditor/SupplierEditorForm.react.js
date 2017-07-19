@@ -96,7 +96,7 @@ class SupplierEditorForm extends Component {
 
     constraints.supplierId = {};
 
-    validator.forRegistration(this.props.i18n).
+    validator.forUpdate(this.props.i18n).
       async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
   };
 
@@ -109,7 +109,7 @@ class SupplierEditorForm extends Component {
     event.preventDefault();
 
     const { onSupplierChange } = this.props;
-    const supplier = { ...this.state.supplier };
+    const supplier = this.state.supplier;
     const constraints = { ...this.constraints.forUpdate(), supplierId: {} };
 
     const success = () => {
@@ -121,7 +121,7 @@ class SupplierEditorForm extends Component {
       onSupplierChange(null);
     };
 
-    validator.forRegistration(this.props.i18n).
+    validator.forUpdate(this.props.i18n).
       async(supplier, constraints, { fullMessages: false }).then(success, error);
   };
 

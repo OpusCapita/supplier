@@ -91,7 +91,7 @@ class SupplierRegistrationEditorForm extends Component {
       this.setFieldErrorsStates(errors);
     };
 
-    validator.forUpdate().async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
+    validator.forRegistration().async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
   };
 
   handleCancel = event => {
@@ -103,7 +103,7 @@ class SupplierRegistrationEditorForm extends Component {
     event.preventDefault();
 
     const { onSupplierChange } = this.props;
-    const supplier = { ...this.state.supplier };
+    const supplier = this.state.supplier;
     const constraints = this.constraints.forRegistration();
 
     const success = () => {
@@ -115,7 +115,7 @@ class SupplierRegistrationEditorForm extends Component {
       onSupplierChange(null);
     };
 
-    validator.forUpdate().async(supplier, constraints, { fullMessages: false }).then(success, error);
+    validator.forRegistration().async(supplier, constraints, { fullMessages: false }).then(success, error);
   };
 
   renderField = attrs => {
