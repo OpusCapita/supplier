@@ -44,7 +44,7 @@ class SupplierAddressEditor extends Component {
     loadErrors: false
   };
 
-  componentWillMount(){
+  componentWillMount() {
     this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierAddressEditor', i18nMessages) });
   }
 
@@ -54,9 +54,9 @@ class SupplierAddressEditor extends Component {
     }
 
     console.log('===== ABOUT TO REQUEST a PROMISE');
-    this.loadAddressesPromise = request
-      .get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}/addresses`)
-      .set('Accept', 'application/json').promise();
+    this.loadAddressesPromise = request.
+      get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}/addresses`).
+      set('Accept', 'application/json').promise();
 
     this.loadAddressesPromise.then(response => {
       this.setState({
@@ -96,7 +96,7 @@ class SupplierAddressEditor extends Component {
       this.setState(newState);
     }
 
-    if(this.state.i18n && newProps.locale != this.props.locale){
+    if (this.state.i18n && newProps.locale != this.props.locale) {
       this.setState({ i18n: i18nRegister(newProps.locale, 'SupplierAddressEditor', i18nMessages) });
     }
   }
@@ -274,14 +274,13 @@ class SupplierAddressEditor extends Component {
 
     return (
       <div>
-        <Button onClick={this.handleCreate}>{this.state.i18n.getMessage('SupplierAddressEditor.Button.add')}
+        <Button id="add-button" onClick={this.handleCreate}>{this.state.i18n.getMessage('SupplierAddressEditor.Button.add')}
         </Button>
       </div>
     )
   }
 
   render() {
-
     const { supplierAddresses, supplierAddress, loadErrors, errors, editMode, isLoaded } = this.state;
 
     let readOnly = this.props.readOnly;

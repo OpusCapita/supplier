@@ -1,0 +1,17 @@
+{
+  "type": "Default Company Address",
+  "name1": "Name1",
+  "name2": "Name2",
+  "name3": "Name3",
+  "street": "Street",
+  "zipCode": "ZipCode",
+  "city": "City",
+  "country": "Poland",
+  "areaCode": "AreaCode",
+  "state": "State",
+  "poBox": "POBox",
+  "poBoxZipCode": "ZipCode",
+  "telephone": "Telephone",
+  "telefax": "Telefax",
+  "email": "Email"
+}
