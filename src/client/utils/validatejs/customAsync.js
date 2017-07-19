@@ -5,28 +5,38 @@ const url = '/supplier/api/suppliers/exists';
 
 module.exports.vatNumberExists = function(validate) {
   return validate.validators.vatNumberExists = function(value, options, key, attributes) {
-    return recordExists(value, validate, { vatIdentificationNo: value }, options.message);
+    let queryParams = { vatIdentificationNo: value };
+    if (attributes['supplierId']) queryParams.supplierId = attributes['supplierId'];
+
+    return recordExists(value, validate, queryParams, options.message);
   };
 };
 
 module.exports.dunsNumberExists = function(validate) {
   return validate.validators.dunsNumberExists = function(value, options, key, attributes) {
-    return recordExists(value, validate, { dunsNo: value }, options.message);
+    let queryParams = { dunsNo: value };
+    if (attributes['supplierId']) queryParams.supplierId = attributes['supplierId'];
+
+    return recordExists(value, validate, queryParams, options.message);
   };
 };
 
 module.exports.globalLocationNumberExists = function(validate) {
   return validate.validators.globalLocationNumberExists = function(value, options, key, attributes) {
-    return recordExists(value, validate, { globalLocationNo: value }, options.message);
+    let queryParams = { globalLocationNo: value }
+    if (attributes['supplierId']) queryParams.supplierId = attributes['supplierId'];
+
+    return recordExists(value, validate, queryParams, options.message);
   };
 };
 
 module.exports.taxIdNumberExists = function(validate) {
   return validate.validators.taxIdNumberExists = function(value, options, key, attributes) {
-    const queryParams = {
+    let queryParams = {
       taxIdentificationNo: attributes['taxIdentificationNo'],
       countryOfRegistration: attributes['countryOfRegistration']
     };
+    if (attributes['supplierId']) queryParams.supplierId = attributes['supplierId'];
 
     return recordExists(attributes['taxIdentificationNo'], validate, queryParams, options.message);
   };
@@ -34,11 +44,12 @@ module.exports.taxIdNumberExists = function(validate) {
 
 module.exports.registerationNumberExists = function(validate) {
   return validate.validators.registerationNumberExists = function(value, options, key, attributes) {
-    const queryParams = {
+    let queryParams = {
       commercialRegisterNo: attributes['commercialRegisterNo'],
       cityOfRegistration: attributes['cityOfRegistration'],
       countryOfRegistration: attributes['countryOfRegistration']
     };
+    if (attributes['supplierId']) queryParams.supplierId = attributes['supplierId'];
 
     return recordExists(attributes['commercialRegisterNo'], validate, queryParams, options.message);
   };

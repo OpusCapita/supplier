@@ -7,6 +7,7 @@ import SupplierFormConstraints from './SupplierFormConstraints';
 import DateInput from '@opuscapita/react-dates/lib/DateInput';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import customValidation from '../../utils/validatejs/custom.js';
+import customValidationAsync from '../../utils/validatejs/customAsync.js';
 
 function isValidDate(d) {
   if (Object.prototype.toString.call(d) !== "[object Date]") {
@@ -39,6 +40,11 @@ function getValidator(i18n) {
   customValidation.vatNumber(validatejs);
   customValidation.dunsNumber(validatejs);
   customValidation.globalLocationNumber(validatejs);
+  customValidationAsync.registerationNumberExists(validatejs);
+  customValidationAsync.taxIdNumberExists(validatejs);
+  customValidationAsync.vatNumberExists(validatejs);
+  customValidationAsync.dunsNumberExists(validatejs);
+  customValidationAsync.globalLocationNumberExists(validatejs);
 
   return validatejs;
 }
@@ -91,7 +97,6 @@ class SupplierEditorForm extends Component {
       return {
         taxIdentificationNo: this.SUPPLIER_CONSTRAINTS['taxIdentificationNo'],
         countryOfRegistration: this.SUPPLIER_CONSTRAINTS['countryOfRegistration'],
-        supplierId: {}
       };
 
     if (['commercialRegisterNo', 'cityOfRegistration'].indexOf(fieldName) > -1)
@@ -99,7 +104,6 @@ class SupplierEditorForm extends Component {
         commercialRegisterNo: this.SUPPLIER_CONSTRAINTS['commercialRegisterNo'],
         cityOfRegistration: this.SUPPLIER_CONSTRAINTS['cityOfRegistration'],
         countryOfRegistration: this.SUPPLIER_CONSTRAINTS['countryOfRegistration'],
-        supplierId: {}
       };
 
     if (fieldName === 'countryOfRegistration')
@@ -108,10 +112,18 @@ class SupplierEditorForm extends Component {
         taxIdentificationNo: this.SUPPLIER_CONSTRAINTS['taxIdentificationNo'],
         cityOfRegistration: this.SUPPLIER_CONSTRAINTS['cityOfRegistration'],
         countryOfRegistration: this.SUPPLIER_CONSTRAINTS['countryOfRegistration'],
-        supplierId: {}
       };
 
     return { [fieldName]: this.SUPPLIER_CONSTRAINTS[fieldName] };
+  };
+
+  setFieldErrorsStates = (errors) => {
+    this.setState({
+      fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
+        ...rez,
+        [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
+      }), this.state.fieldErrors)
+    });
   };
 
   handleChange = (fieldName, event) => {
@@ -146,13 +158,10 @@ class SupplierEditorForm extends Component {
     });
 
     const error = (errors) => {
-      this.setState({
-        fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
-          ...rez,
-          [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
-        }), this.state.fieldErrors)
-      });
+      this.setFieldErrorsStates(errors);
     };
+
+    constraints.supplierId = {};
 
     getValidator(this.props.i18n).
       async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
@@ -168,24 +177,18 @@ class SupplierEditorForm extends Component {
 
     const { onSupplierChange } = this.props;
     const supplier = { ...this.state.supplier };
+    const constraints = { ...this.SUPPLIER_CONSTRAINTS, supplierId: {} };
 
     const success = () => {
       onSupplierChange(supplier);
     };
 
     const error = (errors) => {
-      this.setState({
-        fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
-          ...rez,
-          [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
-        }), {})
-      });
-
+      this.setFieldErrorsStates(errors);
       onSupplierChange(null);
     };
 
-    getValidator(this.props.i18n).
-      async(supplier, this.SUPPLIER_CONSTRAINTS, { fullMessages: false }).then(success, error);
+    getValidator(this.props.i18n).async(supplier, constraints, { fullMessages: false }).then(success, error);
   };
 
   renderField = attrs => {
@@ -205,10 +208,7 @@ class SupplierEditorForm extends Component {
       return this.SUPPLIER_CONSTRAINTS[name] && this.SUPPLIER_CONSTRAINTS[name].presence;
     });
 
-    let rowErrors = fieldNames.reduce(
-      (rez, name) => rez.concat(fieldErrors[name] || []),
-      []
-    );
+    let rowErrors = fieldNames.reduce((rez, name) => rez.concat(fieldErrors[name] || []), []);
 
     return (
       <SupplierEditorFormRow

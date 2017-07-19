@@ -87,6 +87,15 @@ class SupplierRegistrationEditorForm extends Component {
     return { [fieldName]: this.SUPPLIER_CONSTRAINTS[fieldName] };
   };
 
+  setFieldErrorsStates = (errors) => {
+    this.setState({
+      fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
+        ...rez,
+        [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
+      }), this.state.fieldErrors)
+    });
+  };
+
   handleChange = (fieldName, event) => {
     let newValue;
 
@@ -119,12 +128,7 @@ class SupplierRegistrationEditorForm extends Component {
     });
 
     const error = (errors) => {
-      this.setState({
-        fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
-          ...rez,
-          [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
-        }), this.state.fieldErrors)
-      });
+      this.setFieldErrorsStates(errors);
     };
 
     getValidator().async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
@@ -146,13 +150,7 @@ class SupplierRegistrationEditorForm extends Component {
     };
 
     const error = (errors) => {
-      this.setState({
-        fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
-          ...rez,
-          [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
-        }), {})
-      });
-
+      this.setFieldErrorsStates(errors);
       onSupplierChange(null);
     };
 
@@ -177,10 +175,7 @@ class SupplierRegistrationEditorForm extends Component {
       return this.SUPPLIER_CONSTRAINTS[name] && this.SUPPLIER_CONSTRAINTS[name].presence;
     });
 
-    let rowErrors = fieldNames.reduce(
-      (rez, name) => rez.concat(fieldErrors[name] || []),
-      []
-    );
+    let rowErrors = fieldNames.reduce((rez, name) => rez.concat(fieldErrors[name] || []), []);
 
     return (
       <SupplierRegistrationEditorFormRow
