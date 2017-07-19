@@ -1,53 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'underscore';
-import validatejs from 'validate.js';
 import SupplierEditorFormRow from '../AttributeValueEditorRow.react.js';
 import './SupplierEditor.css';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import DateInput from '@opuscapita/react-dates/lib/DateInput';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
-import customValidation from '../../utils/validatejs/custom.js';
-import customValidationAsync from '../../utils/validatejs/customAsync.js';
-
-function isValidDate(d) {
-  if (Object.prototype.toString.call(d) !== "[object Date]") {
-    return false;
-  }
-  return !isNaN(d.getTime());
-}
-
-// extends standard validator
-function getValidator(i18n) {
-  validatejs.extend(validatejs.validators.datetime, {
-    // The value is guaranteed not to be null or undefined but otherwise it could be anything.
-    parse: function(value) {
-      let date = new Date(value);
-      if (isValidDate(date)) {
-        return date.getTime();
-      }
-      return value.toString;
-    },
-    // Input is a unix timestamp
-    format: function(value) {
-      const date = new Date(value);
-      if (isValidDate(value)) {
-        return i18n.formatDate(date);
-      }
-      return value;
-    }
-  });
-
-  customValidation.vatNumber(validatejs);
-  customValidation.dunsNumber(validatejs);
-  customValidation.globalLocationNumber(validatejs);
-  customValidationAsync.registerationNumberExists(validatejs);
-  customValidationAsync.taxIdNumberExists(validatejs);
-  customValidationAsync.vatNumberExists(validatejs);
-  customValidationAsync.dunsNumberExists(validatejs);
-  customValidationAsync.globalLocationNumberExists(validatejs);
-
-  return validatejs;
-}
+import validator from '../../utils/validatejs/supplierValidator.js';
 
 class SupplierEditorForm extends Component {
   static propTypes = {
@@ -138,7 +96,7 @@ class SupplierEditorForm extends Component {
 
     constraints.supplierId = {};
 
-    getValidator(this.props.i18n).
+    validator.forRegistration(this.props.i18n).
       async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
   };
 
@@ -163,7 +121,8 @@ class SupplierEditorForm extends Component {
       onSupplierChange(null);
     };
 
-    getValidator(this.props.i18n).async(supplier, constraints, { fullMessages: false }).then(success, error);
+    validator.forRegistration(this.props.i18n).
+      async(supplier, constraints, { fullMessages: false }).then(success, error);
   };
 
   renderField = attrs => {

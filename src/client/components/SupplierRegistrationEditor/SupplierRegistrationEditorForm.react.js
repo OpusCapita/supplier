@@ -1,25 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'underscore';
-import validatejs from 'validate.js';
 import SupplierRegistrationEditorFormRow from '../AttributeValueEditorRow.react.js';
 import './SupplierRegistrationEditor.css';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
-import customValidation from '../../utils/validatejs/custom.js';
-import customValidationAsync from '../../utils/validatejs/customAsync.js';
-
-function getValidator() {
-  customValidation.vatNumber(validatejs);
-  customValidation.dunsNumber(validatejs);
-  customValidation.globalLocationNumber(validatejs);
-  customValidationAsync.registerationNumberExists(validatejs);
-  customValidationAsync.taxIdNumberExists(validatejs);
-  customValidationAsync.vatNumberExists(validatejs);
-  customValidationAsync.dunsNumberExists(validatejs);
-  customValidationAsync.globalLocationNumberExists(validatejs);
-
-  return validatejs;
-};
+import validator from '../../utils/validatejs/supplierValidator.js';
 
 class SupplierRegistrationEditorForm extends Component {
   static propTypes = {
@@ -106,7 +91,7 @@ class SupplierRegistrationEditorForm extends Component {
       this.setFieldErrorsStates(errors);
     };
 
-    getValidator().async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
+    validator.forUpdate().async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
   };
 
   handleCancel = event => {
@@ -130,7 +115,7 @@ class SupplierRegistrationEditorForm extends Component {
       onSupplierChange(null);
     };
 
-    getValidator().async(supplier, constraints, { fullMessages: false }).then(success, error);
+    validator.forUpdate().async(supplier, constraints, { fullMessages: false }).then(success, error);
   };
 
   renderField = attrs => {
