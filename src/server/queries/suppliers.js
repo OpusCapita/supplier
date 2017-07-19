@@ -28,8 +28,7 @@ module.exports.create = function(supplier)
   const self = this;
   let supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '');
 
-  function generateSupplierId(id)
-  {
+  function generateSupplierId(id) {
     return self.exists(id).then(exists => {
       if (exists) {
         return generateSupplierId(supplierId + randomNumber());
