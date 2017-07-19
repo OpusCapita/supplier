@@ -35,7 +35,7 @@ class SupplierRegistrationEditor extends Component {
 
   createSupplierPromise = null;
 
-  componentWillMount(){
+  componentWillMount() {
     this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierRegistrationEditor', i18nMessages) });
   }
 
@@ -45,7 +45,7 @@ class SupplierRegistrationEditor extends Component {
       globalErrorMessage: ''
     });
 
-    if(this.state.i18n && nextProps.locale != this.props.locale){
+    if (this.state.i18n && nextProps.locale != this.props.locale) {
       this.setState({ i18n: i18nRegister(nextProps.locale, 'SupplierRegistrationEditor', i18nMessages) });
     }
   }
@@ -101,14 +101,14 @@ class SupplierRegistrationEditor extends Component {
 
         const user = this.props.user;
         const contact = {
-            contactId: `${user.id}_${supplier.supplierId}`,
-            contactType: "Default",
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            supplierId: supplier.supplierId,
-            createdBy: user.id,
-            changedBy: user.id
+          contactId: `${user.id}_${supplier.supplierId}`,
+          contactType: "Default",
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          supplierId: supplier.supplierId,
+          createdBy: user.id,
+          changedBy: user.id
         }
 
         request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
@@ -127,11 +127,11 @@ class SupplierRegistrationEditor extends Component {
       });
 
       if (this.props.onUpdate) {
-          this.props.onUpdate({
-            supplierId: supplier.supplierId,
-            supplierName: supplier.supplierName
-          });
-        }
+        this.props.onUpdate({
+          supplierId: supplier.supplierId,
+          supplierName: supplier.supplierName
+        });
+      }
 
       if (this.props.onChange) {
         this.props.onChange({ isDirty: false });
@@ -174,14 +174,14 @@ class SupplierRegistrationEditor extends Component {
     if (this.state.supplierExist) {
       return <SupplierExistsView i18n={this.state.i18n} onBack={ this.handleBackToForm }/>
     } else {
-      return <SupplierRegistrationEditorForm
-               {...this.props}
-               i18n={this.state.i18n}
-               supplier={ this.state.supplier }
-               onSupplierChange={ this.handleUpdate }
-               onChange={ this.handleChange }
-               onCancel={ this.props.onLogout }
-             />
+      return (<SupplierRegistrationEditorForm
+        {...this.props}
+        i18n={this.state.i18n}
+        supplier={ this.state.supplier }
+        onSupplierChange={ this.handleUpdate }
+        onChange={ this.handleChange }
+        onCancel={ this.props.onLogout }
+      />)
     }
   }
 
