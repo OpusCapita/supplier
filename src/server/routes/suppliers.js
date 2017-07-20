@@ -40,6 +40,8 @@ let existsSuppliers = function(req, res)
       queryObj[field] = req.query[field];
   }
 
+  if (Boolean(req.query['supplierId'])) queryObj.supplierId = { $ne: req.query['supplierId'] };
+
   Supplier.count(queryObj).then(count =>
   {
     res.json(count > 0);
