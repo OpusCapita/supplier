@@ -19,7 +19,7 @@ class SupplierAddressEditorForm extends Component {
     onUpdate: React.PropTypes.func.isRequired,
     onCancel: React.PropTypes.func.isRequired,
     onChange: React.PropTypes.func.isRequired
-  }
+  };
 
   static defaultProps = {
     editMode: 'create',
@@ -29,11 +29,11 @@ class SupplierAddressEditorForm extends Component {
   state = {
     supplierAddress: this.props.supplierAddress,
     errors: this.props.errors || {}
-  }
+  };
 
   componentWillMount() {
     let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
-    const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
+    const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata', moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
 
     this.externalComponents = { CountryField };
     this.constraints = SupplierAddressFormConstraints(this.props.i18n);
@@ -180,8 +180,8 @@ class SupplierAddressEditorForm extends Component {
     return (
       <form className="form-horizontal" onSubmit={this.handleSaveOrUpdate}>
         { this.renderField({
-            fieldName: 'type',
-            component: (
+          fieldName: 'type',
+          component: (
               <select className="form-control"
                 value={supplierAddress['type'] || ''}
                 onChange={this.handleChange.bind(this, 'type')}
@@ -193,7 +193,7 @@ class SupplierAddressEditorForm extends Component {
                 })}
               </select>
             )
-          }) }
+        }) }
 
         { this.renderField({ fieldName: 'name1', disabled: disabled }) }
         { this.renderField({ fieldName: 'name2', disabled: disabled }) }
@@ -203,8 +203,8 @@ class SupplierAddressEditorForm extends Component {
         { this.renderField({ fieldName: 'city', disabled: disabled }) }
 
         { this.renderField({
-            fieldName: 'countryId',
-            component: (
+          fieldName: 'countryId',
+          component: (
               <CountryField
                 actionUrl={this.props.actionUrl}
                 value={supplierAddress['countryId']}
@@ -212,7 +212,7 @@ class SupplierAddressEditorForm extends Component {
                 onBlur={this.handleBlur.bind(this, 'countryId')}
               />
             )
-          })}
+        })}
 
         { this.renderField({ fieldName: 'areaCode', disabled: disabled }) }
         { this.renderField({ fieldName: 'state', disabled: disabled }) }
@@ -224,16 +224,15 @@ class SupplierAddressEditorForm extends Component {
 
         <div className="col-sm-12 text-right address-form-submit">
           {editMode !== 'create-first' ? (
-            <Button bsStyle="link"
-              onClick={this.handleCancel}
-            >
+            <Button id='cancel-button' bsStyle="link"
+              onClick={this.handleCancel}>
             {
               this.props.i18n.getMessage('SupplierAddressEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
             }
             </Button>
           ) : null}
           {editMode !== 'view' ? (
-            <Button bsStyle="primary"
+            <Button id='save-button' bsStyle="primary"
               type="submit"
             >{this.props.i18n.getMessage('SupplierAddressEditor.Button.save')}</Button>
           ) : null}

@@ -1,5 +1,5 @@
 {
-  "type": "Default Company Address",
+  "addressType": "Default Company Address",
   "name1": "Name1",
   "name2": "Name2",
   "name3": "Name3",
@@ -11,7 +11,7 @@
   "state": "State",
   "poBox": "POBox",
   "poBoxZipCode": "ZipCode",
-  "telephone": "Telephone",
-  "telefax": "Telefax",
-  "email": "Email"
+  "phoneNumber": "Telephone",
+  "faxNumber": "Telefax",
+  "email": "example@email.com"
 }
