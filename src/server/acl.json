@@ -77,6 +77,11 @@
         "type": "rest",
         "resourceId": "/api/suppliers/exists",
         "actions": ["view"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/onboard_data/${_current_user_id}",
+        "actions": ["view"]
       }
     ]
   },
@@ -152,6 +157,11 @@
       {
         "type": "rest",
         "resourceId": "/api/suppliers/exists",
+        "actions": ["view"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/onboard_data/${_current_user_id}",
         "actions": ["view"]
       }
     ]
