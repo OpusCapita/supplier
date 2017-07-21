@@ -15,15 +15,6 @@ const supplier = {
   supplierName: "Hardware AG",
 };
 
-const onboardingSupplier = {
-  supplierName: "E-Farm AG",
-  cityOfRegistration: "Hamburg",
-  countryOfRegistration: "DE",
-  taxIdentificationNo: "T-534324",
-  vatIdentificationNo: "DE169838187",
-  dunsNo: null,
-  commercialRegisterNo: "MI342323"
-};
 const onboardingUser = {
   id: username,
   firstName: 'John',
@@ -48,7 +39,6 @@ let registrationEditor = (
     key='company'
     actionUrl={actionUrl}
     locale='en'
-    supplier={onboardingSupplier}
     user={onboardingUser}
   />
 );

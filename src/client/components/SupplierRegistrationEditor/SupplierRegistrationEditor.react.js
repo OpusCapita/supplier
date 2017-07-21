@@ -14,7 +14,6 @@ class SupplierRegistrationEditor extends Component {
   static propTypes = {
     actionUrl: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired,
-    supplier: PropTypes.object,
     onChange: React.PropTypes.func,
     onUpdate: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func,
@@ -25,18 +24,49 @@ class SupplierRegistrationEditor extends Component {
     super(props);
 
     this.state = {
+      isLoaded: false,
       hasErrors: false,
-      supplier: {
-        ...this.props.supplier
-      },
+      supplier: {},
       supplierExist: false
     }
   }
 
+  loadOnboardDataPromise = null;
   createSupplierPromise = null;
 
   componentWillMount(){
     this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierRegistrationEditor', i18nMessages) });
+  }
+
+  componentDidMount() {
+    if (this.state.isLoaded) {
+      return;
+    }
+
+    this.loadOnboardDataPromise = request.
+      get(`${this.props.actionUrl}/supplier/api/suppliers/onboard_data/${encodeURIComponent(this.props.user.id)}`).
+      set('Accept', 'application/json').
+      promise();
+
+    this.loadOnboardDataPromise.then(response => {
+      this.setState({
+        isLoaded: true,
+        supplier: response.body
+      });
+    }).
+    catch(errors => {
+      if (errors.status === 401) {
+        this.props.onUnauthorized();
+        return;
+      }
+
+      this.setState({
+        isLoaded: true,
+        hasErrors: true,
+      });
+    });
+
+    return;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -51,8 +81,13 @@ class SupplierRegistrationEditor extends Component {
   }
 
   componentWillUnmount() {
-    if (this.createSupplierPromise) {
-      this.createSupplierPromise.cancel();
+    if (!this.state.isLoaded) {
+      if (this.loadOnboardDataPromise) {
+        this.loadOnboardDataPromise.cancel();
+      }
+      if (this.createSupplierPromise) {
+        this.createSupplierPromise.cancel();
+      }
     }
   }
 
@@ -97,18 +132,16 @@ class SupplierRegistrationEditor extends Component {
 
       // we need to refresh the id token before we can do any calls to backend as supplier user
       request.post('/refreshIdToken').set('Content-Type', 'application/json').then((resp) => {
-        console.log("id token refreshed");
-
         const user = this.props.user;
         const contact = {
-            contactId: `${user.id}_${supplier.supplierId}`,
-            contactType: "Default",
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            supplierId: supplier.supplierId,
-            createdBy: user.id,
-            changedBy: user.id
+          contactId: `${user.id}_${supplier.supplierId}`,
+          contactType: "Default",
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          supplierId: supplier.supplierId,
+          createdBy: user.id,
+          changedBy: user.id
         }
 
         request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
@@ -186,7 +219,13 @@ class SupplierRegistrationEditor extends Component {
   }
 
   render() {
-    const { hasErrors, globalInfoMessage = '', globalErrorMessage = '' } = this.state;
+    const { isLoaded, hasErrors, globalInfoMessage = '', globalErrorMessage = '' } = this.state;
+
+    if (!isLoaded) {
+      return (
+        <div>{ this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.loading') }</div>
+      );
+    }
 
     if (hasErrors) {
       return (

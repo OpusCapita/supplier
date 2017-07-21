@@ -7,6 +7,7 @@ module.exports = function(app, db, config) {
     this.events = new RedisEvents({ consul : { host : 'consul' } });
     app.get('/api/suppliers', (req, res) => sendSuppliers(req, res));
     app.get('/api/suppliers/exists', (req, res) => existsSuppliers(req, res));
+    app.get('/api/suppliers/onboard_data/:userId', (req, res) => onboardData(req, res));
     app.post('/api/suppliers', (req, res) => createSuppliers(req, res));
     app.get('/api/suppliers/:supplierId', (req, res) => sendSupplier(req, res));
     app.put('/api/suppliers/:supplierId', (req, res) => updateSupplier(req, res));
@@ -46,7 +47,20 @@ let existsSuppliers = function(req, res)
   {
     res.json(count > 0);
   });
-}
+};
+
+let onboardData = function(req, res)
+{
+  res.json({
+    supplierName: "E-Farm AG",
+    cityOfRegistration: "Hamburg",
+    countryOfRegistration: "DE",
+    taxIdentificationNo: "T-534324",
+    vatIdentificationNo: "DE169838187",
+    dunsNo: null,
+    commercialRegisterNo: "MI342323"
+  });
+};
 
 let createSuppliers = function(req, res)
 {
@@ -88,7 +102,7 @@ let createSuppliers = function(req, res)
     req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
     return res.status('400').json({ message : error.message });
   });
-}
+};
 
 let sendSupplier = function(req, res)
 {
@@ -133,4 +147,4 @@ let updateSupplier = function(req, res)
     req.opuscapita.logger.error('Error when updating Supplier: %s', error.message);
     return res.status('400').json({ message : error.message });
   });
-}
+};
