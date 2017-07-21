@@ -41,7 +41,6 @@ import { SupplierEditor } from 'supplier';
 |:-----|:----:|:--------:|------------:|
 | actionUrl | string | true | Base url of service |
 | locale | string | false | Locale |
-| supplier | object | false | Supplier object |
 | user | object | true | User object. Should contain attributes `id`, `firstName`, `lastName` and `email` |
 | onUnauthorized | function | false | Callback fired when unauthorized |
 | onChange | function | false | Callback fired on input change `(event) => {}` |
@@ -53,21 +52,10 @@ import { SupplierEditor } from 'supplier';
 ```
 import { SupplierRegistrationEditor } from 'supplier';
 
-const newSupplier = {
-  supplierName: 'Test AG',
-  cityOfRegistration: 'Hamburg',
-  countryOfRegistration: 'DE',
-  taxIdentificationNo: '123-343-12',
-  vatIdentificationNo: 'DE72342359',
-  dunsNo: '12345',
-  commercialRegisterNo: 'HRB 12873243'
-};
-
 <SupplierRegistrationEditor
   key='company'
   actionUrl='http://localhost:8080'
   locale='en'
-  supplier={newSupplier}
   user={{ id: 'john.doe@example.com', firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com' }}
 />
 ```
