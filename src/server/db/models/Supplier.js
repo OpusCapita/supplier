@@ -151,15 +151,6 @@ module.exports = function(sequelize) {
         return this.supplierName ? this.supplierName + ' (' + this.supplierId + ')' : this.supplierId
       }
     },
-    classMethods: {
-      associate: function(models) {
-        Supplier.hasMany(models.Address, {
-          as: 'addresses',
-          foreignKey: 'supplierId',
-          onDelete: 'cascade'
-        });
-      }
-    },
     updatedAt: 'changedOn',
     createdAt: 'createdOn',
     timestamps: true,

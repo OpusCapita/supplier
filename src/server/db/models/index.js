@@ -32,7 +32,6 @@ module.exports.init = function(db, config)
   db.import('SupplierFinancials', SupplierFinancials);
   db.import('TradingPartner', TradingPartner);
 
-
   // Always return a promise.
   return Promise.resolve();
 };

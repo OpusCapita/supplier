@@ -15,10 +15,10 @@ module.exports = function(app, db, config) {
 
 let sendSuppliers = function(req, res)
 {
-  let queryObj = {};
-  if (req.query.supplierId) queryObj.supplierId = { $in: req.query.supplierId.split(',') };
+  const queryObj = req.query.supplierId ? { supplierId: { $in: req.query.supplierId.split(',') }} : {};
+  const includes = req.query.include ? req.query.include.split(',') : [];
 
-  Supplier.all(queryObj).then(suppliers =>
+  Supplier.all(queryObj, includes).then(suppliers =>
   {
     res.json(suppliers);
   });

@@ -2,13 +2,41 @@ const Promise = require('bluebird');
 
 module.exports.init = function(db, config)
 {
+  db.models.Supplier.hasMany(db.models.SupplierContact, { foreignKey: 'supplierId', sourceKey: 'supplierId' });
+  db.models.Supplier.hasMany(db.models.SupplierAddress, { foreignKey: 'supplierId', sourceKey: 'supplierId' });
+  db.models.Supplier.hasMany(db.models.SupplierBankAccount, { foreignKey: 'supplierId', sourceKey: 'supplierId' });
+
   this.db = db;
   return Promise.resolve(this);
 };
 
-module.exports.all = function(queryObj)
+module.exports.all = function(queryObj, includes)
 {
-  return this.db.models.Supplier.findAll({ where: queryObj });
+  const associations = {
+    contacts: this.db.models.SupplierContact,
+    addresses: this.db.models.SupplierAddress,
+    bankAccounts: this.db.models.SupplierBankAccount
+  }
+
+  let includeModels = [];
+
+  for (const index in includes) {
+    const association = includes[index];
+    if (associations[association])
+      includeModels.push(associations[association]);
+  }
+
+  return this.db.models.Supplier.findAll({ where: queryObj, include: includeModels }).map(supplier => {
+    supplier.dataValues.contacts = supplier.SupplierContacts;
+    supplier.dataValues.addresses = supplier.SupplierAddresses;
+    supplier.dataValues.bankAccounts = supplier.SupplierBankAccounts;
+
+    delete supplier.dataValues.SupplierContacts;
+    delete supplier.dataValues.SupplierAddresses;
+    delete supplier.dataValues.SupplierBankAccounts;
+
+    return supplier.dataValues;
+  });
 };
 
 module.exports.count = function(queryObj)
