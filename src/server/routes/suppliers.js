@@ -15,7 +15,10 @@ module.exports = function(app, db, config) {
 
 let sendSuppliers = function(req, res)
 {
-  Supplier.all().then(suppliers =>
+  let queryObj = {};
+  if (req.query.supplierId) queryObj.supplierId = { $in: req.query.supplierId.split(',') };
+
+  Supplier.all(queryObj).then(suppliers =>
   {
     res.json(suppliers);
   });
@@ -40,7 +43,7 @@ let existsSuppliers = function(req, res)
       queryObj[field] = req.query[field];
   }
 
-  if (Boolean(req.query['supplierId'])) queryObj.supplierId = { $ne: req.query['supplierId'] };
+  if (Boolean(req.query.supplierId)) queryObj.supplierId = { $ne: req.query.supplierId };
 
   Supplier.count(queryObj).then(count =>
   {
