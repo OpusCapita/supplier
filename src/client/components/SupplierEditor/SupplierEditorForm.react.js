@@ -17,6 +17,10 @@ class SupplierEditorForm extends Component {
     actionUrl: React.PropTypes.string.isRequired
   };
 
+  static contextTypes = {
+    i18n : React.PropTypes.object.isRequired
+  };
+
   static defaultProps = {
     readOnly: false
   };
@@ -34,10 +38,10 @@ class SupplierEditorForm extends Component {
 
     this.externalComponents = { CountryField };
 
-    this.constraints = new SupplierConstraints(this.props.i18n);
+    this.constraints = new SupplierConstraints(this.context.i18n);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
     if (!_.isEqual(this.props.supplier, nextProps.supplier)) {
       this.setState({
         supplier: {
@@ -47,7 +51,7 @@ class SupplierEditorForm extends Component {
       });
     }
 
-    this.constraints = new SupplierConstraints(nextProps.i18n);
+    this.constraints = new SupplierConstraints(nextContext.i18n);
   }
 
   setFieldErrorsStates = (errors) => {
@@ -96,7 +100,7 @@ class SupplierEditorForm extends Component {
 
     constraints.supplierId = {};
 
-    validator.forUpdate(this.props.i18n).
+    validator.forUpdate(this.context.i18n).
       async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
   };
 
@@ -121,7 +125,7 @@ class SupplierEditorForm extends Component {
       onSupplierChange(null);
     };
 
-    validator.forUpdate(this.props.i18n).
+    validator.forUpdate(this.context.i18n).
       async(supplier, constraints, { fullMessages: false }).then(success, error);
   };
 
@@ -147,7 +151,7 @@ class SupplierEditorForm extends Component {
 
     return (
       <SupplierEditorFormRow
-        labelText={ this.props.i18n.getMessage(`SupplierEditor.Label.${fieldName}.label`) }
+        labelText={ this.context.i18n.getMessage(`SupplierEditor.Label.${fieldName}.label`) }
         required={ isRequired }
         rowErrors={ rowErrors }
       >
@@ -157,7 +161,8 @@ class SupplierEditorForm extends Component {
   };
 
   render() {
-    const { i18n, dateTimePattern } = this.props;
+    const { dateTimePattern } = this.props;
+    const i18n = this.context.i18n;
     const { supplier } = this.state;
     const { CountryField } = this.externalComponents;
     const foundedOn = supplier['foundedOn'] ? new Date(supplier['foundedOn']) : '';

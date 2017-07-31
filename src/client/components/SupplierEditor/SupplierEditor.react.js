@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import request from 'superagent-bluebird-promise';
 import moment from 'moment';
-import i18nRegister from '../../i18n/register.js';
+import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import Alert from '../Alert';
 import SupplierEditorForm from './SupplierEditorForm.react.js';
@@ -20,7 +20,11 @@ class SupplierEditor extends Component {
     onUpdate: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func,
     onLogout: React.PropTypes.func
-  }
+  };
+
+  static contextTypes = {
+    i18n : React.PropTypes.object.isRequired
+  };
 
   loadSupplierPromise = null;
   updateSupplierPromise = null;
@@ -35,8 +39,9 @@ class SupplierEditor extends Component {
     }
   }
 
-  componentWillMount(){
-    this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierEditor', i18nMessages) });
+  componentWillMount() {
+    this.context.i18n.register('validatejs', validationMessages);
+    this.context.i18n.register('SupplierEditor', i18nMessages);
   }
 
   componentDidMount() {
@@ -72,14 +77,15 @@ class SupplierEditor extends Component {
     return;
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
     this.setState({
       globalInfoMessage: '',
       globalErrorMessage: ''
     });
 
-    if(this.state.i18n && nextProps.locale != this.props.locale){
-      this.setState({ i18n: i18nRegister(nextProps.locale, 'SupplierEditor', i18nMessages) });
+    if(this.context.i18n && nextContext.i18n != this.context.i18n){
+      this.context.i18n.register('validatejs', validationMessages);
+      this.context.i18n.register('SupplierEditor', i18nMessages);
     }
   }
 
@@ -134,7 +140,7 @@ class SupplierEditor extends Component {
         response.body.foundedOn = this.formatedDate(response.body.foundedOn);
         this.setState({
           supplier: response.body,
-          globalInfoMessage: this.state.i18n.getMessage('SupplierEditor.Messages.saved'),
+          globalInfoMessage: this.context.i18n.getMessage('SupplierEditor.Messages.saved'),
           globalErrorMessage: ''
         });
 
@@ -158,19 +164,19 @@ class SupplierEditor extends Component {
           case 403:
             this.setState({
               globalInfoMessage: '',
-              globalErrorMessage: this.state.i18n.getMessage('SupplierEditor.Messages.failedModifyingNotAuthoredSupplier'),
+              globalErrorMessage: this.context.i18n.getMessage('SupplierEditor.Messages.failedModifyingNotAuthoredSupplier'),
             });
             break;
           case 409:
             this.setState({
               globalInfoMessage: '',
-              globalErrorMessage: this.state.i18n.getMessage('SupplierEditor.Messages.failedCreatingExistingSupplier'),
+              globalErrorMessage: this.context.i18n.getMessage('SupplierEditor.Messages.failedCreatingExistingSupplier'),
             });
             break;
           default:
             this.setState({
               globalInfoMessage: '',
-              globalErrorMessage: this.state.i18n.getMessage('SupplierEditor.Messages.failed'),
+              globalErrorMessage: this.context.i18n.getMessage('SupplierEditor.Messages.failed'),
             });
         }
       });
@@ -181,13 +187,13 @@ class SupplierEditor extends Component {
 
     if (!isLoaded) {
       return (
-        <div>{ this.state.i18n.getMessage('SupplierEditor.Messages.loading') }</div>
+        <div>{ this.context.i18n.getMessage('SupplierEditor.Messages.loading') }</div>
       );
     }
 
     if (hasErrors) {
       return (
-        <div>{ this.state.i18n.getMessage('SupplierEditor.Messages.unableToRender') }</div>
+        <div>{ this.context.i18n.getMessage('SupplierEditor.Messages.unableToRender') }</div>
       );
     }
 
@@ -208,7 +214,6 @@ class SupplierEditor extends Component {
 
           <SupplierEditorForm
             {...this.props}
-            i18n={this.state.i18n}
             supplier={ supplier }
             onSupplierChange={ this.handleUpdate }
             onChange={ this.handleChange }

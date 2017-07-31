@@ -8,7 +8,6 @@
 |:-----|:----:|:--------:|------------:|
 | actionUrl | string | true | Base url of service |
 | supplierId | string | true | ID of Supplier |
-| locale | string | false | Locale |
 | username | string | true | User (customer) name |
 | dateTimePattern | string | true | Date format . E.g. `dd/MM/yyyy`, `MM.dd.yyyy`, etc. |
 | onUnauthorized | function | false | Callback fired when unauthorized |
@@ -25,7 +24,6 @@ import { SupplierEditor } from 'supplier';
   key='company'
   actionUrl='http://localhost:8080'
   supplierId='hard001'
-  locale='en'
   username='Marlon Wayans'
   dateTimePattern='MM/dd/yyyy'
 />
