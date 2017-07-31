@@ -2,8 +2,11 @@ import React, { PropTypes, Component } from 'react';
 
 class SupplierExistsView extends Component {
   static propTypes = {
-    i18n: PropTypes.object.isRequired,
     onBack: PropTypes.func
+  };
+
+  static contextTypes = {
+    i18n : React.PropTypes.object.isRequired
   };
 
   handleClick = () => {
@@ -13,10 +16,10 @@ class SupplierExistsView extends Component {
   render() {
     return (
       <div className="jumbotron">
-        <h4>{this.props.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierExistsHeader')}</h4>
-        <p>{this.props.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierExistsText')}</p>
+        <h4>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierExistsHeader')}</h4>
+        <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierExistsText')}</p>
         <button className="btn btn-default" onClick={ this.handleClick }>
-          {this.props.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.back')}
+          {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.back')}
         </button>
       </div>
     );

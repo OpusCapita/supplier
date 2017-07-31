@@ -18,7 +18,7 @@ class SupplierEditorForm extends Component {
   };
 
   static contextTypes = {
-    i18n : React.PropTypes.object.isRequired
+    i18n: React.PropTypes.object.isRequired
   };
 
   static defaultProps = {

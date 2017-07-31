@@ -17,12 +17,16 @@ class SupplierBankAccountListTable extends Component {
     readOnly: React.PropTypes.bool
   };
 
+  static contextTypes = {
+    i18n: React.PropTypes.object.isRequired
+  };
+
   onEdit = (account) => {
     this.props.onEdit(account);
   };
 
   onDelete = (account) => {
-    if (!confirm(this.props.i18n.getMessage('SupplierBankAccountEditor.Confirmation.delete'))) {
+    if (!confirm(this.context.i18n.getMessage('SupplierBankAccountEditor.Confirmation.delete'))) {
       return;
     }
     this.props.onDelete(account);
@@ -40,13 +44,13 @@ class SupplierBankAccountListTable extends Component {
       <table className="table">
         <thead>
         <tr>
-          <th>{this.props.i18n.getMessage('SupplierBankAccountEditor.Label.accountNumber')}</th>
-          <th>{this.props.i18n.getMessage('SupplierBankAccountEditor.Label.bankName')}</th>
-          <th>{this.props.i18n.getMessage('SupplierBankAccountEditor.Label.bankIdentificationCode')}</th>
-          <th>{this.props.i18n.getMessage('SupplierBankAccountEditor.Label.bankCountryKey')}</th>
-          <th>{this.props.i18n.getMessage('SupplierBankAccountEditor.Label.bankCode')}</th>
-          <th>{this.props.i18n.getMessage('SupplierBankAccountEditor.Label.extBankControlKey')}</th>
-          <th>{this.props.i18n.getMessage('SupplierBankAccountEditor.Label.swiftCode')}</th>
+          <th>{this.context.i18n.getMessage('SupplierBankAccountEditor.Label.accountNumber')}</th>
+          <th>{this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankName')}</th>
+          <th>{this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankIdentificationCode')}</th>
+          <th>{this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankCountryKey')}</th>
+          <th>{this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankCode')}</th>
+          <th>{this.context.i18n.getMessage('SupplierBankAccountEditor.Label.extBankControlKey')}</th>
+          <th>{this.context.i18n.getMessage('SupplierBankAccountEditor.Label.swiftCode')}</th>
           <th>&nbsp;</th>
         </tr>
         </thead>
@@ -66,18 +70,18 @@ class SupplierBankAccountListTable extends Component {
                     <nobr>
                       <Button onClick={this.onView.bind(this, account)} bsSize="sm">
                         <span className='glyphicon glyphicon-eye-open'/>&nbsp;
-                        {this.props.i18n.getMessage('SupplierBankAccountEditor.Button.view')}
+                        {this.context.i18n.getMessage('SupplierBankAccountEditor.Button.view')}
                       </Button>
                     </nobr>
                   ) : (
                     <nobr>
                       <Button onClick={this.onEdit.bind(this, account)} bsSize="sm">
                         <span className="glyphicon glyphicon-edit"/>&nbsp;
-                        {this.props.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
+                        {this.context.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
                       </Button>
                       <Button onClick={this.onDelete.bind(this, account)} bsSize="sm">
                         <span className="glyphicon glyphicon-trash"/>&nbsp;
-                        {this.props.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}
+                        {this.context.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}
                       </Button>
                     </nobr>
                   )}
