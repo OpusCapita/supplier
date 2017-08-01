@@ -1,6 +1,10 @@
+const Logger = require('ocbesbn-logger'); // Logger
 const server = require('ocbesbn-web-init'); // Web server
 const db = require('ocbesbn-db-init'); // Database
 const bouncer = require('ocbesbn-bouncer');
+
+const logger = new Logger();
+logger.redirectConsoleOut(); // Force anyone using console outputs into Logger format.
 
 const serverConfig = (db) => ({
   server: {
