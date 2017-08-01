@@ -10,10 +10,13 @@ class SupplierRegistrationEditorForm extends Component {
   static propTypes = {
     supplier: PropTypes.object,
     onSupplierChange: PropTypes.func.isRequired,
-    i18n: PropTypes.object.isRequired,
     onChange: React.PropTypes.func,
     onCancel: React.PropTypes.func,
     actionUrl: React.PropTypes.string.isRequired
+  };
+
+  static contextTypes = {
+    i18n : React.PropTypes.object.isRequired
   };
 
   state = {
@@ -29,10 +32,10 @@ class SupplierRegistrationEditorForm extends Component {
 
     this.externalComponents = { CountryField };
 
-    this.constraints = new SupplierConstraints(this.props.i18n);
+    this.constraints = new SupplierConstraints(this.context.i18n);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
     if (_.isEqual(this.props.supplier, nextProps.supplier)) {
       return;
     }
@@ -44,7 +47,7 @@ class SupplierRegistrationEditorForm extends Component {
       fieldErrors: {},
     });
 
-    this.constraints = new SupplierConstraints(nextProps.i18n);
+    this.constraints = new SupplierConstraints(nextContext.i18n);
   }
 
   setFieldErrorsStates = (errors) => {
@@ -140,7 +143,7 @@ class SupplierRegistrationEditorForm extends Component {
 
     return (
       <SupplierRegistrationEditorFormRow
-        labelText={ this.props.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
+        labelText={ this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
         required={ isRequired }
         rowErrors={ rowErrors }
       >
@@ -182,10 +185,10 @@ class SupplierRegistrationEditorForm extends Component {
                 <div className='supplier-registration-form-submit'>
                   <div className='text-right form-submit'>
                     <button className="btn btn-link" onClick={this.handleCancel}>
-                      {this.props.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.cancel')}
+                      {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.cancel')}
                     </button>
                     <button className="btn btn-primary" onClick={ this.handleUpdate }>
-                      {this.props.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.continue')}
+                      {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.continue')}
                     </button>
                   </div>
                 </div>
@@ -194,8 +197,8 @@ class SupplierRegistrationEditorForm extends Component {
           </form>
         </div>
         <div className="col-md-4">
-          <p>{this.props.i18n.getMessage('SupplierRegistrationEditor.Messages.information1')}</p>
-          <p>{this.props.i18n.getMessage('SupplierRegistrationEditor.Messages.information2')}</p>
+          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.information1')}</p>
+          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.information2')}</p>
         </div>
       </div>
     );

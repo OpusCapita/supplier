@@ -30,6 +30,10 @@ class SupplierBankAccountEditForm extends Component {
     onChange: React.PropTypes.func.isRequired
   };
 
+  static contextTypes = {
+    i18n: React.PropTypes.object.isRequired
+  };
+
   static defaultProps = {
     editMode: 'create',
     errors: {}
@@ -51,15 +55,15 @@ class SupplierBankAccountEditForm extends Component {
 
     this.externalComponents = {CountryField};
 
-    this.constraints = SupplierBankAccountFormConstraints(this.props.i18n);
+    this.constraints = SupplierBankAccountFormConstraints(this.context.i18n);
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.account) {
-      this.setState({account: newProps.account, errors: newProps.errors || {}});
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.account) {
+      this.setState({account: nextProps.account, errors: nextProps.errors || {}});
     }
 
-    this.constraints = SupplierBankAccountFormConstraints(this.props.i18n);
+    this.constraints = SupplierBankAccountFormConstraints(nextContext.i18n);
   }
 
   handleSaveOrUpdate = (event) => {
@@ -157,7 +161,7 @@ class SupplierBankAccountEditForm extends Component {
 
     return (
       <SupplierBankAccountEditFormRow
-        labelText={ this.props.i18n.getMessage(`SupplierBankAccountEditor.Label.${fieldName}`) }
+        labelText={ this.context.i18n.getMessage(`SupplierBankAccountEditor.Label.${fieldName}`) }
         required={ isRequired }
         rowErrors={ rowErrors }
       >
@@ -199,14 +203,14 @@ class SupplierBankAccountEditForm extends Component {
                     onClick={this.handleCancel}
             >
               {
-                this.props.i18n.getMessage('SupplierBankAccountEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
+                this.context.i18n.getMessage('SupplierBankAccountEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
               }
             </Button>
           ) : null}
           {editMode !== 'view' ? (
             <Button bsStyle="primary"
                     type="submit"
-            >{this.props.i18n.getMessage('SupplierBankAccountEditor.Button.save')}</Button>
+            >{this.context.i18n.getMessage('SupplierBankAccountEditor.Button.save')}</Button>
           ) : null}
         </div>
       </form>

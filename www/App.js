@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, NavLink } from 'react-router-dom';
+import Layout from './layout';
 import SupplierEditor from '../src/client/components/SupplierEditor';
 import SupplierRegistrationEditor from '../src/client/components/SupplierRegistrationEditor';
 import SupplierAddressEditor from '../src/client/components/SupplierAddressEditor';
@@ -37,7 +38,6 @@ let editor = (
     key='company'
     actionUrl={actionUrl}
     supplierId={supplier.supplierId}
-    locale='de'
     username={username}
     dateTimePattern='MM/dd/yyyy'
   />
@@ -93,7 +93,7 @@ let supplierProfileStrenth = (
 const activeStyle = {color:' #ffffff', background: '#006677'};
 
 const App = () => (
-  <div>
+  <Layout>
     <ul className="nav nav-tabs">
       <li><NavLink exact activeStyle={activeStyle} to='/supplier'>Supplier</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/registration'>Supplier Registration</NavLink></li>
@@ -108,7 +108,7 @@ const App = () => (
     <Route exact path='/supplier/contact' render={() => contactEditor }/>
     <Route exact path='/supplier/bank' render={() => bankEditor }/>
     <Route exact path='/supplier/profile_strength' render={() => supplierProfileStrenth }/>
-  </div>
+  </Layout>
 );
 
 export default App;

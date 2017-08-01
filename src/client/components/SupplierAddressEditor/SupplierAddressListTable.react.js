@@ -12,12 +12,16 @@ class SupplierAddressListTable extends Component {
     readOnly: React.PropTypes.bool
   };
 
+  static contextTypes = {
+    i18n: React.PropTypes.object.isRequired
+  };
+
   onEdit = (supplierAddress) => {
     this.props.onEdit(supplierAddress);
   };
 
   onDelete = (supplierAddress) => {
-    if (!confirm(this.props.i18n.getMessage('SupplierAddressEditor.Confirmation.delete'))) {
+    if (!confirm(this.context.i18n.getMessage('SupplierAddressEditor.Confirmation.delete'))) {
       return;
     }
     this.props.onDelete(supplierAddress);
@@ -34,13 +38,13 @@ class SupplierAddressListTable extends Component {
       <table className="table">
         <thead>
           <tr>
-            <th>{this.props.i18n.getMessage('SupplierAddressEditor.Label.type')}</th>
-            <th>{this.props.i18n.getMessage('SupplierAddressEditor.Label.street')}</th>
-            <th>{this.props.i18n.getMessage('SupplierAddressEditor.Label.zipCode')}</th>
-            <th>{this.props.i18n.getMessage('SupplierAddressEditor.Label.city')}</th>
-            <th>{this.props.i18n.getMessage('SupplierAddressEditor.Label.countryId')}</th>
-            <th>{this.props.i18n.getMessage('SupplierAddressEditor.Label.phoneNo')}</th>
-            <th>{this.props.i18n.getMessage('SupplierAddressEditor.Label.faxNo')}</th>
+            <th>{this.context.i18n.getMessage('SupplierAddressEditor.Label.type')}</th>
+            <th>{this.context.i18n.getMessage('SupplierAddressEditor.Label.street')}</th>
+            <th>{this.context.i18n.getMessage('SupplierAddressEditor.Label.zipCode')}</th>
+            <th>{this.context.i18n.getMessage('SupplierAddressEditor.Label.city')}</th>
+            <th>{this.context.i18n.getMessage('SupplierAddressEditor.Label.countryId')}</th>
+            <th>{this.context.i18n.getMessage('SupplierAddressEditor.Label.phoneNo')}</th>
+            <th>{this.context.i18n.getMessage('SupplierAddressEditor.Label.faxNo')}</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -49,7 +53,7 @@ class SupplierAddressListTable extends Component {
               supplierAddresses.map((supplierAddress, index) => {
                 return (
                   <tr key={'address-' + index}>
-                    <td>{this.props.i18n.getMessage(`SupplierAddressEditor.AddressType.${supplierAddress.type}`)}</td>
+                    <td>{this.context.i18n.getMessage(`SupplierAddressEditor.AddressType.${supplierAddress.type}`)}</td>
                     <td>{supplierAddress.street}</td>
                     <td>{supplierAddress.zipCode}</td>
                     <td>{supplierAddress.city}</td>
@@ -61,18 +65,18 @@ class SupplierAddressListTable extends Component {
                         <nobr>
                           <Button onClick={this.onView.bind(this, supplierAddress)} bsSize="sm">
                             <span className='glyphicon glyphicon-eye-open' />
-                          &nbsp;{this.props.i18n.getMessage('SupplierAddressEditor.Button.view')}
+                          &nbsp;{this.context.i18n.getMessage('SupplierAddressEditor.Button.view')}
                           </Button>
                         </nobr>
                       ) : (
                         <nobr>
                           <Button onClick={this.onEdit.bind(this, supplierAddress)} bsSize="sm">
                             <span className="glyphicon glyphicon-edit" />
-                          &nbsp;{this.props.i18n.getMessage('SupplierAddressEditor.Button.edit')}
+                          &nbsp;{this.context.i18n.getMessage('SupplierAddressEditor.Button.edit')}
                           </Button>
                           <Button onClick={this.onDelete.bind(this, supplierAddress)} bsSize="sm">
                             <span className="glyphicon glyphicon-trash" />
-                          &nbsp;{this.props.i18n.getMessage('SupplierAddressEditor.Button.delete')}
+                          &nbsp;{this.context.i18n.getMessage('SupplierAddressEditor.Button.delete')}
                           </Button>
                         </nobr>
                       )}

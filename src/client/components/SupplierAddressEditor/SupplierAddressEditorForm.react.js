@@ -19,7 +19,11 @@ class SupplierAddressEditorForm extends Component {
     onUpdate: React.PropTypes.func.isRequired,
     onCancel: React.PropTypes.func.isRequired,
     onChange: React.PropTypes.func.isRequired
-  }
+  };
+
+  static contextTypes = {
+    i18n : React.PropTypes.object.isRequired
+  };
 
   static defaultProps = {
     editMode: 'create',
@@ -36,15 +40,15 @@ class SupplierAddressEditorForm extends Component {
     const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
 
     this.externalComponents = { CountryField };
-    this.constraints = SupplierAddressFormConstraints(this.props.i18n);
+    this.constraints = SupplierAddressFormConstraints(this.context.i18n);
   }
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.supplierAddress) {
-      this.setState({ supplierAddress: newProps.supplierAddress, errors: newProps.errors || {} });
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.supplierAddress) {
+      this.setState({ supplierAddress: nextProps.supplierAddress, errors: nextProps.errors || {} });
     }
 
-    this.constraints = SupplierAddressFormConstraints(newProps.i18n);
+    this.constraints = SupplierAddressFormConstraints(nextContext.i18n);
   }
 
   handleSaveOrUpdate = (event) => {
@@ -142,7 +146,7 @@ class SupplierAddressEditorForm extends Component {
 
     return (
       <SupplierAddressEditorFormRow
-        labelText={ this.props.i18n.getMessage(`SupplierAddressEditor.Label.${fieldName}`) }
+        labelText={ this.context.i18n.getMessage(`SupplierAddressEditor.Label.${fieldName}`) }
         required={ isRequired }
         rowErrors={ rowErrors }
       >
@@ -157,7 +161,7 @@ class SupplierAddressEditorForm extends Component {
     const { supplierAddress } = this.state;
     const { CountryField } = this.externalComponents;
 
-    let message = this.props.i18n.getMessage;
+    let message = this.context.i18n.getMessage;
 
     let typeOptions = [];
 
@@ -228,14 +232,14 @@ class SupplierAddressEditorForm extends Component {
               onClick={this.handleCancel}
             >
             {
-              this.props.i18n.getMessage('SupplierAddressEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
+              this.context.i18n.getMessage('SupplierAddressEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
             }
             </Button>
           ) : null}
           {editMode !== 'view' ? (
             <Button bsStyle="primary"
               type="submit"
-            >{this.props.i18n.getMessage('SupplierAddressEditor.Button.save')}</Button>
+            >{this.context.i18n.getMessage('SupplierAddressEditor.Button.save')}</Button>
           ) : null}
         </div>
       </form>
