@@ -53,13 +53,13 @@ class SupplierAddressListTable extends Component {
               supplierAddresses.map((supplierAddress, index) => {
                 return (
                   <tr key={'address-' + index}>
-                    <td>{this.context.i18n.getMessage(`SupplierAddressEditor.AddressType.${supplierAddress.type}`)}</td>
-                    <td>{supplierAddress.street}</td>
-                    <td>{supplierAddress.zipCode}</td>
-                    <td>{supplierAddress.city}</td>
-                    <CountryTableField countryId={supplierAddress.countryId} actionUrl={this.props.actionUrl} />
-                    <td>{supplierAddress.phoneNo}</td>
-                    <td>{supplierAddress.faxNo ? supplierAddress.faxNo : '-'}</td>
+                    <td className="row-address-type">{this.context.i18n.getMessage(`SupplierAddressEditor.AddressType.${supplierAddress.type}`)}</td>
+                    <td className="row-street">{supplierAddress.street}</td>
+                    <td className="row-zipCode">{supplierAddress.zipCode}</td>
+                    <td className="row-city">{supplierAddress.city}</td>
+                    <CountryTableField className="row-country" countryId={supplierAddress.countryId} actionUrl={this.props.actionUrl} />
+                    <td className="row-phoneNumber">{supplierAddress.phoneNo}</td>
+                    <td className="row-faxNumber">{supplierAddress.faxNo ? supplierAddress.faxNo : '-'}</td>
                     <td className="text-right">
                       {this.props.readOnly ? (
                         <nobr>
@@ -70,11 +70,11 @@ class SupplierAddressListTable extends Component {
                         </nobr>
                       ) : (
                         <nobr>
-                          <Button onClick={this.onEdit.bind(this, supplierAddress)} bsSize="sm">
+                          <Button className="edit-button" onClick={this.onEdit.bind(this, supplierAddress)} bsSize="sm">
                             <span className="glyphicon glyphicon-edit" />
                           &nbsp;{this.context.i18n.getMessage('SupplierAddressEditor.Button.edit')}
                           </Button>
-                          <Button onClick={this.onDelete.bind(this, supplierAddress)} bsSize="sm">
+                          <Button className="delete-button" onClick={this.onDelete.bind(this, supplierAddress)} bsSize="sm">
                             <span className="glyphicon glyphicon-trash" />
                           &nbsp;{this.context.i18n.getMessage('SupplierAddressEditor.Button.delete')}
                           </Button>

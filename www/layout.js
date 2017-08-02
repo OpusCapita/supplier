@@ -8,7 +8,7 @@ class Layout extends Component
   };
 
   getChildContext() {
-    return { i18n: new I18nManager('de', []) };
+    return { i18n: new I18nManager('en', []) };
   }
 
   render() {

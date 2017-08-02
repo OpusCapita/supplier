@@ -197,7 +197,7 @@ class SupplierBankAccountEditForm extends Component {
 
         { this.renderField({fieldName: 'extBankControlKey', disabled: disabled}) }
 
-        <div className="col-sm-12 text-right address-form-submit">
+        <div className="col-sm-12 text-right">
           {editMode !== 'create-first' ? (
             <Button bsStyle="link"
                     onClick={this.handleCancel}

@@ -226,7 +226,7 @@ class SupplierAddressEditorForm extends Component {
         { this.renderField({ fieldName: 'faxNo', disabled: disabled }) }
         { this.renderField({ fieldName: 'email', disabled: disabled }) }
 
-        <div className="col-sm-12 text-right address-form-submit">
+        <div className="col-sm-12 text-right">
           {editMode !== 'create-first' ? (
             <Button bsStyle="link"
               onClick={this.handleCancel}
@@ -239,6 +239,7 @@ class SupplierAddressEditorForm extends Component {
           {editMode !== 'view' ? (
             <Button bsStyle="primary"
               type="submit"
+              id="address-save"
             >{this.context.i18n.getMessage('SupplierAddressEditor.Button.save')}</Button>
           ) : null}
         </div>

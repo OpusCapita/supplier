@@ -60,7 +60,7 @@ class CountryTableField extends Component {
   };
 
   render() {
-    return (<td>{this.state.country}</td>);
+    return (<td className={this.props.className}>{this.state.country}</td>);
   }
 }
 

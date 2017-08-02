@@ -48,7 +48,7 @@ export default class AttributeValueEditorRow extends Component {
 
           {rowErrors.map((error, index) =>
             <div className="alert alert-danger" key={index} style={this.errorStyles()}>
-              <span>{ error.message }</span>
+              <span className="error-message">{ error.message }</span>
             </div>
           )}
         </div>

@@ -1,0 +1,10 @@
+{
+  "contactType": "Sales",
+  "department": "IT",
+  "salutation": "Salutation",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "phoneNumber": "Phone number",
+  "faxNumber": "Fax number",
+  "email": "example@email.com"
+}
