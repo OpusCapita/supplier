@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import request from 'superagent-bluebird-promise';
-import utils from 'underscore';
 import Button from 'react-bootstrap/lib/Button';
 import i18n from '../../i18n/I18nDecorator.react.js';
+import _ from 'underscore';
+import utils from '../../utils/utils';
 import Alert from '../Alert';
-import SupplierContactListTable from './SupplierContactListTable.react.js';
-import SupplierContactEditForm from './SupplierContactEditForm.react.js';
+import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
+import DisplayField from '../../components/DisplayTable/DisplayField.react';
+import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
+import DisplayEditGroup from '../../components/DisplayTable/DisplayEditGroup.react';
+import SupplierContactEditForm from './SupplierContactEditForm.react';
 
-/**
- * Supplier contact editor
- *
- * @author Dmitry Divin
- */
+
 @i18n({
   componentName: 'SupplierContactEditor',
   messages: require('./i18n').default,
@@ -74,7 +74,7 @@ class SupplierContactEditor extends Component {
       set('Accept', 'application/json').
       then((response) => {
         let contacts = this.state.contacts;
-        let index = utils.findIndex(contacts, { contactId: contact.contactId });
+        let index = _.findIndex(contacts, { contactId: contact.contactId });
         if (index === -1) {
           throw new Error(`Not found contact by contactId [${contact.contactId}]`);
         }
@@ -115,7 +115,7 @@ class SupplierContactEditor extends Component {
         let updatedContact = response.body;
 
         let contacts = this.state.contacts;
-        let index = utils.findIndex(contacts, { contactId: contact.contactId });
+        let index = _.findIndex(contacts, { contactId: contact.contactId });
 
         if (index === -1) {
           throw new Error(`Not found contact by ContactID=${contact.contactId}`);
@@ -138,13 +138,6 @@ class SupplierContactEditor extends Component {
       });
   };
 
-  generateUUID() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return s4() + s4() + '-' + s4() + s4();
-  }
-
   handleSave = (contact) => {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
@@ -155,7 +148,7 @@ class SupplierContactEditor extends Component {
     contact.changedBy = this.props.username;
 
     // generate unique value
-    contact.contactId = this.generateUUID();
+    contact.contactId = utils.generateUUID();
     /* eslint-enable no-param-reassign*/
 
     request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/contacts`).
@@ -187,15 +180,19 @@ class SupplierContactEditor extends Component {
   };
 
   handleChange = (contact, name, oldValue, newValue) => {
-    // check only updated objects
-    // if (contact.contactId) {
     this.props.onChange({ isDirty: true });
-    // }
+  };
+
+  onDelete = (contact) => {
+    if (!confirm(this.context.i18n.getMessage('SupplierContactEditor.Confirmation.delete'))) {
+      return;
+    }
+    this.handleDelete(contact);
   };
 
   handleView = (contact) => {
     this.setState({
-      contact: utils.clone(contact),
+      contact: _.clone(contact),
       editMode: "view",
       globalError: null,
       globalMessage: null,
@@ -205,7 +202,7 @@ class SupplierContactEditor extends Component {
 
   handleEdit = (contact) => {
     this.setState({
-      contact: utils.clone(contact),
+      contact: _.clone(contact),
       editMode: "edit",
       globalError: null,
       globalMessage: null,
@@ -234,26 +231,41 @@ class SupplierContactEditor extends Component {
   render() {
     const contacts = this.state.contacts;
     const loadErrors = this.state.loadErrors;
-
     let contact = this.state.contact;
     let errors = this.state.errors;
     let editMode = this.state.editMode;
-
     let readOnly = this.props.readOnly;
-
     let result;
 
-    if (contacts !== undefined) {
+    if (contacts) {
       if (contacts.length > 0) {
         result = (
           <div className="table-responsive">
-            <SupplierContactListTable
-              contacts={contacts}
-              readOnly={readOnly}
-              onEdit={this.handleEdit}
-              onDelete={this.handleDelete}
-              onView={this.handleView}
-            />
+            <DisplayTable headers={[{label: this.context.i18n.getMessage('SupplierContactEditor.Label.contactType')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.department')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.firstName')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.lastName')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.phone')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.mobile')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.email')}
+            ]}>
+              { contacts.map((contact, index) =>
+                (<DisplayRow key={index}>
+                  <DisplayField>{ this.context.i18n.getMessage(`SupplierContactEditor.ContactType.${contact.contactType}`)}</DisplayField>
+                  <DisplayField>{ contact.department ? this.context.i18n.getMessage(`SupplierContactEditor.Department.${contact.department}`) : '-' }</DisplayField>
+                  <DisplayField>{ contact.firstName }</DisplayField>
+                  <DisplayField>{ contact.lastName }</DisplayField>
+                  <DisplayField>{ contact.phone || '-'}</DisplayField>
+                  <DisplayField>{ contact.mobile }</DisplayField>
+                  <DisplayField>{ contact.email }</DisplayField>
+                  <DisplayEditGroup editAction={this.handleEdit.bind(this, contact)}
+                             deleteAction={this.onDelete.bind(this,contact)}
+                             editLabel={this.context.i18n.getMessage('SupplierContactEditor.Button.edit')}
+                             deleteLabel={this.context.i18n.getMessage('SupplierContactEditor.Button.delete')}/>
+
+                </DisplayRow>))
+              }
+            </DisplayTable>
           </div>
         );
       } else if (readOnly) {
@@ -289,6 +301,7 @@ class SupplierContactEditor extends Component {
 
               <SupplierContactEditForm
                 onChange={this.handleChange}
+                locale={this.context.i18n.locale}
                 contact={contact}
                 errors={errors}
                 editMode={editMode}

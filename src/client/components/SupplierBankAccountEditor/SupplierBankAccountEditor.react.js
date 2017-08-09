@@ -1,23 +1,24 @@
-import React, { Component } from 'react';
-import request from 'superagent-bluebird-promise';
-import utils from 'underscore';
-import Button from 'react-bootstrap/lib/Button';
+import React, { Component } from "react";
+import request from "superagent-bluebird-promise";
+import Button from "react-bootstrap/lib/Button";
 import validationMessages from '../../utils/validatejs/i18n';
-import i18nMessages from './i18n';
-import Alert from '../Alert';
-import SupplierBankAccountListTable from './SupplierBankAccountListTable.react.js';
-import SupplierBankAccountEditForm from './SupplierBankAccountEditForm.react.js';
+import i18nMessages from "./i18n";
+import Alert from "../Alert";
+import SupplierBankAccountEditForm from "./SupplierBankAccountEditForm.react.js";
+import DisplayTable from "../DisplayTable/DisplayTable.react.js";
+import DisplayRow from "../DisplayTable/DisplayRow.react.js";
+import DisplayField from "../DisplayTable/DisplayField.react.js";
+import DisplayEditGroup from "../../components/DisplayTable/DisplayEditGroup.react.js";
+import utils from "../../utils/utils.js";
+import _ from "underscore";
+import DisplayCountryTableField from "../DisplayTable/DisplayCountryTableField.react.js";
 
-/**
- * Supplier contact editor
- *
- * @author Dmitry Divin
- */
 class SupplierBankAccountEditor extends Component {
 
   static propTypes = {
     actionUrl: React.PropTypes.string,
     supplierId: React.PropTypes.string,
+    locale: React.PropTypes.string,
     username: React.PropTypes.string,
     readOnly: React.PropTypes.bool,
     onChange: React.PropTypes.func,
@@ -76,7 +77,6 @@ class SupplierBankAccountEditor extends Component {
   }
 
   handleDelete = (account) => {
-
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
 
@@ -87,7 +87,7 @@ class SupplierBankAccountEditor extends Component {
       set('Accept', 'application/json').
       then((response) => {
         let accounts = this.state.accounts;
-        let index = utils.findIndex(accounts, { bankAccountId: account.bankAccountId });
+        let index = _.findIndex(accounts, { bankAccountId: account.bankAccountId });
         if (index === -1) {
           throw new Error(`Not found bank account for bankAccountId [${account.bankAccountId}]`);
         }
@@ -109,8 +109,9 @@ class SupplierBankAccountEditor extends Component {
   };
 
   handleCreate = () => {
+    console.log(this.props);
     this.props.onChange({ isDirty: true });
-    this.setState({ account: {}, editMode: "create", errors: null });
+    this.setState({ account: {}, editMode: 'create', errors: null });
   };
 
   handleUpdate = (account) => {
@@ -120,6 +121,7 @@ class SupplierBankAccountEditor extends Component {
 
     let arg0 = encodeURIComponent(supplierId);
     let arg1 = encodeURIComponent(account.bankAccountId);
+
     request.put(`${actionUrl}/supplier/api/suppliers/${arg0}/bank_accounts/${arg1}`).
       set('Accept', 'application/json').
       send(account).
@@ -128,7 +130,7 @@ class SupplierBankAccountEditor extends Component {
         let updatedContact = response.body;
 
         let accounts = this.state.accounts;
-        let index = utils.findIndex(accounts, { bankAccountId: account.bankAccountId });
+        let index = _.findIndex(accounts, { bankAccountId: account.bankAccountId });
 
         if (index === -1) {
           throw new Error(`Not found account by ContactID=${account.bankAccountId}`);
@@ -151,13 +153,6 @@ class SupplierBankAccountEditor extends Component {
       });
   };
 
-  generateUUID() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return s4() + s4() + '-' + s4() + s4();
-  }
-
   handleSave = (account) => {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
@@ -168,7 +163,7 @@ class SupplierBankAccountEditor extends Component {
     account.changedBy = this.props.username;
 
     // generate unique value
-    account.bankAccountId = this.generateUUID();
+    account.bankAccountId = utils.generateUUID();
     /* eslint-enable no-param-reassign*/
 
     request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/bank_accounts`).
@@ -195,53 +190,46 @@ class SupplierBankAccountEditor extends Component {
   };
 
   handleCancel = () => {
+    console.log(this.props);
     this.props.onChange({ isDirty: false });
     this.setState({ account: null, globalError: null, globalMessage: null });
   };
 
   handleChange = (account, name, oldValue, newValue) => {
-    // check only updated objects
-    // if (account.bankAccountId) {
     this.props.onChange({ isDirty: true });
-    // }
-  };
-
-  handleView = (account) => {
-    this.setState({
-      account: utils.clone(account),
-      editMode: "view",
-      globalError: null,
-      globalMessage: null,
-      errors: null
-    });
   };
 
   handleEdit = (account) => {
     this.setState({
-      account: utils.clone(account),
-      editMode: "edit",
+      account: _.clone(account),
+      editMode: 'edit',
       globalError: null,
       globalMessage: null,
       errors: null
     });
+  };
+
+  onDelete = (account) => {
+    console.log(account);
+    if (!confirm(this.context.i18n.getMessage('SupplierBankAccountEditor.Confirmation.delete'))) {
+      return;
+    }
+    this.handleDelete(account);
   };
 
   loadBankAccounts = () => {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
-    request.
-      get(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/bank_accounts`).
-      set('Accept', 'application/json').
-      then((response) => {
-        this.setState({ accounts: response.body });
-      }).catch((response) => {
-        if (response.status === 401) {
-          this.props.onUnauthorized();
-        } else {
-          console.log(`Error loading accounts by SupplierID=${supplierId}`);
-          this.setState({ loadErrors: true });
-        }
-      });
+    request.get(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/bank_accounts`).set('Accept', 'application/json').then((response) => {
+      this.setState({ accounts: response.body });
+    }).catch((response) => {
+      if (response.status === 401) {
+        this.props.onUnauthorized();
+      } else {
+        console.log(`Error loading accounts by SupplierID=${supplierId}`);
+        this.setState({ loadErrors: true });
+      }
+    });
   };
 
   render() {
@@ -254,20 +242,38 @@ class SupplierBankAccountEditor extends Component {
     let readOnly = this.props.readOnly;
     let result;
 
-    if (accounts !== undefined) {
+    if (accounts) {
       if (accounts.length > 0) {
         result = (
-          <div className="table-responsive">
-            <SupplierBankAccountListTable
-              accounts={accounts}
-              readOnly={readOnly}
-              actionUrl={this.props.actionUrl}
-              onEdit={this.handleEdit}
-              onDelete={this.handleDelete}
-              onView={this.handleView}
-            />
-          </div>
-        );
+          <div className='table-responsive'>
+            <DisplayTable
+              headers={[{ label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.accountNumber') },
+                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankName') },
+                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankIdentificationCode') },
+                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankCountryKey') },
+                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankCode') },
+                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.extBankControlKey') },
+                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.swiftCode') }
+              ]}
+            >
+              { accounts.map((account, index) =>
+                (<DisplayRow key={index}>
+                  <DisplayField>{ account.accountNumber }</DisplayField>
+                  <DisplayField>{ account.bankName }</DisplayField>
+                  <DisplayField>{ account.bankIdentificationCode }</DisplayField>
+                  <DisplayCountryTableField actionUrl={this.props.actionUrl} countryId={account.bankCountryKey}/>
+                  <DisplayField>{ account.bankCode }</DisplayField>
+                  <DisplayField>{ account.extBankControlKey }</DisplayField>
+                  <DisplayField>{ account.swiftCode }</DisplayField>
+                  <DisplayEditGroup editAction={this.handleEdit.bind(this, account)}
+                    editLabel={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
+                    deleteAction={this.onDelete.bind(this, account)}
+                    deleteLabel={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}
+                  />
+                </DisplayRow>))
+              }
+            </DisplayTable>
+          </div>)
       } else if (readOnly) {
         account = null;
       } else {
@@ -286,17 +292,15 @@ class SupplierBankAccountEditor extends Component {
       <div>
         <h4 className="tab-description">{this.context.i18n.getMessage('SupplierBankAccountEditor.Title')}</h4>
 
-        {this.state.globalMessage && !readOnly ? (
-          <Alert bsStyle="info" message={this.state.globalMessage}/>
-        ) : null}
+        {this.state.globalMessage && !readOnly ? (<Alert bsStyle='info' message={this.state.globalMessage}/>) : null}
 
         {result}
 
         {account ? (
-          <div className="row">
-            <div className="col-sm-6">
+          <div className='row'>
+            <div className='col-sm-6'>
               {this.state.globalError && !readOnly ? (
-                <Alert bsStyle="danger" message={this.state.globalError}/>
+                <Alert bsStyle='danger' message={this.state.globalError}/>
               ) : null}
 
               <SupplierBankAccountEditForm

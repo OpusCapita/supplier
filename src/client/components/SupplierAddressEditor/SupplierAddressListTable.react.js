@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/lib/Button';
-import CountryTableField from '../CountryTableField.react.js';
+import DisplayCountryTableField from '../../components/DisplayTable/DisplayCountryTableField.react.js';
 
 class SupplierAddressListTable extends Component {
   static propTypes = {
@@ -57,7 +57,7 @@ class SupplierAddressListTable extends Component {
                     <td>{supplierAddress.street}</td>
                     <td>{supplierAddress.zipCode}</td>
                     <td>{supplierAddress.city}</td>
-                    <CountryTableField countryId={supplierAddress.countryId} actionUrl={this.props.actionUrl} />
+                    <DisplayCountryTableField countryId={supplierAddress.countryId} actionUrl={this.props.actionUrl} />
                     <td>{supplierAddress.phoneNo}</td>
                     <td>{supplierAddress.faxNo ? supplierAddress.faxNo : '-'}</td>
                     <td className="text-right">
