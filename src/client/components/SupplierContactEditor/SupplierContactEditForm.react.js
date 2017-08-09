@@ -10,12 +10,12 @@ import globalMessages from '../../utils/validatejs/i18n';
 const CONTACT_TYPES = ['Default', 'Sales', 'Escalation', 'Product', 'Technical'];
 const DEPARTMENTS = ['Management', 'Logistics', 'Sales', 'Accounting', 'Support', 'IT', 'Others'];
 
+@i18n
 class SupplierContactEditForm extends Component {
   static propTypes = {
     contact: React.PropTypes.object.isRequired,
     errors: React.PropTypes.object,
     locale: React.PropTypes.string.isRequired,
-    i18n: React.PropTypes.object,
     editMode: React.PropTypes.oneOf(['edit', 'create', 'create-first', 'view']),
     onSave: React.PropTypes.func.isRequired,
     onUpdate: React.PropTypes.func.isRequired,
@@ -161,7 +161,7 @@ class SupplierContactEditForm extends Component {
     }
     /* eslint-enable no-param-reassign*/
 
-    let labelValue = this.props.i18n.getMessage(`SupplierContactEditor.Label.${name}`);
+    let labelValue = this.context.i18n.getMessage(`SupplierContactEditor.Label.${name}`);
 
     /* eslint-disable no-param-reassign*/
     let tooltipOverlay;
@@ -251,7 +251,7 @@ class SupplierContactEditForm extends Component {
   render() {
     const editMode = this.props.editMode;
 
-    let message = this.props.i18n.getMessage;
+    let message = this.context.i18n.getMessage;
 
     let typeOptions = [];
 
@@ -357,13 +357,13 @@ class SupplierContactEditForm extends Component {
             <Button bsStyle="link"
               onClick={this.handleCancel}
             >
-            {this.props.i18n.getMessage('SupplierContactEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))}
+            {this.context.i18n.getMessage('SupplierContactEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))}
             </Button>
           ) : null}
           {editMode !== 'view' ? (
             <Button bsStyle="primary"
               type="submit"
-            >{this.props.i18n.getMessage('SupplierContactEditor.Button.save')}</Button>
+            >{this.context.i18n.getMessage('SupplierContactEditor.Button.save')}</Button>
           ) : null}
         </div>
       </form>

@@ -211,7 +211,7 @@ class SupplierBankAccountEditor extends Component {
 
   onDelete = (account) => {
     console.log(account);
-    if (!confirm(this.state.i18n.getMessage('SupplierBankAccountEditor.Confirmation.delete'))) {
+    if (!confirm(this.context.i18n.getMessage('SupplierBankAccountEditor.Confirmation.delete'))) {
       return;
     }
     this.handleDelete(account);
@@ -266,9 +266,9 @@ class SupplierBankAccountEditor extends Component {
                   <DisplayField>{ account.extBankControlKey }</DisplayField>
                   <DisplayField>{ account.swiftCode }</DisplayField>
                   <DisplayEditGroup editAction={this.handleEdit.bind(this, account)}
-                    editLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
+                    editLabel={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
                     deleteAction={this.onDelete.bind(this, account)}
-                    deleteLabel={this.state.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}
+                    deleteLabel={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.delete')}
                   />
                 </DisplayRow>))
               }

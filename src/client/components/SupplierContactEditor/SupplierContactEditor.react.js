@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import request from 'superagent-bluebird-promise';
 import Button from 'react-bootstrap/lib/Button';
-import i18nRegister from "../../i18n/register.js";
-import i18nMessages from "./i18n";
+import i18n from '../../i18n/I18nDecorator.react.js';
 import _ from 'underscore';
 import utils from '../../utils/utils';
 import Alert from '../Alert';
@@ -12,6 +11,11 @@ import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
 import DisplayEditGroup from '../../components/DisplayTable/DisplayEditGroup.react';
 import SupplierContactEditForm from './SupplierContactEditForm.react';
 
+
+@i18n({
+  componentName: 'SupplierContactEditor',
+  messages: require('./i18n').default,
+})
 class SupplierContactEditor extends Component {
 
   static propTypes = {
@@ -37,10 +41,6 @@ class SupplierContactEditor extends Component {
   state = {
     loadErrors: false
   };
-
-  componentWillMount(){
-    this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierContactEditor', i18nMessages) });
-  }
 
   componentDidMount() {
     this.loadContacts();
@@ -81,7 +81,7 @@ class SupplierContactEditor extends Component {
 
         contacts.splice(index, 1);
 
-        const message = this.state.i18n.getMessage('SupplierContactEditor.Message.objectDeleted');
+        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectDeleted');
         this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
       }).catch((response) => {
         if (response.status === 401) {
@@ -89,7 +89,7 @@ class SupplierContactEditor extends Component {
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${contact.contactId}`);
 
-          const message = this.state.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
+          const message = this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
           this.setState({ globalError: message, globalMessage: null });
         }
       });
@@ -124,7 +124,7 @@ class SupplierContactEditor extends Component {
 
         this.props.onChange({ isDirty: false });
 
-        const message = this.state.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
+        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
         this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
       }).catch((response) => {
         if (response.status === 401) {
@@ -132,7 +132,7 @@ class SupplierContactEditor extends Component {
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${contact.contactId}`);
 
-          const message = this.state.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
+          const message = this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
           this.setState({ globalError: message, globalMessage: null });
         }
       });
@@ -160,7 +160,7 @@ class SupplierContactEditor extends Component {
 
         this.props.onChange({ isDirty: false });
 
-        const message = this.state.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
+        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
         this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
       }).catch((response) => {
         if (response.status === 401) {
@@ -168,7 +168,7 @@ class SupplierContactEditor extends Component {
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${contact.contactId}`);
 
-          let message = this.state.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
+          let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
           this.setState({ globalError: message, globalMessage: null });
         }
       });
@@ -184,7 +184,7 @@ class SupplierContactEditor extends Component {
   };
 
   onDelete = (contact) => {
-    if (!confirm(this.state.i18n.getMessage('SupplierContactEditor.Confirmation.delete'))) {
+    if (!confirm(this.context.i18n.getMessage('SupplierContactEditor.Confirmation.delete'))) {
       return;
     }
     this.handleDelete(contact);
@@ -241,13 +241,13 @@ class SupplierContactEditor extends Component {
       if (contacts.length > 0) {
         result = (
           <div className="table-responsive">
-            <DisplayTable headers={[{label: this.state.i18n.getMessage('SupplierContactEditor.Label.contactType')},
-              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.department')},
-              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.firstName')},
-              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.lastName')},
-              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.phone')},
-              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.mobile')},
-              {label: this.state.i18n.getMessage('SupplierContactEditor.Label.email')}
+            <DisplayTable headers={[{label: this.context.i18n.getMessage('SupplierContactEditor.Label.contactType')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.department')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.firstName')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.lastName')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.phone')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.mobile')},
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.email')}
             ]}>
               { contacts.map((contact, index) =>
                 (<DisplayRow key={index}>
@@ -260,8 +260,8 @@ class SupplierContactEditor extends Component {
                   <DisplayField>{ contact.email }</DisplayField>
                   <DisplayEditGroup editAction={this.handleEdit.bind(this, contact)}
                              deleteAction={this.onDelete.bind(this,contact)}
-                             editLabel={this.state.i18n.getMessage('SupplierContactEditor.Button.edit')}
-                             deleteLabel={this.state.i18n.getMessage('SupplierContactEditor.Button.delete')}/>
+                             editLabel={this.context.i18n.getMessage('SupplierContactEditor.Button.edit')}
+                             deleteLabel={this.context.i18n.getMessage('SupplierContactEditor.Button.delete')}/>
 
                 </DisplayRow>))
               }
@@ -284,7 +284,7 @@ class SupplierContactEditor extends Component {
 
     return (
       <div>
-        <h4 className="tab-description">{this.state.i18n.getMessage('SupplierContactEditor.Title')}</h4>
+        <h4 className="tab-description">{this.context.i18n.getMessage('SupplierContactEditor.Title')}</h4>
 
         {this.state.globalMessage && !readOnly ? (
           <Alert bsStyle="info" message={this.state.globalMessage}/>
@@ -303,7 +303,7 @@ class SupplierContactEditor extends Component {
                 onChange={this.handleChange}
                 contact={contact}
                 errors={errors}
-                i18n={this.state.i18n}
+                i18n={this.context.i18n}
                 editMode={editMode}
                 onSave={this.handleSave}
                 onUpdate={this.handleUpdate}
@@ -315,7 +315,7 @@ class SupplierContactEditor extends Component {
 
         {!contact && !readOnly ? (
           <div>
-            <Button onClick={this.handleCreate}>{this.state.i18n.getMessage('SupplierContactEditor.Button.add')}
+            <Button onClick={this.handleCreate}>{this.context.i18n.getMessage('SupplierContactEditor.Button.add')}
             </Button>
           </div>
         ) : null}
