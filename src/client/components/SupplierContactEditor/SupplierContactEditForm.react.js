@@ -4,6 +4,7 @@ import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import Popover from 'react-bootstrap/lib/Popover';
 import classNames from 'classnames';
 import validator from 'validate.js';
+import i18n from '../../i18n/I18nDecorator.react.js';
 import './SupplierContactEditForm.css';
 import { I18nManager } from 'opuscapita-i18n';
 import globalMessages from '../../utils/validatejs/i18n';

@@ -251,8 +251,8 @@ class SupplierContactEditor extends Component {
             ]}>
               { contacts.map((contact, index) =>
                 (<DisplayRow key={index}>
-                  <DisplayField>{ contact.contactType }</DisplayField>
-                  <DisplayField>{ contact.department || '-' }</DisplayField>
+                  <DisplayField>{ this.context.i18n.getMessage(`SupplierContactEditor.ContactType.${contact.contactType}`)}</DisplayField>
+                  <DisplayField>{ contact.department ? this.context.i18n.getMessage(`SupplierContactEditor.Department.${contact.department}`) : '-' }</DisplayField>
                   <DisplayField>{ contact.firstName }</DisplayField>
                   <DisplayField>{ contact.lastName }</DisplayField>
                   <DisplayField>{ contact.phone || '-'}</DisplayField>
@@ -301,9 +301,9 @@ class SupplierContactEditor extends Component {
 
               <SupplierContactEditForm
                 onChange={this.handleChange}
+                locale={this.context.i18n.locale}
                 contact={contact}
                 errors={errors}
-                i18n={this.context.i18n}
                 editMode={editMode}
                 onSave={this.handleSave}
                 onUpdate={this.handleUpdate}
