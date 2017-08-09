@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import request from 'superagent-bluebird-promise';
 import _ from 'underscore';
-import i18nRegister from '../../i18n/register.js';
+import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import Button from 'react-bootstrap/lib/Button';
 import Alert from '../Alert';
@@ -18,6 +18,10 @@ class SupplierAddressEditor extends Component {
     readOnly: React.PropTypes.bool,
     onChange: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func
+  };
+
+  static contextTypes = {
+    i18n: React.PropTypes.object.isRequired
   };
 
   loadAddressesPromise = null;
@@ -43,7 +47,8 @@ class SupplierAddressEditor extends Component {
   };
 
   componentWillMount(){
-    this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierAddressEditor', i18nMessages) });
+    this.context.i18n.register('validatejs', validationMessages);
+    this.context.i18n.register('SupplierAddressEditor', i18nMessages);
   }
 
   componentDidMount() {
@@ -77,7 +82,7 @@ class SupplierAddressEditor extends Component {
     return;
   }
 
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps, nextContext) {
     let editMode = this.state.editMode;
 
     if (editMode && this.props.readOnly !== newProps.readOnly) {
@@ -94,8 +99,9 @@ class SupplierAddressEditor extends Component {
       this.setState(newState);
     }
 
-    if(this.state.i18n && newProps.locale != this.props.locale){
-      this.setState({ i18n: i18nRegister(newProps.locale, 'SupplierAddressEditor', i18nMessages) });
+    if(this.context.i18n && nextContext.i18n != this.context.i18n){
+      this.context.i18n.register('validatejs', validationMessages);
+      this.context.i18n.register('SupplierAddressEditor', i18nMessages);
     }
   }
 
@@ -152,7 +158,7 @@ class SupplierAddressEditor extends Component {
 
       supplierAddresses.splice(index, 1);
 
-      const message = this.state.i18n.getMessage('SupplierAddressEditor.Message.objectDeleted');
+      const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectDeleted');
       this.setState({
         supplierAddresses: supplierAddresses,
         supplierAddress: null,
@@ -195,7 +201,7 @@ class SupplierAddressEditor extends Component {
 
       this.props.onChange({ isDirty: false });
 
-      const message = this.state.i18n.getMessage('SupplierAddressEditor.Message.objectUpdated');
+      const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectUpdated');
       this.setState({
         supplierAddresses: supplierAddresses,
         supplierAddress: null,
@@ -229,7 +235,7 @@ class SupplierAddressEditor extends Component {
 
             this.props.onChange({ isDirty: false });
 
-            const message = this.state.i18n.getMessage('SupplierAddressEditor.Message.objectSaved');
+            const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectSaved');
             this.setState({
               supplierAddresses: supplierAddresses,
               supplierAddress: null,
@@ -264,7 +270,7 @@ class SupplierAddressEditor extends Component {
 
     return (
       <div>
-        <Button onClick={this.handleCreate}>{this.state.i18n.getMessage('SupplierAddressEditor.Button.add')}
+        <Button onClick={this.handleCreate}>{this.context.i18n.getMessage('SupplierAddressEditor.Button.add')}
         </Button>
       </div>
     )
@@ -292,7 +298,6 @@ class SupplierAddressEditor extends Component {
           <SupplierAddressListTable
             actionUrl={this.props.actionUrl}
             supplierAddresses={supplierAddresses}
-            i18n={this.state.i18n}
             readOnly={readOnly}
             onEdit={this.handleEdit}
             onDelete={this.handleDelete}
@@ -305,7 +310,7 @@ class SupplierAddressEditor extends Component {
     return (
       <div>
         <div>
-          <h4 className="tab-description">{this.state.i18n.getMessage('SupplierAddressEditor.Title')}</h4>
+          <h4 className="tab-description">{this.context.i18n.getMessage('SupplierAddressEditor.Title')}</h4>
         </div>
 
         {this.state.globalMessage && !readOnly ? (
@@ -325,7 +330,6 @@ class SupplierAddressEditor extends Component {
                 actionUrl={this.props.actionUrl}
                 onChange={this.handleChange}
                 supplierAddress={supplierAddress}
-                i18n={this.state.i18n}
                 errors={errors}
                 editMode={editMode}
                 onSave={this.handleSave}

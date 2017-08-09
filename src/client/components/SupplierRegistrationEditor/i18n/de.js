@@ -51,7 +51,8 @@ Messages.unableToRender = 'Der Editor kann nicht geöffnet werden';
 Messages.saved = 'Die Daten wurden erfolgreich gespeichert';
 Messages.failed = 'Lieferantenerstellung fehlgeschlagen.';
 Messages.failedUnauthorized = 'Lieferantenerstellung fehlgeschlagen: nicht autorisiert.';
-Messages.supplierExists = 'Lieferant bereits vorhanden';
+Messages.supplierExistsHeader = 'Lieferant bereits vorhanden!';
+Messages.supplierExistsText = 'Scheinbar wurde Ihr Unternehmen bereits registriert. Bitte kontaktieren Sie unseren Support via +49 231 3967 0 oder customerservice.de@opuscapita.com, um einen Zugang zu diesem Unternehmen anzufordern.';
 Messages.information1 = 'Bitte geben Sie Informationen an, die uns helfen, Ihr Unternehmen eindeutig zu identifizieren und uns zu unserem Handelspartnerverzeichnis hinzuzufügen.';
 Messages.information2 = 'Nach der Bereitstellung dieser Informationen können Sie sich anmelden.';
 

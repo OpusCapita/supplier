@@ -6,6 +6,7 @@ module.exports = function(app, db, config) {
   {
     this.events = new RedisEvents({ consul : { host : 'consul' } });
     app.get('/api/suppliers', (req, res) => sendSuppliers(req, res));
+    app.get('/api/suppliers/exists', (req, res) => existsSuppliers(req, res));
     app.post('/api/suppliers', (req, res) => createSuppliers(req, res));
     app.get('/api/suppliers/:supplierId', (req, res) => sendSupplier(req, res));
     app.put('/api/suppliers/:supplierId', (req, res) => updateSupplier(req, res));
@@ -14,11 +15,41 @@ module.exports = function(app, db, config) {
 
 let sendSuppliers = function(req, res)
 {
-  Supplier.all().then(suppliers =>
+  const queryObj = req.query.supplierId ? { supplierId: { $in: req.query.supplierId.split(',') }} : {};
+  const includes = req.query.include ? req.query.include.split(',') : [];
+
+  Supplier.all(queryObj, includes).then(suppliers =>
   {
     res.json(suppliers);
   });
 };
+
+let existsSuppliers = function(req, res)
+{
+  let queryObj = {};
+  const queryFields = [
+    'commercialRegisterNo',
+    'cityOfRegistration',
+    'countryOfRegistration',
+    'taxIdentificationNo',
+    'vatIdentificationNo',
+    'globalLocationNo',
+    'dunsNo'
+  ];
+
+  for (const index in queryFields) {
+    const field = queryFields[index];
+    if (Boolean(req.query[field]))
+      queryObj[field] = req.query[field];
+  }
+
+  if (Boolean(req.query.supplierId)) queryObj.supplierId = { $ne: req.query.supplierId };
+
+  Supplier.count(queryObj).then(count =>
+  {
+    res.json(count > 0);
+  });
+}
 
 let createSuppliers = function(req, res)
 {
@@ -50,7 +81,6 @@ let createSuppliers = function(req, res)
             });
         })
         .catch(error => {
-          Supplier.delete(supplierId).then(() => null);
           req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
 
           return res.status(error.response.statusCode || 400).json({ message : error.message });

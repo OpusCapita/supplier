@@ -1,6 +1,8 @@
 'use strict';
 const Sequelize = require('sequelize');
 const vatNumber = require('../../utils/validators/vatNumber.js');
+const dunsNumber = require('../../utils/validators/dunsNumber.js');
+const globalLocationNumber = require('../../utils/validators/globalLocationNumber.js');
 
 module.exports = function(sequelize) {
   /**
@@ -22,9 +24,12 @@ module.exports = function(sequelize) {
       field: "SupplierID"
     },
     supplierName: {
-      allowNull: true,
+      allowNull: false,
       type: Sequelize.STRING(50),
-      field: "SupplierName"
+      field: "SupplierName",
+      validate: {
+        notEmpty: true
+      }
     },
     foundedOn: {
       allowNull: true,
@@ -43,15 +48,21 @@ module.exports = function(sequelize) {
     },
     /** A supplier's city of registration */
     cityOfRegistration: {
-      allowNull: true,
+      allowNull: false,
       type: Sequelize.STRING(250),
-      field: "CityOfRegistration"
+      field: "CityOfRegistration",
+      validate: {
+        notEmpty: true
+      }
     },
     /** A supplier's country of registration as in ISO 3166-1 alpha2 */
     countryOfRegistration: {
-      allowNull: true,
+      allowNull: false,
       type: Sequelize.STRING(250),
-      field: "CountryOfRegistration"
+      field: "CountryOfRegistration",
+      validate: {
+        notEmpty: true
+      }
     },
     /** A Tax Identification Number or TIN */
     taxIdentificationNo: {
@@ -66,6 +77,8 @@ module.exports = function(sequelize) {
       field: "VatIdentificationNo",
       validate: {
         isValid(value) {
+          if (value.length === 0) return;
+
           if (vatNumber.isInvalid(value)) throw new Error('vatIdentificationNo value is invalid');
         }
       }
@@ -73,7 +86,14 @@ module.exports = function(sequelize) {
     globalLocationNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
-      field: "GlobalLocationNo"
+      field: "GlobalLocationNo",
+      validate: {
+        isValid(value) {
+          if (value.length === 0) return;
+
+          if (globalLocationNumber.isInvalid(value)) throw new Error('globalLocationNo value is invalid');
+        }
+      }
     },
     /** Company homepage url */
     homePage: {
@@ -90,7 +110,14 @@ module.exports = function(sequelize) {
     dunsNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
-      field: "DUNSNo"
+      field: "DUNSNo",
+      validate: {
+        isValid(value) {
+          if (value.length === 0) return;
+
+          if (dunsNumber.isInvalid(value)) throw new Error('dunsNo value is invalid');
+        }
+      }
     },
     status: {
       allowNull: true,
@@ -122,15 +149,6 @@ module.exports = function(sequelize) {
     getterMethods: {
       _objectLabel: function() {
         return this.supplierName ? this.supplierName + ' (' + this.supplierId + ')' : this.supplierId
-      }
-    },
-    classMethods: {
-      associate: function(models) {
-        Supplier.hasMany(models.Address, {
-          as: 'addresses',
-          foreignKey: 'supplierId',
-          onDelete: 'cascade'
-        });
       }
     },
     updatedAt: 'changedOn',

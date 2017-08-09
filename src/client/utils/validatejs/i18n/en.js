@@ -14,8 +14,9 @@ const validatejs = {
     minOrEqual: {},
     maxSize: {},
     minSize: {},
-    validator: {},
     vatNumber: {},
+    dunsNumber: {},
+    globalLocationNumber: {},
     iban: {},
     bic: {},
     swiftCode: {}
@@ -35,6 +36,13 @@ const validatejs = {
       math: {},
     },
   },
+  duplicate: {
+    registerationNumber: {},
+    taxIdNumber: {},
+    vatNumber: {},
+    dunsNumber: {},
+    globalLocationNumber: {}
+  }
 };
 
 validatejs.doesnt.match.message = "Value does not match the required pattern '{limit}'";
@@ -49,16 +57,22 @@ validatejs.invalid.maxOrEqual.message = "Value must be less than or equal to max
 validatejs.invalid.minOrEqual.message = "Value must be greater than or equal to min value '{limit}'";
 validatejs.invalid.maxSize.message = "Value exceeds the maximum size of '{limit}'";
 validatejs.invalid.minSize.message = "Value is less than the minimum size of '{limit}'";
-validatejs.invalid.validator.message = "Value does not pass custom validation";
 validatejs.not.inlist.message = "Value is not in the list '{limit}'";
 validatejs.blank.message = "Field cannot be blank";
 validatejs.not.equal.message = "Value cannot equal '{limit}'";
 validatejs.null.message = "Property cannot be null";
 validatejs.not.unique.message = "Value must be unique";
 validatejs.invalid.vatNumber.message = "Value is not a valid EU VAT number";
+validatejs.invalid.dunsNumber.message = "Value is not a valid D-U-N-S number";
+validatejs.invalid.globalLocationNumber.message = "Value is not a valid Global Location Number";
 validatejs.invalid.iban.message = "Value is not a valid IBAN";
 validatejs.invalid.bic.message = "Value is not a valid BIC";
 validatejs.invalid.swiftCode.message = "Value is not a valid SWIFT Code";
+validatejs.duplicate.registerationNumber.message = "A company already exists with this registration number, city and country.";
+validatejs.duplicate.taxIdNumber.message = "A company already exists with this Tax Identification Number and country.";
+validatejs.duplicate.vatNumber.message = "A company already exists with this VAT number.";
+validatejs.duplicate.dunsNumber.message = "A company already exists with this D-U-N-S number.";
+validatejs.duplicate.globalLocationNumber.message = "A company already exists with this Global Location Number.";
 
 validatejs.typeMismatch.java.net.URL = "Value must be a valid URL";
 validatejs.typeMismatch.java.net.URI = "Value must be a valid URI";
@@ -69,6 +83,8 @@ validatejs.typeMismatch.java.lang.Long = "Value must be a valid number";
 validatejs.typeMismatch.java.lang.Short = "Value must be a valid number";
 validatejs.typeMismatch.java.math.BigDecimal = "Value must be a valid number";
 validatejs.typeMismatch.java.math.BigInteger = "Value must be a valid number";
+
+validatejs.supplierExists = "{message}\nPlease reach out to our support at +49 231 3967 0 or customerservice.de@opuscapita.com in order to initiate an access request to the registered company."
 
 export default {
   validatejs,

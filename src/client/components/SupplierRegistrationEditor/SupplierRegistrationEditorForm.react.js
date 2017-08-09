@@ -1,26 +1,22 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'underscore';
-import validatejs from 'validate.js';
 import SupplierRegistrationEditorFormRow from '../AttributeValueEditorRow.react.js';
 import './SupplierRegistrationEditor.css';
-import SupplierFormConstraints from './SupplierFormConstraints';
+import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
-import customValidation from '../../utils/validatejs/custom.js';
-
-function getValidator() {
-  customValidation.vatNumber(validatejs);
-
-  return validatejs;
-};
+import validator from '../../utils/validatejs/supplierValidator.js';
 
 class SupplierRegistrationEditorForm extends Component {
   static propTypes = {
     supplier: PropTypes.object,
     onSupplierChange: PropTypes.func.isRequired,
-    i18n: PropTypes.object.isRequired,
     onChange: React.PropTypes.func,
     onCancel: React.PropTypes.func,
     actionUrl: React.PropTypes.string.isRequired
+  };
+
+  static contextTypes = {
+    i18n : React.PropTypes.object.isRequired
   };
 
   state = {
@@ -36,10 +32,10 @@ class SupplierRegistrationEditorForm extends Component {
 
     this.externalComponents = { CountryField };
 
-    this.SUPPLIER_CONSTRAINTS = SupplierFormConstraints(this.props.i18n);
+    this.constraints = new SupplierConstraints(this.context.i18n);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
     if (_.isEqual(this.props.supplier, nextProps.supplier)) {
       return;
     }
@@ -51,11 +47,26 @@ class SupplierRegistrationEditorForm extends Component {
       fieldErrors: {},
     });
 
-    this.SUPPLIER_CONSTRAINTS = SupplierFormConstraints(nextProps.i18n);
+    this.constraints = new SupplierConstraints(nextContext.i18n);
   }
 
+  setFieldErrorsStates = (errors) => {
+    this.setState({
+      fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
+        ...rez,
+        [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
+      }), this.state.fieldErrors)
+    });
+  };
+
   handleChange = (fieldName, event) => {
-    let newValue = event.target.value;
+    let newValue;
+
+    if (event.target) {
+      newValue = event.target.value;
+    } else {
+      newValue = event;
+    }
 
     if (this.props.onChange) {
       this.props.onChange(fieldName, this.state.supplier[fieldName], newValue);
@@ -69,36 +80,21 @@ class SupplierRegistrationEditorForm extends Component {
     });
   };
 
-  handleCountryChange = (fieldName, country) => {
-    if (this.props.onChange) {
-      this.props.onChange(fieldName, this.state.supplier[fieldName], country);
-    }
+  handleBlur = (fieldName) => {
+    const constraints = this.constraints.forField(fieldName);
 
     this.setState({
-      supplier: {
-        ...this.state.supplier,
-        [fieldName]: country
-      }
+      fieldErrors: Object.keys(constraints).reduce((rez, fieldName) => ({
+        ...rez,
+        [fieldName]: []
+      }), this.state.fieldErrors)
     });
-  };
 
-  handleBlur = (fieldName/* , event*/) => {
-    const errors = getValidator()(
-      this.state.supplier, {
-        [fieldName]: this.SUPPLIER_CONSTRAINTS[fieldName]
-      }, {
-        fullMessages: false
-      }
-    );
+    const error = (errors) => {
+      this.setFieldErrorsStates(errors);
+    };
 
-    this.setState({
-      fieldErrors: {
-        ...this.state.fieldErrors,
-        [fieldName]: errors ?
-          errors[fieldName].map(msg => ({ message: msg })) :
-          []
-      }
-    });
+    validator.forRegistration().async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
   };
 
   handleCancel = event => {
@@ -110,43 +106,26 @@ class SupplierRegistrationEditorForm extends Component {
     event.preventDefault();
 
     const { onSupplierChange } = this.props;
-    const supplier = { ...this.state.supplier };
+    const supplier = this.state.supplier;
+    const constraints = this.constraints.forRegistration();
 
-    if (supplier.supplierName) {
-      supplier.supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '');
-    }
+    const success = () => {
+      onSupplierChange(supplier);
+    };
 
-    if (!supplier.role) {
-      supplier.role = 'selling';
-    }
-
-    const errors = validatejs(
-      supplier,
-      this.SUPPLIER_CONSTRAINTS, {
-        fullMessages: false
-      }
-    );
-
-    if (errors) {
-      this.setState({
-        fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
-          ...rez,
-          [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
-        }), {}),
-      });
-
+    const error = (errors) => {
+      this.setFieldErrorsStates(errors);
       onSupplierChange(null);
-      return;
-    }
+    };
 
-    onSupplierChange(supplier);
-    return;
+    validator.forRegistration().async(supplier, constraints, { fullMessages: false }).then(success, error);
   };
 
   renderField = attrs => {
     const { supplier, fieldErrors } = this.state;
     const { fieldName } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
+    const constraints = this.constraints.forRegistration();
 
     let component = attrs.component ||
       <input className="form-control"
@@ -154,21 +133,17 @@ class SupplierRegistrationEditorForm extends Component {
         value={ typeof supplier[fieldName] === 'string' ? supplier[fieldName] : '' }
         onChange={ this.handleChange.bind(this, fieldName) }
         onBlur={ this.handleBlur.bind(this, fieldName) }
-        autoFocus={ fieldName === 'supplierName' && !this.props.supplierId }
       />;
 
     let isRequired = fieldNames.some(name => {
-      return this.SUPPLIER_CONSTRAINTS[name] && this.SUPPLIER_CONSTRAINTS[name].presence;
+      return constraints[name] && constraints[name].presence;
     });
 
-    let rowErrors = fieldNames.reduce(
-      (rez, name) => rez.concat(fieldErrors[name] || []),
-      []
-    );
+    let rowErrors = fieldNames.reduce((rez, name) => rez.concat(fieldErrors[name] || []), []);
 
     return (
       <SupplierRegistrationEditorFormRow
-        labelText={ this.props.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
+        labelText={ this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
         required={ isRequired }
         rowErrors={ rowErrors }
       >
@@ -180,16 +155,6 @@ class SupplierRegistrationEditorForm extends Component {
   render() {
     const { supplier } = this.state;
     const { CountryField } = this.externalComponents;
-
-    let companiesSearchValue = {};
-
-    if (supplier.supplierId) {
-      companiesSearchValue.supplierId = supplier.supplierId;
-    }
-
-    if (Object.keys(companiesSearchValue).length === 0) {
-      companiesSearchValue = null;
-    }
 
     return (
       <div className="row">
@@ -206,7 +171,7 @@ class SupplierRegistrationEditorForm extends Component {
                     <CountryField
                       actionUrl={this.props.actionUrl}
                       value={this.state.supplier['countryOfRegistration']}
-                      onChange={this.handleCountryChange.bind(this, 'countryOfRegistration')}
+                      onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                       onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
                     />
                   )
@@ -220,10 +185,10 @@ class SupplierRegistrationEditorForm extends Component {
                 <div className='supplier-registration-form-submit'>
                   <div className='text-right form-submit'>
                     <button className="btn btn-link" onClick={this.handleCancel}>
-                      {this.props.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.cancel')}
+                      {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.cancel')}
                     </button>
                     <button className="btn btn-primary" onClick={ this.handleUpdate }>
-                      {this.props.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.continue')}
+                      {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.continue')}
                     </button>
                   </div>
                 </div>
@@ -232,8 +197,8 @@ class SupplierRegistrationEditorForm extends Component {
           </form>
         </div>
         <div className="col-md-4">
-          <p>{this.props.i18n.getMessage('SupplierRegistrationEditor.Messages.information1')}</p>
-          <p>{this.props.i18n.getMessage('SupplierRegistrationEditor.Messages.information2')}</p>
+          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.information1')}</p>
+          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.information2')}</p>
         </div>
       </div>
     );

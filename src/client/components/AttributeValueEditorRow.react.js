@@ -17,6 +17,14 @@ export default class AttributeValueEditorRow extends Component {
     rowErrors: [],
   };
 
+  errorStyles() {
+    return {
+      marginBottom: '0px',
+      padding: '6px',
+      border: '0px'
+    }
+  }
+
   render() {
     const { required, rowErrors } = this.props;
     let labelText = this.props.labelText;
@@ -40,8 +48,8 @@ export default class AttributeValueEditorRow extends Component {
           { this.props.children }
 
           {rowErrors.map((error, index) =>
-            <div key={index}>
-              <span className="label label-danger">{ error.message }</span>
+            <div className="alert alert-danger" key={index} style={this.errorStyles()}>
+              <span>{ error.message }</span>
             </div>
           )}
         </div>

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import request from 'superagent-bluebird-promise';
-import i18nRegister from '../../i18n/register.js';
+import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import Alert from '../Alert';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';
@@ -19,7 +19,11 @@ class SupplierRegistrationEditor extends Component {
     onUpdate: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func,
     onLogout: React.PropTypes.func
-  }
+  };
+
+  static contextTypes = {
+    i18n : React.PropTypes.object.isRequired
+  };
 
   constructor(props) {
     super(props);
@@ -36,7 +40,8 @@ class SupplierRegistrationEditor extends Component {
   createSupplierPromise = null;
 
   componentWillMount(){
-    this.setState({ i18n: i18nRegister(this.props.locale, 'SupplierRegistrationEditor', i18nMessages) });
+    this.context.i18n.register('validatejs', validationMessages);
+    this.context.i18n.register('SupplierRegistrationEditor', i18nMessages);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,8 +50,9 @@ class SupplierRegistrationEditor extends Component {
       globalErrorMessage: ''
     });
 
-    if(this.state.i18n && nextProps.locale != this.props.locale){
-      this.setState({ i18n: i18nRegister(nextProps.locale, 'SupplierRegistrationEditor', i18nMessages) });
+    if(this.context.i18n && nextContext.i18n != this.context.i18n){
+      this.context.i18n.register('validatejs', validationMessages);
+      this.context.i18n.register('SupplierRegistrationEditor', i18nMessages);
     }
   }
 
@@ -89,7 +95,7 @@ class SupplierRegistrationEditor extends Component {
     this.createSupplierPromise.then(response => {
       this.setState({
         supplier: response.body,
-        globalInfoMessage: this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'),
+        globalInfoMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'),
         globalErrorMessage: ''
       });
 
@@ -148,7 +154,7 @@ class SupplierRegistrationEditor extends Component {
         case 403: case 405:
           this.setState({
             globalInfoMessage: '',
-            globalErrorMessage: this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'),
+            globalErrorMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'),
           });
           break;
         case 401:
@@ -164,7 +170,7 @@ class SupplierRegistrationEditor extends Component {
         default:
           this.setState({
             globalInfoMessage: '',
-            globalErrorMessage: this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'),
+            globalErrorMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'),
           });
       }
     });
@@ -172,11 +178,10 @@ class SupplierRegistrationEditor extends Component {
 
   toRender = () => {
     if (this.state.supplierExist) {
-      return <SupplierExistsView i18n={this.state.i18n} onBack={ this.handleBackToForm }/>
+      return <SupplierExistsView i18n={this.context.i18n} onBack={ this.handleBackToForm }/>
     } else {
       return <SupplierRegistrationEditorForm
                {...this.props}
-               i18n={this.state.i18n}
                supplier={ this.state.supplier }
                onSupplierChange={ this.handleUpdate }
                onChange={ this.handleChange }
@@ -190,7 +195,7 @@ class SupplierRegistrationEditor extends Component {
 
     if (hasErrors) {
       return (
-        <div>{ this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.unableToRender') }</div>
+        <div>{ this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.unableToRender') }</div>
       );
     }
 
@@ -209,7 +214,7 @@ class SupplierRegistrationEditor extends Component {
             hideCloseLink={true}
           />
 
-          <h2>{this.state.i18n.getMessage('SupplierRegistrationEditor.Messages.companyRegistration')}</h2>
+          <h2>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.companyRegistration')}</h2>
 
           {this.toRender()}
         </div>

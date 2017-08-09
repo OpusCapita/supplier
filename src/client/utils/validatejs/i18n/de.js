@@ -16,6 +16,8 @@ const validatejs = {
     minSize: {},
     validator: {},
     vatNumber: {},
+    dunsNumber: {},
+    globalLocationNumber: {},
     iban: {},
     bic: {},
     swiftCode: {}
@@ -35,6 +37,13 @@ const validatejs = {
       math: {},
     },
   },
+  duplicate: {
+    registerationNumber: {},
+    taxIdNumber: {},
+    vatNumber: {},
+    dunsNumber: {},
+    globalLocationNumber: {}
+  }
 };
 
 validatejs.doesnt.match.message = "Der Wert entspricht nicht dem vorgegebenen Muster '{limit}'";
@@ -56,9 +65,16 @@ validatejs.not.equal.message = "Der Wert darf nicht gleich ''{limit}'' sein";
 validatejs.null.message = "Die Eigenschaft darf nicht null sein";
 validatejs.not.unique.message = "Der Wert muss eindeutig sein";
 validatejs.invalid.vatNumber.message = "Der Wert ist keine gültige EU-Umsatzsteuer-Identifikationsnummer";
+validatejs.invalid.dunsNumber.message = "Der Wert ist keine gültige D-U-N-S Nummer";
+validatejs.invalid.globalLocationNumber.message = "Der Wert ist keine gültige Global Location Number";
 validatejs.invalid.iban.message = "Der Wert ist kein gültiger IBAN";
 validatejs.invalid.bic.message = "Der Wert ist kein gültiger BIC";
 validatejs.invalid.swiftCode.message = "Der Wert ist kein gültiger SWIFT-Code";
+validatejs.duplicate.registerationNumber.message = "Ein Unternehmen existiert bereits mit dieser Handelsregisternummer, der Stadt und dem Land.";
+validatejs.duplicate.taxIdNumber.message = "Ein Unternehmen existiert bereits mit dieser Steueridentifikationsnummer und dem Land.";
+validatejs.duplicate.vatNumber.message = "Ein Unternehmen existiert bereits mit dieser Umsatzsteuer-Identifikationsnummer.";
+validatejs.duplicate.dunsNumber.message = "Ein Unternehmen existiert bereits mit dieser D-U-N-S-Nummer.";
+validatejs.duplicate.globalLocationNumber.message = "Ein Unternehmen existiert bereits mit dieser Global Location Number.";
 
 validatejs.typeMismatch.java.net.URL = "Die Wert muss eine g\u00fcltige URL sein";
 validatejs.typeMismatch.java.net.URI = "Die Wert muss eine g\u00fcltige URI sein";
@@ -69,6 +85,8 @@ validatejs.typeMismatch.java.lang.Long = "Die Wert muss eine g\u00fcltige Zahl s
 validatejs.typeMismatch.java.lang.Short = "Die Wert muss eine g\u00fcltige Zahl sein";
 validatejs.typeMismatch.java.math.BigDecimal = "Die Wert muss eine g\u00fcltige Zahl sein";
 validatejs.typeMismatch.java.math.BigInteger = "Die Wert muss eine g\u00fcltige Zahl sein";
+
+validatejs.supplierExists = "{message}\nBitte kontaktieren Sie unseren Support via +49 231 3967 0 oder customerservice.de@opuscapita.com, um einen Zugang zu diesem Unternehmen anzufordern."
 
 export default {
   validatejs,
