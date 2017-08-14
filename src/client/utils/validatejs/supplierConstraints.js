@@ -113,7 +113,9 @@ let allConstraints = function(i18n) {
       }
     },
     vatIdentificationNo: {
-      presence: false,
+      presence: {
+        message: i18n.getMessage('validatejs.blank.message')
+      },
       vatNumber: {
         message: i18n.getMessage('validatejs.invalid.vatNumber.message')
       },

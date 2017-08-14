@@ -72,13 +72,11 @@ module.exports = function(sequelize) {
     },
     /** A value added tax identification number or VAT identification number (VATIN) */
     vatIdentificationNo: {
-      allowNull: true,
+      allowNull: false,
       type: Sequelize.STRING(250),
       field: "VatIdentificationNo",
       validate: {
         isValid(value) {
-          if (value.length === 0) return;
-
           if (vatNumber.isInvalid(value)) throw new Error('vatIdentificationNo value is invalid');
         }
       }
