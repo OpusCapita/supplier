@@ -62,8 +62,6 @@ module.exports.uniqueIdentifier = function(validate) {
   return validate.validators.uniqueIdentifier = function(value, options, key, attributes) {
     if (value) return null;
 
-    if (Object.keys(attributes).length < 2) return null;
-
     const uniqueIdentifier = require('../../../server/utils/validators/uniqueIdentifier.js');
 
     const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo];
