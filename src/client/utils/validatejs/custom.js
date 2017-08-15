@@ -57,3 +57,17 @@ module.exports.globalLocationNumber = function(validate) {
     return options.message;
   };
 };
+
+module.exports.uniqueIdentifier = function(validate) {
+  return validate.validators.uniqueIdentifier = function(value, options, key, attributes) {
+    if (value) return null;
+
+    const uniqueIdentifier = require('../../../server/utils/validators/uniqueIdentifier.js');
+
+    const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo];
+
+    if (uniqueIdentifier.isValid(fields)) return null;
+
+    return options.message;
+  };
+};

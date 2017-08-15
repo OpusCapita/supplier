@@ -39,6 +39,13 @@ class SupplierConstraints {
         countryOfRegistration: this.constraints['countryOfRegistration']
       };
 
+    if (['vatIdentificationNo', 'dunsNo', 'globalLocationNo'].indexOf(fieldName) > -1)
+      return {
+        vatIdentificationNo: this.constraints['vatIdentificationNo'],
+        dunsNo: this.constraints['dunsNo'],
+        globalLocationNo: this.constraints['globalLocationNo'],
+      };
+
     return { [fieldName]: this.constraints[fieldName] };
   }
 }
@@ -121,6 +128,9 @@ let allConstraints = function(i18n) {
         message: i18n.getMessage('validatejs.supplierExists', {
           message: i18n.getMessage('validatejs.duplicate.vatNumber.message')
         })
+      },
+      uniqueIdentifier: {
+        message: i18n.getMessage('validatejs.invalid.uniqueIdentifier.message')
       }
     },
     globalLocationNo: {
@@ -132,6 +142,9 @@ let allConstraints = function(i18n) {
         message: i18n.getMessage('validatejs.supplierExists', {
           message: i18n.getMessage('validatejs.duplicate.globalLocationNumber.message')
         })
+      },
+      uniqueIdentifier: {
+        message: i18n.getMessage('validatejs.invalid.uniqueIdentifier.message')
       }
     },
     dunsNo: {
@@ -143,6 +156,9 @@ let allConstraints = function(i18n) {
         message: i18n.getMessage('validatejs.supplierExists', {
           message: i18n.getMessage('validatejs.duplicate.dunsNumber.message')
         })
+      },
+      uniqueIdentifier: {
+        message: i18n.getMessage('validatejs.invalid.uniqueIdentifier.message')
       }
     }
   };
