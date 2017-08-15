@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const vatNumber = require('../../utils/validators/vatNumber.js');
 const dunsNumber = require('../../utils/validators/dunsNumber.js');
 const globalLocationNumber = require('../../utils/validators/globalLocationNumber.js');
+const uniqueIdentifier = require('../../utils/validators/uniqueIdentifier.js');
 
 module.exports = function(sequelize) {
   /**
@@ -72,11 +73,13 @@ module.exports = function(sequelize) {
     },
     /** A value added tax identification number or VAT identification number (VATIN) */
     vatIdentificationNo: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING(250),
       field: "VatIdentificationNo",
       validate: {
         isValid(value) {
+          if (value.length === 0) return;
+
           if (vatNumber.isInvalid(value)) throw new Error('vatIdentificationNo value is invalid');
         }
       }
@@ -144,6 +147,15 @@ module.exports = function(sequelize) {
       field: "ChangedOn"
     }
   }, {
+    validate: {
+      hasUniqueIdentifier() {
+        const fields = [this.vatIdentificationNo, this.dunsNo, this.globalLocationNo];
+
+        if (uniqueIdentifier.isInvalid(fields)) {
+          throw new Error('Supplier must contain a unique identifier - vatIdentificationNo, dunsNo or globalLocationNo');
+        }
+      }
+    },
     getterMethods: {
       _objectLabel: function() {
         return this.supplierName ? this.supplierName + ' (' + this.supplierId + ')' : this.supplierId
