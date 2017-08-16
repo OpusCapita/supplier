@@ -131,11 +131,6 @@
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/contacts[/]?$",
-        "actions": ["create"]
-      },
-      {
-        "type": "rest",
         "resourceId": "/api/suppliers/${_current_supplier_id}/contacts[%w | %p]*",
         "actions": ["view"]
       },
