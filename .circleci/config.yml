@@ -1,5 +1,21 @@
 version: 2
 jobs:
+  test:
+    docker:
+      # the Docker image with Cypress preinstalled
+      - image: cypress/internal:cy-0.19.4
+        environment:
+          ## this enables colors in the output
+          TERM: xterm
+    working_directory: ~/build
+    steps:
+      - checkout
+      - run:
+          name: Running E2E tests
+          command: cypress run --reporter junit --reporter-options "mochaFile=results/my-test-output.xml"
+      - store_test_results:
+          path: results
+
   build:
     docker:
       - image: circleci/node:8
