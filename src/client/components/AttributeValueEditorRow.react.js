@@ -5,6 +5,7 @@ import classNames from 'classnames';
  * Provides skeleton for displaying label and input field of ane types.
  */
 export default class AttributeValueEditorRow extends Component {
+
   static propTypes = {
     labelText: PropTypes.string.isRequired,
     required: PropTypes.bool,

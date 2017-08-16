@@ -7,7 +7,7 @@ let Confirmation = {
 let Title = 'Please enter your bank account details';
 
 let Label = {
-  accountNumber : 'IBAN',
+  accountNumber: 'IBAN',
   bankIdentificationCode: 'BIC',
   bankCountryKey: 'Bank Country',
   bankCode: 'Bank Code',

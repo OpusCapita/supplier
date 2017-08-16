@@ -6,22 +6,17 @@ import classNames from 'classnames';
 import validator from 'validate.js';
 import i18n from '../../i18n/I18nDecorator.react.js';
 import './SupplierContactEditForm.css';
-
 import { I18nManager } from 'opuscapita-i18n';
 import globalMessages from '../../utils/validatejs/i18n';
 const CONTACT_TYPES = ['Default', 'Sales', 'Escalation', 'Product', 'Technical'];
 const DEPARTMENTS = ['Management', 'Logistics', 'Sales', 'Accounting', 'Support', 'IT', 'Others'];
 
-/**
- * Supplier contact edit form
- *
- * @author Dmitry Divin
- */
 @i18n
 class SupplierContactEditForm extends Component {
   static propTypes = {
     contact: React.PropTypes.object.isRequired,
     errors: React.PropTypes.object,
+    locale: React.PropTypes.string.isRequired,
     editMode: React.PropTypes.oneOf(['edit', 'create', 'create-first', 'view']),
     onSave: React.PropTypes.func.isRequired,
     onUpdate: React.PropTypes.func.isRequired,
@@ -37,7 +32,7 @@ class SupplierContactEditForm extends Component {
   state = {
     contact: this.props.contact,
     errors: this.props.errors || {}
-  }
+  };
 
   componentWillReceiveProps(newProps) {
     if (newProps.contact) {
@@ -45,7 +40,7 @@ class SupplierContactEditForm extends Component {
     }
   }
 
-  validatejsI18N = new I18nManager(this.props.locale, globalMessages)
+  validatejsI18N = new I18nManager(this.props.locale, globalMessages);
 
   constraints = {
     contactType: {
@@ -126,7 +121,7 @@ class SupplierContactEditForm extends Component {
         })
       }
     }
-  }
+  };
 
   /**
    * On Save or Update local handler

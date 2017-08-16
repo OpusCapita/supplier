@@ -7,7 +7,7 @@ let Confirmation = {
 let Title = 'Bitte hinterlegen Sie hier die Ansprechpartner aus den Bereichen Geschäftsleitung, Vertrieb, Buchhaltung und Logistik.\nGerne können Sie auch noch weitere Ansprechpartner benennen.';
 
 let Label = {
-  accountNumber : 'IBAN',
+  accountNumber: 'IBAN',
   bankIdentificationCode: 'BIC',
   bankCountryKey: 'Bank Land',
   bankCode: 'Bankleitzahl',

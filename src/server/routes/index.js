@@ -1,7 +1,6 @@
 'use strict';
 
 const Promise = require('bluebird');
-const express = require('express');
 
 const suppliers = require('./suppliers');
 const supplierContacts = require('./supplier_contacts');
