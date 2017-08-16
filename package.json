@@ -3,6 +3,7 @@
   "version": "2.0.4-SNAPSHOT",
   "description": "Supplier Microservice. Provides base CRUD Rest API for basic Supplier data manipulation.",
   "scripts": {
+    "cypress": "npm install -g cypress-cli && cypress install && cypress verify && cypress run",
     "start": "node src/server/index.js",
     "dev": "npm run setup-consul ; nodemon --watch src/server src/server/index.js",
     "local": "npm run setup-consul ; NODE_ENV=development nodemon --watch src/server www/index.js",
