@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  test:
+  build_test:
     docker:
       # the Docker image with Cypress preinstalled
       - image: cypress/internal:cy-0.19.4
