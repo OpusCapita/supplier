@@ -20,10 +20,8 @@ module.exports.all = function(queryObj, includes)
 
   let includeModels = [];
 
-  for (const index in includes) {
-    const association = includes[index];
-    if (associations[association])
-      includeModels.push(associations[association]);
+  for (const association of includes) {
+    if (associations[association]) includeModels.push(associations[association]);
   }
 
   return this.db.models.Supplier.findAll({ where: queryObj, include: includeModels }).map(supplier => {

@@ -5,7 +5,6 @@ import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import Button from 'react-bootstrap/lib/Button';
 import Alert from '../Alert';
-import utils from '../../utils/utils';
 import SupplierAddressListTable from './SupplierAddressListTable.react.js';
 import SupplierAddressEditorForm from './SupplierAddressEditorForm.react.js';
 
@@ -144,7 +143,7 @@ class SupplierAddressEditor extends Component {
     let supplierId = this.props.supplierId;
 
     let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(supplierAddress.addressId);
+    let arg1 = encodeURIComponent(supplierAddress.id);
 
     this.deleteAddressPromise = request.del(`${actionUrl}/supplier/api/suppliers/${arg0}/addresses/${arg1}`).set(
         'Accept', 'application/json').promise();
@@ -183,7 +182,7 @@ class SupplierAddressEditor extends Component {
     supplierAddress.changedBy = this.props.username;// eslint-disable-line no-param-reassign
 
     let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(supplierAddress.addressId);
+    let arg1 = encodeURIComponent(supplierAddress.id);
 
     this.updateAddressPromise = request.put(`${actionUrl}/supplier/api/suppliers/${arg0}/addresses/${arg1}`).set(
       'Accept', 'application/json').send(supplierAddress).promise();
@@ -219,14 +218,9 @@ class SupplierAddressEditor extends Component {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
 
-    /* eslint-disable no-param-reassign*/
     supplierAddress.supplierId = supplierId;
     supplierAddress.createdBy = this.props.username;
     supplierAddress.changedBy = this.props.username;
-
-    // generate unique value
-    supplierAddress.addressId = utils.generateUUID();
-    /* eslint-enable no-param-reassign*/
 
     request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/addresses`).set(
           'Accept', 'application/json').send(supplierAddress).then((response) => {
@@ -258,7 +252,7 @@ class SupplierAddressEditor extends Component {
 
   handleChange = (supplierAddress, name, oldValue, newValue) => {
     // check only updated objects
-    // if (supplierAddress.addressId) {
+    // if (supplierAddress.id) {
     this.props.onChange({ isDirty: true });
     // }
   };

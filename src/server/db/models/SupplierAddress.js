@@ -12,16 +12,7 @@ module.exports = function(sequelize) {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
-      field: 'AddressSN'
-    },
-    addressId: {
-      type: Sequelize.STRING(50),
-      allowNull: false,
-      field: 'AddressID',
-      unique: true,
-      validate: {
-        notEmpty: true
-      }
+      field: 'ID'
     },
     supplierId: {
       type: Sequelize.STRING(50),
