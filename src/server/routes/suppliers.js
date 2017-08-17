@@ -26,29 +26,7 @@ let sendSuppliers = function(req, res)
 
 let existsSuppliers = function(req, res)
 {
-  let queryObj = {};
-  const queryFields = [
-    'commercialRegisterNo',
-    'cityOfRegistration',
-    'countryOfRegistration',
-    'taxIdentificationNo',
-    'vatIdentificationNo',
-    'globalLocationNo',
-    'dunsNo'
-  ];
-
-  for (const index in queryFields) {
-    const field = queryFields[index];
-    if (Boolean(req.query[field]))
-      queryObj[field] = req.query[field];
-  }
-
-  if (Boolean(req.query.supplierId)) queryObj.supplierId = { $ne: req.query.supplierId };
-
-  Supplier.count(queryObj).then(count =>
-  {
-    res.json(count > 0);
-  });
+  Supplier.recordExists(req.query).then(exists => res.json(exists));
 }
 
 let createSuppliers = function(req, res)

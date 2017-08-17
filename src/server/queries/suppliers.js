@@ -39,13 +39,6 @@ module.exports.all = function(queryObj, includes)
   });
 };
 
-module.exports.count = function(queryObj)
-{
-  if (Object.keys(queryObj).length === 0) return this.db.models.Supplier.count();
-
-  return this.db.models.Supplier.count({ where: queryObj });
-};
-
 module.exports.find = function(supplierId)
 {
   return this.db.models.Supplier.findById(supplierId);
@@ -93,32 +86,34 @@ module.exports.exists = function(supplierId)
 
 module.exports.recordExists = function(supplier)
 {
-  const options = {
-    $or: [
-      {
-        dunsNo: { $eq: supplier.dunsNo, $ne: null, $notIn: [''] }
-      },
-      {
-        globalLocationNo: { $eq: supplier.globalLocationNo, $ne: null, $notIn: [''] }
-      },
-      {
-        vatIdentificationNo: { $eq: supplier.vatIdentificationNo, $ne: null, $notIn: [''] }
-      },
-      {
-        $and: {
-          commercialRegisterNo: { $eq: supplier.commercialRegisterNo, $ne: null, $notIn: [''] },
-          cityOfRegistration: { $eq: supplier.cityOfRegistration },
-          countryOfRegistration: { $eq: supplier.countryOfRegistration }
-        }
-      },
-      {
-        $and: {
-          taxIdentificationNo: { $eq: supplier.taxIdentificationNo, $ne: null, $notIn: [''] },
-          countryOfRegistration: { $eq: supplier.countryOfRegistration }
-        }
-      }
-    ]
+  let orOptions = [];
+
+  for (const value of ['vatIdentificationNo', 'dunsNo', 'globalLocationNo']) {
+    if (supplier[value]) orOptions.push({ [value]: { $eq: supplier[value] } });
   }
+
+  if (supplier.commercialRegisterNo) {
+    orOptions.push({
+      $and: {
+        commercialRegisterNo: { $eq: supplier.commercialRegisterNo },
+        cityOfRegistration: { $eq: supplier.cityOfRegistration },
+        countryOfRegistration: { $eq: supplier.countryOfRegistration }
+      }
+    });
+  }
+
+  if (supplier.taxIdentificationNo) {
+    orOptions.push({
+      $and: {
+        taxIdentificationNo: { $eq: supplier.taxIdentificationNo },
+        countryOfRegistration: { $eq: supplier.countryOfRegistration }
+      }
+    });
+  }
+
+  const options = { $or: orOptions };
+
+  if (supplier.supplierId) options.supplierId = { $ne: supplier.supplierId };
 
   return this.db.models.Supplier.findOne({ where: options }).then(supplier => Boolean(supplier));
 };
@@ -131,4 +126,4 @@ module.exports.isAuthorized = function(supplierId, changedBy)
 let randomNumber = function()
 {
   return Math.floor((Math.random() * 1000));
-}
+};
