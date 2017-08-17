@@ -32,6 +32,7 @@ let validator = function(validatejs) {
   custom.vatNumber(validatejs);
   custom.dunsNumber(validatejs);
   custom.globalLocationNumber(validatejs);
+  custom.uniqueIdentifier(validatejs);
   customAsync.registerationNumberExists(validatejs);
   customAsync.taxIdNumberExists(validatejs);
   customAsync.vatNumberExists(validatejs);

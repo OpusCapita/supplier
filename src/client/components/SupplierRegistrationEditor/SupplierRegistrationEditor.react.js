@@ -92,7 +92,7 @@ class SupplierRegistrationEditor extends Component {
       send(newSupplier).
       promise();
 
-    this.createSupplierPromise.then(response => {
+    return this.createSupplierPromise.then(response => {
       this.setState({
         supplier: response.body,
         globalInfoMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'),
@@ -102,7 +102,7 @@ class SupplierRegistrationEditor extends Component {
       const { supplier } = this.state;
 
       // we need to refresh the id token before we can do any calls to backend as supplier user
-      request.post('/refreshIdToken').set('Content-Type', 'application/json').then((resp) => {
+      return request.post('/refreshIdToken').set('Content-Type', 'application/json').then((resp) => {
         console.log("id token refreshed");
 
         const user = this.props.user;
@@ -117,33 +117,30 @@ class SupplierRegistrationEditor extends Component {
             changedBy: user.id
         }
 
-        request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
-        set('Accept', 'application/json').send(contact).then((response) => {
+        return request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
+        set('Accept', 'application/json').send(contact).then(response => {
           console.log('contact created');
+
+          if (this.props.onUpdate) {
+            this.props.onUpdate({
+              supplierId: supplier.supplierId,
+              supplierName: supplier.supplierName
+            });
+          }
+
+          if (this.props.onChange) {
+            this.props.onChange({ isDirty: false });
+          }
+
           return Promise.resolve(null);
         }).catch(err => {
           console.error('error creating contact: ' + err);
           throw err;
         })
-
-        return Promise.resolve(null);
       }).catch(err => {
         console.err('error refreshing idToken: ' + err);
         throw err;
       });
-
-      if (this.props.onUpdate) {
-          this.props.onUpdate({
-            supplierId: supplier.supplierId,
-            supplierName: supplier.supplierName
-          });
-        }
-
-      if (this.props.onChange) {
-        this.props.onChange({ isDirty: false });
-      }
-
-      return Promise.resolve(null);
     }).
     catch(errors => {
       this.setState({
@@ -173,6 +170,8 @@ class SupplierRegistrationEditor extends Component {
             globalErrorMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'),
           });
       }
+
+      return Promise.resolve(null);
     });
   }
 
