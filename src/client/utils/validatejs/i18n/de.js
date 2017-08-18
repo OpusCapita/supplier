@@ -88,7 +88,7 @@ validatejs.typeMismatch.java.lang.Short = "Die Wert muss eine g\u00fcltige Zahl 
 validatejs.typeMismatch.java.math.BigDecimal = "Die Wert muss eine g\u00fcltige Zahl sein";
 validatejs.typeMismatch.java.math.BigInteger = "Die Wert muss eine g\u00fcltige Zahl sein";
 
-validatejs.supplierExists = "{message}\nBitte kontaktieren Sie unseren Support via +49 231 3967 0 oder customerservice.de@opuscapita.com, um einen Zugang zu diesem Unternehmen anzufordern."
+validatejs.supplierExists = "{message}\nBitte kontaktieren Sie unseren Support via +49 231 3967 350 oder customerservice.de@opuscapita.com, um einen Zugang zu diesem Unternehmen anzufordern."
 
 export default {
   validatejs,
