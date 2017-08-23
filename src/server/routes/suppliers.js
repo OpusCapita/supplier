@@ -73,9 +73,12 @@ let createSuppliers = function(req, res)
 
 let sendSupplier = function(req, res)
 {
-  Supplier.find(req.params.supplierId).then(suppliers =>
+  const queryObj = req.params.supplierId ? { supplierId: req.params.supplierId } : {};
+  const includes = req.query.include ? req.query.include.split(',') : [];
+
+  Supplier.all(queryObj, includes).then((supplier) =>
   {
-    res.json(suppliers);
+    res.json(supplier);
   });
 };
 
