@@ -39,9 +39,31 @@ module.exports.all = function(queryObj, includes)
   });
 };
 
-module.exports.find = function(supplierId)
+module.exports.find = function(supplierId, includes)
 {
-  return this.db.models.Supplier.findById(supplierId);
+  const associations = {
+    contacts: this.db.models.SupplierContact,
+    addresses: this.db.models.SupplierAddress,
+    bankAccounts: this.db.models.SupplierBankAccount
+  };
+
+  let includeModels = [];
+
+  for (const index in includes) {
+    const association = includes[index];
+    if (associations[association])
+      includeModels.push(associations[association]);
+  }
+
+  return this.db.models.Supplier.findOne({where: { supplierId: supplierId }, include: includeModels}).then((supplier) => {
+    supplier.dataValues.contacts = supplier.SupplierContacts;
+    supplier.dataValues.addresses = supplier.SupplierAddresses;
+    supplier.dataValues.bankAccounts = supplier.SupplierBankAccounts;
+    delete supplier.dataValues.SupplierContacts;
+    delete supplier.dataValues.SupplierAddresses;
+    delete supplier.dataValues.SupplierBankAccounts;
+    return supplier.dataValues;
+  });
 };
 
 module.exports.create = function(supplier)
