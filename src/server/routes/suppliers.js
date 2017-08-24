@@ -66,13 +66,13 @@ let createSuppliers = function(req, res)
               Supplier.delete(supplierId).then(() => null);
               req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
 
-              return res.status(error.response.statusCode || 400).json({ message : error.message });
+              return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
             });
         })
         .catch(error => {
           req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
 
-          return res.status(error.response.statusCode || 400).json({ message : error.message });
+          return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
         });
     }
   })
