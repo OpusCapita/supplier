@@ -54,7 +54,7 @@ class SupplierAddressListTable extends Component {
                 return (
                   <tr key={'address-' + index}>
                     <td>{this.context.i18n.getMessage(`SupplierAddressEditor.AddressType.${supplierAddress.type}`)}</td>
-                    <td>{supplierAddress.street}</td>
+                    <td>{supplierAddress.street1}</td>
                     <td>{supplierAddress.zipCode}</td>
                     <td>{supplierAddress.city}</td>
                     <DisplayCountryTableField countryId={supplierAddress.countryId} actionUrl={this.props.actionUrl} />
