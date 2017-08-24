@@ -20,22 +20,12 @@ module.exports.all = function(queryObj, includes)
 
   let includeModels = [];
 
-  for (const index in includes) {
-    const association = includes[index];
-    if (associations[association])
-      includeModels.push(associations[association]);
+  for (const association of includes) {
+    if (associations[association]) includeModels.push(associations[association]);
   }
 
   return this.db.models.Supplier.findAll({ where: queryObj, include: includeModels }).map(supplier => {
-    supplier.dataValues.contacts = supplier.SupplierContacts;
-    supplier.dataValues.addresses = supplier.SupplierAddresses;
-    supplier.dataValues.bankAccounts = supplier.SupplierBankAccounts;
-
-    delete supplier.dataValues.SupplierContacts;
-    delete supplier.dataValues.SupplierAddresses;
-    delete supplier.dataValues.SupplierBankAccounts;
-
-    return supplier.dataValues;
+    return supplierWithAssociations(supplier);
   });
 };
 
@@ -49,20 +39,12 @@ module.exports.find = function(supplierId, includes)
 
   let includeModels = [];
 
-  for (const index in includes) {
-    const association = includes[index];
-    if (associations[association])
-      includeModels.push(associations[association]);
+  for (const association of includes) {
+    if (associations[association]) includeModels.push(associations[association]);
   }
 
   return this.db.models.Supplier.findOne({where: { supplierId: supplierId }, include: includeModels}).then((supplier) => {
-    supplier.dataValues.contacts = supplier.SupplierContacts;
-    supplier.dataValues.addresses = supplier.SupplierAddresses;
-    supplier.dataValues.bankAccounts = supplier.SupplierBankAccounts;
-    delete supplier.dataValues.SupplierContacts;
-    delete supplier.dataValues.SupplierAddresses;
-    delete supplier.dataValues.SupplierBankAccounts;
-    return supplier.dataValues;
+    return supplierWithAssociations(supplier);
   });
 };
 
@@ -149,3 +131,18 @@ let randomNumber = function()
 {
   return Math.floor((Math.random() * 1000));
 };
+
+let supplierWithAssociations = function(supplier)
+{
+  if (!supplier) return supplier;
+
+  supplier.dataValues.contacts = supplier.SupplierContacts;
+  supplier.dataValues.addresses = supplier.SupplierAddresses;
+  supplier.dataValues.bankAccounts = supplier.SupplierBankAccounts;
+
+  delete supplier.dataValues.SupplierContacts;
+  delete supplier.dataValues.SupplierAddresses;
+  delete supplier.dataValues.SupplierBankAccounts;
+
+  return supplier.dataValues;
+}
