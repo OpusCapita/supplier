@@ -19,17 +19,15 @@ module.exports.find = function(supplierId, bankAccountId)
   return this.db.models.SupplierBankAccount.findOne({ where: { supplierId: supplierId, id: bankAccountId } });
 };
 
-module.exports.create = function(address)
+module.exports.create = function(bankAccount)
 {
-  return this.db.models.SupplierBankAccount.create(address).then(address => {
-    return address;
-  });
+  return this.db.models.SupplierBankAccount.create(bankAccount);
 };
 
-module.exports.update = function(supplierId, bankAccountId, address)
+module.exports.update = function(supplierId, bankAccountId, bankAccount)
 {
   let self = this;
-  return this.db.models.SupplierBankAccount.update(address, { where: { id: bankAccountId } }).then(() => {
+  return this.db.models.SupplierBankAccount.update(bankAccount, { where: { id: bankAccountId } }).then(() => {
     return self.find(supplierId, bankAccountId);
   });
 };

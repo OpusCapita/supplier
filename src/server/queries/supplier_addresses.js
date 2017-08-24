@@ -21,8 +21,9 @@ module.exports.find = function(supplierId, addressId)
 
 module.exports.create = function(address)
 {
-  return this.db.models.SupplierAddress.create(address).then(address => {
-    return address;
+  return this.db.models.SupplierAddress.max('id').then(id => {
+    address.id = id + 1;
+    return this.db.models.SupplierAddress.create(address);
   });
 };
 

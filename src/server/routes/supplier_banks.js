@@ -24,7 +24,7 @@ let sendSupplierBank = function (req, res) {
 };
 
 let createSupplierBank = function (req, res) {
-  SupplierBank.create(req.body).then(address => res.status('200').json(address))
+  SupplierBank.create(req.body).then(bankAccount => res.status('200').json(bankAccount))
     .catch(e => res.status('400').json({message: e.message}));
 };
 
@@ -33,9 +33,9 @@ let updateSupplierBank = function (req, res) {
   let supplierId = req.params.supplierId;
   SupplierBank.bankExists(supplierId, bankAccountId).then(exists => {
     if (exists) {
-      return SupplierBank.update(supplierId, bankAccountId, req.body).then(address => res.status('200').json(address));
+      return SupplierBank.update(supplierId, bankAccountId, req.body).then(bankAccount => res.status('200').json(bankAccount));
     } else {
-      return res.status('404').json({message: 'A supplier address with this ID does not exist.'});
+      return res.status('404').json({message: 'A supplier bankAccount with this ID does not exist.'});
     }
   })
     .catch(e => res.status('400').json({message: e.message}));
