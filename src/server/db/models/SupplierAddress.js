@@ -29,29 +29,24 @@ module.exports = function(sequelize) {
       field: "Type",
       defaultValue: "default"
     },
-    salutation: {
-      type: Sequelize.STRING(20),
-      field: 'Salutation',
-      allowNull: true
-    },
-    name1: {
+    name: {
       type: Sequelize.STRING(100),
-      field: 'Name1',
+      field: 'Name',
       allowNull: true
     },
-    name2: {
-      type: Sequelize.STRING(100),
-      field: 'Name2',
-      allowNull: true
-    },
-    name3: {
-      type: Sequelize.STRING(100),
-      field: 'Name3',
-      allowNull: true
-    },
-    street: {
+    street1: {
       type: Sequelize.STRING(50),
-      field: 'Street',
+      field: 'Street1',
+      allowNull: true
+    },
+    street2: {
+      type: Sequelize.STRING(100),
+      field: 'Street2',
+      allowNull: true
+    },
+    street3: {
+      type: Sequelize.STRING(100),
+      field: 'Street3',
       allowNull: true
     },
     zipCode: {
@@ -73,10 +68,6 @@ module.exports = function(sequelize) {
       type: Sequelize.STRING(10),
       field: 'POBox',
       allowNull: true
-    },
-    isCompany: {
-      type: Sequelize.BOOLEAN,
-      field: 'IsCompany'
     },
     areaCode: {
       type: Sequelize.STRING(10),
@@ -142,11 +133,6 @@ module.exports = function(sequelize) {
       field: "ChangedOn"
     }
   }, {
-    classMethods: {
-      associate: function(models) {
-        SupplierAddress.belongsTo(models.Supplier, { as: 'supplier', foreignKey: 'supplierId' });
-      }
-    },
     updatedAt: 'changedOn',
     createdAt: 'createdOn',
     timestamps: true,

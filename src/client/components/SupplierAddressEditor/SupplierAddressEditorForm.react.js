@@ -55,7 +55,7 @@ class SupplierAddressEditorForm extends Component {
     event.preventDefault();
 
     const supplierAddress = this.state.supplierAddress;
-    let errors = validator(this.state.supplierAddress, this.constraints, { fullMessages: false });
+    let errors = validator(supplierAddress, this.constraints, { fullMessages: false });
     if (!errors) {
       const editMode = this.props.editMode;
 
@@ -70,8 +70,7 @@ class SupplierAddressEditorForm extends Component {
   };
 
   handleCancel = () => {
-    const supplierAddress = this.state.supplierAddress;
-    this.props.onCancel(supplierAddress);
+    this.props.onCancel(this.state.supplierAddress);
   };
 
   handleCountryChange = (fieldName, country) => {
@@ -199,10 +198,10 @@ class SupplierAddressEditorForm extends Component {
             )
           }) }
 
-        { this.renderField({ fieldName: 'name1', disabled: disabled }) }
-        { this.renderField({ fieldName: 'name2', disabled: disabled }) }
-        { this.renderField({ fieldName: 'name3', disabled: disabled }) }
-        { this.renderField({ fieldName: 'street', disabled: disabled }) }
+        { this.renderField({ fieldName: 'name', disabled: disabled }) }
+        { this.renderField({ fieldName: 'street1', disabled: disabled }) }
+        { this.renderField({ fieldName: 'street2', disabled: disabled }) }
+        { this.renderField({ fieldName: 'street3', disabled: disabled }) }
         { this.renderField({ fieldName: 'zipCode', disabled: disabled }) }
         { this.renderField({ fieldName: 'city', disabled: disabled }) }
 

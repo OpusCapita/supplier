@@ -173,7 +173,7 @@ class SupplierAddressEditor extends Component {
 
   handleCreate = () => {
     this.props.onChange({ isDirty: true });
-    this.setState({ supplierAddress: { address: {} }, editMode: 'create', errors: null });
+    this.setState({ supplierAddress: {}, editMode: 'create', errors: null });
   };
 
   handleUpdate = (supplierAddress) => {
