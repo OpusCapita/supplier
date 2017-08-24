@@ -13,6 +13,17 @@ module.exports = function(app, db, config) {
   });
 };
 
+let sendSupplier = function(req, res)
+{
+  const includes = req.query.include ? req.query.include.split(',') : [];
+
+  Supplier.find(req.params.supplierId, includes).then((supplier) =>
+  {
+    res.json(supplier);
+  });
+};
+
+
 let sendSuppliers = function(req, res)
 {
   const queryObj = req.query.supplierId ? { supplierId: { $in: req.query.supplierId.split(',') }} : {};
@@ -27,7 +38,7 @@ let sendSuppliers = function(req, res)
 let existsSuppliers = function(req, res)
 {
   Supplier.recordExists(req.query).then(exists => res.json(exists));
-}
+};
 
 let createSuppliers = function(req, res)
 {
@@ -70,14 +81,6 @@ let createSuppliers = function(req, res)
     return res.status('400').json({ message : error.message });
   });
 }
-
-let sendSupplier = function(req, res)
-{
-  Supplier.find(req.params.supplierId).then(suppliers =>
-  {
-    res.json(suppliers);
-  });
-};
 
 let updateSupplier = function(req, res)
 {
