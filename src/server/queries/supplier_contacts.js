@@ -57,7 +57,7 @@ module.exports.delete = function(supplierId, contactId)
 
 module.exports.contactExists = function(supplierId, contactId)
 {
-  return this.find(supplierId, contactId).then(contact => contact && contact.id === contactId);
+  return this.find(supplierId, contactId).then(contact => Boolean(contact));
 };
 
 let randomNumber = function()
