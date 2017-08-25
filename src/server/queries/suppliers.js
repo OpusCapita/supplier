@@ -54,7 +54,7 @@ module.exports.update = function(supplierId, supplier)
 {
   let self = this;
   return this.db.models.Supplier.update(supplier, { where: { supplierId: supplierId } }).then(() => {
-    return self.find(supplierId);
+    return self.find(supplierId, []);
   });
 };
 
