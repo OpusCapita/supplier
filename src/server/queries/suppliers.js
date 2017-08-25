@@ -23,7 +23,7 @@ module.exports.find = function(supplierId, includes)
 {
   const includeModels = associationsFromIncludes(this.db.models, includes);
 
-  return this.db.models.Supplier.findOne({where: { supplierId: supplierId }, include: includeModels}).then((supplier) => {
+  return this.db.models.Supplier.findOne({where: { supplierId: supplierId }, include: includeModels}).then(supplier => {
     return supplierWithAssociations(supplier);
   });
 };
@@ -65,7 +65,7 @@ module.exports.delete = function(supplierId)
 
 module.exports.exists = function(supplierId)
 {
-  return this.db.models.Supplier.findById(supplierId).then(supplier => supplier && supplier.supplierId === supplierId);
+  return this.db.models.Supplier.findById(supplierId).then(supplier => Boolean(supplier));
 };
 
 module.exports.recordExists = function(supplier)

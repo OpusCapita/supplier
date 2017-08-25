@@ -1,37 +1,38 @@
 const Supplier = require('../queries/suppliers');
-const SupplierAddress = require('../queries/supplier_addresses');
-const SupplierContact = require('../queries/supplier_contacts');
-const SupplierBankAccount = require('../queries/supplier_bank_accounts');
-const _ = require('underscore');
 
 module.exports = function(app, db, config) {
   app.get('/api/suppliers/:supplierId/profile_strength', (req, res) => {
-    Promise.all([
-      Supplier.init(db, config).then(() => Supplier.find(req.params.supplierId)),
-      SupplierAddress.init(db, config).then(() => SupplierAddress.all(req.params.supplierId)),
-      SupplierContact.init(db, config).then(() => SupplierContact.all(req.params.supplierId)),
-      SupplierBankAccount.init(db, config).then(() => SupplierBankAccount.all(req.params.supplierId))
-    ]).
-    then(([supplier, addresses, contacts, bankAccounts]) => {
-      let suppliers = [];
-      if (!_.isEmpty(supplier)) suppliers = [supplier];
-      const recordsArray = [suppliers, addresses, contacts, bankAccounts];
+    const supplierId = req.params.supplierId;
+    const includes = ['contacts', 'bankAccounts', 'addresses'];
 
-      const averages = _.map(recordsArray, (records) => {
-        if (_.isEmpty(records)) return 0;
+    Supplier.init(db, config).then(() => Supplier.find(supplierId, includes)).then(supplier => {
+      if (!supplier) return res.json(0);
 
-        const sum = records.length;
+      const averages = recordsArray(supplier).map(records => {
+        if (records.length === 0) return 0;
 
-        return _.reduce(records, (memo, record) => { return memo + recordAverage(record); }, 0) / sum;
+        return records.reduce((sum, record) => { return sum + recordAverage(record); }, 0) / records.length;
       });
 
-      const average = _.reduce(averages, (memo, num) => { return memo + num; }, 0) / recordsArray.length;
+      const average = averages.reduce((sum, num) => { return sum + num; }, 0) / averages.length;
       return res.json(Math.round(average * 100));
     });
   });
+};
+
+function recordsArray(supplier) {
+  const addresses = supplier.addresses ? supplier.addresses.map(record => record.dataValues) : [];
+  const contacts = supplier.contacts ? supplier.contacts.map(record => record.dataValues) : [];
+  const bankAccounts = supplier.bankAccounts ? supplier.bankAccounts.map(record => record.dataValues) : [];
+
+  delete supplier.addresses;
+  delete supplier.contacts;
+  delete supplier.bankAccounts;
+
+  return [[supplier], addresses, contacts, bankAccounts];
 }
 
 function recordAverage(record) {
-  const dataValues = _.values(record.dataValues);
-  return _.filter(dataValues, (num) => !_.isNull(num)).length / dataValues.length;
-}
+  let recordAttributes = Object.keys(record);
+  return recordAttributes.filter(attr => Boolean(record[attr])).length / recordAttributes.length;
+};
