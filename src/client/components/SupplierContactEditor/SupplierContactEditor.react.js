@@ -184,16 +184,6 @@ class SupplierContactEditor extends Component {
     this.handleDelete(contact);
   };
 
-  handleView = (contact) => {
-    this.setState({
-      contact: _.clone(contact),
-      editMode: "view",
-      globalError: null,
-      globalMessage: null,
-      errors: null
-    });
-  };
-
   handleEdit = (contact) => {
     this.setState({
       contact: _.clone(contact),
