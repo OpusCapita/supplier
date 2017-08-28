@@ -8,8 +8,7 @@ module.exports = function(sequelize) {
       primaryKey: true,
       allowNull: false,
       validate: {
-        notEmpty: true,
-        is: ["[a-zA-Z_\\-0-9]+"]
+        notEmpty: true
       },
       field: 'ID'
     },

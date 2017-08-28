@@ -46,7 +46,7 @@ let updateSupplierContact = function(req, res)
     {
       return SupplierContact.update(supplierId, contactId, req.body).then(contact => res.status('200').json(contact));
     } else {
-      const message = 'A supplier contact with this ID does not exist.'
+      const message = 'A supplier contact with ID ' + contactId + ' does not exist.'
       req.opuscapita.logger.error('Error when updating SupplierContact: %s', message);
       return res.status('404').json({ message : message });
     }
