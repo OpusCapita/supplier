@@ -50,7 +50,7 @@ class SupplierContactEditor extends Component {
     this.loadContacts();
   }
 
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps, nextContext) {
     let editMode = this.state.editMode;
 
     if (editMode && this.props.readOnly !== newProps.readOnly) {
