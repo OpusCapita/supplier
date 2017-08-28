@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import request from 'superagent-bluebird-promise';
 import Button from 'react-bootstrap/lib/Button';
-import i18n from '../../i18n/I18nDecorator.react.js';
+import validationMessages from '../../utils/validatejs/i18n';
+import i18nMessages from './i18n';
 import _ from 'underscore';
 import Alert from '../Alert';
 import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
@@ -10,11 +11,6 @@ import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
 import DisplayEditGroup from '../../components/DisplayTable/DisplayEditGroup.react';
 import SupplierContactEditForm from './SupplierContactEditForm.react';
 
-
-@i18n({
-  componentName: 'SupplierContactEditor',
-  messages: require('./i18n').default,
-})
 class SupplierContactEditor extends Component {
 
   static propTypes = {
@@ -24,6 +20,10 @@ class SupplierContactEditor extends Component {
     readOnly: React.PropTypes.bool,
     onChange: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func
+  };
+
+  static contextTypes = {
+    i18n: React.PropTypes.object.isRequired
   };
 
   static defaultProps = {
@@ -40,6 +40,11 @@ class SupplierContactEditor extends Component {
   state = {
     loadErrors: false
   };
+
+  componentWillMount(){
+    this.context.i18n.register('validatejs', validationMessages);
+    this.context.i18n.register('SupplierContactEditor', i18nMessages);
+  }
 
   componentDidMount() {
     this.loadContacts();
@@ -60,6 +65,11 @@ class SupplierContactEditor extends Component {
         newState.editMode = 'edit';
       }
       this.setState(newState);
+    }
+
+    if(this.context.i18n && nextContext.i18n != this.context.i18n){
+      this.context.i18n.register('validatejs', validationMessages);
+      this.context.i18n.register('SupplierContactEditor', i18nMessages);
     }
   }
 
@@ -182,16 +192,6 @@ class SupplierContactEditor extends Component {
       return;
     }
     this.handleDelete(contact);
-  };
-
-  handleView = (contact) => {
-    this.setState({
-      contact: _.clone(contact),
-      editMode: "view",
-      globalError: null,
-      globalMessage: null,
-      errors: null
-    });
   };
 
   handleEdit = (contact) => {

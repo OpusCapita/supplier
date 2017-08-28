@@ -23,7 +23,7 @@ Department.IT = 'Datenmanagement';
 Department.Others = 'Sonstiges';
 
 let Select = {};
-Select.type = 'Ansprechpartner-Typ auswählen ...';
+Select.contactType = 'Ansprechpartner-Typ auswählen ...';
 Select.department = 'Abteilung auswählen ...';
 
 let Label = {
