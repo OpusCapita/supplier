@@ -82,7 +82,7 @@ class SupplierContactEditForm extends Component {
     });
   };
 
-  handleBlur = (fieldName/* , event*/) => {
+  handleBlur = (fieldName) => {
     const errors = validator(
       this.state.contact, {
         [fieldName]: this.constraints[fieldName]
@@ -101,33 +101,22 @@ class SupplierContactEditForm extends Component {
     });
   };
 
-  contactTypeOptions = () => {
+  selectOptions = (fieldName, fieldOptions) => {
+
+    function capitalize(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
     let options = [];
+    const fieldNameCapitalized = capitalize(fieldName);
     const message = this.context.i18n.getMessage;
 
-    options.push({ value: '', label: message('SupplierContactEditor.Select.type'), disabled: true });
+    options.push({ value: '', label: message(`SupplierContactEditor.Select.${fieldName}`), disabled: true });
 
-    for (const contactType of CONTACT_TYPES) {
+    for (const option of fieldOptions) {
       options.push({
-        value: contactType,
-        label: message(`SupplierContactEditor.ContactType.${contactType}`),
-        disabled: false
-      })
-    }
-
-    return options;
-  };
-
-  departmentOptions = () => {
-    let options = [];
-    const message = this.context.i18n.getMessage;
-
-    options.push({ value: '', label: message('SupplierContactEditor.Select.department'), disabled: true });
-
-    for (const department of DEPARTMENTS) {
-      options.push({
-        value: department,
-        label: message(`SupplierContactEditor.Department.${department}`),
+        value: option,
+        label: message(`SupplierContactEditor.${fieldNameCapitalized}.${option}`),
         disabled: false
       })
     }
@@ -185,7 +174,7 @@ class SupplierContactEditForm extends Component {
                 onBlur={this.handleBlur.bind(this, 'contactType')}
                 disabled={disabled}
               >
-                {this.contactTypeOptions().map((item, index) => {
+                {this.selectOptions('contactType', CONTACT_TYPES).map((item, index) => {
                   return (<option key={index} disabled={item.disabled} value={item.value}>{item.label}</option>);
                 })}
               </select>
@@ -200,7 +189,7 @@ class SupplierContactEditForm extends Component {
                 onBlur={this.handleBlur.bind(this, 'department')}
                 disabled={disabled}
               >
-                {this.departmentOptions().map((item, index) => {
+                {this.selectOptions('department', DEPARTMENTS).map((item, index) => {
                   return (<option key={index} disabled={item.disabled} value={item.value}>{item.label}</option>);
                 })}
               </select>
