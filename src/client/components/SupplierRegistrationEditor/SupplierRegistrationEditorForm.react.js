@@ -51,10 +51,11 @@ class SupplierRegistrationEditorForm extends Component {
   }
 
   setFieldErrorsStates = (errors) => {
+    console.log(errors);
     this.setState({
       fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
         ...rez,
-        [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
+        [fieldName]: errors[fieldName]
       }), this.state.fieldErrors)
     });
   };
@@ -94,7 +95,8 @@ class SupplierRegistrationEditorForm extends Component {
       this.setFieldErrorsStates(errors);
     };
 
-    validator.forRegistration().async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
+    const options = { fullMessages: false, format: 'groupedDetailed' };
+    validator.forRegistration().async(this.state.supplier, constraints, options).then(null, error);
   };
 
   handleCancel = event => {
@@ -118,7 +120,8 @@ class SupplierRegistrationEditorForm extends Component {
       onSupplierChange(null);
     };
 
-    validator.forRegistration().async(supplier, constraints, { fullMessages: false }).then(success, error);
+    const options = { fullMessages: false, format: 'groupedDetailed' };
+    validator.forRegistration().async(supplier, constraints, options).then(success, error);
   };
 
   renderField = attrs => {
