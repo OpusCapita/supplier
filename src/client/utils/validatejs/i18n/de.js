@@ -39,6 +39,7 @@ const validatejs = {
     },
   },
   duplicate: {
+    supplierName: {},
     registerationNumber: {},
     taxIdNumber: {},
     vatNumber: {},
@@ -72,6 +73,7 @@ validatejs.invalid.iban.message = "Der Wert ist kein gültiger IBAN";
 validatejs.invalid.bic.message = "Der Wert ist kein gültiger BIC";
 validatejs.invalid.swiftCode.message = "Der Wert ist kein gültiger SWIFT-Code";
 validatejs.invalid.uniqueIdentifier.message = "Die Umsatzsteuer-Identifikationsnummer, die D-U-N-S-Nummer oder das Global Location Number muss angegeben werden";
+validatejs.duplicate.supplierName.message = "Ein Unternehmen existiert bereits mit dieser Name";
 validatejs.duplicate.registerationNumber.message = "Ein Unternehmen existiert bereits mit dieser Handelsregisternummer, der Stadt und dem Land.";
 validatejs.duplicate.taxIdNumber.message = "Ein Unternehmen existiert bereits mit dieser Steueridentifikationsnummer und dem Land.";
 validatejs.duplicate.vatNumber.message = "Ein Unternehmen existiert bereits mit dieser Umsatzsteuer-Identifikationsnummer.";
