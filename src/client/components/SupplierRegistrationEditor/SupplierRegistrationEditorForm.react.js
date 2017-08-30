@@ -12,6 +12,7 @@ class SupplierRegistrationEditorForm extends Component {
     onSupplierChange: PropTypes.func.isRequired,
     onChange: React.PropTypes.func,
     onCancel: React.PropTypes.func,
+    onAccessRequest: React.PropTypes.func.isRequired,
     actionUrl: React.PropTypes.string.isRequired
   };
 
@@ -51,11 +52,18 @@ class SupplierRegistrationEditorForm extends Component {
   }
 
   setFieldErrorsStates = (errors) => {
-    console.log(errors);
     this.setState({
       fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
         ...rez,
-        [fieldName]: errors[fieldName]
+        [fieldName]: errors[fieldName].map(error => {
+          return {
+            message: error.message,
+            value: error.value,
+            fieldName: fieldName,
+            hasLink: error.validator.includes('Exists'),
+            linkMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.requestSupplierAccess')
+          };
+        })
       }), this.state.fieldErrors)
     });
   };
@@ -124,6 +132,11 @@ class SupplierRegistrationEditorForm extends Component {
     validator.forRegistration().async(supplier, constraints, options).then(success, error);
   };
 
+  requestSupplierAccess = (error) => {
+    const { onAccessRequest } = this.props;
+    if (onAccessRequest) onAccessRequest(error.fieldName, error.value);
+  };
+
   renderField = attrs => {
     const { supplier, fieldErrors } = this.state;
     const { fieldName } = attrs;
@@ -149,6 +162,7 @@ class SupplierRegistrationEditorForm extends Component {
         labelText={ this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
         required={ isRequired }
         rowErrors={ rowErrors }
+        onErrorLinkClick={ this.requestSupplierAccess }
       >
         { component }
       </SupplierRegistrationEditorFormRow>

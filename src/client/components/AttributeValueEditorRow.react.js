@@ -25,6 +25,16 @@ export default class AttributeValueEditorRow extends Component {
     }
   }
 
+  renderButtonLink(error) {
+    if (!error.hasLink) return null;
+
+    return (
+      <button className="btn btn-link alert-link" onClick={this.props.onErrorLinkClick(error)}>
+        {error.linkMessage}
+      </button>
+    );
+  }
+
   render() {
     const { required, rowErrors } = this.props;
     let labelText = this.props.labelText;
@@ -49,7 +59,8 @@ export default class AttributeValueEditorRow extends Component {
 
           {rowErrors.map((error, index) =>
             <div className="alert alert-danger" key={index} style={this.errorStyles()}>
-              <span>{ error.message }</span>
+              <p>{ error.message }</p>
+              {this.renderButtonLink(error)}
             </div>
           )}
         </div>
