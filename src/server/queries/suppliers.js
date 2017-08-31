@@ -63,6 +63,40 @@ module.exports.delete = function(supplierId)
   return this.db.models.Supplier.destroy({ where: { supplierId: supplierId } }).then(() => null);
 };
 
+module.exports.searchRecord = function(query)
+{
+  let orOptions = [];
+
+  for (const field of ['supplierName', 'vatIdentificationNo', 'dunsNo', 'globalLocationNo']) {
+    if (query[field]) orOptions.push({ [field]: { $eq: query[field] } });
+  }
+
+  if (query.commercialRegisterNo) {
+    orOptions.push({
+      $and: {
+        commercialRegisterNo: { $eq: query.commercialRegisterNo },
+        cityOfRegistration: { $eq: query.cityOfRegistration },
+        countryOfRegistration: { $eq: query.countryOfRegistration }
+      }
+    });
+  }
+
+  if (query.taxIdentificationNo) {
+    orOptions.push({
+      $and: {
+        taxIdentificationNo: { $eq: query.taxIdentificationNo },
+        countryOfRegistration: { $eq: query.countryOfRegistration }
+      }
+    });
+  }
+
+  const options = { $or: orOptions };
+
+  if (query.supplierId) options.supplierId = { $ne: query.supplierId };
+
+  return this.db.models.Supplier.findOne({ where: options });
+};
+
 module.exports.exists = function(supplierId)
 {
   return this.db.models.Supplier.findById(supplierId).then(supplier => Boolean(supplier));
@@ -70,36 +104,7 @@ module.exports.exists = function(supplierId)
 
 module.exports.recordExists = function(supplier)
 {
-  let orOptions = [];
-
-  for (const value of ['supplierName', 'vatIdentificationNo', 'dunsNo', 'globalLocationNo']) {
-    if (supplier[value]) orOptions.push({ [value]: { $eq: supplier[value] } });
-  }
-
-  if (supplier.commercialRegisterNo) {
-    orOptions.push({
-      $and: {
-        commercialRegisterNo: { $eq: supplier.commercialRegisterNo },
-        cityOfRegistration: { $eq: supplier.cityOfRegistration },
-        countryOfRegistration: { $eq: supplier.countryOfRegistration }
-      }
-    });
-  }
-
-  if (supplier.taxIdentificationNo) {
-    orOptions.push({
-      $and: {
-        taxIdentificationNo: { $eq: supplier.taxIdentificationNo },
-        countryOfRegistration: { $eq: supplier.countryOfRegistration }
-      }
-    });
-  }
-
-  const options = { $or: orOptions };
-
-  if (supplier.supplierId) options.supplierId = { $ne: supplier.supplierId };
-
-  return this.db.models.Supplier.findOne({ where: options }).then(supplier => Boolean(supplier));
+  return this.searchRecord(supplier).then(supplier => Boolean(supplier));
 };
 
 module.exports.isAuthorized = function(supplierId, changedBy)
