@@ -4,7 +4,7 @@ import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import Alert from '../Alert';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';
-import SupplierExistsView from './SupplierExistsView.react';
+import SupplierAccessView from './SupplierAccessView.react';
 
 /**
  * Provide general company information.
@@ -33,7 +33,9 @@ class SupplierRegistrationEditor extends Component {
       supplier: {
         ...this.props.supplier
       },
-      supplierExist: false
+      supplierAccess: null,
+      supplierExist: false,
+      loading: true
     }
   }
 
@@ -42,6 +44,20 @@ class SupplierRegistrationEditor extends Component {
   componentWillMount(){
     this.context.i18n.register('validatejs', validationMessages);
     this.context.i18n.register('SupplierRegistrationEditor', i18nMessages);
+  }
+
+  componentDidMount() {
+    request.get(`${this.props.actionUrl}/supplier/api/supplier_access/${this.props.user.id}`).
+      set('Accept', 'application/json').then(response => {
+        const supplierAccess = response.body;
+        this.setState({
+          loading: false,
+          supplierAccess: supplierAccess,
+          supplierExist: supplierAccess && Boolean(supplierAccess.supplierId)
+        });
+      }).catch(error => {
+        return this.setState({ loading: false, supplierExist: false });
+      });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -157,13 +173,6 @@ class SupplierRegistrationEditor extends Component {
         case 401:
           this.props.onUnauthorized();
           break;
-        case 409:
-          this.setState({
-            supplierExist: true,
-            globalInfoMessage: '',
-            globalErrorMessage: ''
-          });
-          break;
         default:
           this.setState({
             globalInfoMessage: '',
@@ -175,22 +184,37 @@ class SupplierRegistrationEditor extends Component {
     });
   }
 
+  handleAccessRequest = (fieldName, value) => {
+    return request.post(`${this.props.actionUrl}/supplier/api/supplier_access/${this.props.user.id}`)
+      .set('Accept', 'application/json').send({ [fieldName]: value }).then(response => {
+        this.setState({ supplierExist: true, supplierAccess: response.body });
+
+        return Promise.resolve(null);
+      });
+  }
+
   toRender = () => {
     if (this.state.supplierExist) {
-      return <SupplierExistsView i18n={this.context.i18n} onBack={ this.handleBackToForm }/>
+      return <SupplierAccessView supplierAccess={ this.state.supplierAccess }/>
     } else {
       return <SupplierRegistrationEditorForm
-               {...this.props}
+               actionUrl={ this.props.actionUrl }
                supplier={ this.state.supplier }
                onSupplierChange={ this.handleUpdate }
                onChange={ this.handleChange }
                onCancel={ this.props.onLogout }
+               onAccessRequest={ this.handleAccessRequest }
              />
     }
   }
 
   render() {
-    const { hasErrors, globalInfoMessage = '', globalErrorMessage = '' } = this.state;
+    const { loading, hasErrors, globalInfoMessage = '', globalErrorMessage = '' } = this.state;
+
+    if (loading) {
+      /* Implement loading spinner */
+      return null;
+    }
 
     if (hasErrors) {
       return (

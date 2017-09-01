@@ -12,7 +12,11 @@ Promise.all([Supplier2Users.init(db, config), Suppliers.init(db, config)]).then(
 
 let sendSupplierAccess = function(req, res)
 {
-  return Supplier2Users.find(req.params.userId).then(supplier2user => res.json(supplier2user));
+  return Supplier2Users.find(req.params.userId).then(supplier2user => {
+    if (!supplier2user) return res.status('404').json({ message: 'Supplier2User not found' });
+
+    return res.json(supplier2user);
+  });
 };
 
 let createSupplierAccess = function(req, res)

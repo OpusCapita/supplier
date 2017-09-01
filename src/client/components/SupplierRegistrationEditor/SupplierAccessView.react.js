@@ -1,29 +1,23 @@
 import React, { PropTypes, Component } from 'react';
 
-class SupplierExistsView extends Component {
+class SupplierAccessView extends Component {
   static propTypes = {
-    onBack: PropTypes.func
+    supplierAccess: PropTypes.object
   };
 
   static contextTypes = {
     i18n : React.PropTypes.object.isRequired
   };
 
-  handleClick = () => {
-    this.props.onBack();
-  }
-
   render() {
     return (
       <div className="jumbotron">
         <h4>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierExistsHeader')}</h4>
         <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierExistsText')}</p>
-        <button className="btn btn-default" onClick={ this.handleClick }>
-          {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.back')}
-        </button>
+        <p>{'Current Status: '} <span>{this.props.supplierAccess.status}</span></p>
       </div>
     );
   }
 }
 
-export default SupplierExistsView;
+export default SupplierAccessView;

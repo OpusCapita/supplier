@@ -89,7 +89,8 @@ class SupplierRegistrationEditorForm extends Component {
     });
   };
 
-  handleBlur = (fieldName) => {
+  handleBlur = (fieldName, event) => {
+    event.preventDefault();
     const constraints = this.constraints.forField(fieldName);
 
     this.setState({
