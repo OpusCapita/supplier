@@ -61,6 +61,11 @@ let allConstraints = function(i18n) {
         tooLong: i18n.getMessage('validatejs.invalid.maxSize.message', {
           limit: 50
         })
+      },
+      supplierNameExists: {
+        message: i18n.getMessage('validatejs.supplierExists', {
+          message: i18n.getMessage('validatejs.duplicate.supplierName.message')
+        })
       }
     },
     homePage: {

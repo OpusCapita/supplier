@@ -72,7 +72,7 @@ module.exports.recordExists = function(supplier)
 {
   let orOptions = [];
 
-  for (const value of ['vatIdentificationNo', 'dunsNo', 'globalLocationNo']) {
+  for (const value of ['supplierName', 'vatIdentificationNo', 'dunsNo', 'globalLocationNo']) {
     if (supplier[value]) orOptions.push({ [value]: { $eq: supplier[value] } });
   }
 
