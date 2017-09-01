@@ -69,7 +69,6 @@ module.exports.searchRecord = function(query)
 
   for (const field of ['supplierName', 'vatIdentificationNo', 'dunsNo', 'globalLocationNo']) {
     if (query[field]) orOptions.push({ [field]: { $eq: query[field] } });
-  }
 
   if (query.commercialRegisterNo) {
     orOptions.push({
