@@ -9,7 +9,8 @@ export default class AttributeValueEditorRow extends Component {
   static propTypes = {
     labelText: PropTypes.string.isRequired,
     required: PropTypes.bool,
-    rowErrors: PropTypes.array
+    rowErrors: PropTypes.array,
+    onErrorLinkClick: PropTypes.func
   };
 
   static defaultProps = {
@@ -25,11 +26,16 @@ export default class AttributeValueEditorRow extends Component {
     }
   }
 
+  handleOnClick(error, event) {
+    event.preventDefault();
+    this.props.onErrorLinkClick(error);
+  }
+
   renderButtonLink(error) {
     if (!error.hasLink) return null;
 
     return (
-      <button className="btn btn-link alert-link" onClick={this.props.onErrorLinkClick(error)}>
+      <button className="btn btn-link alert-link" onClick={this.handleOnClick.bind(this, error)}>
         {error.linkMessage}
       </button>
     );
