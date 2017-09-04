@@ -4,6 +4,11 @@ Supplier Microservice
 This currently provides backend api and react components using the backend.
 The components are being embedded in bnp service frontend SPA.
 
+## Development
+### Running application
+
+In supplier directory, run `docker-compose up`. After it is up and running, go to `localhost:8080/supplier` in browser.
+
 ## Deployment
 ### Swarm
 ```
