@@ -98,9 +98,9 @@ class SupplierAddressEditor extends Component {
       this.setState(newState);
     }
 
-    if(this.context.i18n && nextContext.i18n != this.context.i18n){
-      this.context.i18n.register('validatejs', validationMessages);
-      this.context.i18n.register('SupplierAddressEditor', i18nMessages);
+    if(nextContext.i18n){
+      nextContext.i18n.register('validatejs', validationMessages);
+      nextContext.i18n.register('SupplierAddressEditor', i18nMessages);
     }
   }
 
