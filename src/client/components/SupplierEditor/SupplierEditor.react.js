@@ -193,7 +193,7 @@ class SupplierEditor extends Component {
 
     if (hasErrors) {
       return (
-        <div>{ this.context.i18n.getMessage('SupplierEditor.Messages.unableToRender') }</div>
+        <div>{ this.context.i18n.getMessage('SupplierEditor.Messages.unableToRender')  } <a className="btn btn-link" href="/bnp/supplierRegistration">{this.context.i18n.getMessage('SupplierEditor.Messages.register')}</a> </div>
       );
     }
 

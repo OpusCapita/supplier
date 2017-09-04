@@ -73,7 +73,8 @@ SupplierEditor.changed = 'Die Informationen wurden zuletzt am {on} durch {by} be
 
 const Messages = {};
 Messages.loading = 'Laden...';
-Messages.unableToRender = 'Der Editor kann nicht geöffnet werden';
+Messages.register = 'Registrieren';
+Messages.unableToRender = 'Bitte melden sie sich an bevor Sie fortfahren';
 Messages.saved = 'Die Daten wurden erfolgreich gespeichert';
 Messages.failed = 'Speichern von Objekten fehlgeschlagen';
 Messages.failedModifyingNotAuthoredSupplier = 'Speichern von Objekten fehlgeschlagen:' +
