@@ -170,61 +170,57 @@ class SupplierEditorForm extends Component {
 
     return (
       <div>
-        <div>
-          <h4 className="tab-description">
-            { i18n.getMessage(`SupplierEditor.Description.viewSupplierOrChooseAnother`) }
-          </h4>
-          <form className="form-horizontal">
-            { this.renderField({ fieldName: 'supplierName' }) }
-            { this.renderField({ fieldName: 'homePage' }) }
-            { this.renderField({
-              fieldName: 'foundedOn',
-              component: (
-                <DateInput
-                  className="form-control"
-                  locale={i18n.locale}
-                  dateFormat={dateTimePattern}
-                  value={foundedOn}
-                  onChange={this.handleChange.bind(this, 'foundedOn')}
-                  onBlur={this.handleBlur.bind(this, 'foundedOn')}
-                  variants={[]}
-                />
-              )
-            }) }
+        <h4 className="tab-description">
+          { i18n.getMessage(`SupplierEditor.Description.viewSupplierOrChooseAnother`) }
+        </h4>
+        <form className="form-horizontal">
+          { this.renderField({ fieldName: 'supplierName' }) }
+          { this.renderField({ fieldName: 'homePage' }) }
+          { this.renderField({
+            fieldName: 'foundedOn',
+            component: (
+              <DateInput
+                className="form-control"
+                locale={i18n.locale}
+                dateFormat={dateTimePattern}
+                value={foundedOn}
+                onChange={this.handleChange.bind(this, 'foundedOn')}
+                onBlur={this.handleBlur.bind(this, 'foundedOn')}
+                variants={[]}
+              />
+            )
+          }) }
 
-            { this.renderField({ fieldName: 'legalForm' }) }
-            { this.renderField({ fieldName: 'commercialRegisterNo' }) }
-            { this.renderField({ fieldName: 'cityOfRegistration' }) }
+          { this.renderField({ fieldName: 'legalForm' }) }
+          { this.renderField({ fieldName: 'commercialRegisterNo' }) }
+          { this.renderField({ fieldName: 'cityOfRegistration' }) }
 
-            { this.renderField({
-              fieldName: 'countryOfRegistration',
-              component: (
-                <CountryField
-                  actionUrl={this.props.actionUrl}
-                  value={this.state.supplier['countryOfRegistration']}
-                  onChange={this.handleChange.bind(this, 'countryOfRegistration')}
-                  onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
-                />
-              )
-            })}
+          { this.renderField({
+            fieldName: 'countryOfRegistration',
+            component: (
+              <CountryField
+                actionUrl={this.props.actionUrl}
+                value={this.state.supplier['countryOfRegistration']}
+                onChange={this.handleChange.bind(this, 'countryOfRegistration')}
+                onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
+              />
+            )
+          })}
 
-            { this.renderField({ fieldName: 'taxIdentificationNo' }) }
-            { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
-            { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
-            { this.renderField({ fieldName: 'dunsNo', marked: true }) }
+          { this.renderField({ fieldName: 'taxIdentificationNo' }) }
+          { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
+          { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
+          { this.renderField({ fieldName: 'dunsNo', marked: true }) }
 
-            <div className='supplier-form-submit'>
-              <div className='text-right form-submit'>
-                <button className="btn btn-primary" onClick={ this.handleUpdate }>
-                  { i18n.getMessage('SupplierEditor.ButtonLabel.save') }
-                </button>
-              </div>
+          <div className='supplier-form-submit'>
+            <div className='text-right form-submit'>
+              <button className="btn btn-primary" onClick={ this.handleUpdate }>
+                { i18n.getMessage('SupplierEditor.ButtonLabel.save') }
+              </button>
             </div>
-          </form>
-        </div>
-        <div className="text-right col-md-4">
-          <p>{this.context.i18n.getMessage('SupplierEditor.Messages.required')}</p>
-        </div>
+          </div>
+        </form>
+        <p>{this.context.i18n.getMessage('SupplierEditor.Messages.required')}</p>
       </div>
     );
   }
