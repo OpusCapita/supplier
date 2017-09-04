@@ -17,9 +17,13 @@ let sendSupplier = function(req, res)
 {
   const includes = req.query.include ? req.query.include.split(',') : [];
 
-  Supplier.find(req.params.supplierId, includes).then((supplier) =>
+  Supplier.find(req.params.supplierId, includes).then(supplier =>
   {
-    res.json(supplier);
+    if (supplier) {
+      res.json(supplier);
+    } else {
+      res.status('404').json(supplier);
+    }
   });
 };
 
@@ -29,10 +33,7 @@ let sendSuppliers = function(req, res)
   const queryObj = req.query.supplierId ? { supplierId: { $in: req.query.supplierId.split(',') }} : {};
   const includes = req.query.include ? req.query.include.split(',') : [];
 
-  Supplier.all(queryObj, includes).then(suppliers =>
-  {
-    res.json(suppliers);
-  });
+  Supplier.all(queryObj, includes).then(suppliers => res.json(suppliers));
 };
 
 let existsSuppliers = function(req, res)
@@ -66,13 +67,13 @@ let createSuppliers = function(req, res)
               Supplier.delete(supplierId).then(() => null);
               req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
 
-              return res.status(error.response.statusCode || 400).json({ message : error.message });
+              return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
             });
         })
         .catch(error => {
           req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
 
-          return res.status(error.response.statusCode || 400).json({ message : error.message });
+          return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
         });
     }
   })

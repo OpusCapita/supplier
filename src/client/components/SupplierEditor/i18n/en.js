@@ -72,7 +72,8 @@ SupplierEditor.changed = 'Information on this page was last updated on {on} by {
 
 const Messages = {};
 Messages.loading = 'Loading...';
-Messages.unableToRender = 'Unable to render editor';
+Messages.register = 'Register';
+Messages.unableToRender = 'Please register supplier before proceeding';
 Messages.saved = 'Data is successfully saved';
 Messages.failed = 'Data saving failed';
 Messages.failedModifyingNotAuthoredSupplier = 'Data saving failed: only the author can update company information';

@@ -5,7 +5,7 @@ module.exports = function(validatejsI18N) {
         message: validatejsI18N.getMessage('validatejs.blank.message')
       }
     },
-    "name1": {
+    "name": {
       presence: {
         message: validatejsI18N.getMessage('validatejs.blank.message')
       },
@@ -16,23 +16,7 @@ module.exports = function(validatejsI18N) {
         })
       }
     },
-    "name2": {
-      length: {
-        maximum: 100,
-        tooLong: validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 100
-        })
-      }
-    },
-    "name3": {
-      length: {
-        maximum: 100,
-        tooLong: validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 100
-        })
-      }
-    },
-    "street": {
+    "street1": {
       presence: {
         message: validatejsI18N.getMessage('validatejs.blank.message')
       },
@@ -40,6 +24,22 @@ module.exports = function(validatejsI18N) {
         maximum: 50,
         tooLong: validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
           limit: 50
+        })
+      }
+    },
+    "street2": {
+      length: {
+        maximum: 100,
+        tooLong: validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
+          limit: 100
+        })
+      }
+    },
+    "street3": {
+      length: {
+        maximum: 100,
+        tooLong: validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
+          limit: 100
         })
       }
     },

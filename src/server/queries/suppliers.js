@@ -12,57 +12,19 @@ module.exports.init = function(db, config)
 
 module.exports.all = function(queryObj, includes)
 {
-  const associations = {
-    contacts: this.db.models.SupplierContact,
-    addresses: this.db.models.SupplierAddress,
-    bankAccounts: this.db.models.SupplierBankAccount
-  }
-
-  let includeModels = [];
-
-  for (const index in includes) {
-    const association = includes[index];
-    if (associations[association])
-      includeModels.push(associations[association]);
-  }
+  const includeModels = associationsFromIncludes(this.db.models, includes);
 
   return this.db.models.Supplier.findAll({ where: queryObj, include: includeModels }).map(supplier => {
-    supplier.dataValues.contacts = supplier.SupplierContacts;
-    supplier.dataValues.addresses = supplier.SupplierAddresses;
-    supplier.dataValues.bankAccounts = supplier.SupplierBankAccounts;
-
-    delete supplier.dataValues.SupplierContacts;
-    delete supplier.dataValues.SupplierAddresses;
-    delete supplier.dataValues.SupplierBankAccounts;
-
-    return supplier.dataValues;
+    return supplierWithAssociations(supplier);
   });
 };
 
 module.exports.find = function(supplierId, includes)
 {
-  const associations = {
-    contacts: this.db.models.SupplierContact,
-    addresses: this.db.models.SupplierAddress,
-    bankAccounts: this.db.models.SupplierBankAccount
-  };
+  const includeModels = associationsFromIncludes(this.db.models, includes);
 
-  let includeModels = [];
-
-  for (const index in includes) {
-    const association = includes[index];
-    if (associations[association])
-      includeModels.push(associations[association]);
-  }
-
-  return this.db.models.Supplier.findOne({where: { supplierId: supplierId }, include: includeModels}).then((supplier) => {
-    supplier.dataValues.contacts = supplier.SupplierContacts;
-    supplier.dataValues.addresses = supplier.SupplierAddresses;
-    supplier.dataValues.bankAccounts = supplier.SupplierBankAccounts;
-    delete supplier.dataValues.SupplierContacts;
-    delete supplier.dataValues.SupplierAddresses;
-    delete supplier.dataValues.SupplierBankAccounts;
-    return supplier.dataValues;
+  return this.db.models.Supplier.findOne({where: { supplierId: supplierId }, include: includeModels}).then(supplier => {
+    return supplierWithAssociations(supplier);
   });
 };
 
@@ -92,7 +54,7 @@ module.exports.update = function(supplierId, supplier)
 {
   let self = this;
   return this.db.models.Supplier.update(supplier, { where: { supplierId: supplierId } }).then(() => {
-    return self.find(supplierId);
+    return self.find(supplierId, []);
   });
 };
 
@@ -103,14 +65,14 @@ module.exports.delete = function(supplierId)
 
 module.exports.exists = function(supplierId)
 {
-  return this.db.models.Supplier.findById(supplierId).then(supplier => supplier && supplier.supplierId === supplierId);
+  return this.db.models.Supplier.findById(supplierId).then(supplier => Boolean(supplier));
 };
 
 module.exports.recordExists = function(supplier)
 {
   let orOptions = [];
 
-  for (const value of ['vatIdentificationNo', 'dunsNo', 'globalLocationNo']) {
+  for (const value of ['supplierName', 'vatIdentificationNo', 'dunsNo', 'globalLocationNo']) {
     if (supplier[value]) orOptions.push({ [value]: { $eq: supplier[value] } });
   }
 
@@ -149,3 +111,35 @@ let randomNumber = function()
 {
   return Math.floor((Math.random() * 1000));
 };
+
+let associationsFromIncludes = function(dbModels, includes)
+{
+  const associations = {
+    contacts: dbModels.SupplierContact,
+    addresses: dbModels.SupplierAddress,
+    bankAccounts: dbModels.SupplierBankAccount
+  };
+
+  let includeModels = [];
+
+  for (const association of includes) {
+    if (associations[association]) includeModels.push(associations[association]);
+  }
+
+  return includeModels;
+}
+
+let supplierWithAssociations = function(supplier)
+{
+  if (!supplier) return supplier;
+
+  supplier.dataValues.contacts = supplier.SupplierContacts;
+  supplier.dataValues.addresses = supplier.SupplierAddresses;
+  supplier.dataValues.bankAccounts = supplier.SupplierBankAccounts;
+
+  delete supplier.dataValues.SupplierContacts;
+  delete supplier.dataValues.SupplierAddresses;
+  delete supplier.dataValues.SupplierBankAccounts;
+
+  return supplier.dataValues;
+}

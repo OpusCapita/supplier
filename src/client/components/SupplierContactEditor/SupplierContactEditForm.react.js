@@ -1,27 +1,25 @@
-import React, { Component } from 'react';
-import Button from 'react-bootstrap/lib/Button';
-import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import Popover from 'react-bootstrap/lib/Popover';
-import classNames from 'classnames';
-import validator from 'validate.js';
-import i18n from '../../i18n/I18nDecorator.react.js';
-import './SupplierContactEditForm.css';
-import { I18nManager } from 'opuscapita-i18n';
-import globalMessages from '../../utils/validatejs/i18n';
+import React, { Component } from "react";
+import Button from "react-bootstrap/lib/Button";
+import validator from "validate.js";
+import "./SupplierContactEditForm.css";
+import SupplierContactFormConstraints from "./SupplierContactFormConstraints";
+import SupplierContactEditFormRow from "../AttributeValueEditorRow.react.js";
 const CONTACT_TYPES = ['Default', 'Sales', 'Escalation', 'Product', 'Technical'];
 const DEPARTMENTS = ['Management', 'Logistics', 'Sales', 'Accounting', 'Support', 'IT', 'Others'];
 
-@i18n
 class SupplierContactEditForm extends Component {
   static propTypes = {
     contact: React.PropTypes.object.isRequired,
     errors: React.PropTypes.object,
-    locale: React.PropTypes.string.isRequired,
     editMode: React.PropTypes.oneOf(['edit', 'create', 'create-first', 'view']),
     onSave: React.PropTypes.func.isRequired,
     onUpdate: React.PropTypes.func.isRequired,
     onCancel: React.PropTypes.func.isRequired,
     onChange: React.PropTypes.func.isRequired
+  };
+
+  static contextTypes = {
+    i18n: React.PropTypes.object.isRequired
   };
 
   static defaultProps = {
@@ -34,98 +32,18 @@ class SupplierContactEditForm extends Component {
     errors: this.props.errors || {}
   };
 
-  componentWillReceiveProps(newProps) {
-    if (newProps.contact) {
-      this.setState({ contact: newProps.contact, errors: newProps.errors || {} });
-    }
+  componentWillMount() {
+    this.constraints = SupplierContactFormConstraints(this.context.i18n);
   }
 
-  validatejsI18N = new I18nManager(this.props.locale, globalMessages);
-
-  constraints = {
-    contactType: {
-      presence: {
-        message: this.validatejsI18N.getMessage('validatejs.blank.message')
-      }
-    },
-    department: {
-      presence: {
-        message: this.validatejsI18N.getMessage('validatejs.blank.message')
-      }
-    },
-    title: {
-      length: {
-        maximum: 20,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 20
-        })
-      }
-    },
-    firstName: {
-      presence: {
-        message: this.validatejsI18N.getMessage('validatejs.blank.message')
-      },
-      length: {
-        maximum: 100,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 100
-        })
-      }
-    },
-    lastName: {
-      presence: {
-        message: this.validatejsI18N.getMessage('validatejs.blank.message')
-      },
-      length: {
-        maximum: 100,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 100
-        })
-      }
-    },
-    email: {
-      presence: {
-        message: this.validatejsI18N.getMessage('validatejs.blank.message')
-      },
-      email: {
-        message: this.validatejsI18N.getMessage('validatejs.invalid.email.message')
-      },
-      length: {
-        maximum: 100,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 100
-        })
-      }
-    },
-    phone: {
-      length: {
-        maximum: 20,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 20
-        })
-      }
-    },
-    mobile: {
-      length: {
-        maximum: 20,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 20
-        })
-      }
-    },
-    fax: {
-      length: {
-        maximum: 20,
-        tooLong: this.validatejsI18N.getMessage('validatejs.invalid.maxSize.message', {
-          limit: 20
-        })
-      }
+  componentWillReceiveProps(nextProps, nextContext) {
+    if (nextProps.contact) {
+      this.setState({contact: nextProps.contact, errors: nextProps.errors || {}});
     }
-  };
 
-  /**
-   * On Save or Update local handler
-   */
+    this.constraints = SupplierContactFormConstraints(nextContext.i18n);
+  }
+
   handleSaveOrUpdate = (event) => {
     event.preventDefault();
 
@@ -149,221 +67,155 @@ class SupplierContactEditForm extends Component {
     this.props.onCancel(contact);
   };
 
-  fieldRender(tagClass, tagProps, child) {
-    const name = tagProps.name;
-    /* eslint-disable no-param-reassign*/
-    tagProps.className = 'form-control';
-    tagProps.id = name;
+  handleChange = (fieldName, event) => {
+    let newValue = event.target.value;
 
-    const required = tagProps.required;
-
-    if (required) {
-      delete tagProps.required;
-    }
-    /* eslint-enable no-param-reassign*/
-
-    let labelValue = this.context.i18n.getMessage(`SupplierContactEditor.Label.${name}`);
-
-    /* eslint-disable no-param-reassign*/
-    let tooltipOverlay;
-    if (tagProps.tooltip) {
-      tooltipOverlay = (<Popover id={'tooltip-' + name} title={labelValue}>{tagProps.tooltip}</Popover>);
-      delete tagProps.tooltip;
+    if (this.props.onChange) {
+      this.props.onChange(fieldName, this.state.contact[fieldName], newValue);
     }
 
-    tagProps.value = this.state.contact[name] || '';
-
-
-    tagProps.onChange = (event) => {
-      let newValue = event.target.value;
-      let contact = this.state.contact;
-
-
-      let oldValue = contact[name];
-      contact[name] = newValue;
-
-      if (oldValue !== newValue) {
-        this.props.onChange(contact, name, oldValue, newValue);
+    this.setState({
+      contact: {
+        ...this.state.contact,
+        [fieldName]: newValue
       }
+    });
+  };
 
-      this.setState({ contact: contact });// eslint-disable-line no-param-reassign
-    };
-
-    tagProps.onBlur = (event) => {
-      let fieldName = event.target.name;
-      const errors = this.state.errors || {};
-
-      let fieldConstraints = {};
-      fieldConstraints[fieldName] = this.constraints[fieldName];
-      let fieldErrors = validator(this.state.contact, fieldConstraints, { fullMessages: false });
-      if (fieldErrors) {
-        errors[fieldName] = fieldErrors[fieldName];
-      } else {
-        delete errors[fieldName];
+  handleBlur = (fieldName) => {
+    const errors = validator(
+      this.state.contact, {
+        [fieldName]: this.constraints[fieldName]
+      }, {
+        fullMessages: false
       }
-      this.setState({ errors: errors });
+    );
+
+    this.setState({
+      errors: {
+        ...this.state.errors,
+        [fieldName]: errors ?
+          errors[fieldName].map(msg => ({ message: msg })) :
+          []
+      }
+    });
+  };
+
+  selectOptions = (fieldName, fieldOptions) => {
+
+    function capitalize(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
     };
-    /* eslint-enable no-param-reassign*/
 
-    const element = React.createElement(tagClass, tagProps, child);
+    let options = [];
+    const fieldNameCapitalized = capitalize(fieldName);
+    const message = this.context.i18n.getMessage;
 
-    let errors = this.state.errors || {};
-    let errorMessages = errors[name] || [];
-    let labelClassNames = {
-      'control-label': true
-    };
-    labelClassNames[`col-sm-${(tooltipOverlay ? 3 : 4)}`] = true;
+    options.push({ value: '', label: message(`SupplierContactEditor.Select.${fieldName}`), disabled: true });
 
-    if (required) {
-      let lastWord = labelValue.substring(labelValue.lastIndexOf(' ') + 1, labelValue.length);
-      labelValue = (
-        <span>
-          {labelValue.replace(lastWord, '')}<span><nobr>{lastWord} *</nobr></span>
-        </span>
-      );
+    for (const option of fieldOptions) {
+      options.push({
+        value: option,
+        label: message(`SupplierContactEditor.${fieldNameCapitalized}.${option}`),
+        disabled: false
+      })
     }
+
+    return options;
+  };
+
+  renderField = (attrs) => {
+    const { contact, errors } = this.state;
+    const { fieldName, disabled } = attrs;
+    const fieldNames = attrs.fieldNames || [fieldName];
+
+    let component = attrs.component ||
+      <input className="form-control"
+        type="text"
+        value={ typeof contact[fieldName] === 'string' ? contact[fieldName] : '' }
+        onChange={ this.handleChange.bind(this, fieldName) }
+        onBlur={ this.handleBlur.bind(this, fieldName) }
+        disabled={disabled}
+      />;
+
+    let isRequired = fieldNames.some(name => {
+      return this.constraints[name] && this.constraints[name].presence;
+    });
+
+    let rowErrors = fieldNames.reduce(
+      (rez, name) => rez.concat(errors[name] || []),
+      []
+    );
 
     return (
-      <div className={classNames({ 'form-group': true, 'has-error': errorMessages.length > 0 })}>
-        <label htmlFor={name} className={classNames(labelClassNames)}>
-          {labelValue}
-        </label>
-
-        {tooltipOverlay ? (
-          <div className="col-sm-1 text-right">
-            <OverlayTrigger trigger="click" placement="bottom" overlay={tooltipOverlay} rootClose={true}>
-              <i className="glyphicon glyphicon-info-sign text-muted form-control-static contact-info-sign" />
-            </OverlayTrigger>
-          </div>
-        ) : null}
-
-        <div className="col-sm-8">{element}</div>
-        {errorMessages.map((errorMessage, index) => {
-          return (
-            <div key={'error-' + name + '-' + index} className="col-sm-offset-4 col-sm-8">
-              <span className="label label-danger">{errorMessage}</span>
-            </div>
-          );
-        })}
-      </div>
+      <SupplierContactEditFormRow
+        labelText={ this.context.i18n.getMessage(`SupplierContactEditor.Label.${fieldName}`) }
+        required={ isRequired }
+        rowErrors={ rowErrors }
+      >
+        { component }
+      </SupplierContactEditFormRow>
     );
-  }
+  };
 
   render() {
     const editMode = this.props.editMode;
-
-    let message = this.context.i18n.getMessage;
-
-    let typeOptions = [];
-
-    typeOptions.push({
-      value: '',
-      label: message('SupplierContactEditor.Select.type'),
-      disabled: true
-    });
-
-    for (let i = 0; i < CONTACT_TYPES.length; i++) {
-      let type = CONTACT_TYPES[i];
-
-      typeOptions.push({
-        value: type,
-        label: message(`SupplierContactEditor.ContactType.${type}`)
-      })
-    }
-
-    let departmentOptions = [];
-
-    departmentOptions.push({
-      value: '',
-      label: message('SupplierContactEditor.Select.department'),
-      disabled: true
-    });
-
-    for (let i = 0; i < DEPARTMENTS.length; i++) {
-      let department = DEPARTMENTS[i];
-
-      departmentOptions.push({
-        value: department,
-        label: message(`SupplierContactEditor.Department.${department}`)
-      })
-    }
+    const disabled = editMode === 'view';
+    const { contact } = this.state;
 
     return (
       <form className="form-horizontal" onSubmit={this.handleSaveOrUpdate}>
+        { this.renderField({
+            fieldName: 'contactType',
+            component: (
+              <select className="form-control"
+                value={contact['contactType'] || ''}
+                onChange={this.handleChange.bind(this, 'contactType')}
+                onBlur={this.handleBlur.bind(this, 'contactType')}
+                disabled={disabled}
+              >
+                {this.selectOptions('contactType', CONTACT_TYPES).map((item, index) => {
+                  return (<option key={index} disabled={item.disabled} value={item.value}>{item.label}</option>);
+                })}
+              </select>
+            )
+          }) }
+        { this.renderField({
+            fieldName: 'department',
+            component: (
+              <select className="form-control"
+                value={contact['department'] || ''}
+                onChange={this.handleChange.bind(this, 'department')}
+                onBlur={this.handleBlur.bind(this, 'department')}
+                disabled={disabled}
+              >
+                {this.selectOptions('department', DEPARTMENTS).map((item, index) => {
+                  return (<option key={index} disabled={item.disabled} value={item.value}>{item.label}</option>);
+                })}
+              </select>
+            )
+          }) }
+        { this.renderField({ fieldName: 'title', disabled: disabled }) }
+        { this.renderField({ fieldName: 'firstName', disabled: disabled }) }
+        { this.renderField({ fieldName: 'lastName', disabled: disabled }) }
+        { this.renderField({ fieldName: 'phone', disabled: disabled }) }
+        { this.renderField({ fieldName: 'mobile', disabled: disabled }) }
+        { this.renderField({ fieldName: 'fax', disabled: disabled }) }
+        { this.renderField({ fieldName: 'email', disabled: disabled }) }
 
-        {this.fieldRender('select', {
-          name: 'contactType',
-          tooltip: message('SupplierContactEditor.Tooltip.contactType'),
-          required: true,
-          disabled: (editMode === 'view')
-        }, (
-          typeOptions.map((item, index) => {
-            return (<option key={'contact-type-' + index} value={item.value}
-              disabled={item.disabled}
-            >{item.label}</option>)
-          })
-        ))}
-
-        {this.fieldRender('select', {
-          name: 'department',
-          required: true,
-          disabled: (editMode === 'view')
-        }, (
-          departmentOptions.map((item, index) => {
-            return <option key={'department-' + index} value={item.value} disabled={item.disabled}>{item.label}</option>
-          })
-        ))}
-
-        {this.fieldRender('input', {
-          name: 'title',
-          disabled: (editMode === 'view')
-        })}
-
-        {this.fieldRender('input', {
-          name: 'firstName',
-          disabled: (editMode === 'view'),
-          required: true
-        })}
-
-        {this.fieldRender('input', {
-          name: 'lastName',
-          disabled: (editMode === 'view'),
-          required: true
-        })}
-
-        {this.fieldRender('input', {
-          name: 'phone',
-          disabled: (editMode === 'view')
-        })}
-
-        {this.fieldRender('input', {
-          name: 'mobile',
-          disabled: (editMode === 'view')
-        })}
-
-        {this.fieldRender('input', {
-          name: 'fax',
-          disabled: (editMode === 'view')
-        })}
-
-        {this.fieldRender('input', {
-          name: 'email',
-          tooltip: message('SupplierContactEditor.Tooltip.email'),
-          disabled: (editMode === 'view'),
-          required: true,
-        })}
-
-        <div className="col-sm-12 text-right contact-form-submit">
+        <div className="col-sm-12 text-right address-form-submit">
           {editMode !== 'create-first' ? (
             <Button bsStyle="link"
               onClick={this.handleCancel}
             >
-            {this.context.i18n.getMessage('SupplierContactEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))}
+              {
+                this.context.i18n.getMessage('SupplierContactEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
+              }
             </Button>
           ) : null}
           {editMode !== 'view' ? (
             <Button bsStyle="primary"
-              type="submit"
+                    type="submit"
             >{this.context.i18n.getMessage('SupplierContactEditor.Button.save')}</Button>
           ) : null}
         </div>

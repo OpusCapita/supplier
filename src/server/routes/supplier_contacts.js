@@ -38,7 +38,7 @@ let createSupplierContact = function(req, res)
 
 let updateSupplierContact = function(req, res)
 {
-  let contactId = req.params.contactId;
+  let contactId = decodeURIComponent(req.params.contactId);
   let supplierId = req.params.supplierId;
   SupplierContact.contactExists(supplierId, contactId).then(exists =>
   {
@@ -46,7 +46,7 @@ let updateSupplierContact = function(req, res)
     {
       return SupplierContact.update(supplierId, contactId, req.body).then(contact => res.status('200').json(contact));
     } else {
-      const message = 'A supplier contact with this ID does not exist.'
+      const message = 'A supplier contact with ID ' + contactId + ' does not exist.'
       req.opuscapita.logger.error('Error when updating SupplierContact: %s', message);
       return res.status('404').json({ message : message });
     }
@@ -59,7 +59,8 @@ let updateSupplierContact = function(req, res)
 
 let deleteSupplierContact = function(req, res)
 {
-  SupplierContact.delete(req.params.supplierId, req.params.contactId).then(() => res.status('200').json(null))
+  let contactId = decodeURIComponent(req.params.contactId);
+  SupplierContact.delete(req.params.supplierId, contactId).then(() => res.status('200').json(null))
   .catch(error => {
     req.opuscapita.logger.error('Error when deleting SupplierContact: %s', error.message);
     return res.status('400').json({ message : error.message });

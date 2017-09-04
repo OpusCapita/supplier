@@ -1,7 +1,13 @@
 const request = require('superagent-bluebird-promise');
 const url = '/supplier/api/suppliers/exists';
 
+module.exports.supplierNameExists = function(validate) {
+  return validate.validators.supplierNameExists = function(value, options, key, attributes) {
+    let queryParams = { supplierName: value };
 
+    return recordExists(value, validate, queryParams, options.message, attributes['supplierId']);
+  };
+};
 
 module.exports.vatNumberExists = function(validate) {
   return validate.validators.vatNumberExists = function(value, options, key, attributes) {
