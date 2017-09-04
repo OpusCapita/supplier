@@ -72,6 +72,7 @@ SupplierEditor.changed = 'Information on this page was last updated on {on} by {
 
 const Messages = {};
 Messages.loading = 'Loading...';
+Messages.register = 'Register';
 Messages.unableToRender = 'Please register supplier before proceeding';
 Messages.saved = 'Data is successfully saved';
 Messages.failed = 'Data saving failed';
