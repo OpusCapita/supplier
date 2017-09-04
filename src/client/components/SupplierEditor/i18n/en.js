@@ -79,6 +79,7 @@ Messages.failed = 'Data saving failed';
 Messages.failedModifyingNotAuthoredSupplier = 'Data saving failed: only the author can update company information';
 Messages.failedCreatingExistingSupplier = 'Data saving failed:' +
   ' a company with the same Company Name already exists';
+Messages.required = '** One of the fields marked with two asterisk has to be provided'
 
 export default {
   SupplierEditor: {
