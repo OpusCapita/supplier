@@ -55,7 +55,7 @@ Messages.supplierExistsHeader = 'Lieferant bereits vorhanden!';
 Messages.supplierExistsText = 'Scheinbar wurde Ihr Unternehmen bereits registriert. Bitte kontaktieren Sie unseren Support via +49 231 3967 0 oder customerservice.de@opuscapita.com, um einen Zugang zu diesem Unternehmen anzufordern.';
 Messages.information1 = 'Bitte hinterlegen Sie hier Informationen zur eindeutigen Identifizierung Ihres Unternehmens.'
 Messages.information2 = 'Bitte füllen Sie alle mit Stern markierten Pflichtfelder aus, um mit der Registrierung fortfahren zu können.'
-Messages.required = '** Eines der mit zwei Sternchen gekennzeichneten Felder muss bereitgestellt werden';
+Messages.required = '** Eines der mit zwei Sternchen gekennzeichneten Felder muss bereitgestellt werden.';
 
 export default {
   SupplierRegistrationEditor: {
