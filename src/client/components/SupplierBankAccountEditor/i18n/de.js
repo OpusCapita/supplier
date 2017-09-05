@@ -4,7 +4,7 @@ let Confirmation = {
   delete: 'Do you really want to delete this contact?'
 };
 // eslint-disable-next-line max-len
-let Title = 'Bitte hinterlegen Sie hier die Ansprechpartner aus den Bereichen Geschäftsleitung, Vertrieb, Buchhaltung und Logistik.\nGerne können Sie auch noch weitere Ansprechpartner benennen.';
+let Title = 'Bitte hinterlegen Sie Ihre Bankverbindung.';
 
 let Label = {
   accountNumber: 'IBAN',
