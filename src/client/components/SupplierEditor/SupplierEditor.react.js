@@ -40,7 +40,7 @@ class SupplierEditor extends Component {
   }
 
   componentWillMount() {
-    this.context.i18n.register('validatejs', validationMessages);
+    this.context.i18n.register('SupplierValidatejs', validationMessages);
     this.context.i18n.register('SupplierEditor', i18nMessages);
   }
 
@@ -84,7 +84,7 @@ class SupplierEditor extends Component {
     });
 
     if(nextContext.i18n){
-      nextContext.i18n.register('validatejs', validationMessages);
+      nextContext.i18n.register('SupplierValidatejs', validationMessages);
       nextContext.i18n.register('SupplierEditor', i18nMessages);
     }
   }

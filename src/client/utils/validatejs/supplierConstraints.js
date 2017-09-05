@@ -54,17 +54,17 @@ let allConstraints = function(i18n) {
   return {
     supplierName: {
       presence: {
-        message: i18n.getMessage('validatejs.blank.message')
+        message: i18n.getMessage('SupplierValidatejs.blank.message')
       },
       length: {
         maximum: 50,
-        tooLong: i18n.getMessage('validatejs.invalid.maxSize.message', {
+        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
           limit: 50
         })
       },
       supplierNameExists: {
-        message: i18n.getMessage('validatejs.supplierExists', {
-          message: i18n.getMessage('validatejs.duplicate.supplierName.message')
+        message: i18n.getMessage('SupplierValidatejs.supplierExists', {
+          message: i18n.getMessage('SupplierValidatejs.duplicate.supplierName.message')
         })
       }
     },
@@ -72,7 +72,7 @@ let allConstraints = function(i18n) {
       presence: false,
       length: {
         maximum: 250,
-        tooLong: i18n.getMessage('validatejs.invalid.maxSize.message', {
+        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
           limit: 250
         })
       }
@@ -80,14 +80,14 @@ let allConstraints = function(i18n) {
     foundedOn: {
       presence: false,
       datetime: {
-        message: i18n.getMessage('validatejs.typeMismatch.java.util.Date')
+        message: i18n.getMessage('SupplierValidatejs.typeMismatch.java.util.Date')
       }
     },
     legalForm: {
       presence: false,
       length: {
         maximum: 250,
-        tooLong: i18n.getMessage('validatejs.invalid.maxSize.message', {
+        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
           limit: 250
         })
       }
@@ -95,75 +95,75 @@ let allConstraints = function(i18n) {
     commercialRegisterNo: {
       presence: false,
       registerationNumberExists: {
-        message: i18n.getMessage('validatejs.supplierExists', {
-          message: i18n.getMessage('validatejs.duplicate.registerationNumber.message')
+        message: i18n.getMessage('SupplierValidatejs.supplierExists', {
+          message: i18n.getMessage('SupplierValidatejs.duplicate.registerationNumber.message')
         })
       }
     },
     cityOfRegistration: {
       presence: {
-        message: i18n.getMessage('validatejs.blank.message')
+        message: i18n.getMessage('SupplierValidatejs.blank.message')
       },
       length: {
         maximum: 250,
-        tooLong: i18n.getMessage('validatejs.invalid.maxSize.message', {
+        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
           limit: 250
         })
       }
     },
     countryOfRegistration: {
       presence: {
-        message: i18n.getMessage('validatejs.blank.message')
+        message: i18n.getMessage('SupplierValidatejs.blank.message')
       }
     },
     taxIdentificationNo: {
       presence: false,
       taxIdNumberExists: {
-        message: i18n.getMessage('validatejs.supplierExists', {
-          message: i18n.getMessage('validatejs.duplicate.taxIdNumber.message')
+        message: i18n.getMessage('SupplierValidatejs.supplierExists', {
+          message: i18n.getMessage('SupplierValidatejs.duplicate.taxIdNumber.message')
         })
       }
     },
     vatIdentificationNo: {
       presence: false,
       vatNumber: {
-        message: i18n.getMessage('validatejs.invalid.vatNumber.message')
+        message: i18n.getMessage('SupplierValidatejs.invalid.vatNumber.message')
       },
       vatNumberExists: {
-        message: i18n.getMessage('validatejs.supplierExists', {
-          message: i18n.getMessage('validatejs.duplicate.vatNumber.message')
+        message: i18n.getMessage('SupplierValidatejs.supplierExists', {
+          message: i18n.getMessage('SupplierValidatejs.duplicate.vatNumber.message')
         })
       },
       uniqueIdentifier: {
-        message: i18n.getMessage('validatejs.invalid.uniqueIdentifier.message')
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
       }
     },
     globalLocationNo: {
       presence: false,
       globalLocationNumber: {
-        message: i18n.getMessage('validatejs.invalid.globalLocationNumber.message')
+        message: i18n.getMessage('SupplierValidatejs.invalid.globalLocationNumber.message')
       },
       globalLocationNumberExists: {
-        message: i18n.getMessage('validatejs.supplierExists', {
-          message: i18n.getMessage('validatejs.duplicate.globalLocationNumber.message')
+        message: i18n.getMessage('SupplierValidatejs.supplierExists', {
+          message: i18n.getMessage('SupplierValidatejs.duplicate.globalLocationNumber.message')
         })
       },
       uniqueIdentifier: {
-        message: i18n.getMessage('validatejs.invalid.uniqueIdentifier.message')
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
       }
     },
     dunsNo: {
       presence: false,
       dunsNumber: {
-        message: i18n.getMessage('validatejs.invalid.dunsNumber.message')
+        message: i18n.getMessage('SupplierValidatejs.invalid.dunsNumber.message')
       },
       dunsNumberExists: {
-        message: i18n.getMessage('validatejs.supplierExists', {
-          message: i18n.getMessage('validatejs.duplicate.dunsNumber.message')
+        message: i18n.getMessage('SupplierValidatejs.supplierExists', {
+          message: i18n.getMessage('SupplierValidatejs.duplicate.dunsNumber.message')
         })
       },
       uniqueIdentifier: {
-        message: i18n.getMessage('validatejs.invalid.uniqueIdentifier.message')
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
       }
     }
   };
