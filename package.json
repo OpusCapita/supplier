@@ -29,6 +29,7 @@
   "license": "jCatalog",
   "readme": "README.md",
   "dependencies": {
+    "@opuscapita/i18n": "1.1.0",
     "@opuscapita/react-dates": "^0.2.6",
     "@opuscapita/react-loaders": "^0.1.5",
     "babel-loader": "^7.0.0",

@@ -129,7 +129,7 @@ class SupplierEditorForm extends Component {
       async(supplier, constraints, { fullMessages: false }).then(success, error);
   };
 
-  renderField = attrs => {
+  renderField = (attrs) => {
     const { supplier, fieldErrors } = this.state;
     const { fieldName } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
@@ -153,6 +153,7 @@ class SupplierEditorForm extends Component {
       <SupplierEditorFormRow
         labelText={ this.context.i18n.getMessage(`SupplierEditor.Label.${fieldName}.label`) }
         required={ isRequired }
+        marked = { attrs.marked }
         rowErrors={ rowErrors }
       >
         { component }
@@ -207,9 +208,9 @@ class SupplierEditorForm extends Component {
           })}
 
           { this.renderField({ fieldName: 'taxIdentificationNo' }) }
-          { this.renderField({ fieldName: 'vatIdentificationNo' }) }
-          { this.renderField({ fieldName: 'globalLocationNo' }) }
-          { this.renderField({ fieldName: 'dunsNo' }) }
+          { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
+          { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
+          { this.renderField({ fieldName: 'dunsNo', marked: true }) }
 
           <div className='supplier-form-submit'>
             <div className='text-right form-submit'>
@@ -219,6 +220,7 @@ class SupplierEditorForm extends Component {
             </div>
           </div>
         </form>
+        <p>{this.context.i18n.getMessage('SupplierEditor.Messages.required')}</p>
       </div>
     );
   }

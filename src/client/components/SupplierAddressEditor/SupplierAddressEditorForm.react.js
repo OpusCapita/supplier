@@ -33,7 +33,7 @@ class SupplierAddressEditorForm extends Component {
   state = {
     supplierAddress: this.props.supplierAddress,
     errors: this.props.errors || {}
-  }
+  };
 
   componentWillMount() {
     let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
@@ -84,7 +84,7 @@ class SupplierAddressEditorForm extends Component {
         [fieldName]: country
       }
     });
-  }
+  };
 
   handleChange = (fieldName, event) => {
     let newValue = event.target.value;
@@ -99,7 +99,7 @@ class SupplierAddressEditorForm extends Component {
         [fieldName]: newValue
       }
     });
-  }
+  };
 
   handleBlur = (fieldName/* , event*/) => {
     const errors = validator(
@@ -118,7 +118,7 @@ class SupplierAddressEditorForm extends Component {
           []
       }
     });
-  }
+  };
 
   renderField = attrs => {
     const { supplierAddress, errors } = this.state;
