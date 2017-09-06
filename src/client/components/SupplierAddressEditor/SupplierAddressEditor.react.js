@@ -46,7 +46,7 @@ class SupplierAddressEditor extends Component {
   };
 
   componentWillMount(){
-    this.context.i18n.register('validatejs', validationMessages);
+    this.context.i18n.register('SupplierValidatejs', validationMessages);
     this.context.i18n.register('SupplierAddressEditor', i18nMessages);
   }
 
@@ -56,9 +56,12 @@ class SupplierAddressEditor extends Component {
     }
 
     console.log('===== ABOUT TO REQUEST a PROMISE');
-    this.loadAddressesPromise = request
-      .get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}/addresses`)
-      .set('Accept', 'application/json').promise();
+    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}/addresses`)
+
+    /* Do not use cache in request if browser is IE */
+    if (false || !!document.documentMode) getRequest.query({ cachebuster: Date.now().toString() });
+
+    this.loadAddressesPromise = getRequest.set('Accept', 'application/json').promise();
 
     this.loadAddressesPromise.then(response => {
       this.setState({
@@ -98,9 +101,9 @@ class SupplierAddressEditor extends Component {
       this.setState(newState);
     }
 
-    if(this.context.i18n && nextContext.i18n != this.context.i18n){
-      this.context.i18n.register('validatejs', validationMessages);
-      this.context.i18n.register('SupplierAddressEditor', i18nMessages);
+    if(nextContext.i18n){
+      nextContext.i18n.register('SupplierValidatejs', validationMessages);
+      nextContext.i18n.register('SupplierAddressEditor', i18nMessages);
     }
   }
 

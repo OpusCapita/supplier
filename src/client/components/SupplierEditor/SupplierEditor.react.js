@@ -40,7 +40,7 @@ class SupplierEditor extends Component {
   }
 
   componentWillMount() {
-    this.context.i18n.register('validatejs', validationMessages);
+    this.context.i18n.register('SupplierValidatejs', validationMessages);
     this.context.i18n.register('SupplierEditor', i18nMessages);
   }
 
@@ -83,9 +83,9 @@ class SupplierEditor extends Component {
       globalErrorMessage: ''
     });
 
-    if(this.context.i18n && nextContext.i18n != this.context.i18n){
-      this.context.i18n.register('validatejs', validationMessages);
-      this.context.i18n.register('SupplierEditor', i18nMessages);
+    if(nextContext.i18n){
+      nextContext.i18n.register('SupplierValidatejs', validationMessages);
+      nextContext.i18n.register('SupplierEditor', i18nMessages);
     }
   }
 
@@ -193,7 +193,7 @@ class SupplierEditor extends Component {
 
     if (hasErrors) {
       return (
-        <div>{ this.context.i18n.getMessage('SupplierEditor.Messages.unableToRender') }</div>
+        <div>{ this.context.i18n.getMessage('SupplierEditor.Messages.unableToRender')  } <a className="btn btn-link" href="/bnp/supplierRegistration">{this.context.i18n.getMessage('SupplierEditor.Messages.register')}</a> </div>
       );
     }
 

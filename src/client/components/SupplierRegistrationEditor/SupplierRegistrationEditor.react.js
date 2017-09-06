@@ -40,7 +40,7 @@ class SupplierRegistrationEditor extends Component {
   createSupplierPromise = null;
 
   componentWillMount(){
-    this.context.i18n.register('validatejs', validationMessages);
+    this.context.i18n.register('SupplierValidatejs', validationMessages);
     this.context.i18n.register('SupplierRegistrationEditor', i18nMessages);
   }
 
@@ -50,9 +50,9 @@ class SupplierRegistrationEditor extends Component {
       globalErrorMessage: ''
     });
 
-    if(this.context.i18n && nextContext.i18n != this.context.i18n){
-      this.context.i18n.register('validatejs', validationMessages);
-      this.context.i18n.register('SupplierRegistrationEditor', i18nMessages);
+    if(nextContext.i18n){
+      nextContext.i18n.register('SupplierValidatejs', validationMessages);
+      nextContext.i18n.register('SupplierRegistrationEditor', i18nMessages);
     }
   }
 
