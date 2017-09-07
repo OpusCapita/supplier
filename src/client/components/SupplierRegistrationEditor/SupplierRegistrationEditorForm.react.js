@@ -110,6 +110,7 @@ class SupplierRegistrationEditorForm extends Component {
     const constraints = this.constraints.forRegistration();
 
     const success = () => {
+      supplier.noVatReason = supplier.vatIdentificationNo ? null : 'VAT Identification Number not available.';
       onSupplierChange(supplier);
     };
 
@@ -119,6 +120,16 @@ class SupplierRegistrationEditorForm extends Component {
     };
 
     validator.forRegistration().async(supplier, constraints, { fullMessages: false }).then(success, error);
+  };
+
+  renderNoVatReason = () => {
+    if (this.state.supplier.vatIdentificationNo) return null;
+
+    let component = <p>
+      <i className='fa fa-check-square fa-fw'></i>
+      {this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.noVatId')}
+    </p>;
+    return this.renderField({ fieldName: 'noVatReason', component: component, labelText: ' ' });
   };
 
   renderField = (attrs) => {
@@ -143,7 +154,7 @@ class SupplierRegistrationEditorForm extends Component {
 
     return (
       <AttributeValueEditorRow
-        labelText={ this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
+        labelText={ attrs.labelText || this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
         required={ isRequired }
         marked = { attrs.marked }
         rowErrors={ rowErrors }>
@@ -180,6 +191,7 @@ class SupplierRegistrationEditorForm extends Component {
 
                 { this.renderField({ fieldName: 'taxIdentificationNo' }) }
                 { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
+                { this.renderNoVatReason() }
                 { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
                 { this.renderField({ fieldName: 'dunsNo', marked: true }) }
 
