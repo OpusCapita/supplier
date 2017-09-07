@@ -55,8 +55,8 @@ Messages.supplierExistsHeader = 'Supplier already exists!';
 Messages.supplierExistsText = 'It seems someone else already registered your company on the Business Network. Please reach out to our support at +49 231 3967 350 or customerservice.de@opuscapita.com in order to initiate an access request to the registered company.';
 Messages.information1 = 'Please provide information that helps us to uniquely identify your company and allows us to add it to our trading partner directory.';
 Messages.information2 = 'After providing this information you are ready to login.';
-Messages.required = '** One of the fields marked with two asterisk has to be provided.';
-Messages.noVatId = 'VAT Identification Number not available.';
+Messages.required = '** Please provide your VAT Registration Number. If you do not have one, then provide your Global Location Number or D-U-N-S number.';
+Messages.noVatId = 'My Company does not have a VAT Registration Number.';
 
 export default {
   SupplierRegistrationEditor: {

@@ -117,7 +117,7 @@ class SupplierEditorForm extends Component {
     const constraints = { ...this.constraints.forUpdate(), supplierId: {} };
 
     const success = () => {
-      supplier.noVatReason = supplier.vatIdentificationNo ? null : 'VAT Identification Number not available.';
+      supplier.noVatReason = supplier.vatIdentificationNo ? null : 'No VAT Registration Number';
       onSupplierChange(supplier);
     };
 
@@ -214,6 +214,7 @@ class SupplierEditorForm extends Component {
                 value={this.state.supplier['countryOfRegistration']}
                 onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                 onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
+                locale={this.context.i18n.locale}
               />
             )
           })}

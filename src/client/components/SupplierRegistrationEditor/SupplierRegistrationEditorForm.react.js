@@ -110,7 +110,7 @@ class SupplierRegistrationEditorForm extends Component {
     const constraints = this.constraints.forRegistration();
 
     const success = () => {
-      supplier.noVatReason = supplier.vatIdentificationNo ? null : 'VAT Identification Number not available.';
+      supplier.noVatReason = supplier.vatIdentificationNo ? null : 'No VAT Registration Number';
       onSupplierChange(supplier);
     };
 
@@ -185,6 +185,7 @@ class SupplierRegistrationEditorForm extends Component {
                       onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                       onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
                       optional={true}
+                      locale={this.context.i18n.locale}
                     />
                   )
                 }) }
