@@ -11,6 +11,7 @@ import DisplayField from "../DisplayTable/DisplayField.react.js";
 import DisplayEditGroup from "../../components/DisplayTable/DisplayEditGroup.react.js";
 import _ from "underscore";
 import DisplayCountryTableField from "../DisplayTable/DisplayCountryTableField.react.js";
+import browserInfo from '../../utils/browserInfo';
 
 class SupplierBankAccountEditor extends Component {
 
@@ -44,7 +45,7 @@ class SupplierBankAccountEditor extends Component {
   };
 
   componentWillMount() {
-    this.context.i18n.register('validatejs', validationMessages);
+    this.context.i18n.register('SupplierValidatejs', validationMessages);
     this.context.i18n.register('SupplierBankAccountEditor', i18nMessages);
   }
 
@@ -69,9 +70,9 @@ class SupplierBankAccountEditor extends Component {
       this.setState(newState);
     }
 
-    if(this.context.i18n && nextContext.i18n != this.context.i18n){
-      this.context.i18n.register('validatejs', validationMessages);
-      this.context.i18n.register('SupplierBankAccountEditor', i18nMessages);
+    if(nextContext.i18n){
+      nextContext.i18n.register('SupplierValidatejs', validationMessages);
+      nextContext.i18n.register('SupplierBankAccountEditor', i18nMessages);
     }
   }
 
@@ -214,7 +215,11 @@ class SupplierBankAccountEditor extends Component {
   loadBankAccounts = () => {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
-    request.get(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/bank_accounts`).set('Accept', 'application/json').then((response) => {
+    const getRequest = request.get(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/bank_accounts`)
+
+    if (browserInfo.isIE()) getRequest.query({ cachebuster: Date.now().toString() });
+
+    getRequest.set('Accept', 'application/json').then((response) => {
       this.setState({ accounts: response.body });
     }).catch((response) => {
       if (response.status === 401) {

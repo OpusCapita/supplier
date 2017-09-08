@@ -10,11 +10,13 @@ export default class AttributeValueEditorRow extends Component {
     labelText: PropTypes.string.isRequired,
     required: PropTypes.bool,
     rowErrors: PropTypes.array,
-    onErrorLinkClick: PropTypes.func
+    onErrorLinkClick: PropTypes.func,
+    marked: PropTypes.bool
   };
 
   static defaultProps = {
     required: false,
+    marked: false,
     rowErrors: [],
   };
 
@@ -42,11 +44,13 @@ export default class AttributeValueEditorRow extends Component {
   }
 
   render() {
-    const { required, rowErrors } = this.props;
+    const { marked, required, rowErrors } = this.props;
     let labelText = this.props.labelText;
 
     if (required) {
       labelText += '\u00a0*';
+    } else if (marked) {
+      labelText += '\u00a0**';
     }
 
     return (

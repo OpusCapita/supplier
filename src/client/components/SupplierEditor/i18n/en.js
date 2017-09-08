@@ -72,12 +72,15 @@ SupplierEditor.changed = 'Information on this page was last updated on {on} by {
 
 const Messages = {};
 Messages.loading = 'Loading...';
-Messages.unableToRender = 'Unable to render editor';
+Messages.register = 'Register';
+Messages.unableToRender = 'Please register supplier before proceeding';
 Messages.saved = 'Data is successfully saved';
 Messages.failed = 'Data saving failed';
 Messages.failedModifyingNotAuthoredSupplier = 'Data saving failed: only the author can update company information';
 Messages.failedCreatingExistingSupplier = 'Data saving failed:' +
   ' a company with the same Company Name already exists';
+Messages.required = '** Please provide your VAT Registration Number. If you do not have one, then provide your Global Location Number or D-U-N-S number.';
+Messages.noVatId = 'My Company does not have a VAT Registration Number.';
 
 export default {
   SupplierEditor: {
