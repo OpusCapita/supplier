@@ -10,6 +10,7 @@ module.exports = {
       queryInterface.addIndex('Supplier', ['CommercialRegisterNo'], { indexName: 'SupplierCommercialRegisterNoIndex', indicesType: 'FULLTEXT' }),
       queryInterface.addIndex('Supplier', ['CityOfRegistration'], { indexName: 'SupplierCityOfRegistrationIndex', indicesType: 'FULLTEXT' }),
       queryInterface.addIndex('Supplier', ['VatIdentificationNo'], { indexName: 'SupplierVatIdentificationNoIndex', indicesType: 'FULLTEXT' }),
+      queryInterface.addIndex('Supplier', ['TaxIdentificationNo'], { indexName: 'SupplierTaxIdentificationNoIndex', indicesType: 'FULLTEXT' }),
       queryInterface.addIndex('Supplier', ['DUNSNo'], { indexName: 'SupplierDUNSNoIndex', indicesType: 'FULLTEXT' })
     ]);
   },
@@ -23,6 +24,7 @@ module.exports = {
       queryInterface.removeIndex('Supplier', 'SupplierCommercialRegisterNoIndex'),
       queryInterface.removeIndex('Supplier', 'SupplierCityOfRegistrationIndex'),
       queryInterface.removeIndex('Supplier', 'SupplierVatIdentificationNoIndex'),
+      queryInterface.removeIndex('Supplier', 'SupplierTaxIdentificationNoIndex'),
       queryInterface.removeIndex('Supplier', 'SupplierDUNSNoIndex')
     ]);
   }
