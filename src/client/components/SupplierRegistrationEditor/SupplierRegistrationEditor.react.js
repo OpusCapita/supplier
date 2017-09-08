@@ -44,7 +44,7 @@ class SupplierRegistrationEditor extends Component {
     this.context.i18n.register('SupplierRegistrationEditor', i18nMessages);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
     this.setState({
       globalInfoMessage: '',
       globalErrorMessage: ''
