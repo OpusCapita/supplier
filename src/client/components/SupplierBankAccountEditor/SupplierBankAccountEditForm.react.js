@@ -187,6 +187,7 @@ class SupplierBankAccountEditForm extends Component {
               onChange={this.handleCountryChange.bind(this, 'bankCountryKey')}
               onBlur={this.handleBlur.bind(this, 'bankCountryKey')}
               optional={true}
+              locale={this.context.i18n.locale}
             />
           )
         })}

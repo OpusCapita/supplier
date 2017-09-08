@@ -213,6 +213,8 @@ class SupplierAddressEditorForm extends Component {
                 value={supplierAddress['countryId']}
                 onChange={this.handleCountryChange.bind(this, 'countryId')}
                 onBlur={this.handleBlur.bind(this, 'countryId')}
+                optional={true}
+                locale={this.context.i18n.locale}
               />
             )
           })}
