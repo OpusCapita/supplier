@@ -83,6 +83,7 @@ Messages.failedCreatingExistingSupplier = 'Speichern von Objekten fehlgeschlagen
   ' ein Unternehmen mit gleiche Firmenname existiert bereits';
 Messages.required = '** Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer. Wenn Sie keinen haben, dann hinterlegen Sie Ihre Global Location Number oder Ihre D-U-N-S-Nummer.';
 Messages.noVatId = 'Meine Firma hat keiner Umsatzsteuer-Ident-Nummer.';
+Messages.clickCheckBox = 'Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer.';
 
 export default {
   SupplierEditor: {
