@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import request from 'superagent-bluebird-promise';
-import moment from 'moment';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import Alert from '../Alert';
@@ -56,7 +55,6 @@ class SupplierEditor extends Component {
       promise();
 
     this.loadSupplierPromise.then(response => {
-      response.body.foundedOn = this.formatedDate(response.body.foundedOn);
       this.setState({
         isLoaded: true,
         supplier: response.body
@@ -100,14 +98,6 @@ class SupplierEditor extends Component {
     }
   }
 
-  formatedDate(date) {
-    if (!date) {
-      return;
-    }
-    const momentFormat = this.props.dateTimePattern.replace('dd', 'DD').replace('yyyy', 'YYYY');
-    return moment(date).format(momentFormat);
-  }
-
   handleChange = () => {
     if (this.props.onChange) {
       this.props.onChange({ isDirty: true });
@@ -137,7 +127,6 @@ class SupplierEditor extends Component {
 
     return this.updateSupplierPromise.
       then(response => {
-        response.body.foundedOn = this.formatedDate(response.body.foundedOn);
         this.setState({
           supplier: response.body,
           globalInfoMessage: this.context.i18n.getMessage('SupplierEditor.Messages.saved'),

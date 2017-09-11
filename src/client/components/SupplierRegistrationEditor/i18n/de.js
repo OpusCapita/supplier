@@ -56,7 +56,8 @@ Messages.supplierExistsText = 'Scheinbar wurde Ihr Unternehmen bereits registrie
 Messages.information1 = 'Bitte hinterlegen Sie hier Informationen zur eindeutigen Identifizierung Ihres Unternehmens.'
 Messages.information2 = 'Bitte füllen Sie alle mit Stern markierten Pflichtfelder aus, um mit der Registrierung fortfahren zu können.'
 Messages.required = '** Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer. Wenn Sie keinen haben, dann hinterlegen Sie Ihre Global Location Number oder Ihre D-U-N-S-Nummer.';
-Messages.noVatId = 'Meine Firma hat keiner Umsatzsteuer-Ident-Nummer.';
+Messages.noVatId = 'Meine Firma hat keine Umsatzsteuer-Ident-Nummer.';
+Messages.clickCheckBox = 'Bitte klicken Sie das Kontrollkästchen';
 
 export default {
   SupplierRegistrationEditor: {
