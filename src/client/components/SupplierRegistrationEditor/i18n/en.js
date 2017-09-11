@@ -57,7 +57,7 @@ Messages.information1 = 'Please provide information that helps us to uniquely id
 Messages.information2 = 'After providing this information you are ready to login.';
 Messages.required = '** Please provide your VAT Registration Number. If you do not have one, then provide your Global Location Number or D-U-N-S number.';
 Messages.noVatId = 'My Company does not have a VAT Registration Number.';
-Messages.clickCheckBox = 'Please click checkbox';
+Messages.clickCheckBox = 'Please provide your VAT Registration Number.';
 
 export default {
   SupplierRegistrationEditor: {
