@@ -55,7 +55,7 @@ let createSuppliers = function(req, res)
         .then(supplier => {
           const userId = supplier.createdBy;
           const supplierId = supplier.supplierId;
-          const supplierToUserPromise = req.opuscapita.serviceClient.put('user', `/users/${userId}`, { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] }, true);
+          const supplierToUserPromise = req.opuscapita.serviceClient.put('user', `/api/users/${userId}`, { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] }, true);
 
           return supplierToUserPromise.then(() => {
               supplier.status = 'assigned';

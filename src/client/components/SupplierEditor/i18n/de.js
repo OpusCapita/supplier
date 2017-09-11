@@ -81,7 +81,8 @@ Messages.failedModifyingNotAuthoredSupplier = 'Speichern von Objekten fehlgeschl
   ' nur der Autor kann die Firmeninformationen aktualisieren';
 Messages.failedCreatingExistingSupplier = 'Speichern von Objekten fehlgeschlagen:' +
   ' ein Unternehmen mit gleiche Firmenname existiert bereits';
-Messages.required = '** Eines der mit zwei Sternchen gekennzeichneten Felder muss bereitgestellt werden'
+Messages.required = '** Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer. Wenn Sie keinen haben, dann hinterlegen Sie Ihre Global Location Number oder Ihre D-U-N-S-Nummer.';
+Messages.noVatId = 'Meine Firma hat keiner Umsatzsteuer-Ident-Nummer.';
 
 export default {
   SupplierEditor: {

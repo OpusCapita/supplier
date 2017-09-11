@@ -117,6 +117,7 @@ class SupplierEditorForm extends Component {
     const constraints = { ...this.constraints.forUpdate(), supplierId: {} };
 
     const success = () => {
+      supplier.noVatReason = supplier.vatIdentificationNo ? null : 'No VAT Registration Number';
       onSupplierChange(supplier);
     };
 
@@ -127,6 +128,16 @@ class SupplierEditorForm extends Component {
 
     validator.forUpdate(this.context.i18n).
       async(supplier, constraints, { fullMessages: false }).then(success, error);
+  };
+
+  renderNoVatReason = () => {
+    if (this.state.supplier.vatIdentificationNo) return null;
+
+    let component = <p>
+      <i className='fa fa-check-square fa-fw'></i>
+      {this.context.i18n.getMessage('SupplierEditor.Messages.noVatId')}
+    </p>;
+    return this.renderField({ fieldName: 'noVatReason', component: component, labelText: ' ' });
   };
 
   renderField = (attrs) => {
@@ -151,7 +162,7 @@ class SupplierEditorForm extends Component {
 
     return (
       <SupplierEditorFormRow
-        labelText={ this.context.i18n.getMessage(`SupplierEditor.Label.${fieldName}.label`) }
+        labelText={ attrs.labelText || this.context.i18n.getMessage(`SupplierEditor.Label.${fieldName}.label`) }
         required={ isRequired }
         marked = { attrs.marked }
         rowErrors={ rowErrors }
@@ -203,12 +214,14 @@ class SupplierEditorForm extends Component {
                 value={this.state.supplier['countryOfRegistration']}
                 onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                 onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
+                locale={this.context.i18n.locale}
               />
             )
           })}
 
           { this.renderField({ fieldName: 'taxIdentificationNo' }) }
           { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
+          { this.renderNoVatReason() }
           { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
           { this.renderField({ fieldName: 'dunsNo', marked: true }) }
 
