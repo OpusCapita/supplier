@@ -72,6 +72,11 @@ class SupplierContactEditor extends Component {
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
       nextContext.i18n.register('SupplierContactEditor', i18nMessages);
     }
+    if(nextProps.clearNotification == true && newProps.clearNotification != this.props.clearNotification ){
+      console.log("Component recieved props and clearing notif")
+      this.setState({globalMessage: null, globalError: null})
+      this.props.newNotification(false);
+    }
   }
 
   handleDelete = (contact) => {
@@ -90,7 +95,7 @@ class SupplierContactEditor extends Component {
         }
 
         contacts.splice(index, 1);
-
+        this.props.newNotification(true);
         const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectDeleted');
         this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
       }).catch((response) => {
@@ -98,7 +103,7 @@ class SupplierContactEditor extends Component {
           this.props.onUnauthorized();
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-
+          this.props.newNotification(true);
           const message = this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
           this.setState({ globalError: message, globalMessage: null });
         }
@@ -133,7 +138,7 @@ class SupplierContactEditor extends Component {
         contacts[index] = updatedContact;
 
         this.props.onChange({ isDirty: false });
-
+        this.props.newNotification(true);
         const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
         this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
       }).catch((response) => {
@@ -141,7 +146,7 @@ class SupplierContactEditor extends Component {
           this.props.onUnauthorized();
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-
+          this.props.newNotification(true);
           const message = this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
           this.setState({ globalError: message, globalMessage: null });
         }
@@ -164,15 +169,16 @@ class SupplierContactEditor extends Component {
         contacts.push(response.body);
 
         this.props.onChange({ isDirty: false });
-
+        
         const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
+        this.props.newNotification(true);
         this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
       }).catch((response) => {
         if (response.status === 401) {
           this.props.onUnauthorized();
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-
+          this.props.newNotification(true);
           let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
           this.setState({ globalError: message, globalMessage: null });
         }
