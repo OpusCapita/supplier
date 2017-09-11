@@ -1,7 +1,7 @@
 version: '3'
 services:
   main:
-    depends_on:  
+    depends_on:
       - mysql
       - consul
       - registrator
@@ -9,11 +9,11 @@ services:
       - nginx
     labels:
       SERVICE_NAME: 'supplier'  # Service name used by Registrator for adding to Consul's service discovery registry.
-      SERVICE_TAGS: 'external'
+      SERVICE_TAGS: 'external,kong'
     environment:
       SERVICE_3001_CHECK_HTTP: /api/health/check
       SERVICE_3001_CHECK_INTERVAL: 15s
-      SERVICE_3001_CHECK_TIMEOUT: 3s      
+      SERVICE_3001_CHECK_TIMEOUT: 3s
       NODE_ENV: $NODE_ENV
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -45,7 +45,7 @@ services:
       - '3006:3006'
     labels:
       SERVICE_NAME: isodata
-      SERVICE_TAGS: 'external'
+      SERVICE_TAGS: 'external,kong'
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -70,6 +70,23 @@ services:
       - '3008:3008'
     command: 'npm run dev'
 
+  acl:
+    image: opuscapita/acl:dev
+    labels:
+      - 'SERVICE_NAME=acl'
+      - 'SERVICE_TAGS=external,kong'
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      SERVICE_3013_CHECK_HTTP: /api/health/check
+      SERVICE_3013_CHECK_INTERVAL: 15s
+      SERVICE_3013_CHECK_TIMEOUT: 3s
+    ports:
+     - '3013:3013'
+    depends_on:
+      - consul
+    command: 'npm run dev'
+
   redis:
     image: opuscapita/redis:dev
     ports:
@@ -80,7 +97,7 @@ services:
       - registrator
 
   nginx:
-    image: gr4per/nginx-rp:dev
+    image: opuscapita/nginx-rp:dev
     ports:
       - '8080:8080'
     depends_on:
