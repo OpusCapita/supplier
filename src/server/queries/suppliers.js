@@ -31,6 +31,8 @@ module.exports.find = function(supplierId, includes)
 
 module.exports.create = function(supplier)
 {
+  if (supplier.vatIdentificationNo) supplier.vatIdentificationNo = normalizeVATID(supplier.vatIdentificationNo);
+
   const self = this;
   let supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '');
 
@@ -53,6 +55,8 @@ module.exports.create = function(supplier)
 
 module.exports.update = function(supplierId, supplier)
 {
+  if (supplier.vatIdentificationNo) supplier.vatIdentificationNo = normalizeVATID(supplier.vatIdentificationNo);
+
   let self = this;
   return this.db.models.Supplier.update(supplier, { where: { supplierId: supplierId } }).then(() => {
     return self.find(supplierId, []);
@@ -71,6 +75,8 @@ module.exports.exists = function(supplierId)
 
 module.exports.searchRecord = function(query)
 {
+  if (query.vatIdentificationNo) query.vatIdentificationNo = normalizeVATID(query.vatIdentificationNo);
+
   let rawQueryArray = [];
   for (const value of ['supplierName', 'vatIdentificationNo']) {
     const fieldName = stringHelper.capitalize(value);
@@ -156,4 +162,9 @@ let supplierWithAssociations = function(supplier)
   delete supplier.dataValues.SupplierBankAccounts;
 
   return supplier.dataValues;
+}
+
+let normalizeVATID = function(vatId)
+{
+  return vatId.replace(/\s+/g, '');
 }
