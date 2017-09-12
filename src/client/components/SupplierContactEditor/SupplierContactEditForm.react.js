@@ -6,6 +6,7 @@ import SupplierContactFormConstraints from "./SupplierContactFormConstraints";
 import SupplierContactEditFormRow from "../AttributeValueEditorRow.react.js";
 const CONTACT_TYPES = ['Default', 'Sales', 'Escalation', 'Product', 'Technical'];
 const DEPARTMENTS = ['Management', 'Logistics', 'Sales', 'Accounting', 'Support', 'IT', 'Others'];
+const stringHelper = require('../../../server/utils/string');
 
 class SupplierContactEditForm extends Component {
   static propTypes = {
@@ -102,13 +103,8 @@ class SupplierContactEditForm extends Component {
   };
 
   selectOptions = (fieldName, fieldOptions) => {
-
-    function capitalize(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-
     let options = [];
-    const fieldNameCapitalized = capitalize(fieldName);
+    const fieldNameCapitalized = stringHelper.capitalize(fieldName);
     const message = this.context.i18n.getMessage;
 
     options.push({ value: '', label: message(`SupplierContactEditor.Select.${fieldName}`), disabled: true });
