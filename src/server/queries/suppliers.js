@@ -31,7 +31,7 @@ module.exports.find = function(supplierId, includes)
 
 module.exports.create = function(supplier)
 {
-  if (supplier.vatIdentificationNo) supplier.vatIdentificationNo = normalizeVATID(supplier.vatIdentificationNo);
+  normalize(supplier);
 
   const self = this;
   let supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '');
@@ -55,7 +55,7 @@ module.exports.create = function(supplier)
 
 module.exports.update = function(supplierId, supplier)
 {
-  if (supplier.vatIdentificationNo) supplier.vatIdentificationNo = normalizeVATID(supplier.vatIdentificationNo);
+  normalize(supplier);
 
   let self = this;
   return this.db.models.Supplier.update(supplier, { where: { supplierId: supplierId } }).then(() => {
@@ -75,31 +75,31 @@ module.exports.exists = function(supplierId)
 
 module.exports.searchRecord = function(query)
 {
-  if (query.vatIdentificationNo) query.vatIdentificationNo = normalizeVATID(query.vatIdentificationNo);
+  normalize(query);
 
   let rawQueryArray = [];
   for (const value of ['supplierName', 'vatIdentificationNo']) {
     const fieldName = stringHelper.capitalize(value);
-    if (query[value]) rawQueryArray.push(`MATCH (${fieldName}) AGAINST ('${query[value]}')`);
+    if (query[value]) rawQueryArray.push(similar(fieldName, query[value]));
   }
 
-  if (query.dunsNo) rawQueryArray.push(`MATCH (DUNSNo) AGAINST ('${query.dunsNo}')`);
+  if (query.dunsNo) rawQueryArray.push(similar('DUNSNo', query.dunsNo));
 
-  if (query.globalLocationNo) rawQueryArray.push(`GlobalLocationNo = '${query.globalLocationNo}'`);
+  if (query.globalLocationNo) rawQueryArray.push(equalSQL('GlobalLocationNo', query.globalLocationNo));
 
   if (query.commercialRegisterNo) {
     const commercialRegisterNoQuery = [
-      `MATCH (CommercialRegisterNo) AGAINST ('${query.commercialRegisterNo}')`,
-      `MATCH (CityOfRegistration) AGAINST ('${query.cityOfRegistration}')`,
-      `CountryOfRegistration = '${query.countryOfRegistration}'`
+      similar('CommercialRegisterNo', query.commercialRegisterNo),
+      similar('CityOfRegistration', query.cityOfRegistration),
+      equalSQL('CountryOfRegistration', query.countryOfRegistration)
     ].join(' AND ');
     rawQueryArray.push(`(${commercialRegisterNoQuery})`);
   }
 
   if (query.taxIdentificationNo) {
     const taxIdentificationNoQuery = [
-      `MATCH (TaxIdentificationNo) AGAINST ('${query.taxIdentificationNo}')`,
-      `CountryOfRegistration = '${query.countryOfRegistration}'`
+      similar('TaxIdentificationNo', query.taxIdentificationNo),
+      equalSQL('CountryOfRegistration', query.countryOfRegistration)
     ].join(' AND ');
     rawQueryArray.push(`(${taxIdentificationNoQuery})`);
   }
@@ -164,7 +164,28 @@ let supplierWithAssociations = function(supplier)
   return supplier.dataValues;
 }
 
-let normalizeVATID = function(vatId)
+let normalize = function(supplier)
 {
-  return vatId.replace(/\s+/g, '');
+  if (supplier.vatIdentificationNo) supplier.vatIdentificationNo = supplier.vatIdentificationNo.replace(/\s+/g, '');
+  for (const fieldName of ['supplierName', 'commercialRegisterNo', 'cityOfRegistration', 'taxIdentificationNo']) {
+    if (supplier[fieldName]) supplier[fieldName] = supplier[fieldName].trim();
+  }
+}
+
+let similar = function(fieldName, value)
+{
+  /* Min length for MATCH is 4 */
+  if (value.length > 4) return matchSQL(fieldName, value);
+
+  return equalSQL(fieldName, value);
+}
+
+let matchSQL = function(fieldName, value)
+{
+  return `MATCH (${fieldName}) AGAINST ('${value}')`;
+}
+
+let equalSQL = function(fieldName, value)
+{
+  return `${fieldName} = '${value}'`;
 }
