@@ -37,11 +37,11 @@ Libraries are dynamically loaded to Integrate the library into your service as f
 
 - Make sure the output filename in webpack config of the library you are adding has prefix `components`, i.e. `components/bundle.js`.
 
-- Copy [this code](https://github.com/OpusCapita/supplier/blob/develop/src/client/components/serviceComponent.react.js) to file `serviceComponent.react.js` in your react components folder.
+- Add [opuscapita react-loaders](https://github.com/OpusCapita/react-loaders) to your `package.json` file - `"@opuscapita/react-loaders": "^0.1.5"`.
 
 ## Usage
 
-- Import `serviceComponent.react.js` file: `import serviceComponent from '(path_to_file)/serviceComponent.react'`;
+- Import serviceComponent: `import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';`.
 
 - Preload the component using serviceCompment by adding the following to your `componentWillMount` function. For example:
 
