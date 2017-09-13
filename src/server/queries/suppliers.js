@@ -34,7 +34,7 @@ module.exports.create = function(supplier)
   normalize(supplier);
 
   const self = this;
-  let supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '');
+  let supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '').slice(0, 27);
 
   function generateSupplierId(id) {
     return self.exists(id).then(exists => {
@@ -78,13 +78,10 @@ module.exports.searchRecord = function(query)
   normalize(query);
 
   let rawQueryArray = [];
-  for (const value of ['supplierName', 'vatIdentificationNo']) {
-    const fieldName = stringHelper.capitalize(value);
-    if (query[value]) rawQueryArray.push(similar(fieldName, query[value]));
-  }
 
+  if (query.supplierName) rawQueryArray.push(equalSQL('SupplierName', query.supplierName));
+  if (query.vatIdentificationNo) rawQueryArray.push(similar('VatIdentificationNo', query.vatIdentificationNo));
   if (query.dunsNo) rawQueryArray.push(similar('DUNSNo', query.dunsNo));
-
   if (query.globalLocationNo) rawQueryArray.push(equalSQL('GlobalLocationNo', query.globalLocationNo));
 
   if (query.commercialRegisterNo) {
