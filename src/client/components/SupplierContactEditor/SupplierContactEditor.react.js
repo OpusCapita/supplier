@@ -25,6 +25,7 @@ class SupplierContactEditor extends Component {
 
   static contextTypes = {
     i18n: React.PropTypes.object.isRequired
+    showNotification: React.PropTypes.func
   };
 
   static defaultProps = {
@@ -55,11 +56,8 @@ class SupplierContactEditor extends Component {
     let editMode = this.state.editMode;
 
     if (editMode && this.props.readOnly !== newProps.readOnly) {
-      let newState = { globalError: null };
-
       if (editMode === 'create') {
         newState.contact = null;
-        newState.globalError = null;
       } else if (editMode === 'edit') {
         newState.editMode = 'view';
       } else if (editMode === 'view') {
@@ -71,11 +69,6 @@ class SupplierContactEditor extends Component {
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
       nextContext.i18n.register('SupplierContactEditor', i18nMessages);
-    }
-    if(nextProps.clearNotification == true && newProps.clearNotification != this.props.clearNotification ){
-      console.log("Component recieved props and clearing notif")
-      this.setState({globalMessage: null, globalError: null})
-      this.props.newNotification(false);
     }
   }
 
@@ -95,17 +88,22 @@ class SupplierContactEditor extends Component {
         }
 
         contacts.splice(index, 1);
-        this.props.newNotification(true);
+        if(this.props.newNotification)
+          this.props.newNotification(true);
         const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectDeleted');
-        this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
+        if(this.context.showNotification){
+          this.context.showNotification(message, 'info')
+        }
+        this.setState({ contacts: contacts, contact: null });
       }).catch((response) => {
         if (response.status === 401) {
           this.props.onUnauthorized();
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-          this.props.newNotification(true);
           const message = this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
-          this.setState({ globalError: message, globalMessage: null });
+          if(this.context.showNotification){
+            this.context.showNotification(message, 'error')
+          }
         }
       });
   };
@@ -138,17 +136,22 @@ class SupplierContactEditor extends Component {
         contacts[index] = updatedContact;
 
         this.props.onChange({ isDirty: false });
-        this.props.newNotification(true);
+        if(this.props.newNotification)
+          this.props.newNotification(true);
         const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
-        this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
+        if(this.context.showNotification){
+          this.context.showNotification(message, 'info')
+        }
+        this.setState({ contacts: contacts, contact: null });
       }).catch((response) => {
         if (response.status === 401) {
           this.props.onUnauthorized();
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-          this.props.newNotification(true);
           const message = this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
-          this.setState({ globalError: message, globalMessage: null });
+          if(this.context.showNotification){
+            this.context.showNotification(message, 'erorr')
+          }
         }
       });
   };
@@ -171,23 +174,26 @@ class SupplierContactEditor extends Component {
         this.props.onChange({ isDirty: false });
         
         const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
-        this.props.newNotification(true);
-        this.setState({ contacts: contacts, contact: null, globalMessage: message, globalError: null });
+        if(this.context.showNotification){
+          this.context.showNotification(message, 'info')
+        }
+        this.setState({ contacts: contacts, contact: null });
       }).catch((response) => {
         if (response.status === 401) {
           this.props.onUnauthorized();
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-          this.props.newNotification(true);
           let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
-          this.setState({ globalError: message, globalMessage: null });
+          if(this.context.showNotification){
+            this.context.showNotification(message, 'erorr')
+          }
         }
       });
   };
 
   handleCancel = () => {
     this.props.onChange({ isDirty: false });
-    this.setState({ contact: null, globalError: null, globalMessage: null });
+    this.setState({ contact: null });
   };
 
   handleChange = (contact, name, oldValue, newValue) => {
@@ -205,8 +211,6 @@ class SupplierContactEditor extends Component {
     this.setState({
       contact: _.clone(contact),
       editMode: "edit",
-      globalError: null,
-      globalMessage: null,
       errors: null
     });
   };
@@ -289,18 +293,11 @@ class SupplierContactEditor extends Component {
       <div>
         <h4 className="tab-description">{this.context.i18n.getMessage('SupplierContactEditor.Title')}</h4>
 
-        {this.state.globalMessage && !readOnly ? (
-          <Alert bsStyle="info" message={this.state.globalMessage}/>
-        ) : null}
-
         {result}
 
         {contact ? (
           <div className="row">
             <div className="col-sm-6">
-              {this.state.globalError && !readOnly ? (
-                <Alert bsStyle="danger" message={this.state.globalError}/>
-              ) : null}
 
               <SupplierContactEditForm
                 onChange={this.handleChange}
