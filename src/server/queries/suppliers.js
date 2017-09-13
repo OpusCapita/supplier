@@ -1,4 +1,5 @@
 const Promise = require('bluebird');
+const stringHelper = require('../utils/string');
 
 module.exports.init = function(db, config)
 {
@@ -30,8 +31,10 @@ module.exports.find = function(supplierId, includes)
 
 module.exports.create = function(supplier)
 {
+  normalize(supplier);
+
   const self = this;
-  let supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '');
+  let supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '').slice(0, 27);
 
   function generateSupplierId(id) {
     return self.exists(id).then(exists => {
@@ -52,6 +55,8 @@ module.exports.create = function(supplier)
 
 module.exports.update = function(supplierId, supplier)
 {
+  normalize(supplier);
+
   let self = this;
   return this.db.models.Supplier.update(supplier, { where: { supplierId: supplierId } }).then(() => {
     return self.find(supplierId, []);
@@ -68,38 +73,50 @@ module.exports.exists = function(supplierId)
   return this.db.models.Supplier.findById(supplierId).then(supplier => Boolean(supplier));
 };
 
+module.exports.searchRecord = function(query)
+{
+  normalize(query);
+
+  let rawQueryArray = [];
+
+  if (query.supplierName) rawQueryArray.push(equalSQL('SupplierName', query.supplierName));
+  if (query.vatIdentificationNo) rawQueryArray.push(similar('VatIdentificationNo', query.vatIdentificationNo));
+  if (query.dunsNo) rawQueryArray.push(similar('DUNSNo', query.dunsNo));
+  if (query.globalLocationNo) rawQueryArray.push(equalSQL('GlobalLocationNo', query.globalLocationNo));
+
+  if (query.commercialRegisterNo) {
+    const commercialRegisterNoQuery = [
+      similar('CommercialRegisterNo', query.commercialRegisterNo),
+      similar('CityOfRegistration', query.cityOfRegistration),
+      equalSQL('CountryOfRegistration', query.countryOfRegistration)
+    ].join(' AND ');
+    rawQueryArray.push(`(${commercialRegisterNoQuery})`);
+  }
+
+  if (query.taxIdentificationNo) {
+    const taxIdentificationNoQuery = [
+      similar('TaxIdentificationNo', query.taxIdentificationNo),
+      equalSQL('CountryOfRegistration', query.countryOfRegistration)
+    ].join(' AND ');
+    rawQueryArray.push(`(${taxIdentificationNoQuery})`);
+  }
+
+  let rawQuery = rawQueryArray.length > 1 ? '(' + rawQueryArray.join(' OR ') + ')' : rawQueryArray[0];
+
+  if (query.supplierId) rawQuery = rawQuery + ` AND SupplierID != '${query.supplierId}'`;
+
+  const rawAttributes = this.db.models.Supplier.rawAttributes;
+  const attributes = Object.keys(rawAttributes).map(fieldName => `${rawAttributes[fieldName].field} AS ${fieldName}`).join(', ');
+
+  return this.db.query(
+    `SELECT ${attributes} FROM Supplier WHERE ${rawQuery} LIMIT 1`,
+    { model:  this.db.models.Supplier }
+  ).then(suppliers => suppliers[0]);
+};
+
 module.exports.recordExists = function(supplier)
 {
-  let orOptions = [];
-
-  for (const value of ['supplierName', 'vatIdentificationNo', 'dunsNo', 'globalLocationNo']) {
-    if (supplier[value]) orOptions.push({ [value]: { $eq: supplier[value] } });
-  }
-
-  if (supplier.commercialRegisterNo) {
-    orOptions.push({
-      $and: {
-        commercialRegisterNo: { $eq: supplier.commercialRegisterNo },
-        cityOfRegistration: { $eq: supplier.cityOfRegistration },
-        countryOfRegistration: { $eq: supplier.countryOfRegistration }
-      }
-    });
-  }
-
-  if (supplier.taxIdentificationNo) {
-    orOptions.push({
-      $and: {
-        taxIdentificationNo: { $eq: supplier.taxIdentificationNo },
-        countryOfRegistration: { $eq: supplier.countryOfRegistration }
-      }
-    });
-  }
-
-  const options = { $or: orOptions };
-
-  if (supplier.supplierId) options.supplierId = { $ne: supplier.supplierId };
-
-  return this.db.models.Supplier.findOne({ where: options }).then(supplier => Boolean(supplier));
+  return this.searchRecord(supplier).then(supplier => Boolean(supplier));
 };
 
 module.exports.isAuthorized = function(supplierId, changedBy)
@@ -142,4 +159,30 @@ let supplierWithAssociations = function(supplier)
   delete supplier.dataValues.SupplierBankAccounts;
 
   return supplier.dataValues;
+}
+
+let normalize = function(supplier)
+{
+  if (supplier.vatIdentificationNo) supplier.vatIdentificationNo = supplier.vatIdentificationNo.replace(/\s+/g, '');
+  for (const fieldName of ['supplierName', 'commercialRegisterNo', 'cityOfRegistration', 'taxIdentificationNo']) {
+    if (supplier[fieldName]) supplier[fieldName] = supplier[fieldName].trim();
+  }
+}
+
+let similar = function(fieldName, value)
+{
+  /* Min length for MATCH is 4 */
+  if (value.length > 4) return matchSQL(fieldName, value);
+
+  return equalSQL(fieldName, value);
+}
+
+let matchSQL = function(fieldName, value)
+{
+  return `MATCH (${fieldName}) AGAINST ('${value}')`;
+}
+
+let equalSQL = function(fieldName, value)
+{
+  return `${fieldName} = '${value}'`;
 }

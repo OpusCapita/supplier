@@ -125,6 +125,11 @@ module.exports = function(sequelize) {
       type: Sequelize.STRING(100),
       field: "Status"
     },
+    noVatReason: {
+      allowNull: true,
+      type: Sequelize.STRING(500),
+      field: "NoVatReason"
+    },
     rejectionReason: {
       allowNull: true,
       type: Sequelize.STRING(2000),
