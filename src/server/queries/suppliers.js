@@ -34,7 +34,7 @@ module.exports.create = function(supplier)
   normalize(supplier);
 
   const self = this;
-  let supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '');
+  let supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '').slice(0, 27);
 
   function generateSupplierId(id) {
     return self.exists(id).then(exists => {
