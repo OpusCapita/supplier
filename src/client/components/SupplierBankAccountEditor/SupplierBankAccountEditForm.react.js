@@ -6,7 +6,6 @@ import SupplierBankAccountFormConstraints from "./SupplierBankAccountFormConstra
 import SupplierBankAccountEditFormRow from "../AttributeValueEditorRow.react.js";
 import serviceComponent from "@opuscapita/react-loaders/lib/serviceComponent";
 import customValidation from "../../utils/validatejs/custom.js";
-import _ from 'underscore';
 
 function getValidator() {
   customValidation.iban(validator);
@@ -68,9 +67,9 @@ class SupplierBankAccountEditForm extends Component {
     const account = this.state.account;
     let errors = getValidator()(this.state.account, this.constraints, { fullMessages: false });
 
-    let errorsReformatted = _(errors)
-      .map((value, key) => ({ [key]:
-        _(value).map((element)=>({
+    let errorsReformatted = Object.keys(errors)
+      .map(key => ({ [key]:
+        errors[key].map((element)=>({
           message: element
         }))})).reduce((current, prev, {}) => {
         return Object.assign(current, prev);
