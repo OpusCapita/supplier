@@ -24,7 +24,8 @@ class SupplierRegistrationEditorForm extends Component {
     supplier: {
       ...this.props.supplier
     },
-    fieldErrors: {}
+    fieldErrors: {},
+    hasVATId: true
   };
 
   componentWillMount() {
@@ -60,7 +61,7 @@ class SupplierRegistrationEditorForm extends Component {
             message: error.message,
             value: error.value,
             fieldName: fieldName,
-            hasLink: error.validator.includes('Exists'),
+            hasLink: error.validator && error.validator.includes('Exists'),
             linkMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.requestSupplierAccess')
           };
         })
@@ -120,18 +121,22 @@ class SupplierRegistrationEditorForm extends Component {
     const supplier = this.state.supplier;
     const constraints = this.constraints.forRegistration();
 
-    const success = () => {
-      supplier.noVatReason = supplier.vatIdentificationNo ? null : 'No VAT Registration Number';
-      onSupplierChange(supplier);
-    };
+    if (!supplier.vatIdentificationNo && this.state.hasVATId) {
+      this.setFieldErrorsStates({ noVatReason: [{ message: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.clickCheckBox') }] });
+    } else {
+      const success = () => {
+        supplier.noVatReason = supplier.vatIdentificationNo ? null : 'No VAT Registration Number';
+        onSupplierChange(supplier);
+      };
 
-    const error = (errors) => {
-      this.setFieldErrorsStates(errors);
-      onSupplierChange(null);
-    };
+      const error = (errors) => {
+        this.setFieldErrorsStates(errors);
+        onSupplierChange(null);
+      };
 
-    const options = { fullMessages: false, format: 'groupedDetailed' };
-    validator.forRegistration().async(supplier, constraints, options).then(success, error);
+      const options = { fullMessages: false, format: 'groupedDetailed' };
+      validator.forRegistration().async(supplier, constraints, options).then(success, error);
+    }
   };
 
   requestSupplierAccess = (error) => {
@@ -139,14 +144,9 @@ class SupplierRegistrationEditorForm extends Component {
     if (onAccessRequest) onAccessRequest(error.fieldName, error.value);
   };
 
-  renderNoVatReason = () => {
-    if (this.state.supplier.vatIdentificationNo) return null;
-
-    let component = <p>
-      <i className='fa fa-check-square fa-fw'></i>
-      {this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.noVatId')}
-    </p>;
-    return this.renderField({ fieldName: 'noVatReason', component: component, labelText: ' ' });
+  handleCheckboxChange = () => {
+    this.setFieldErrorsStates({ noVatReason: [] });
+    this.setState({hasVATId: !this.state.hasVATId});
   };
 
   renderField = (attrs) => {
@@ -211,7 +211,16 @@ class SupplierRegistrationEditorForm extends Component {
 
                 { this.renderField({ fieldName: 'taxIdentificationNo' }) }
                 { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
-                { this.renderNoVatReason() }
+                { this.renderField({
+                  fieldName: 'noVatReason',
+                  labelText: ' ',
+                  component: (
+                    <p>
+                      <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange}></input>
+                      {this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.noVatId')}
+                    </p>
+                  )
+                }) }
                 { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
                 { this.renderField({ fieldName: 'dunsNo', marked: true }) }
 

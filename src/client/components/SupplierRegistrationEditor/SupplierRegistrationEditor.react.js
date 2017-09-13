@@ -60,7 +60,7 @@ class SupplierRegistrationEditor extends Component {
       });
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
     this.setState({
       globalInfoMessage: '',
       globalErrorMessage: ''
