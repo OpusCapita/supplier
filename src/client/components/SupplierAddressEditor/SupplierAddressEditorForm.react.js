@@ -56,6 +56,15 @@ class SupplierAddressEditorForm extends Component {
 
     const supplierAddress = this.state.supplierAddress;
     let errors = validator(supplierAddress, this.constraints, { fullMessages: false });
+
+    let errorsReformatted = errors
+      .map((value, key) => ({ [key]:
+        value.map((element)=>({
+          message: element
+        }))})).reduce((current, prev, {}) => {
+        return Object.assign(current, prev);
+      });
+
     if (!errors) {
       const editMode = this.props.editMode;
 
@@ -65,7 +74,7 @@ class SupplierAddressEditorForm extends Component {
         this.props.onSave(supplierAddress);
       }
     } else {
-      this.setState({ errors: errors });
+      this.setState({ errors: errorsReformatted });
     }
   };
 

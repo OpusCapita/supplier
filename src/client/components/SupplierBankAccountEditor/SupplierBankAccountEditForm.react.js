@@ -68,9 +68,9 @@ class SupplierBankAccountEditForm extends Component {
     const account = this.state.account;
     let errors = getValidator()(this.state.account, this.constraints, { fullMessages: false });
 
-    let errorsReformatted = _(errors)
+    let errorsReformatted = errors
       .map((value, key) => ({ [key]:
-        _(value).map((element)=>({
+        value.map((element)=>({
           message: element
         }))})).reduce((current, prev, {}) => {
         return Object.assign(current, prev);
