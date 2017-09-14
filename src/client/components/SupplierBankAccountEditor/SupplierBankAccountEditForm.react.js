@@ -67,14 +67,6 @@ class SupplierBankAccountEditForm extends Component {
     const account = this.state.account;
     let errors = getValidator()(this.state.account, this.constraints, { fullMessages: false });
 
-    let errorsReformatted = Object.keys(errors)
-      .map(key => ({ [key]:
-        errors[key].map((element)=>({
-          message: element
-        }))})).reduce((current, prev, {}) => {
-        return Object.assign(current, prev);
-      });
-
     if (!errors) {
       const editMode = this.props.editMode;
 
@@ -84,6 +76,13 @@ class SupplierBankAccountEditForm extends Component {
         this.props.onSave(account);
       }
     } else {
+      let errorsReformatted = Object.keys(errors).map(key => ({ [key]:
+        errors[key].map((element)=>({
+          message: element
+        }))})).reduce((current, prev, {}) => {
+        return Object.assign(current, prev);
+      });
+
       this.setState({ errors: errorsReformatted });
     }
   };
