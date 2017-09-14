@@ -21,7 +21,8 @@ class SupplierAddressEditor extends Component {
   };
 
   static contextTypes = {
-    i18n: React.PropTypes.object.isRequired
+    i18n: React.PropTypes.object.isRequired,
+    showNotification: React.PropTypes.func
   };
 
   loadAddressesPromise = null;
