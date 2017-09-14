@@ -24,7 +24,7 @@ class SupplierContactEditor extends Component {
   };
 
   static contextTypes = {
-    i18n: React.PropTypes.object.isRequired
+    i18n: React.PropTypes.object.isRequired,
     showNotification: React.PropTypes.func
   };
 
@@ -150,7 +150,7 @@ class SupplierContactEditor extends Component {
           console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
           const message = this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
           if(this.context.showNotification){
-            this.context.showNotification(message, 'erorr')
+            this.context.showNotification(message, 'error')
           }
         }
       });
@@ -185,7 +185,7 @@ class SupplierContactEditor extends Component {
           console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
           let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
           if(this.context.showNotification){
-            this.context.showNotification(message, 'erorr')
+            this.context.showNotification(message, 'error')
           }
         }
       });

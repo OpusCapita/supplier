@@ -76,10 +76,6 @@ class SupplierEditor extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    this.setState({
-      globalInfoMessage: '',
-      globalErrorMessage: ''
-    });
 
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
@@ -128,10 +124,11 @@ class SupplierEditor extends Component {
     return this.updateSupplierPromise.
       then(response => {
         this.setState({
-          supplier: response.body,
-          globalInfoMessage: this.context.i18n.getMessage('SupplierEditor.Messages.saved'),
-          globalErrorMessage: ''
+          supplier: response.body
         });
+
+        if(this.context.showNotification)
+          this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.saved'), 'info')
 
         if (this.props.onUpdate && this.props.supplierId !== response.body.supplierId) {
           // Informing wrapper app (BNP/SIM) about supplier change.
@@ -151,22 +148,16 @@ class SupplierEditor extends Component {
             this.props.onUnauthorized();
             break;
           case 403:
-            this.setState({
-              globalInfoMessage: '',
-              globalErrorMessage: this.context.i18n.getMessage('SupplierEditor.Messages.failedModifyingNotAuthoredSupplier'),
-            });
+            if(this.context.showNotification)
+              this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failedModifyingNotAuthoredSupplier'), 'error')
             break;
           case 409:
-            this.setState({
-              globalInfoMessage: '',
-              globalErrorMessage: this.context.i18n.getMessage('SupplierEditor.Messages.failedCreatingExistingSupplier'),
-            });
+            if(this.context.showNotification)
+              this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failedCreatingExistingSupplier'), 'error')
             break;
           default:
-            this.setState({
-              globalInfoMessage: '',
-              globalErrorMessage: this.context.i18n.getMessage('SupplierEditor.Messages.failed'),
-            });
+            if(this.context.showNotification)
+              this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failed'), 'error')
         }
       });
   }
@@ -189,17 +180,6 @@ class SupplierEditor extends Component {
     return (
       <div className="row">
         <div className="col-sm-6">
-          <Alert bsStyle="info"
-            message={globalInfoMessage}
-            visible={!!globalInfoMessage}
-            hideCloseLink={true}
-          />
-
-          <Alert bsStyle="danger"
-            message={globalErrorMessage}
-            visible={!!globalErrorMessage}
-            hideCloseLink={true}
-          />
 
           <SupplierEditorForm
             {...this.props}
