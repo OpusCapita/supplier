@@ -11,9 +11,9 @@ jobs:
       - run:
           name: Deployment script
           command: |
-            export azureswarm_branch=develop
-            if [[ "$CIRCLE_BRANCH" == "master" ]]; then export azureswarm_branch=master; fi
-            curl https://raw.githubusercontent.com/gr4per/azureswarm/$azureswarm_branch/buildscript.sh > buildscript.sh
+            export andariel_branch=develop
+            if [[ "$CIRCLE_BRANCH" == "master" ]]; then export andariel_branch=master; fi
+            curl https://raw.githubusercontent.com/OpusCapita/andariel/$andariel_branch/buildscript.sh > buildscript.sh
             chmod +x buildscript.sh
             ./buildscript.sh opuscapita/$CIRCLE_PROJECT_REPONAME
 
