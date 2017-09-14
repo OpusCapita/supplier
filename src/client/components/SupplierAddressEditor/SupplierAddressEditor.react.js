@@ -4,7 +4,6 @@ import _ from 'underscore';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import Button from 'react-bootstrap/lib/Button';
-import Alert from '../Alert';
 import SupplierAddressListTable from './SupplierAddressListTable.react.js';
 import SupplierAddressEditorForm from './SupplierAddressEditorForm.react.js';
 import browserInfo from '../../utils/browserInfo';

@@ -3,7 +3,6 @@ import request from "superagent-bluebird-promise";
 import Button from "react-bootstrap/lib/Button";
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from "./i18n";
-import Alert from "../Alert";
 import SupplierBankAccountEditForm from "./SupplierBankAccountEditForm.react.js";
 import DisplayTable from "../DisplayTable/DisplayTable.react.js";
 import DisplayRow from "../DisplayTable/DisplayRow.react.js";

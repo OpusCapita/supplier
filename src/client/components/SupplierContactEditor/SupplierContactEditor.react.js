@@ -4,7 +4,6 @@ import Button from 'react-bootstrap/lib/Button';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import _ from 'underscore';
-import Alert from '../Alert';
 import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
 import DisplayField from '../../components/DisplayTable/DisplayField.react';
 import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
@@ -172,7 +171,7 @@ class SupplierContactEditor extends Component {
         contacts.push(response.body);
 
         this.props.onChange({ isDirty: false });
-        
+
         const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
         if(this.context.showNotification){
           this.context.showNotification(message, 'info')
