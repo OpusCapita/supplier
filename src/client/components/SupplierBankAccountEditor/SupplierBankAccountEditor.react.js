@@ -105,7 +105,7 @@ class SupplierBankAccountEditor extends Component {
 
           const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.deleteFailed');
           if(this.context.showNotification)
-            this.context.showNotification(message, 'info')
+            this.context.showNotification(message, 'error')
         }
       });
   };
@@ -153,7 +153,7 @@ class SupplierBankAccountEditor extends Component {
 
           const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.updateFailed');
           if(this.context.showNotification)
-            this.context.showNotification(message, 'info')
+            this.context.showNotification(message, 'error')
         }
       });
   };
@@ -187,7 +187,7 @@ class SupplierBankAccountEditor extends Component {
 
           let message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.saveFailed');
           if(this.context.showNotification)
-            this.context.showNotification(message, 'info')
+            this.context.showNotification(message, 'error')
         }
       });
   };

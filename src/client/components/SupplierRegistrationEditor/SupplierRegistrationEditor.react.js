@@ -90,7 +90,7 @@ class SupplierRegistrationEditor extends Component {
         supplier: response.body
       });
       if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'error')
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info')
       const { supplier } = this.state;
 
       // we need to refresh the id token before we can do any calls to backend as supplier user
