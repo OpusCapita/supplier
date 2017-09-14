@@ -3,14 +3,14 @@ const Sequelize = require('sequelize');
 
 module.exports = function(sequelize) {
   let SupplierContact = sequelize.define('SupplierContact', {
-    contactId: {
+    id: {
       type: Sequelize.STRING(50),
       primaryKey: true,
       allowNull: false,
       validate: {
         notEmpty: true
       },
-      field: 'ContactId'
+      field: 'ID'
     },
     title: {
       type: Sequelize.STRING(20),
@@ -32,6 +32,7 @@ module.exports = function(sequelize) {
     },
     email: {
       type: Sequelize.STRING(100),
+      allowNull: false,
       field: 'Email',
       validate: {
         isEmail: true

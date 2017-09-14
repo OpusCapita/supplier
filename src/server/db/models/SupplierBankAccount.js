@@ -17,15 +17,6 @@ module.exports = function (sequelize, config) {
         autoIncrement: true,
         field: 'ID'
       },
-      bankAccountId: {
-        type: Sequelize.STRING(50),
-        allowNull: false,
-        field: 'BankAccountID',
-        unique: true,
-        validate: {
-          notEmpty: true
-        }
-      },
       supplierId: {
         type: Sequelize.STRING(50),
         allowNull: false,

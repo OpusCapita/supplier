@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import request from 'superagent-bluebird-promise';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
-import Alert from '../Alert';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';
 import SupplierExistsView from './SupplierExistsView.react';
 
@@ -22,7 +21,8 @@ class SupplierRegistrationEditor extends Component {
   };
 
   static contextTypes = {
-    i18n : React.PropTypes.object.isRequired
+    i18n : React.PropTypes.object.isRequired,
+    showNotification: React.PropTypes.func
   };
 
   constructor(props) {
@@ -40,19 +40,15 @@ class SupplierRegistrationEditor extends Component {
   createSupplierPromise = null;
 
   componentWillMount(){
-    this.context.i18n.register('validatejs', validationMessages);
+    this.context.i18n.register('SupplierValidatejs', validationMessages);
     this.context.i18n.register('SupplierRegistrationEditor', i18nMessages);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      globalInfoMessage: '',
-      globalErrorMessage: ''
-    });
+  componentWillReceiveProps(nextProps, nextContext) {
 
-    if(this.context.i18n && nextContext.i18n != this.context.i18n){
-      this.context.i18n.register('validatejs', validationMessages);
-      this.context.i18n.register('SupplierRegistrationEditor', i18nMessages);
+    if(nextContext.i18n){
+      nextContext.i18n.register('SupplierValidatejs', validationMessages);
+      nextContext.i18n.register('SupplierRegistrationEditor', i18nMessages);
     }
   }
 
@@ -74,10 +70,6 @@ class SupplierRegistrationEditor extends Component {
 
   handleUpdate = newSupplier => {
     if (!newSupplier) {
-      this.setState({
-        globalInfoMessage: '',
-        globalErrorMessage: '',
-      });
       return;
     }
 
@@ -92,17 +84,16 @@ class SupplierRegistrationEditor extends Component {
       send(newSupplier).
       promise();
 
-    this.createSupplierPromise.then(response => {
+    return this.createSupplierPromise.then(response => {
       this.setState({
-        supplier: response.body,
-        globalInfoMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'),
-        globalErrorMessage: ''
+        supplier: response.body
       });
-
+      if(this.context.showNotification)
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info')
       const { supplier } = this.state;
 
       // we need to refresh the id token before we can do any calls to backend as supplier user
-      request.post('/refreshIdToken').set('Content-Type', 'application/json').then((resp) => {
+      return request.post('/refreshIdToken').set('Content-Type', 'application/json').then((resp) => {
         console.log("id token refreshed");
 
         const user = this.props.user;
@@ -117,33 +108,30 @@ class SupplierRegistrationEditor extends Component {
             changedBy: user.id
         }
 
-        request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
-        set('Accept', 'application/json').send(contact).then((response) => {
+        return request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
+        set('Accept', 'application/json').send(contact).then(response => {
           console.log('contact created');
+
+          if (this.props.onUpdate) {
+            this.props.onUpdate({
+              supplierId: supplier.supplierId,
+              supplierName: supplier.supplierName
+            });
+          }
+
+          if (this.props.onChange) {
+            this.props.onChange({ isDirty: false });
+          }
+
           return Promise.resolve(null);
         }).catch(err => {
           console.error('error creating contact: ' + err);
           throw err;
         })
-
-        return Promise.resolve(null);
       }).catch(err => {
         console.err('error refreshing idToken: ' + err);
         throw err;
       });
-
-      if (this.props.onUpdate) {
-          this.props.onUpdate({
-            supplierId: supplier.supplierId,
-            supplierName: supplier.supplierName
-          });
-        }
-
-      if (this.props.onChange) {
-        this.props.onChange({ isDirty: false });
-      }
-
-      return Promise.resolve(null);
     }).
     catch(errors => {
       this.setState({
@@ -152,27 +140,23 @@ class SupplierRegistrationEditor extends Component {
 
       switch (errors.status) {
         case 403: case 405:
-          this.setState({
-            globalInfoMessage: '',
-            globalErrorMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'),
-          });
+          if(this.context.showNotification)
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'), 'error')
           break;
         case 401:
           this.props.onUnauthorized();
           break;
         case 409:
           this.setState({
-            supplierExist: true,
-            globalInfoMessage: '',
-            globalErrorMessage: ''
+            supplierExist: true
           });
           break;
         default:
-          this.setState({
-            globalInfoMessage: '',
-            globalErrorMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'),
-          });
+          if(this.context.showNotification)
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'), 'error')
       }
+
+      return Promise.resolve(null);
     });
   }
 
@@ -191,7 +175,7 @@ class SupplierRegistrationEditor extends Component {
   }
 
   render() {
-    const { hasErrors, globalInfoMessage = '', globalErrorMessage = '' } = this.state;
+    const { hasErrors } = this.state;
 
     if (hasErrors) {
       return (
@@ -202,17 +186,6 @@ class SupplierRegistrationEditor extends Component {
     return (
       <div className="container supplier-registration-container">
         <div className='box' id='supplier-registration'>
-          <Alert bsStyle="info"
-            message={globalInfoMessage}
-            visible={!!globalInfoMessage}
-            hideCloseLink={true}
-          />
-
-          <Alert bsStyle="danger"
-            message={globalErrorMessage}
-            visible={!!globalErrorMessage}
-            hideCloseLink={true}
-          />
 
           <h2>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.companyRegistration')}</h2>
 

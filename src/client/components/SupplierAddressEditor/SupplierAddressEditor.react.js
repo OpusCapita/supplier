@@ -4,10 +4,9 @@ import _ from 'underscore';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import Button from 'react-bootstrap/lib/Button';
-import Alert from '../Alert';
-import utils from '../../utils/utils';
 import SupplierAddressListTable from './SupplierAddressListTable.react.js';
 import SupplierAddressEditorForm from './SupplierAddressEditorForm.react.js';
+import browserInfo from '../../utils/browserInfo';
 
 class SupplierAddressEditor extends Component {
 
@@ -21,7 +20,8 @@ class SupplierAddressEditor extends Component {
   };
 
   static contextTypes = {
-    i18n: React.PropTypes.object.isRequired
+    i18n: React.PropTypes.object.isRequired,
+    showNotification: React.PropTypes.func
   };
 
   loadAddressesPromise = null;
@@ -47,7 +47,7 @@ class SupplierAddressEditor extends Component {
   };
 
   componentWillMount(){
-    this.context.i18n.register('validatejs', validationMessages);
+    this.context.i18n.register('SupplierValidatejs', validationMessages);
     this.context.i18n.register('SupplierAddressEditor', i18nMessages);
   }
 
@@ -57,9 +57,12 @@ class SupplierAddressEditor extends Component {
     }
 
     console.log('===== ABOUT TO REQUEST a PROMISE');
-    this.loadAddressesPromise = request
-      .get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}/addresses`)
-      .set('Accept', 'application/json').promise();
+    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}/addresses`)
+
+    /* Do not use cache in request if browser is IE */
+    if (browserInfo.isIE()) getRequest.query({ cachebuster: Date.now().toString() });
+
+    this.loadAddressesPromise = getRequest.set('Accept', 'application/json').promise();
 
     this.loadAddressesPromise.then(response => {
       this.setState({
@@ -86,11 +89,9 @@ class SupplierAddressEditor extends Component {
     let editMode = this.state.editMode;
 
     if (editMode && this.props.readOnly !== newProps.readOnly) {
-      let newState = { globalError: null };
 
       if (editMode === 'create') {
         newState.supplierAddress = null;
-        newState.globalError = null;
       } else if (editMode === 'edit') {
         newState.editMode = 'view';
       } else if (editMode === 'view') {
@@ -99,9 +100,9 @@ class SupplierAddressEditor extends Component {
       this.setState(newState);
     }
 
-    if(this.context.i18n && nextContext.i18n != this.context.i18n){
-      this.context.i18n.register('validatejs', validationMessages);
-      this.context.i18n.register('SupplierAddressEditor', i18nMessages);
+    if(nextContext.i18n){
+      nextContext.i18n.register('SupplierValidatejs', validationMessages);
+      nextContext.i18n.register('SupplierAddressEditor', i18nMessages);
     }
   }
 
@@ -123,8 +124,6 @@ class SupplierAddressEditor extends Component {
     this.setState({
       supplierAddress: _.clone(supplierAddress),
       editMode: "edit",
-      globalError: null,
-      globalMessage: null,
       errors: null
     });
   };
@@ -133,8 +132,6 @@ class SupplierAddressEditor extends Component {
     this.setState({
       supplierAddress: _.clone(supplierAddress),
       editMode: "view",
-      globalError: null,
-      globalMessage: null,
       errors: null
     });
   };
@@ -144,7 +141,7 @@ class SupplierAddressEditor extends Component {
     let supplierId = this.props.supplierId;
 
     let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(supplierAddress.addressId);
+    let arg1 = encodeURIComponent(supplierAddress.id);
 
     this.deleteAddressPromise = request.del(`${actionUrl}/supplier/api/suppliers/${arg0}/addresses/${arg1}`).set(
         'Accept', 'application/json').promise();
@@ -161,10 +158,10 @@ class SupplierAddressEditor extends Component {
       const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectDeleted');
       this.setState({
         supplierAddresses: supplierAddresses,
-        supplierAddress: null,
-        globalMessage: message,
-        globalError: null
+        supplierAddress: null
       });
+      if(this.context.showNotification)
+          this.context.showNotification(message, 'info')
     }).catch(errors => {
       if (errors.status === 401) {
         this.props.onUnauthorized();
@@ -174,7 +171,7 @@ class SupplierAddressEditor extends Component {
 
   handleCreate = () => {
     this.props.onChange({ isDirty: true });
-    this.setState({ supplierAddress: { address: {} }, editMode: 'create', errors: null });
+    this.setState({ supplierAddress: {}, editMode: 'create', errors: null });
   };
 
   handleUpdate = (supplierAddress) => {
@@ -183,7 +180,7 @@ class SupplierAddressEditor extends Component {
     supplierAddress.changedBy = this.props.username;// eslint-disable-line no-param-reassign
 
     let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(supplierAddress.addressId);
+    let arg1 = encodeURIComponent(supplierAddress.id);
 
     this.updateAddressPromise = request.put(`${actionUrl}/supplier/api/suppliers/${arg0}/addresses/${arg1}`).set(
       'Accept', 'application/json').send(supplierAddress).promise();
@@ -204,10 +201,10 @@ class SupplierAddressEditor extends Component {
       const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectUpdated');
       this.setState({
         supplierAddresses: supplierAddresses,
-        supplierAddress: null,
-        globalMessage: message,
-        globalError: null
+        supplierAddress: null
       });
+      if(this.context.showNotification)
+        this.context.showNotification(message, 'info')
     }).catch(errors => {
       if (errors.status === 401) {
         this.props.onUnauthorized();
@@ -219,14 +216,9 @@ class SupplierAddressEditor extends Component {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
 
-    /* eslint-disable no-param-reassign*/
     supplierAddress.supplierId = supplierId;
     supplierAddress.createdBy = this.props.username;
     supplierAddress.changedBy = this.props.username;
-
-    // generate unique value
-    supplierAddress.addressId = utils.generateUUID();
-    /* eslint-enable no-param-reassign*/
 
     request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/addresses`).set(
           'Accept', 'application/json').send(supplierAddress).then((response) => {
@@ -238,10 +230,10 @@ class SupplierAddressEditor extends Component {
             const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectSaved');
             this.setState({
               supplierAddresses: supplierAddresses,
-              supplierAddress: null,
-              globalMessage: message,
-              globalError: null
+              supplierAddress: null
             });
+            if(this.context.showNotification)
+              this.context.showNotification(message, 'info')
           }).catch(errors => {
             if (errors.status === 401) {
               this.props.onUnauthorized();
@@ -253,12 +245,12 @@ class SupplierAddressEditor extends Component {
 
   handleCancel = () => {
     this.props.onChange({ isDirty: false });
-    this.setState({ supplierAddress: null, globalError: null, globalMessage: null });
+    this.setState({ supplierAddress: null });
   };
 
   handleChange = (supplierAddress, name, oldValue, newValue) => {
     // check only updated objects
-    // if (supplierAddress.addressId) {
+    // if (supplierAddress.id) {
     this.props.onChange({ isDirty: true });
     // }
   };
@@ -313,18 +305,11 @@ class SupplierAddressEditor extends Component {
           <h4 className="tab-description">{this.context.i18n.getMessage('SupplierAddressEditor.Title')}</h4>
         </div>
 
-        {this.state.globalMessage && !readOnly ? (
-          <Alert bsStyle="info" message={this.state.globalMessage}/>
-        ) : null}
-
         {result}
 
         {supplierAddress ? (
           <div className="row">
             <div className="col-md-6">
-              {this.state.globalError && !readOnly ? (
-                <Alert bsStyle="danger" message={this.state.globalError}/>
-              ) : null}
 
               <SupplierAddressEditorForm
                 actionUrl={this.props.actionUrl}

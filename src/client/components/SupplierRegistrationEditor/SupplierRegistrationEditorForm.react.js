@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'underscore';
-import SupplierRegistrationEditorFormRow from '../AttributeValueEditorRow.react.js';
+import AttributeValueEditorRow from '../AttributeValueEditorRow.react.js';
 import './SupplierRegistrationEditor.css';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
@@ -23,7 +23,8 @@ class SupplierRegistrationEditorForm extends Component {
     supplier: {
       ...this.props.supplier
     },
-    fieldErrors: {}
+    fieldErrors: {},
+    hasVATId: true
   };
 
   componentWillMount() {
@@ -109,19 +110,29 @@ class SupplierRegistrationEditorForm extends Component {
     const supplier = this.state.supplier;
     const constraints = this.constraints.forRegistration();
 
-    const success = () => {
-      onSupplierChange(supplier);
-    };
+    if (!supplier.vatIdentificationNo && this.state.hasVATId) {
+      this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.clickCheckBox')] });
+    } else {
+      const success = () => {
+        supplier.noVatReason = supplier.vatIdentificationNo ? null : 'No VAT Registration Number';
+        onSupplierChange(supplier);
+      };
 
-    const error = (errors) => {
-      this.setFieldErrorsStates(errors);
-      onSupplierChange(null);
-    };
+      const error = (errors) => {
+        this.setFieldErrorsStates(errors);
+        onSupplierChange(null);
+      };
 
-    validator.forRegistration().async(supplier, constraints, { fullMessages: false }).then(success, error);
+      validator.forRegistration().async(supplier, constraints, { fullMessages: false }).then(success, error);
+    }
   };
 
-  renderField = attrs => {
+  handleCheckboxChange = () => {
+    this.setFieldErrorsStates({ noVatReason: [] });
+    this.setState({hasVATId: !this.state.hasVATId});
+  };
+
+  renderField = (attrs) => {
     const { supplier, fieldErrors } = this.state;
     const { fieldName } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
@@ -142,13 +153,13 @@ class SupplierRegistrationEditorForm extends Component {
     let rowErrors = fieldNames.reduce((rez, name) => rez.concat(fieldErrors[name] || []), []);
 
     return (
-      <SupplierRegistrationEditorFormRow
-        labelText={ this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
+      <AttributeValueEditorRow
+        labelText={ attrs.labelText || this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
         required={ isRequired }
-        rowErrors={ rowErrors }
-      >
+        marked = { attrs.marked }
+        rowErrors={ rowErrors }>
         { component }
-      </SupplierRegistrationEditorFormRow>
+      </AttributeValueEditorRow>
     );
   };
 
@@ -173,14 +184,26 @@ class SupplierRegistrationEditorForm extends Component {
                       value={this.state.supplier['countryOfRegistration']}
                       onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                       onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
+                      optional={true}
+                      locale={this.context.i18n.locale}
                     />
                   )
                 }) }
 
                 { this.renderField({ fieldName: 'taxIdentificationNo' }) }
-                { this.renderField({ fieldName: 'vatIdentificationNo' }) }
-                { this.renderField({ fieldName: 'globalLocationNo' }) }
-                { this.renderField({ fieldName: 'dunsNo' }) }
+                { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
+                { this.renderField({
+                  fieldName: 'noVatReason',
+                  labelText: ' ',
+                  component: (
+                    <p>
+                      <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange}></input>
+                      {this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.noVatId')}
+                    </p>
+                  )
+                }) }
+                { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
+                { this.renderField({ fieldName: 'dunsNo', marked: true }) }
 
                 <div className='supplier-registration-form-submit'>
                   <div className='text-right form-submit'>
@@ -199,6 +222,7 @@ class SupplierRegistrationEditorForm extends Component {
         <div className="col-md-4">
           <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.information1')}</p>
           <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.information2')}</p>
+          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.required')}</p>
         </div>
       </div>
     );

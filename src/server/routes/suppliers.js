@@ -13,43 +13,33 @@ module.exports = function(app, db, config) {
   });
 };
 
+let sendSupplier = function(req, res)
+{
+  const includes = req.query.include ? req.query.include.split(',') : [];
+
+  Supplier.find(req.params.supplierId, includes).then(supplier =>
+  {
+    if (supplier) {
+      res.json(supplier);
+    } else {
+      res.status('404').json(supplier);
+    }
+  });
+};
+
+
 let sendSuppliers = function(req, res)
 {
   const queryObj = req.query.supplierId ? { supplierId: { $in: req.query.supplierId.split(',') }} : {};
   const includes = req.query.include ? req.query.include.split(',') : [];
 
-  Supplier.all(queryObj, includes).then(suppliers =>
-  {
-    res.json(suppliers);
-  });
+  Supplier.all(queryObj, includes).then(suppliers => res.json(suppliers));
 };
 
 let existsSuppliers = function(req, res)
 {
-  let queryObj = {};
-  const queryFields = [
-    'commercialRegisterNo',
-    'cityOfRegistration',
-    'countryOfRegistration',
-    'taxIdentificationNo',
-    'vatIdentificationNo',
-    'globalLocationNo',
-    'dunsNo'
-  ];
-
-  for (const index in queryFields) {
-    const field = queryFields[index];
-    if (Boolean(req.query[field]))
-      queryObj[field] = req.query[field];
-  }
-
-  if (Boolean(req.query.supplierId)) queryObj.supplierId = { $ne: req.query.supplierId };
-
-  Supplier.count(queryObj).then(count =>
-  {
-    res.json(count > 0);
-  });
-}
+  Supplier.recordExists(req.query).then(exists => res.json(exists));
+};
 
 let createSuppliers = function(req, res)
 {
@@ -65,7 +55,7 @@ let createSuppliers = function(req, res)
         .then(supplier => {
           const userId = supplier.createdBy;
           const supplierId = supplier.supplierId;
-          const supplierToUserPromise = req.opuscapita.serviceClient.put('user', `/users/${userId}`, { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] }, true);
+          const supplierToUserPromise = req.opuscapita.serviceClient.put('user', `/api/users/${userId}`, { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] }, true);
 
           return supplierToUserPromise.then(() => {
               supplier.status = 'assigned';
@@ -77,13 +67,13 @@ let createSuppliers = function(req, res)
               Supplier.delete(supplierId).then(() => null);
               req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
 
-              return res.status(error.response.statusCode || 400).json({ message : error.message });
+              return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
             });
         })
         .catch(error => {
           req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
 
-          return res.status(error.response.statusCode || 400).json({ message : error.message });
+          return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
         });
     }
   })
@@ -92,14 +82,6 @@ let createSuppliers = function(req, res)
     return res.status('400').json({ message : error.message });
   });
 }
-
-let sendSupplier = function(req, res)
-{
-  Supplier.find(req.params.supplierId).then(suppliers =>
-  {
-    res.json(suppliers);
-  });
-};
 
 let updateSupplier = function(req, res)
 {

@@ -23,7 +23,7 @@ Department.IT = 'IT';
 Department.Others = 'Others';
 
 let Select = {};
-Select.type = 'Select type...';
+Select.contactType = 'Select type...';
 Select.department = 'Select department...';
 
 let Label = {

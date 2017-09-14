@@ -66,6 +66,7 @@ class SupplierBankAccountEditForm extends Component {
 
     const account = this.state.account;
     let errors = getValidator()(this.state.account, this.constraints, { fullMessages: false });
+
     if (!errors) {
       const editMode = this.props.editMode;
 
@@ -75,7 +76,14 @@ class SupplierBankAccountEditForm extends Component {
         this.props.onSave(account);
       }
     } else {
-      this.setState({ errors: errors });
+      let errorsReformatted = Object.keys(errors).map(key => ({ [key]:
+        errors[key].map((element)=>({
+          message: element
+        }))})).reduce((current, prev, {}) => {
+        return Object.assign(current, prev);
+      });
+
+      this.setState({ errors: errorsReformatted });
     }
   };
 
@@ -186,6 +194,8 @@ class SupplierBankAccountEditForm extends Component {
               value={account['bankCountryKey']}
               onChange={this.handleCountryChange.bind(this, 'bankCountryKey')}
               onBlur={this.handleBlur.bind(this, 'bankCountryKey')}
+              optional={true}
+              locale={this.context.i18n.locale}
             />
           )
         })}

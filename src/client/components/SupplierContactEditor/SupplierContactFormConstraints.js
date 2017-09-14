@@ -1,82 +1,80 @@
 module.exports = function(validatejsI18N) {
   return {
-    bankName: {
+    contactType: {
       presence: {
         message: validatejsI18N.getMessage('SupplierValidatejs.blank.message')
-      },
+      }
+    },
+    department: {
+      presence: {
+        message: validatejsI18N.getMessage('SupplierValidatejs.blank.message')
+      }
+    },
+    title: {
       length: {
-        maximum: 50,
+        maximum: 20,
         tooLong: validatejsI18N.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 50
+          limit: 20
         })
       }
     },
-    accountNumber: {
+    firstName: {
       presence: {
         message: validatejsI18N.getMessage('SupplierValidatejs.blank.message')
       },
       length: {
-        maximum: 30,
+        maximum: 100,
         tooLong: validatejsI18N.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 30
-        })
-      },
-      iban: {
-        message: validatejsI18N.getMessage('SupplierValidatejs.invalid.iban.message')
-      }
-    },
-    bankIdentificationCode: {
-      presence: {
-        message: validatejsI18N.getMessage('SupplierValidatejs.blank.message')
-      },
-      length: {
-        maximum: 15,
-        tooLong: validatejsI18N.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 15
-        })
-      },
-      bic: {
-        message: validatejsI18N.getMessage('SupplierValidatejs.invalid.bic.message')
-      }
-    },
-    bankCode: {
-      presence: {
-        message: validatejsI18N.getMessage('SupplierValidatejs.blank.message')
-      },
-      length: {
-        maximum: 12,
-        tooLong: validatejsI18N.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 12
+          limit: 100
         })
       }
     },
-    swiftCode: {
+    lastName: {
       presence: {
         message: validatejsI18N.getMessage('SupplierValidatejs.blank.message')
       },
       length: {
-        maximum: 11,
+        maximum: 100,
         tooLong: validatejsI18N.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 11
+          limit: 100
         })
+      }
+    },
+    email: {
+      presence: {
+        message: validatejsI18N.getMessage('SupplierValidatejs.blank.message')
       },
-      bic: {
-        message: validatejsI18N.getMessage('SupplierValidatejs.invalid.swiftCode.message')
-      }
-    },
-    bankCountryKey: {
-      presence: {
-        message: validatejsI18N.getMessage('SupplierValidatejs.blank.message')
-      }
-    },
-    extBankControlKey: {
-      presence: {
-        message: validatejsI18N.getMessage('SupplierValidatejs.blank.message')
+      email: {
+        message: validatejsI18N.getMessage('SupplierValidatejs.invalid.email.message')
       },
       length: {
-        maximum: 2,
+        maximum: 100,
         tooLong: validatejsI18N.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 2
+          limit: 100
+        })
+      }
+    },
+    phone: {
+      length: {
+        maximum: 20,
+        tooLong: validatejsI18N.getMessage('SupplierValidatejs.invalid.maxSize.message', {
+          limit: 20
+        })
+      }
+    },
+    mobile: {
+      length: {
+        maximum: 20,
+        tooLong: validatejsI18N.getMessage('SupplierValidatejs.invalid.maxSize.message', {
+          limit: 20
+        })
+      }
+    },
+    fax: {
+      length: {
+        maximum: 20,
+        tooLong: validatejsI18N.getMessage('SupplierValidatejs.invalid.maxSize.message', {
+          limit: 20
         })
       }
     }

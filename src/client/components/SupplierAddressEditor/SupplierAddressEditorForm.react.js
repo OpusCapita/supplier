@@ -33,7 +33,7 @@ class SupplierAddressEditorForm extends Component {
   state = {
     supplierAddress: this.props.supplierAddress,
     errors: this.props.errors || {}
-  }
+  };
 
   componentWillMount() {
     let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
@@ -55,7 +55,8 @@ class SupplierAddressEditorForm extends Component {
     event.preventDefault();
 
     const supplierAddress = this.state.supplierAddress;
-    let errors = validator(this.state.supplierAddress, this.constraints, { fullMessages: false });
+    let errors = validator(supplierAddress, this.constraints, { fullMessages: false });
+
     if (!errors) {
       const editMode = this.props.editMode;
 
@@ -65,13 +66,19 @@ class SupplierAddressEditorForm extends Component {
         this.props.onSave(supplierAddress);
       }
     } else {
-      this.setState({ errors: errors });
+      let errorsReformatted = Object.keys(errors).map(key => ({ [key]:
+        errors[key].map((element)=>({
+          message: element
+        }))})).reduce((current, prev, {}) => {
+        return Object.assign(current, prev);
+      });
+
+      this.setState({ errors: errorsReformatted });
     }
   };
 
   handleCancel = () => {
-    const supplierAddress = this.state.supplierAddress;
-    this.props.onCancel(supplierAddress);
+    this.props.onCancel(this.state.supplierAddress);
   };
 
   handleCountryChange = (fieldName, country) => {
@@ -85,7 +92,7 @@ class SupplierAddressEditorForm extends Component {
         [fieldName]: country
       }
     });
-  }
+  };
 
   handleChange = (fieldName, event) => {
     let newValue = event.target.value;
@@ -100,7 +107,7 @@ class SupplierAddressEditorForm extends Component {
         [fieldName]: newValue
       }
     });
-  }
+  };
 
   handleBlur = (fieldName/* , event*/) => {
     const errors = validator(
@@ -119,7 +126,7 @@ class SupplierAddressEditorForm extends Component {
           []
       }
     });
-  }
+  };
 
   renderField = attrs => {
     const { supplierAddress, errors } = this.state;
@@ -199,10 +206,10 @@ class SupplierAddressEditorForm extends Component {
             )
           }) }
 
-        { this.renderField({ fieldName: 'name1', disabled: disabled }) }
-        { this.renderField({ fieldName: 'name2', disabled: disabled }) }
-        { this.renderField({ fieldName: 'name3', disabled: disabled }) }
-        { this.renderField({ fieldName: 'street', disabled: disabled }) }
+        { this.renderField({ fieldName: 'name', disabled: disabled }) }
+        { this.renderField({ fieldName: 'street1', disabled: disabled }) }
+        { this.renderField({ fieldName: 'street2', disabled: disabled }) }
+        { this.renderField({ fieldName: 'street3', disabled: disabled }) }
         { this.renderField({ fieldName: 'zipCode', disabled: disabled }) }
         { this.renderField({ fieldName: 'city', disabled: disabled }) }
 
@@ -214,6 +221,8 @@ class SupplierAddressEditorForm extends Component {
                 value={supplierAddress['countryId']}
                 onChange={this.handleCountryChange.bind(this, 'countryId')}
                 onBlur={this.handleBlur.bind(this, 'countryId')}
+                optional={true}
+                locale={this.context.i18n.locale}
               />
             )
           })}
