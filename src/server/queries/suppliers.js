@@ -80,7 +80,7 @@ module.exports.searchRecord = function(query)
   let rawQueryArray = [];
 
   if (query.supplierName) rawQueryArray.push(equalSQL('SupplierName', query.supplierName));
-  if (query.vatIdentificationNo) rawQueryArray.push(similar('VatIdentificationNo', query.vatIdentificationNo));
+  if (query.vatIdentificationNo) rawQueryArray.push(equalSQL('VatIdentificationNo', query.vatIdentificationNo));
   if (query.dunsNo) rawQueryArray.push(similar('DUNSNo', query.dunsNo));
   if (query.globalLocationNo) rawQueryArray.push(equalSQL('GlobalLocationNo', query.globalLocationNo));
 
