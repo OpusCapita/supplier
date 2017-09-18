@@ -86,7 +86,7 @@ module.exports.searchRecord = function(query)
 
   if (query.commercialRegisterNo) {
     const commercialRegisterNoQuery = [
-      similar('CommercialRegisterNo', query.commercialRegisterNo),
+      equalSQL('CommercialRegisterNo', query.commercialRegisterNo),
       similar('CityOfRegistration', query.cityOfRegistration),
       equalSQL('CountryOfRegistration', query.countryOfRegistration)
     ].join(' AND ');
