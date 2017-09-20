@@ -96,7 +96,7 @@ module.exports.searchRecord = function(query)
   if (query.taxIdentificationNo) {
     const taxIdentificationNoQuery = [
       equalSQL('TaxIdentificationNo', query.taxIdentificationNo),
-      equalSQL('CountryOfRegistration', query.countryOfRegistration)
+      similar('CityOfRegistration', query.cityOfRegistration)
     ].join(' AND ');
     rawQueryArray.push(`(${taxIdentificationNoQuery})`);
   }
