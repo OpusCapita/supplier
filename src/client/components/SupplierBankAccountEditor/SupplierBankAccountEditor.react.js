@@ -267,7 +267,7 @@ class SupplierBankAccountEditor extends Component {
                   <DisplayField>{ account.bankIdentificationCode }</DisplayField>
                   <DisplayCountryTableField actionUrl={this.props.actionUrl} countryId={account.bankCountryKey}/>
                   <DisplayField>{ account.bankCode }</DisplayField>
-                  <DisplayField>{ account.extBankControlKey }</DisplayField>
+                  <DisplayField>{ account.extBankControlKey || '-' }</DisplayField>
                   <DisplayField>{ account.swiftCode }</DisplayField>
                   <DisplayEditGroup editAction={this.handleEdit.bind(this, account)}
                     editLabel={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
