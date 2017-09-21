@@ -80,13 +80,13 @@ module.exports.searchRecord = function(query)
   let rawQueryArray = [];
 
   if (query.supplierName) rawQueryArray.push(equalSQL('SupplierName', query.supplierName));
-  if (query.vatIdentificationNo) rawQueryArray.push(similar('VatIdentificationNo', query.vatIdentificationNo));
+  if (query.vatIdentificationNo) rawQueryArray.push(equalSQL('VatIdentificationNo', query.vatIdentificationNo));
   if (query.dunsNo) rawQueryArray.push(similar('DUNSNo', query.dunsNo));
   if (query.globalLocationNo) rawQueryArray.push(equalSQL('GlobalLocationNo', query.globalLocationNo));
 
   if (query.commercialRegisterNo) {
     const commercialRegisterNoQuery = [
-      similar('CommercialRegisterNo', query.commercialRegisterNo),
+      equalSQL('CommercialRegisterNo', query.commercialRegisterNo),
       similar('CityOfRegistration', query.cityOfRegistration),
       equalSQL('CountryOfRegistration', query.countryOfRegistration)
     ].join(' AND ');
@@ -95,8 +95,8 @@ module.exports.searchRecord = function(query)
 
   if (query.taxIdentificationNo) {
     const taxIdentificationNoQuery = [
-      similar('TaxIdentificationNo', query.taxIdentificationNo),
-      equalSQL('CountryOfRegistration', query.countryOfRegistration)
+      equalSQL('TaxIdentificationNo', query.taxIdentificationNo),
+      similar('CityOfRegistration', query.cityOfRegistration)
     ].join(' AND ');
     rawQueryArray.push(`(${taxIdentificationNoQuery})`);
   }

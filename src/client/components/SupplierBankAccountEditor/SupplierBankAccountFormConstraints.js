@@ -70,9 +70,6 @@ module.exports = function(validatejsI18N) {
       }
     },
     extBankControlKey: {
-      presence: {
-        message: validatejsI18N.getMessage('SupplierValidatejs.blank.message')
-      },
       length: {
         maximum: 2,
         tooLong: validatejsI18N.getMessage('SupplierValidatejs.invalid.maxSize.message', {

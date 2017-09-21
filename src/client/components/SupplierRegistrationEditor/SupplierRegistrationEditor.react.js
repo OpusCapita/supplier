@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import request from 'superagent-bluebird-promise';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
-import Alert from '../Alert';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';
 import SupplierAccessView from './SupplierAccessView.react';
 
@@ -22,7 +21,8 @@ class SupplierRegistrationEditor extends Component {
   };
 
   static contextTypes = {
-    i18n : React.PropTypes.object.isRequired
+    i18n : React.PropTypes.object.isRequired,
+    showNotification: React.PropTypes.func
   };
 
   constructor(props) {
@@ -61,10 +61,6 @@ class SupplierRegistrationEditor extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    this.setState({
-      globalInfoMessage: '',
-      globalErrorMessage: ''
-    });
 
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
@@ -90,10 +86,6 @@ class SupplierRegistrationEditor extends Component {
 
   handleUpdate = newSupplier => {
     if (!newSupplier) {
-      this.setState({
-        globalInfoMessage: '',
-        globalErrorMessage: '',
-      });
       return;
     }
 
@@ -110,11 +102,10 @@ class SupplierRegistrationEditor extends Component {
 
     return this.createSupplierPromise.then(response => {
       this.setState({
-        supplier: response.body,
-        globalInfoMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'),
-        globalErrorMessage: ''
+        supplier: response.body
       });
-
+      if(this.context.showNotification)
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info')
       const { supplier } = this.state;
 
       // we need to refresh the id token before we can do any calls to backend as supplier user
@@ -165,19 +156,20 @@ class SupplierRegistrationEditor extends Component {
 
       switch (errors.status) {
         case 403: case 405:
-          this.setState({
-            globalInfoMessage: '',
-            globalErrorMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'),
-          });
+          if(this.context.showNotification)
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'), 'error')
           break;
         case 401:
           this.props.onUnauthorized();
           break;
-        default:
+        case 409:
           this.setState({
-            globalInfoMessage: '',
-            globalErrorMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'),
+            supplierExist: true
           });
+          break;
+        default:
+          if(this.context.showNotification)
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'), 'error')
       }
 
       return Promise.resolve(null);
@@ -207,7 +199,7 @@ class SupplierRegistrationEditor extends Component {
   }
 
   render() {
-    const { loading, hasErrors, globalInfoMessage = '', globalErrorMessage = '' } = this.state;
+    const { loading, hasErrors } = this.state;
 
     if (loading) {
       /* Implement loading spinner */
@@ -223,17 +215,6 @@ class SupplierRegistrationEditor extends Component {
     return (
       <div className="container supplier-registration-container">
         <div className='box' id='supplier-registration'>
-          <Alert bsStyle="info"
-            message={globalInfoMessage}
-            visible={!!globalInfoMessage}
-            hideCloseLink={true}
-          />
-
-          <Alert bsStyle="danger"
-            message={globalErrorMessage}
-            visible={!!globalErrorMessage}
-            hideCloseLink={true}
-          />
 
           <h2>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.companyRegistration')}</h2>
 

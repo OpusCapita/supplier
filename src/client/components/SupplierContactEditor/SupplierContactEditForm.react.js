@@ -50,6 +50,7 @@ class SupplierContactEditForm extends Component {
 
     const contact = this.state.contact;
     let errors = validator(this.state.contact, this.constraints, { fullMessages: false });
+
     if (!errors) {
       const editMode = this.props.editMode;
 
@@ -59,7 +60,14 @@ class SupplierContactEditForm extends Component {
         this.props.onSave(contact);
       }
     } else {
-      this.setState({ errors: errors });
+       let errorsReformatted = Object.keys(errors).map(key => ({ [key]:
+          errors[key].map((element)=>({
+            message: element
+          }))})).reduce((current, prev, {}) => {
+          return Object.assign(current, prev);
+        });
+
+      this.setState({ errors: errorsReformatted });
     }
   };
 

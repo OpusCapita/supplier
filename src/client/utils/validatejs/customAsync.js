@@ -37,7 +37,7 @@ module.exports.taxIdNumberExists = function(validate) {
   return validate.validators.taxIdNumberExists = function(value, options, key, attributes) {
     let queryParams = {
       taxIdentificationNo: attributes['taxIdentificationNo'],
-      countryOfRegistration: attributes['countryOfRegistration']
+      cityOfRegistration: attributes['cityOfRegistration']
     };
 
     return recordExists(attributes['taxIdentificationNo'], validate, queryParams, options.message, attributes['supplierId']);

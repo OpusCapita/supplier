@@ -3,7 +3,6 @@ import request from "superagent-bluebird-promise";
 import Button from "react-bootstrap/lib/Button";
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from "./i18n";
-import Alert from "../Alert";
 import SupplierBankAccountEditForm from "./SupplierBankAccountEditForm.react.js";
 import DisplayTable from "../DisplayTable/DisplayTable.react.js";
 import DisplayRow from "../DisplayTable/DisplayRow.react.js";
@@ -26,7 +25,8 @@ class SupplierBankAccountEditor extends Component {
   };
 
   static contextTypes = {
-    i18n: React.PropTypes.object.isRequired
+    i18n: React.PropTypes.object.isRequired,
+    showNotification: React.PropTypes.func
   };
 
   static defaultProps = {
@@ -57,11 +57,9 @@ class SupplierBankAccountEditor extends Component {
     let editMode = this.state.editMode;
 
     if (editMode && this.props.readOnly !== nextProps.readOnly) {
-      let newState = { globalError: null };
 
       if (editMode === 'create') {
         newState.account = null;
-        newState.globalError = null;
       } else if (editMode === 'edit') {
         newState.editMode = 'view';
       } else if (editMode === 'view') {
@@ -95,7 +93,9 @@ class SupplierBankAccountEditor extends Component {
         accounts.splice(index, 1);
 
         const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.objectDeleted');
-        this.setState({ accounts: accounts, account: null, globalMessage: message, globalError: null });
+        this.setState({ accounts: accounts, account: null });
+        if(this.context.showNotification)
+          this.context.showNotification(message, 'info')
       }).catch((response) => {
         if (response.status === 401) {
           this.props.onUnauthorized();
@@ -103,7 +103,8 @@ class SupplierBankAccountEditor extends Component {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${account.id}`);
 
           const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.deleteFailed');
-          this.setState({ globalError: message, globalMessage: null });
+          if(this.context.showNotification)
+            this.context.showNotification(message, 'error')
         }
       });
   };
@@ -140,7 +141,9 @@ class SupplierBankAccountEditor extends Component {
         this.props.onChange({ isDirty: false });
 
         const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.objectUpdated');
-        this.setState({ accounts: accounts, account: null, globalMessage: message, globalError: null });
+        this.setState({ accounts: accounts, account: null });
+        if(this.context.showNotification)
+          this.context.showNotification(message, 'info')
       }).catch((response) => {
         if (response.status === 401) {
           this.props.onUnauthorized();
@@ -148,7 +151,8 @@ class SupplierBankAccountEditor extends Component {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${account.id}`);
 
           const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.updateFailed');
-          this.setState({ globalError: message, globalMessage: null });
+          if(this.context.showNotification)
+            this.context.showNotification(message, 'error')
         }
       });
   };
@@ -171,7 +175,9 @@ class SupplierBankAccountEditor extends Component {
         this.props.onChange({ isDirty: false });
 
         const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.objectSaved');
-        this.setState({ accounts: accounts, account: null, globalMessage: message, globalError: null });
+        this.setState({ accounts: accounts, account: null });
+        if(this.context.showNotification)
+          this.context.showNotification(message, 'info')
       }).catch((response) => {
         if (response.status === 401) {
           this.props.onUnauthorized();
@@ -179,7 +185,8 @@ class SupplierBankAccountEditor extends Component {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${account.id}`);
 
           let message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.saveFailed');
-          this.setState({ globalError: message, globalMessage: null });
+          if(this.context.showNotification)
+            this.context.showNotification(message, 'error')
         }
       });
   };
@@ -187,7 +194,7 @@ class SupplierBankAccountEditor extends Component {
   handleCancel = () => {
     console.log(this.props);
     this.props.onChange({ isDirty: false });
-    this.setState({ account: null, globalError: null, globalMessage: null });
+    this.setState({ account: null });
   };
 
   handleChange = (account, name, oldValue, newValue) => {
@@ -198,8 +205,6 @@ class SupplierBankAccountEditor extends Component {
     this.setState({
       account: _.clone(account),
       editMode: 'edit',
-      globalError: null,
-      globalMessage: null,
       errors: null
     });
   };
@@ -262,7 +267,7 @@ class SupplierBankAccountEditor extends Component {
                   <DisplayField>{ account.bankIdentificationCode }</DisplayField>
                   <DisplayCountryTableField actionUrl={this.props.actionUrl} countryId={account.bankCountryKey}/>
                   <DisplayField>{ account.bankCode }</DisplayField>
-                  <DisplayField>{ account.extBankControlKey }</DisplayField>
+                  <DisplayField>{ account.extBankControlKey || '-' }</DisplayField>
                   <DisplayField>{ account.swiftCode }</DisplayField>
                   <DisplayEditGroup editAction={this.handleEdit.bind(this, account)}
                     editLabel={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.edit')}
@@ -291,16 +296,11 @@ class SupplierBankAccountEditor extends Component {
       <div>
         <h4 className="tab-description">{this.context.i18n.getMessage('SupplierBankAccountEditor.Title')}</h4>
 
-        {this.state.globalMessage && !readOnly ? (<Alert bsStyle='info' message={this.state.globalMessage}/>) : null}
-
         {result}
 
         {account ? (
           <div className='row'>
             <div className='col-sm-6'>
-              {this.state.globalError && !readOnly ? (
-                <Alert bsStyle='danger' message={this.state.globalError}/>
-              ) : null}
 
               <SupplierBankAccountEditForm
                 onChange={this.handleChange}
