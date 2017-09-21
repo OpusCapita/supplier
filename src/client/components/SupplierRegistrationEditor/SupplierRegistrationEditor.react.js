@@ -176,9 +176,9 @@ class SupplierRegistrationEditor extends Component {
     });
   }
 
-  handleAccessRequest = (fieldName, value) => {
+  handleAccessRequest = (attributes) => {
     request.post(`${this.props.actionUrl}/supplier/api/supplier_access/${this.props.user.id}`)
-      .set('Accept', 'application/json').send({ [fieldName]: value }).then(response => {
+      .set('Accept', 'application/json').send(attributes).then(response => {
         this.setState({ supplierExist: true, supplierAccess: response.body });
       });
   }

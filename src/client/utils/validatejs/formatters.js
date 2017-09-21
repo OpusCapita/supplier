@@ -5,7 +5,12 @@ module.exports.groupedDetailed = function(validate) {
       const attribute = error['attribute'];
       if (!groups[attribute]) groups[attribute] = [];
 
-      groups[attribute].push({ message: error.error, validator: error.validator, value: error.value });
+      groups[attribute].push({
+        message: error.error,
+        validator: error.validator,
+        value: error.value,
+        attributes: error.attributes
+      });
     }
 
     return groups;

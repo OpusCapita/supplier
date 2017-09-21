@@ -61,6 +61,7 @@ class SupplierRegistrationEditorForm extends Component {
             message: error.message,
             value: error.value,
             fieldName: fieldName,
+            attributes: error.attributes,
             hasLink: error.validator && error.validator.includes('Exists'),
             linkMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.requestSupplierAccess')
           };
@@ -141,7 +142,7 @@ class SupplierRegistrationEditorForm extends Component {
 
   requestSupplierAccess = (error) => {
     const { onAccessRequest } = this.props;
-    if (onAccessRequest) onAccessRequest(error.fieldName, error.value);
+    if (onAccessRequest) onAccessRequest(error.attributes);
   };
 
   handleCheckboxChange = () => {
