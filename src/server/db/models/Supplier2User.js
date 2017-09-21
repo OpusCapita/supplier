@@ -30,6 +30,9 @@ module.exports = function(sequelize) {
         isIn: [['requested', 'approved', 'rejected']]
       }
     },
+    accessReason: {
+      type: Sequelize.STRING(1000)
+    },
     createdOn: {
       type: Sequelize.DATE,
       allowNull: false
