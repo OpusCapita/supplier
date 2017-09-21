@@ -9,6 +9,7 @@ const SupplierBankAccount = require('./SupplierBankAccount');
 const Certification = require('./Certification');
 const CertificationGroup = require('./CertificationGroup');
 const Supplier = require('./Supplier');
+const Supplier2User = require('./Supplier2User');
 const SupplierCertification = require('./SupplierCertification');
 const SupplierContact = require('./SupplierContact');
 const SupplierFinancials = require('./SupplierFinancials');
@@ -23,6 +24,7 @@ module.exports.init = function(db, config)
   // db.define(...);
 
   db.import('SupplierAddress', SupplierAddress);
+  db.import('Supplier2User', Supplier2User);
   db.import('SupplierBankAccount', SupplierBankAccount);
   db.import('Certification', Certification);
   db.import('CertificationGroup', CertificationGroup);

@@ -37,6 +37,13 @@ module.exports = function(sequelize) {
     changedOn: {
       type: Sequelize.DATE,
       allowNull: false
+    },
+    accessReason: {
+      type: Sequelize.STRING(50),
+      allowNull: false,
+      validate: {
+        isIn: [['requested', 'approved', 'rejected']]
+      }
     }
   }, {
     updatedAt: 'changedOn',

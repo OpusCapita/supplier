@@ -27,7 +27,7 @@ module.exports.create = function(address)
   });
 };
 
-module.exports.update = function(supplierId, addressId, address)
+module.exports.update = function(supplierId, userId, address)
 {
   var self = this;
   return this.db.models.SupplierAddress.update(address, { where: { id: addressId } }).then(() => {
