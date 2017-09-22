@@ -1,4 +1,4 @@
-let ButtonLabel = { continue: 'Weiter', cancel: 'Abbrechen', back: 'Zurück' };
+let ButtonLabel = { continue: 'Weiter', cancel: 'Abbrechen', request: 'Anfordern' };
 
 let Select = {};
 Select.country = 'Bitte ein Land auswählen ...';
@@ -20,7 +20,8 @@ let Label = {
   dunsNo: {},
   globalLocationNo: {},
   isNewSupplier: {},
-  supplier: {}
+  supplier: {},
+  accessReason: {}
 };
 Label.supplierName.label = 'Name des Unternehmens';
 Label.supplierId.label = 'Firmen-ID';
@@ -39,6 +40,7 @@ Label.dunsNo.label = 'D-U-N-S-Nr.';
 Label.globalLocationNo.label = 'Global Location Number (GLN/ILN)';
 Label.isNewSupplier.label = 'Existierenden Lieferanten auswählen';
 Label.supplier.label = 'Lieferant';
+Label.accessReason.label = 'Zugang Grund';
 
 let SupplierRegistrationEditor = {};
 SupplierRegistrationEditor.created = 'Die Informationen auf diesem Reiter wurden erstmalig durch {by} am {on} erstellt.';

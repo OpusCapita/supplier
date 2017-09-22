@@ -7,6 +7,7 @@ module.exports = function(app, db, config) {
     this.events = new RedisEvents({ consul : { host : 'consul' } });
     app.get('/api/suppliers', (req, res) => sendSuppliers(req, res));
     app.get('/api/suppliers/exists', (req, res) => existsSuppliers(req, res));
+    app.get('/api/suppliers/search', (req, res) => querySupplier(req, res));
     app.post('/api/suppliers', (req, res) => createSuppliers(req, res));
     app.get('/api/suppliers/:supplierId', (req, res) => sendSupplier(req, res));
     app.put('/api/suppliers/:supplierId', (req, res) => updateSupplier(req, res));
@@ -39,6 +40,17 @@ let sendSuppliers = function(req, res)
 let existsSuppliers = function(req, res)
 {
   Supplier.recordExists(req.query).then(exists => res.json(exists));
+};
+
+let querySupplier = function(req, res)
+{
+  Supplier.searchRecord(req.query).then(supplier => {
+    if (supplier) {
+      res.json(supplier);
+    } else {
+      res.status('404').json(supplier);
+    }
+  });
 };
 
 let createSuppliers = function(req, res)

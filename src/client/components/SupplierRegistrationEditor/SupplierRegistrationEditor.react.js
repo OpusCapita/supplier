@@ -3,6 +3,7 @@ import request from 'superagent-bluebird-promise';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';
+import SupplierAccessRequestForm from './SupplierAccessRequestForm.react.js';
 import SupplierAccessView from './SupplierAccessView.react';
 
 /**
@@ -34,6 +35,7 @@ class SupplierRegistrationEditor extends Component {
         ...this.props.supplier
       },
       supplierAccess: null,
+      supplierAttributes: null,
       supplierExist: false,
       loading: true
     }
@@ -177,25 +179,43 @@ class SupplierRegistrationEditor extends Component {
   }
 
   handleAccessRequest = (attributes) => {
-    request.post(`${this.props.actionUrl}/supplier/api/supplier_access/${this.props.user.id}`)
-      .set('Accept', 'application/json').send(attributes).then(response => {
-        this.setState({ supplierExist: true, supplierAccess: response.body });
+    this.setState({ supplierAttributes: attributes });
+  }
+
+  handleCancelAccessRequest = () => {
+    this.setState({ supplierAttributes: null });
+  }
+
+  handleSaveAccessRequest = (ccessAttributes) => {
+    ccessAttributes.userId = this.props.user.id;
+    request.post('/supplier/api/supplier_access').set('Accept', 'application/json').send(ccessAttributes).then(response => {
+      this.setState({
+        supplierAccess: response.body,
+        supplierExist: true
       });
+    });
   }
 
   toRender = () => {
-    if (this.state.supplierExist) {
-      return <SupplierAccessView supplierAccess={ this.state.supplierAccess }/>
-    } else {
-      return <SupplierRegistrationEditorForm
-               actionUrl={ this.props.actionUrl }
-               supplier={ this.state.supplier }
-               onSupplierChange={ this.handleUpdate }
-               onChange={ this.handleChange }
-               onCancel={ this.props.onLogout }
-               onAccessRequest={ this.handleAccessRequest }
+    if (this.state.supplierExist) return <SupplierAccessView supplierAccess={ this.state.supplierAccess }/>
+
+    if (this.state.supplierAttributes) {
+      return <SupplierAccessRequestForm
+              supplierAttributes={ this.state.supplierAttributes }
+              userId={ this.props.user.id }
+              onCreateSupplierAccess={ this.handleSaveAccessRequest }
+              onCancel={ this.handleCancelAccessRequest }
              />
     }
+
+    return <SupplierRegistrationEditorForm
+             actionUrl={ this.props.actionUrl }
+             supplier={ this.state.supplier }
+             onSupplierChange={ this.handleUpdate }
+             onChange={ this.handleChange }
+             onCancel={ this.props.onLogout }
+             onAccessRequest={ this.handleAccessRequest }
+           />
   }
 
   render() {

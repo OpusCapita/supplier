@@ -1,4 +1,4 @@
-let ButtonLabel = { continue: 'Continue', cancel: 'Cancel', back: 'Back To Form' };
+let ButtonLabel = { continue: 'Continue', cancel: 'Cancel', request: 'Request' };
 
 let Select = {};
 Select.country = 'Select country...';
@@ -20,7 +20,8 @@ let Label = {
   dunsNo: {},
   globalLocationNo: {},
   isNewSupplier: {},
-  supplier: {}
+  supplier: {},
+  accessReason: {}
 };
 Label.supplierName.label = 'Company Name';
 Label.supplierId.label = 'Company ID';
@@ -39,6 +40,7 @@ Label.dunsNo.label = 'D-U-N-S Number';
 Label.globalLocationNo.label = 'Global Location Number';
 Label.isNewSupplier.label = 'Select existing company';
 Label.supplier.label = 'Company';
+Label.accessReason.label = 'Access Reason';
 
 let SupplierRegistrationEditor = {};
 SupplierRegistrationEditor.created = 'Information on this page was initially created by {by} on {on}.';
