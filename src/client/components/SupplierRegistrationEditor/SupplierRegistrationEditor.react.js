@@ -49,14 +49,17 @@ class SupplierRegistrationEditor extends Component {
   }
 
   componentDidMount() {
-    request.get(`${this.props.actionUrl}/supplier/api/supplier_access/${this.props.user.id}`).
-      set('Accept', 'application/json').then(response => {
+    request.get(`/supplier/api/supplier_access/${this.props.user.id}`).set('Accept', 'application/json').then(response => {
         const supplierAccess = response.body;
-        this.setState({
-          loading: false,
-          supplierAccess: supplierAccess,
-          supplierExist: supplierAccess && Boolean(supplierAccess.supplierId)
-        });
+        const supplierId = supplierAccess ? supplierAccess.supplierId : undefined;
+
+        this.setState({ loading: false, supplierAccess: supplierAccess, supplierExist: Boolean(supplierId) });
+
+        if (supplierId) {
+          request.get(`/supplier/api/suppliers/${supplierId}`).set('Accept', 'application/json').then(response => {
+            this.setState({ supplier: response.body });
+          }).catch(error => null);
+        }
       }).catch(error => {
         return this.setState({ loading: false, supplierExist: false });
       });
@@ -186,18 +189,22 @@ class SupplierRegistrationEditor extends Component {
     this.setState({ supplierAttributes: null });
   }
 
-  handleSaveAccessRequest = (ccessAttributes) => {
-    ccessAttributes.userId = this.props.user.id;
-    request.post('/supplier/api/supplier_access').set('Accept', 'application/json').send(ccessAttributes).then(response => {
+  handleSaveAccessRequest = (accessAttributes, supplier) => {
+    accessAttributes.userId = this.props.user.id;
+    request.post('/supplier/api/supplier_access').set('Accept', 'application/json').send(accessAttributes).then(response => {
       this.setState({
         supplierAccess: response.body,
-        supplierExist: true
+        supplierExist: true,
+        supplier: supplier
       });
     });
   }
 
   toRender = () => {
-    if (this.state.supplierExist) return <SupplierAccessView supplierAccess={ this.state.supplierAccess }/>
+    if (this.state.supplierExist) return <SupplierAccessView
+                                          supplierAccess={ this.state.supplierAccess }
+                                          supplier={ this.state.supplier }
+                                         />
 
     if (this.state.supplierAttributes) {
       return <SupplierAccessRequestForm

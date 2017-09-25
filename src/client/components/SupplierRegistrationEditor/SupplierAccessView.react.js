@@ -10,11 +10,12 @@ class SupplierAccessView extends Component {
   };
 
   render() {
+    const status = this.context.i18n.getMessage(`SupplierRegistrationEditor.Messages.supplierAccessRequestStatus.${this.props.supplierAccess.status}`);
     return (
-      <div className="jumbotron">
-        <h4>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierExistsHeader')}</h4>
-        <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierExistsText')}</p>
-        <p>{'Current Status: '} <span>{this.props.supplierAccess.status}</span></p>
+      <div className="alert alert-info">
+        <h5>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestHeader', { name: this.props.supplier.supplierName })}</h5>
+        <p><strong>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestStatus.text')}: {status}</strong></p>
+        <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestText')}</p>
       </div>
     );
   }

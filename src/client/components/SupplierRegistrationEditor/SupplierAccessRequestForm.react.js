@@ -71,7 +71,7 @@ class SupplierAccessRequestForm extends Component {
     const errors = validator(supplierAccess, this.constraints, { fullMessages: false });
     this.setFieldErrorsState(errors);
 
-    if (!errors) this.props.onCreateSupplierAccess(supplierAccess);
+    if (!errors) this.props.onCreateSupplierAccess(supplierAccess, supplier);
   };
 
   renderField = (attrs) => {
