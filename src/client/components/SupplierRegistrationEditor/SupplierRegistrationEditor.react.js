@@ -79,14 +79,42 @@ class SupplierRegistrationEditor extends Component {
     }
   }
 
+  createContact = () => {
+    const supplier = this.state.supplier;
+    const user = this.props.user;
+    const contact = {
+        contactType: "Default",
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        supplierId: supplier.supplierId,
+        createdBy: user.id,
+        changedBy: user.id
+    }
+
+    return request.post(`/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
+    set('Accept', 'application/json').send(contact).then(response => {
+      console.log('contact created');
+
+      if (this.props.onUpdate) {
+        this.props.onUpdate({ supplierId: supplier.supplierId, supplierName: supplier.supplierName });
+      }
+
+      if (this.props.onChange) {
+        this.props.onChange({ isDirty: false });
+      }
+
+      return Promise.resolve(null);
+    }).catch(err => {
+      console.error('error creating contact: ' + err);
+      throw err;
+    })
+  }
+
   handleChange = () => {
     if (this.props.onChange) {
       this.props.onChange({ isDirty: true });
     }
-  }
-
-  handleBackToForm = () => {
-    this.setState({ supplierExist: false });
   }
 
   handleUpdate = newSupplier => {
@@ -106,75 +134,38 @@ class SupplierRegistrationEditor extends Component {
       promise();
 
     return this.createSupplierPromise.then(response => {
-      this.setState({
-        supplier: response.body
-      });
+      this.setState({ supplier: response.body });
+
       if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info')
-      const { supplier } = this.state;
+        this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info');
 
       // we need to refresh the id token before we can do any calls to backend as supplier user
       return request.post('/refreshIdToken').set('Content-Type', 'application/json').then((resp) => {
         console.log("id token refreshed");
 
-        const user = this.props.user;
-        const contact = {
-            contactId: `${user.id}_${supplier.supplierId}`,
-            contactType: "Default",
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            supplierId: supplier.supplierId,
-            createdBy: user.id,
-            changedBy: user.id
-        }
-
-        return request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
-        set('Accept', 'application/json').send(contact).then(response => {
-          console.log('contact created');
-
-          if (this.props.onUpdate) {
-            this.props.onUpdate({
-              supplierId: supplier.supplierId,
-              supplierName: supplier.supplierName
-            });
-          }
-
-          if (this.props.onChange) {
-            this.props.onChange({ isDirty: false });
-          }
-
-          return Promise.resolve(null);
-        }).catch(err => {
-          console.error('error creating contact: ' + err);
-          throw err;
-        })
+        this.createContact();
       }).catch(err => {
         console.err('error refreshing idToken: ' + err);
         throw err;
       });
     }).
     catch(errors => {
-      this.setState({
-        supplier: newSupplier
-      })
+      this.setState({ supplier: newSupplier });
 
       switch (errors.status) {
         case 403: case 405:
           if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'), 'error')
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'), 'error');
           break;
         case 401:
           this.props.onUnauthorized();
           break;
         case 409:
-          this.setState({
-            supplierExist: true
-          });
+          this.setState({ supplierExist: true });
           break;
         default:
           if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'), 'error')
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'), 'error');
       }
 
       return Promise.resolve(null);
@@ -204,6 +195,7 @@ class SupplierRegistrationEditor extends Component {
     if (this.state.supplierExist) return <SupplierAccessView
                                           supplierAccess={ this.state.supplierAccess }
                                           supplier={ this.state.supplier }
+                                          onAccessConfirm= { this.createContact }
                                          />
 
     if (this.state.supplierAttributes) {

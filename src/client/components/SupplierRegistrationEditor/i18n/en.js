@@ -1,4 +1,4 @@
-let ButtonLabel = { continue: 'Continue', cancel: 'Cancel', request: 'Request' };
+let ButtonLabel = { continue: 'Continue', cancel: 'Cancel', request: 'Request', access: 'Access' };
 
 let Select = {};
 Select.country = 'Select country...';
@@ -54,11 +54,12 @@ Messages.unableToRender = 'Unable to render editor';
 Messages.saved = 'Data is successfully saved';
 Messages.failed = 'Supplier creation failed.';
 Messages.failedUnauthorized = 'Supplier creation failed: not authorized.';
-Messages.supplierAccessRequestHeader = 'You have requested access to the company {name}';
+Messages.supplierAccessRequestHeader = 'You have requested access to the company {name}.';
 Messages.supplierAccessRequestText = 'Please reach out to our support at +49 231 3967 350 or customerservice.de@opuscapita.com for further information.';
 Messages.supplierAccessRequestStatus.text = 'Current status';
 Messages.supplierAccessRequestStatus.requested = 'requested';
 Messages.supplierAccessRequestStatus.rejected = 'rejected';
+Messages.supplierAccessRequestStatus.approved = 'approved';
 Messages.information1 = 'Please provide information that helps us to uniquely identify your company and allows us to add it to our trading partner directory.';
 Messages.information2 = 'After providing this information you are ready to login.';
 Messages.requestSupplierAccess = 'Request Access';

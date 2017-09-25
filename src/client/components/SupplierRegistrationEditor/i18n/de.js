@@ -1,4 +1,4 @@
-let ButtonLabel = { continue: 'Weiter', cancel: 'Abbrechen', request: 'Anfordern' };
+let ButtonLabel = { continue: 'Weiter', cancel: 'Abbrechen', request: 'Anfordern', access: 'Zugreifen' };
 
 let Select = {};
 Select.country = 'Bitte ein Land auswählen ...';
@@ -54,11 +54,12 @@ Messages.unableToRender = 'Der Editor kann nicht geöffnet werden';
 Messages.saved = 'Die Daten wurden erfolgreich gespeichert';
 Messages.failed = 'Lieferantenerstellung fehlgeschlagen.';
 Messages.failedUnauthorized = 'Lieferantenerstellung fehlgeschlagen: nicht autorisiert.';
-Messages.supplierAccessRequestHeader = 'Sie haben den Zugang zum Firma {name} beantragt';
+Messages.supplierAccessRequestHeader = 'Sie haben den Zugang zum Firma {name} beantragt.';
 Messages.supplierAccessRequestText = 'Bitte kontaktieren Sie unseren Support via +49 231 3967 350 oder customerservice.de@opuscapita.com für weitere Informationen.';
 Messages.supplierAccessRequestStatus.text = 'Aktuelle Status';
 Messages.supplierAccessRequestStatus.requested = 'angefordert';
 Messages.supplierAccessRequestStatus.rejected = 'abgelehnt';
+Messages.supplierAccessRequestStatus.approved = 'genehmigt';
 Messages.information1 = 'Bitte hinterlegen Sie hier Informationen zur eindeutigen Identifizierung Ihres Unternehmens.'
 Messages.information2 = 'Bitte füllen Sie alle mit Stern markierten Pflichtfelder aus, um mit der Registrierung fortfahren zu können.'
 Messages.requestSupplierAccess = 'Zugang anfordern';
