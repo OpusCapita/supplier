@@ -81,7 +81,7 @@ module.exports.searchRecord = function(query)
 
   if (query.supplierName) rawQueryArray.push(equalSQL('SupplierName', query.supplierName));
   if (query.vatIdentificationNo) rawQueryArray.push(equalSQL('VatIdentificationNo', query.vatIdentificationNo));
-  if (query.dunsNo) rawQueryArray.push(similar('DUNSNo', query.dunsNo));
+  if (query.dunsNo) rawQueryArray.push(equalSQL('DUNSNo', query.dunsNo));
   if (query.globalLocationNo) rawQueryArray.push(equalSQL('GlobalLocationNo', query.globalLocationNo));
 
   if (query.commercialRegisterNo) {
@@ -163,7 +163,9 @@ let supplierWithAssociations = function(supplier)
 
 let normalize = function(supplier)
 {
-  if (supplier.vatIdentificationNo) supplier.vatIdentificationNo = supplier.vatIdentificationNo.replace(/\s+/g, '');
+  for (const fieldName of ['vatIdentificationNo', 'dunsNo']) {
+    if (supplier[fieldName]) supplier[fieldName] = supplier[fieldName].replace(/\s+/g, '');
+  }
   for (const fieldName of ['supplierName', 'commercialRegisterNo', 'cityOfRegistration', 'taxIdentificationNo']) {
     if (supplier[fieldName]) supplier[fieldName] = supplier[fieldName].trim();
   }
