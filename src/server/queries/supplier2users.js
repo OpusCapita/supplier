@@ -18,12 +18,3 @@ module.exports.create = function(supplier2user)
 {
   return this.db.models.Supplier2User.create(supplier2user);
 };
-
-module.exports.update = function(userId, supplier2user)
-{
-  var self = this;
-  return this.db.models.Supplier2User.update(supplier2user, { where: { userId: userId } }).then(() => {
-    return self.find(userId);
-  });
-};
-

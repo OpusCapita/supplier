@@ -2,7 +2,8 @@ import React, { PropTypes, Component } from 'react';
 
 class SupplierAccessView extends Component {
   static propTypes = {
-    supplierAccess: PropTypes.object
+    supplierAccess: PropTypes.object,
+    supplier: PropTypes.object
   };
 
   static contextTypes = {
