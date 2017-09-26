@@ -50,19 +50,19 @@ class SupplierRegistrationEditor extends Component {
 
   componentDidMount() {
     request.get(`/supplier/api/supplier_access/${this.props.user.id}`).set('Accept', 'application/json').then(response => {
-        const supplierAccess = response.body;
-        const supplierId = supplierAccess ? supplierAccess.supplierId : undefined;
+      const supplierAccess = response.body;
+      const supplierId = supplierAccess ? supplierAccess.supplierId : undefined;
 
-        this.setState({ loading: false, supplierAccess: supplierAccess, supplierExist: Boolean(supplierId) });
+      this.setState({ loading: false, supplierAccess: supplierAccess, supplierExist: Boolean(supplierId) });
 
-        if (supplierId) {
-          request.get(`/supplier/api/suppliers/${supplierId}`).set('Accept', 'application/json').then(response => {
-            this.setState({ supplier: response.body });
-          }).catch(error => null);
-        }
-      }).catch(error => {
-        return this.setState({ loading: false, supplierExist: false });
-      });
+      if (supplierId) {
+        request.get(`/supplier/api/suppliers/${supplierId}`).set('Accept', 'application/json').then(response => {
+          this.setState({ supplier: response.body });
+        }).catch(error => null);
+      }
+    }).catch(error => {
+      return this.setState({ loading: false, supplierExist: false });
+    });
   }
 
   componentWillReceiveProps(nextProps, nextContext) {

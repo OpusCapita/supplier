@@ -33,9 +33,7 @@ class SupplierAccessRequestForm extends Component {
   componentDidMount() {
     const query = this.props.supplierAttributes;
     request.get('/supplier/api/suppliers/search').query(query).set('Accept', 'application/json').then(response => {
-      this.setState({
-        supplier: response.body
-      });
+      this.setState({ supplier: response.body });
     }).catch(error => null);
   }
 
