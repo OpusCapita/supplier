@@ -121,7 +121,7 @@ let updateSupplier = function(req, res)
         return this.events.emit(supplier, 'supplier').then(() => res.status('200').json(supplier));
       });
     } else {
-      const message = 'A supplier with this ID does not exist.';
+      const message = 'A supplier with ID ' + supplierId + ' does not exist.';
       req.opuscapita.logger.error('Error when updating Supplier: %s', message);
       return res.status('404').json({ message : message });
     }

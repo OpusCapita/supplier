@@ -6,6 +6,7 @@ Promise.all([Supplier2Users.init(db, config), Suppliers.init(db, config)]).then(
   {
     app.post('/api/supplier_access', (req, res) => createSupplierAccess(req, res));
     app.get('/api/supplier_access/:userId', (req, res) => sendSupplierAccess(req, res));
+    app.put('/api/grant_supplier_access', (req, res) => addSupplierToUser(req, res));
   });
 };
 
@@ -32,5 +33,34 @@ let createSupplierAccess = function(req, res)
 
         return res.status('400').json({ message : error.message });
       });
+  });
+}
+
+let addSupplierToUser = function(req, res)
+{
+  const supplierId = req.body.supplierId;
+
+  return Suppliers.exists(supplierId).then(exists =>
+  {
+    if(exists) {
+      const userId = req.body.userId;
+      const supplierToUserPromise = req.opuscapita.serviceClient.put('user', `/api/users/${userId}`, { supplierId: supplierId, roles: ['supplier'] }, true);
+
+      return supplierToUserPromise.then(() => {
+          return res.status('200').json({ message: 'Supplier successfully added to user' });
+        })
+        .catch(error => {
+          req.opuscapita.logger.error('Error when adding Supplier to User: %s', error.message);
+          return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
+        });
+    } else {
+      const message = 'A supplier with ID ' + supplierId + ' does not exist.';
+      req.opuscapita.logger.error('Error when adding Supplier to User: %s', message);
+      return res.status('404').json({ message : message });
+    }
+  })
+  .catch(error => {
+    req.opuscapita.logger.error('Error when adding Supplier to User: %s', error.message);
+    return res.status('400').json({ message : error.message });
   });
 }

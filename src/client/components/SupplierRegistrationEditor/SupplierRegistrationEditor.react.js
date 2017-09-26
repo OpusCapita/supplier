@@ -77,38 +77,49 @@ class SupplierRegistrationEditor extends Component {
     if (this.createSupplierPromise) {
       this.createSupplierPromise.cancel();
     }
+
+    if (this.grantSupplierAccessPromise) {
+      this.grantSupplierAccessPromise.cancel();
+    }
   }
 
-  createContact = () => {
-    const supplier = this.state.supplier;
-    const user = this.props.user;
-    const contact = {
-        contactType: "Default",
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        supplierId: supplier.supplierId,
-        createdBy: user.id,
-        changedBy: user.id
-    }
+  postSupplierCreate = () => {
+    return request.post('/refreshIdToken').set('Content-Type', 'application/json').then(() => {
+      console.log("id token refreshed");
 
-    return request.post(`/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
-    set('Accept', 'application/json').send(contact).then(response => {
-      console.log('contact created');
-
-      if (this.props.onUpdate) {
-        this.props.onUpdate({ supplierId: supplier.supplierId, supplierName: supplier.supplierName });
+      const supplier = this.state.supplier;
+      const user = this.props.user;
+      const contact = {
+          contactType: "Default",
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          supplierId: supplier.supplierId,
+          createdBy: user.id,
+          changedBy: user.id
       }
 
-      if (this.props.onChange) {
-        this.props.onChange({ isDirty: false });
-      }
+      return request.post(`/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
+      set('Accept', 'application/json').send(contact).then(response => {
+        console.log('contact created');
 
-      return Promise.resolve(null);
+        if (this.props.onUpdate) {
+          this.props.onUpdate({ supplierId: supplier.supplierId, supplierName: supplier.supplierName });
+        }
+
+        if (this.props.onChange) {
+          this.props.onChange({ isDirty: false });
+        }
+
+        return Promise.resolve(null);
+      }).catch(err => {
+        console.error('error creating contact: ' + err);
+        throw err;
+      })
     }).catch(err => {
-      console.error('error creating contact: ' + err);
+      console.err('error refreshing idToken: ' + err);
       throw err;
-    })
+    });
   }
 
   handleChange = () => {
@@ -128,10 +139,8 @@ class SupplierRegistrationEditor extends Component {
       changedBy: this.props.user.id
     };
 
-    this.createSupplierPromise = request.post(`${this.props.actionUrl}/supplier/api/suppliers`).
-      set('Accept', 'application/json').
-      send(newSupplier).
-      promise();
+    this.createSupplierPromise = request.post(`/supplier/api/suppliers`).set('Accept', 'application/json').
+      send(newSupplier).promise();
 
     return this.createSupplierPromise.then(response => {
       this.setState({ supplier: response.body });
@@ -139,15 +148,7 @@ class SupplierRegistrationEditor extends Component {
       if(this.context.showNotification)
         this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info');
 
-      // we need to refresh the id token before we can do any calls to backend as supplier user
-      return request.post('/refreshIdToken').set('Content-Type', 'application/json').then((resp) => {
-        console.log("id token refreshed");
-
-        this.createContact();
-      }).catch(err => {
-        console.err('error refreshing idToken: ' + err);
-        throw err;
-      });
+      return this.postSupplierCreate();
     }).
     catch(errors => {
       this.setState({ supplier: newSupplier });
@@ -169,6 +170,19 @@ class SupplierRegistrationEditor extends Component {
       }
 
       return Promise.resolve(null);
+    });
+  }
+
+  handleAccess = () => {
+    const body = { supplierId: this.state.supplier.supplierId, userId: this.props.user.id };
+    this.grantSupplierAccessPromise = request.put(`/supplier/api/grant_supplier_access`).
+      set('Accept', 'application/json').send(body).promise();
+
+    this.grantSupplierAccessPromise.then(() => {
+      return this.postSupplierCreate();
+    }).catch(errors => {
+      if(this.context.showNotification)
+        this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'), 'error');
     });
   }
 
@@ -195,7 +209,7 @@ class SupplierRegistrationEditor extends Component {
     if (this.state.supplierExist) return <SupplierAccessView
                                           supplierAccess={ this.state.supplierAccess }
                                           supplier={ this.state.supplier }
-                                          onAccessConfirm= { this.createContact }
+                                          onAccessConfirm= { this.handleAccess }
                                          />
 
     if (this.state.supplierAttributes) {
