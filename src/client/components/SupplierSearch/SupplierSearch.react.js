@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import i18nMessages from './i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import styles from './SupplierSearch.css';
+import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
+import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
+require('./SupplierSearch.css');
 
 export default class SupplierSearch extends Component {
 
@@ -16,10 +18,16 @@ export default class SupplierSearch extends Component {
   };
 
   componentWillMount(){
+    let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
+    const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
+    this.externalComponents = { CountryField };
+    this.constraints = new SupplierConstraints(this.context.i18n);
     this.context.i18n.register('SupplierSearch', i18nMessages);
   }
 
   renderSearchBox() {
+    const { CountryField } = this.externalComponents;
+
     return (<div className="form-group search-box">
       <label className="col-xs-12 col-sm-6 col-md-4 control-label">Company Name</label>
       <input className="form-control"/>
@@ -28,7 +36,11 @@ export default class SupplierSearch extends Component {
       <label className="col-xs-12 col-sm-6 col-md-4 control-label">City of Registration</label>
       <input className="form-control"/>
       <label className="col-xs-12 col-sm-6 col-md-4 control-label">Country of Registration</label>
-      <input className="form-control"/>
+      <CountryField
+        actionUrl={this.props.actionUrl}
+        optional={true}
+        locale={this.context.i18n.locale}
+      />
       <label className="col-xs-12 col-sm-6 col-md-4 control-label">Tax Identification Number</label>
       <input className="form-control"/>
       <label className="col-xs-12 col-sm-6 col-md-4 control-label">VAT Identification Number</label>
