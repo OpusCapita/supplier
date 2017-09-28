@@ -1,36 +1,71 @@
 import React, { Component, PropTypes } from 'react';
 import i18nMessages from './i18n';
-import SupplierExistsView from '../SupplierRegistrationEditor/SupplierExistsView.react';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 
 export default class SupplierSearch extends Component {
 
-  static propTypes = {
-
-  };
-
-  static defaultProps = {
-
-  };
+  constructor(props) {
+    super(props);
+  }
 
   static contextTypes = {
     i18n : React.PropTypes.object.isRequired,
     showNotification: React.PropTypes.func
   };
 
-  constructor(props) {
-    super(props);
+  componentWillMount(){
+    this.context.i18n.register('SupplierSearch', i18nMessages);
   }
 
-  toRender() {
-      return <SupplierExistsView i18n={this.context.i18n} onBack={ this.handleBackToForm }/>
+  renderTable() {
+
+    const data = [{
+      companyName: 'E-Farm AG',
+      registrationNumber: 'MI342323',
+      cityOfRegistration: 'Hamburg',
+      countryOfRegistration: 'Germany',
+      taxIdNumber: 'T-534324',
+      vatRegistrationNumber: 'DE169838187',
+      dunsNumber: 'DE169838187',
+    }];
+
+    const columns = [{
+      Header: 'Company Name',
+      accessor: 'companyName'
+    }, {
+      Header: 'Registration Number',
+      accessor: 'registrationNumber'
+    }, {
+      Header: 'City Of Registration',
+      accessor: 'cityOfRegistration'
+    }, {
+      Header: 'Country Of Registration',
+      accessor:'countryOfRegistration'
+    }, {
+      Header: 'Tax Identification Number',
+      accessor: 'taxNumber'
+    }, {
+      Header: 'VAT Identification Number',
+      accessor: 'vatRegistrationNumber'
+    }, {
+      Header: 'Global Location Number',
+      accessor:'globalLocation'
+    },{
+      Header: 'D-U-N-S Number',
+      accessor:'dunsNumber'
+    }];
+
+    return (<ReactTable
+      data={data}
+      columns={columns}
+    />)
   }
 
   render() {
-    return (<div className="container supplier-registration-container">
-          <div className='box' id='supplier-registration'>
-            <p>{this.context.i18n.getMessage('SupplierSearch.Messages.created')}</p>
-            { this.toRender() }
-          </div>
-        </div>)
+    return (
+      <div className="table-responsive">
+          { this.renderTable() }
+      </div>)
   }
 }
