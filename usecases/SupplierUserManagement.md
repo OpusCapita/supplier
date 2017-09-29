@@ -1,14 +1,16 @@
-# Prerequisites
+# Supplier User Management
+
+## Prerequisites
 
 User is supplier admin
 
-# View Users
+## View Users
 
 Supplier admin sees a menu item Company/User Management
 This will bring up the user admin editor (user service), which basically allows the supplier admin to manage the supplier's users.
 see [User Management](/OpusCapita/user/usecases/UserManagement.md)
 
-# Turn contact into a user
+## Turn contact into a user
 
 The Supplier admin can create contacts via the Company/Profile editor.
 Each contact can have two states:
