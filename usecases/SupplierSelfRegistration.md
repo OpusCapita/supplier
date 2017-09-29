@@ -21,13 +21,13 @@ User gets a on-screen message that a company with same Name, VATID, any other un
 The user then gets an option to start an access workflow that will
 * allow the requesting user to enter an access justification text
 * create an access request for the user to the existing supplier in the system
-* notify the supplier-admin user(s) of the existing supplier that a users is requesting access (via email including link)
+* notify the `supplier-admin` user(s) of the existing supplier that a users is requesting access (via email including link)
 
 The receiving supplier can then process the access request and finally deny or approve (see [User Access Request](UserAccessRequest.md) )
 
 Once access is approved, the requesting user
-* is assigned to the approving supplier
 * receives an email notification about the approval and info that he/she can now login to the system
 
-
-
+The requesting user can then login and finish the access workflow that will
+* is assigned the user to the supplier
+* grant the user a `supplier` role
