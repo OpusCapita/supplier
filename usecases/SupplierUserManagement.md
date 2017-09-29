@@ -8,7 +8,7 @@ User is supplier admin
 
 Supplier admin sees a menu item Company/User Management
 This will bring up the user admin editor (user service), which basically allows the supplier admin to manage the supplier's users.
-see [User Management](/OpusCapita/user/usecases/UserManagement.md)
+see [User Management](https://github.com/OpusCapita/user/blob/develop/usecases/UserManagement.md)
 
 ## Turn contact into a user
 
