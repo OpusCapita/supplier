@@ -1,6 +1,6 @@
 # Supplier Self Registration
 
-#### Prerequisite 
+## Prerequisite 
 User is registered to Business Network already and has no tenant assigned yet
 
 ## Company Registration form
