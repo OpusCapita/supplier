@@ -1,4 +1,4 @@
-# Prerequisites
+# User Access Request
 
 Supplier admin receives access request email notification
 
