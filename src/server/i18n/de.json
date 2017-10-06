@@ -1,9 +1,9 @@
 {
   "email": {
     "accessRequest": {
-      "subject": "OpusCapita - User Access Request",
-      "text1": "A user has requested access to your company account.",
-      "text2": "Please click the link below to approve or reject the request."
+      "subject": "OpusCapita - Benutzerzugriffsanforderung",
+      "text1": "Ein Benutzer hat den Zugriff auf Ihr Firmenkonto beantragt.",
+      "text2": "Bitte klicken Sie unten, um die Anfrage zu genehmigen oder abzulehnen."
     }
   }
 }
