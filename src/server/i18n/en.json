@@ -1,0 +1,9 @@
+{
+  "email": {
+    "accessRequest": {
+      "subject": "OpusCapita - User Access Request",
+      "text1": "A user has requested access to your company account.",
+      "text2": "Please click the link below to approve or reject the request."
+    }
+  }
+}
