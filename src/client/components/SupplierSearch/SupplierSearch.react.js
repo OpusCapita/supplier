@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import i18nMessages from './i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import request from 'superagent-bluebird-promise';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 require('./SupplierSearch.css');
@@ -10,7 +11,14 @@ export default class SupplierSearch extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      data: []
+    }
   }
+
+  static propTypes = {
+    actionUrl: React.PropTypes.string.isRequired
+  };
 
   static contextTypes = {
     i18n : React.PropTypes.object.isRequired,
@@ -25,15 +33,20 @@ export default class SupplierSearch extends Component {
     this.context.i18n.register('SupplierSearch', i18nMessages);
   }
 
+  searchSupplier() {
+    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers`);
+    let result = getRequest.set('Accept', 'application/json').promise();
+    result.then((data) => {
+      this.setState({
+        data: data.body
+      });
+    });
+  }
+
   renderSearchBox() {
     const { CountryField } = this.externalComponents;
-
     return (<div className="form-group search-box">
-      <label className="col-xs-12 col-sm-6 col-md-4 control-label">Company Name</label>
-      <input className="form-control"/>
-      <label className="col-xs-12 col-sm-6 col-md-4 control-label">Registration Number</label>
-      <input className="form-control"/>
-      <label className="col-xs-12 col-sm-6 col-md-4 control-label">City of Registration</label>
+      <label className="col-xs-12 col-sm-6 col-md-4 control-label">Search by</label>
       <input className="form-control"/>
       <label className="col-xs-12 col-sm-6 col-md-4 control-label">Country of Registration</label>
       <CountryField
@@ -41,57 +54,43 @@ export default class SupplierSearch extends Component {
         optional={true}
         locale={this.context.i18n.locale}
       />
-      <label className="col-xs-12 col-sm-6 col-md-4 control-label">Tax Identification Number</label>
-      <input className="form-control"/>
-      <label className="col-xs-12 col-sm-6 col-md-4 control-label">VAT Identification Number</label>
-      <input className="form-control"/>
-      <label className="col-xs-12 col-sm-6 col-md-4 control-label">Global Location Number</label>
-      <input className="form-control"/>
-      <label className="col-xs-12 col-sm-6 col-md-4control-label">D-U-N-S Number</label><input className="form-control"/>
       <div className="text-right form-submit">
         <button className="btn btn-link">Cancel</button>
-        <button className="btn btn-primary">Search</button>
+        <button className="btn btn-primary" onClick={this.searchSupplier.bind(this)}>Search</button>
       </div>
     </div>)
   }
 
-  renderTable() {
+  renderTable(data) {
 
-    const data = [{
-      companyName: 'E-Farm AG',
-      registrationNumber: 'MI342323',
-      cityOfRegistration: 'Hamburg',
-      countryOfRegistration: 'Germany',
-      taxIdNumber: 'T-534324',
-      vatRegistrationNumber: 'DE169838187',
-      dunsNumber: 'DE169838187',
-    }];
-
-    const columns = [{
-      Header: 'Company Name',
-      accessor: 'companyName'
-    }, {
-      Header: 'Registration Number',
-      accessor: 'registrationNumber'
-    }, {
-      Header: 'City Of Registration',
-      accessor: 'cityOfRegistration'
-    }, {
-      Header: 'Country Of Registration',
-      accessor:'countryOfRegistration'
-    }, {
-      Header: 'Tax Identification Number',
-      accessor: 'taxNumber'
-    }, {
-      Header: 'VAT Identification Number',
-      accessor: 'vatRegistrationNumber'
-    }, {
-      Header: 'Global Location Number',
-      accessor:'globalLocation'
-    },{
-      Header: 'D-U-N-S Number',
-      accessor:'dunsNumber'
-    }];
+    const columns = [
+      {
+        Header: 'Company Name',
+        accessor: 'supplierName'
+      },
+      {
+        Header: 'Country of Registration',
+        accessor: 'countryOfRegistration'
+      },
+      {
+        Header: 'Registration Number',
+        accessor: 'commercialRegisterNo'
+      }, {
+        Header: 'City Of Registration',
+        accessor: 'cityOfRegistration'
+      }, {
+        Header: 'Tax Identification Number',
+        accessor: 'taxIdentificationNo'
+      }, {
+        Header: 'VAT Identification Number',
+        accessor: 'vatIdentificationNo'
+      }, {
+        Header: 'Global Location Number',
+        accessor:'globalLocationNo'
+      },{
+        Header: 'D-U-N-S Number',
+        accessor:'dunsNo'
+      }];
 
     return (<ReactTable
       data={data}
@@ -105,7 +104,7 @@ export default class SupplierSearch extends Component {
     return (<div>
       { this.renderSearchBox() }
       <div className="table-responsive">
-        { this.renderTable() }
+        { this.renderTable(this.state.data) }
       </div>
     </div>)
   }

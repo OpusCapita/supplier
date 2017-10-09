@@ -77,7 +77,9 @@ let contactEditor = (
 );
 
 let searchEditor = (
-  <SupplierSearch/>
+  <SupplierSearch
+    actionUrl={actionUrl}
+  />
 );
 
 let bankEditor = (
