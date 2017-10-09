@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import i18nMessages from './i18n';
+import SupplierSearchLocales from './i18n';
+import SupplierEditorLocales from './../SupplierEditor/i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import request from 'superagent-bluebird-promise';
@@ -12,6 +13,10 @@ export default class SupplierSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      form: {
+        country: '',
+        keyword: '',
+      },
       data: []
     }
   }
@@ -30,24 +35,30 @@ export default class SupplierSearch extends Component {
     const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
     this.externalComponents = { CountryField };
     this.constraints = new SupplierConstraints(this.context.i18n);
-    this.context.i18n.register('SupplierSearch', i18nMessages);
+    this.context.i18n.register('SupplierEditorLocales', SupplierEditorLocales);
   }
 
   searchSupplier() {
     const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers`);
     let result = getRequest.set('Accept', 'application/json').promise();
     result.then((data) => {
-      this.setState({
+      const oldState = this.state;
+      const newState = Object.assign({}, oldState, {
         data: data.body
       });
+      this.setState(newState);
     });
+  }
+
+  onChange() {
+
   }
 
   renderSearchBox() {
     const { CountryField } = this.externalComponents;
     return (<div className="form-group search-box">
-      <label className="col-xs-12 col-sm-6 col-md-4 control-label">Search by</label>
-      <input className="form-control"/>
+      <label className="col-xs-12 col-sm-6 col-md-4 control-label" >Search by</label>
+      <input className="form-control" onChange={} />
       <label className="col-xs-12 col-sm-6 col-md-4 control-label">Country of Registration</label>
       <CountryField
         actionUrl={this.props.actionUrl}
@@ -62,33 +73,32 @@ export default class SupplierSearch extends Component {
   }
 
   renderTable(data) {
-
     const columns = [
       {
-        Header: 'Company Name',
+        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.supplierName'),
         accessor: 'supplierName'
       },
       {
-        Header: 'Country of Registration',
+        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.countryOfRegistration'),
         accessor: 'countryOfRegistration'
       },
       {
-        Header: 'Registration Number',
+        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.commercialRegisterNo'),
         accessor: 'commercialRegisterNo'
       }, {
-        Header: 'City Of Registration',
+        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.cityOfRegistration'),
         accessor: 'cityOfRegistration'
       }, {
-        Header: 'Tax Identification Number',
+        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.taxIdentificationNo'),
         accessor: 'taxIdentificationNo'
       }, {
-        Header: 'VAT Identification Number',
+        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.vatIdentificationNo'),
         accessor: 'vatIdentificationNo'
       }, {
-        Header: 'Global Location Number',
+        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.globalLocationNo'),
         accessor:'globalLocationNo'
       },{
-        Header: 'D-U-N-S Number',
+        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.dunsNo'),
         accessor:'dunsNo'
       }];
 
