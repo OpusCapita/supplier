@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import SupplierSearchLocales from './i18n';
 import SupplierEditorLocales from './../SupplierEditor/i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import request from 'superagent-bluebird-promise';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
+import DisplayCountryTableField from '../DisplayTable/DisplayCountryTableField.react';
 require('./SupplierSearch.css');
 
 export default class SupplierSearch extends Component {
@@ -50,15 +50,11 @@ export default class SupplierSearch extends Component {
     });
   }
 
-  onChange() {
-
-  }
-
   renderSearchBox() {
     const { CountryField } = this.externalComponents;
     return (<div className="form-group search-box">
       <label className="col-xs-12 col-sm-6 col-md-4 control-label" >Search by</label>
-      <input className="form-control" onChange={} />
+      <input className="form-control" />
       <label className="col-xs-12 col-sm-6 col-md-4 control-label">Country of Registration</label>
       <CountryField
         actionUrl={this.props.actionUrl}
@@ -76,11 +72,12 @@ export default class SupplierSearch extends Component {
     const columns = [
       {
         Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.supplierName'),
-        accessor: 'supplierName'
+        accessor: 'supplierName',
       },
       {
         Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.countryOfRegistration'),
-        accessor: 'countryOfRegistration'
+        accessor: 'countryOfRegistration',
+        Cell: (row) => (<DisplayCountryTableField countryId={row.value} actionUrl={this.props.actionUrl} />)
       },
       {
         Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.commercialRegisterNo'),
