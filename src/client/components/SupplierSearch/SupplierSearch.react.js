@@ -3,7 +3,6 @@ import SupplierEditorLocales from './../SupplierEditor/i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import request from 'superagent-bluebird-promise';
-import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import DisplayCountryTableField from '../DisplayTable/DisplayCountryTableField.react';
 require('./SupplierSearch.css');
@@ -14,7 +13,6 @@ export default class SupplierSearch extends Component {
     super(props);
     this.state = {
       form: {
-        country: '',
         keyword: '',
       },
       data: []
@@ -31,9 +29,6 @@ export default class SupplierSearch extends Component {
   };
 
   componentWillMount(){
-    let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
-    const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
-    this.externalComponents = { CountryField };
     this.constraints = new SupplierConstraints(this.context.i18n);
     this.context.i18n.register('SupplierEditorLocales', SupplierEditorLocales);
   }
@@ -44,25 +39,37 @@ export default class SupplierSearch extends Component {
     result.then((data) => {
       const oldState = this.state;
       const newState = Object.assign({}, oldState, {
+        form: {
+          keyword: this.refs.keyword.value
+        },
         data: data.body
       });
       this.setState(newState);
     });
   }
 
+  filter(keyword, data) {
+    return data.filter((element) => {
+      return element.cityOfRegistration.includes(keyword);
+    });
+  }
+
   renderSearchBox() {
-    const { CountryField } = this.externalComponents;
     return (<div className="form-group search-box">
       <label className="col-xs-12 col-sm-6 col-md-4 control-label">Search by</label>
-      <input className="form-control" />
+      <input className="form-control" ref='keyword'/>
       <div className="text-right form-submit">
         <button className="btn btn-link">Cancel</button>
-        <button className="btn btn-primary" onClick={this.searchSupplier.bind(this)}>Search</button>
+        <button className="btn btn-primary"
+                onClick={this.searchSupplier.bind(this)}>Search</button>
       </div>
     </div>)
   }
 
   renderTable(data) {
+
+    console.log(data);
+
     const columns = [
       {
         Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.supplierName'),
@@ -105,7 +112,7 @@ export default class SupplierSearch extends Component {
     return (<div>
       { this.renderSearchBox() }
       <div className="table-responsive">
-        { this.renderTable(this.state.data) }
+        { this.renderTable(this.filter(this.state.form.keyword, this.state.data)) }
       </div>
     </div>)
   }
