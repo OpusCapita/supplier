@@ -53,14 +53,8 @@ export default class SupplierSearch extends Component {
   renderSearchBox() {
     const { CountryField } = this.externalComponents;
     return (<div className="form-group search-box">
-      <label className="col-xs-12 col-sm-6 col-md-4 control-label" >Search by</label>
+      <label className="col-xs-12 col-sm-6 col-md-4 control-label">Search by</label>
       <input className="form-control" />
-      <label className="col-xs-12 col-sm-6 col-md-4 control-label">Country of Registration</label>
-      <CountryField
-        actionUrl={this.props.actionUrl}
-        optional={true}
-        locale={this.context.i18n.locale}
-      />
       <div className="text-right form-submit">
         <button className="btn btn-link">Cancel</button>
         <button className="btn btn-primary" onClick={this.searchSupplier.bind(this)}>Search</button>
