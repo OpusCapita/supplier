@@ -50,15 +50,16 @@ export default class SupplierSearch extends Component {
 
   filter(keyword, data) {
     return data.filter((element) => {
-      return this.safeInclude(element.cityOfRegistration, keyword) ||
-             this.safeInclude(element.supplierName, keyword) ||
+      return this.safeInclude(element.supplierName, keyword) ||
+             this.safeInclude(element.cityOfRegistration, keyword) ||
              this.safeInclude(element.globalLocationNo, keyword) ||
-             this.safeInclude(element.taxIdentificationNo, keyword) ;
+             this.safeInclude(element.taxIdentificationNo, keyword) ||
+             this.safeInclude(element.commercialRegisterNo, keyword) ;
     });
   }
 
   safeInclude(string, substr) {
-    return string ? string.includes(substr) : false;
+    return string ? string.match(substr) : false;
   }
 
   renderSearchBox() {
