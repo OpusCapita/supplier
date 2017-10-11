@@ -11,7 +11,7 @@ module.exports.sendAccessRequest = function(userProfile, req) {
   const template = template('access-request');
   const html = Handlebars.compile(template)({
     ocUrl: getOriginalProtocolHostPort(req) + '/bnp',
-    url: getOriginalProtocolHostPort(req) + '/bnp/supplierInformation?tab=accessRequest',
+    url: getOriginalProtocolHostPort(req) + '/bnp/supplierInformation?tab=accessApproval',
     i18n: i18n[lang].email.accessRequest
   });
 
