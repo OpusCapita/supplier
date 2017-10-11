@@ -53,6 +53,8 @@ export default class SupplierSearch extends Component {
       return this.safeInclude(element.supplierName, keyword) ||
              this.safeInclude(element.cityOfRegistration, keyword) ||
              this.safeInclude(element.globalLocationNo, keyword) ||
+             this.safeInclude(element.vatIdentificationNo, keyword) ||
+             this.safeInclude(element.dunsNo, keyword) ||
              this.safeInclude(element.taxIdentificationNo, keyword) ||
              this.safeInclude(element.commercialRegisterNo, keyword) ;
     });
