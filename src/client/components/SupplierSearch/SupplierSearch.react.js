@@ -50,8 +50,15 @@ export default class SupplierSearch extends Component {
 
   filter(keyword, data) {
     return data.filter((element) => {
-      return element.cityOfRegistration.includes(keyword);
+      return this.safeInclude(element.cityOfRegistration, keyword) ||
+             this.safeInclude(element.supplierName, keyword) ||
+             this.safeInclude(element.globalLocationNo, keyword) ||
+             this.safeInclude(element.taxIdentificationNo, keyword) ;
     });
+  }
+
+  safeInclude(string, substr) {
+    return string ? string.includes(substr) : false;
   }
 
   renderSearchBox() {
@@ -67,8 +74,6 @@ export default class SupplierSearch extends Component {
   }
 
   renderTable(data) {
-
-    console.log(data);
 
     const columns = [
       {
