@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import locales from './i18n';
 import SupplierEditorLocales from './../SupplierEditor/i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -29,6 +30,14 @@ export default class SupplierSearch extends Component {
 
   componentWillMount(){
     this.context.i18n.register('SupplierEditorLocales', SupplierEditorLocales);
+    this.context.i18n.register('SupplierSearch', locales);
+  }
+
+  componentWillReceiveProps(nextProps, nextContext){
+    if(nextContext.i18n){
+      nextContext.i18n.register('SupplierEditorLocales', SupplierEditorLocales);
+      nextContext.i18n.register('SupplierSearch', locales);
+    }
   }
 
   searchSupplier() {
@@ -55,7 +64,7 @@ export default class SupplierSearch extends Component {
 
   renderSearchBox() {
     return (<div className="form-group search-box">
-      <label className="col-xs-12 col-sm-6 col-md-4 control-label">Search by</label>
+      <label className="control-label">{this.context.i18n.getMessage('SupplierSearch.label')}</label>
       <input value={this.state.form.keyword} onChange={this.onKeywordChange.bind(this)} className="form-control" ref='keyword'/>
       <div className="text-right form-submit">
         <button className="btn btn-link">Cancel</button>
