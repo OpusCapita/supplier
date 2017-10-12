@@ -65,11 +65,10 @@ export default class SupplierSearch extends Component {
   renderSearchBox() {
     return (<div className="form-group search-box">
       <label className="control-label">{this.context.i18n.getMessage('SupplierSearch.label')}</label>
-      <input value={this.state.form.keyword} onChange={this.onKeywordChange.bind(this)} className="form-control" ref='keyword'/>
+      <input value={this.state.form.keyword} onChange={this.onKeywordChange.bind(this)} className="form-control"/>
       <div className="text-right form-submit">
-        <button className="btn btn-link">Cancel</button>
         <button className="btn btn-primary"
-                onClick={this.searchSupplier.bind(this)}>Search</button>
+                onClick={this.searchSupplier.bind(this)}>{this.context.i18n.getMessage('SupplierSearch.search')}</button>
       </div>
     </div>)
   }
