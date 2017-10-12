@@ -32,24 +32,31 @@ export default class SupplierSearch extends Component {
   }
 
   searchSupplier() {
-    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers?search=${this.refs.keyword.value}`);
+    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers?search=${this.state.form.keyword}`);
     let result = getRequest.set('Accept', 'application/json').promise();
     result.then((data) => {
       const oldState = this.state;
       const newState = Object.assign({}, oldState, {
-        form: {
-          keyword: this.refs.keyword.value
-        },
         data: data.body
       });
       this.setState(newState);
     });
   }
 
+  onKeywordChange(event) {
+    const oldState = this.state;
+    const newState = Object.assign({}, oldState, {
+      form: {
+        keyword: event.target.value
+      },
+    });
+    this.setState(newState);
+  }
+
   renderSearchBox() {
     return (<div className="form-group search-box">
       <label className="col-xs-12 col-sm-6 col-md-4 control-label">Search by</label>
-      <input className="form-control" ref='keyword'/>
+      <input value={this.state.form.keyword} onChange={this.onKeywordChange.bind(this)} className="form-control" ref='keyword'/>
       <div className="text-right form-submit">
         <button className="btn btn-link">Cancel</button>
         <button className="btn btn-primary"
