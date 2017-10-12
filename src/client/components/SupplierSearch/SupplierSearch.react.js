@@ -3,7 +3,6 @@ import SupplierEditorLocales from './../SupplierEditor/i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import request from 'superagent-bluebird-promise';
-import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import DisplayCountryTableField from '../DisplayTable/DisplayCountryTableField.react';
 require('./SupplierSearch.css');
 
@@ -29,7 +28,6 @@ export default class SupplierSearch extends Component {
   };
 
   componentWillMount(){
-    this.constraints = new SupplierConstraints(this.context.i18n);
     this.context.i18n.register('SupplierEditorLocales', SupplierEditorLocales);
   }
 
