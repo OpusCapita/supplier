@@ -34,7 +34,7 @@ export default class SupplierSearch extends Component {
   }
 
   searchSupplier() {
-    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers`);
+    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers?search=${this.refs.keyword.value}`);
     let result = getRequest.set('Accept', 'application/json').promise();
     result.then((data) => {
       const oldState = this.state;
@@ -46,22 +46,6 @@ export default class SupplierSearch extends Component {
       });
       this.setState(newState);
     });
-  }
-
-  filter(keyword, data) {
-    return data.filter((element) => {
-      return this.safeInclude(element.supplierName, keyword) ||
-             this.safeInclude(element.cityOfRegistration, keyword) ||
-             this.safeInclude(element.globalLocationNo, keyword) ||
-             this.safeInclude(element.vatIdentificationNo, keyword) ||
-             this.safeInclude(element.dunsNo, keyword) ||
-             this.safeInclude(element.taxIdentificationNo, keyword) ||
-             this.safeInclude(element.commercialRegisterNo, keyword) ;
-    });
-  }
-
-  safeInclude(string, substr) {
-    return string ? string.match(substr) : false;
   }
 
   renderSearchBox() {
@@ -120,7 +104,7 @@ export default class SupplierSearch extends Component {
     return (<div>
       { this.renderSearchBox() }
       <div className="table-responsive">
-        { this.renderTable(this.filter(this.state.form.keyword, this.state.data)) }
+        { this.renderTable(this.state.data) }
       </div>
     </div>)
   }
