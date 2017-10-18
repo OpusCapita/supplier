@@ -4,14 +4,14 @@ import SupplierAddressEditor from './SupplierAddressEditor';
 import SupplierContactEditor from './SupplierContactEditor';
 import SupplierEditor from './SupplierEditor';
 import SupplierRegistrationEditor from './SupplierRegistrationEditor';
-import SupplierSearch from './SupplierSearch';
+import SupplierAccess from './SupplierAccess'
 
 export {
   Alert,
   Label,
   SupplierAddressEditor,
   SupplierContactEditor,
-  SupplierSearch,
   SupplierEditor,
-  SupplierRegistrationEditor
-}
+  SupplierRegistrationEditor,
+  SupplierAccess
+  }

@@ -40,7 +40,7 @@ module.exports = function(sequelize) {
     changedOn: {
       type: Sequelize.DATE,
       allowNull: false
-    }
+    },
   }, {
     updatedAt: 'changedOn',
     createdAt: 'createdOn',

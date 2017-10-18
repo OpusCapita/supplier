@@ -56,7 +56,7 @@ class SupplierAddressEditor extends Component {
       return;
     }
 
-    console.log('===== ABOUT TO REQUEST a PROMISE');
+    console.log('===== ABOUT TO REQUEST a PROMISE', this.props.actionUrl);
     const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}/addresses`)
 
     /* Do not use cache in request if browser is IE */

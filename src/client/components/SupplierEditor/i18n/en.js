@@ -11,7 +11,7 @@ ButtonLabel.save = 'Save';
 ButtonLabel.cancel = 'Cancel';
 
 let TableHeader = {};
-TableHeader.supplierName = 'Company name';
+TableHeader.supplierName = 'Company name-';
 TableHeader.homePage = 'Home page';
 TableHeader.foundedOn = 'Founded/Established on';
 TableHeader.legalForm = 'Legal form';

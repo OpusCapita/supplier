@@ -30,13 +30,10 @@ let sendSupplier = function(req, res)
 
 let sendSuppliers = function(req, res)
 {
-  if (req.query.search) {
-    Supplier.searchAll(req.query.search).then(suppliers => res.json(suppliers));
-  } else {
-    const includes = req.query.include ? req.query.include.split(',') : [];
-    delete req.query.include
-    Supplier.all(req.query, includes).then(suppliers => res.json(suppliers));
-  }
+  const queryObj = req.query.supplierId ? { supplierId: { $in: req.query.supplierId.split(',') }} : {};
+  const includes = req.query.include ? req.query.include.split(',') : [];
+
+  Supplier.all(queryObj, includes).then(suppliers => res.json(suppliers));
 };
 
 let existsSuppliers = function(req, res)
