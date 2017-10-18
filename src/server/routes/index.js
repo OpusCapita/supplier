@@ -7,7 +7,7 @@ const supplierContacts = require('./supplier_contacts');
 const supplierAddresses = require('./supplier_addresses');
 const supplierBanks = require('./supplier_banks');
 const supplierProfileStrength = require('./supplier_profile_strength');
-//const supplierUser = require('./supplier_user');
+const supplierUser = require('./supplier_user');
 /**
  * Initializes all routes for RESTful access.
  *
@@ -19,10 +19,10 @@ const supplierProfileStrength = require('./supplier_profile_strength');
  */
 module.exports.init = function(app, db, config) {
   suppliers(app, db, config);
+  supplierUser(app, db, config);
   supplierContacts(app, db, config);
   supplierAddresses(app, db, config);
   supplierBanks(app, db, config);
   supplierProfileStrength(app, db, config);
-  //supplierUser(app, db, config);
   return Promise.resolve();
 };

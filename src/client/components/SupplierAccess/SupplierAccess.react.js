@@ -32,6 +32,9 @@ class SupplierAccess extends Component {
   loadAccessRequests = () => {
   	let data = request.get(`${this.props.actionUrl}/supplier/api/suppliers/getSupplierAccess`)
 		.set('Accept', 'application/json')
+		.then((data)=> {
+			return data
+		})
 		.catch((errors) => {
       console.log('Error during retrieving Supplier Access list:');
     });

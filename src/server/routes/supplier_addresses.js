@@ -9,18 +9,18 @@ SupplierAddress.init(db, config).then(() =>
     app.get('/api/suppliers/:supplierId/addresses/:addressId', (req, res) => sendSupplierAddress(req, res));
     app.put('/api/suppliers/:supplierId/addresses/:addressId', (req, res) => updateSupplierAddress(req, res));
     app.delete('/api/suppliers/:supplierId/addresses/:addressId', (req, res) => deleteSupplierAddress(req, res));
-    app.get('/api/suppliers/getSupplierAccess', (req, res) => getSupplierAccess(req, res));
+    //app.get('/api/supplier/getSupplierAccess', (req, res) => getSupplierAccess(req, res));
   });
 };
 
-let getSupplierAccess = function(req, res)
-{
-  SupplierUser.getSupplierAccess().then(requests =>
-  {
-    console.log("REQUEST", requests)
-    res.json(requests);
-  });
-};
+// let getSupplierAccess = function(req, res)
+// {
+//   SupplierUser.getSupplierAccess().then(requests =>
+//   {
+//     console.log("REQUEST", requests)
+//     res.json(requests);
+//   });
+// };
 
 let sendSupplierAddresses = function(req, res)
 {
