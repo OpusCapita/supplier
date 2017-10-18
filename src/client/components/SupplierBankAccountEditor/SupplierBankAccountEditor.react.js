@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import request from "superagent-bluebird-promise";
 import Button from "react-bootstrap/lib/Button";
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from "./i18n";
@@ -14,7 +13,6 @@ import { BankAccount } from '../../api';
 class SupplierBankAccountEditor extends Component {
 
   static propTypes = {
-    actionUrl: React.PropTypes.string,
     supplierId: React.PropTypes.string,
     locale: React.PropTypes.string,
     username: React.PropTypes.string,
