@@ -13,13 +13,15 @@ module.exports = function (app, db, config) {
 
 let sendSupplierBanks = function (req, res) {
   SupplierBank.all(req.params.supplierId).then(accounts => {
-    res.json(accounts);
+    res.opuscapita.setNoCache();
+    return res.json(accounts);
   });
 };
 
 let sendSupplierBank = function (req, res) {
   SupplierBank.find(req.params.supplierId, req.params.bankAccountId).then(account => {
-    res.json(account);
+    res.opuscapita.setNoCache();
+    return res.json(account);
   });
 };
 
