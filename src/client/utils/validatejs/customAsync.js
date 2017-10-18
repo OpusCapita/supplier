@@ -1,5 +1,6 @@
 const request = require('superagent-bluebird-promise');
-const url = '/supplier/api/suppliers/exists';
+const { Supplier } = require('../../api');
+const supplierApi = new Supplier();
 
 module.exports.supplierNameExists = function(validate) {
   return validate.validators.supplierNameExists = function(value, options, key, attributes) {
@@ -65,8 +66,8 @@ let recordExists = function(value, validate, queryParams, errorMessage, supplier
 
     if (supplierId) queryParams.supplierId = supplierId;
 
-    request.get(url).query(queryParams).set('Accept', 'application/json').then(response => {
-      if (response.body) {
+    supplierApi.supplierExists(queryParams).then(supplier => {
+      if (supplier) {
         resolve(errorMessage);
       } else {
         resolve();
