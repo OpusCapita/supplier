@@ -217,10 +217,7 @@ class SupplierContactEditor extends Component {
   loadContacts = () => {
     let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
-    const getRequest = request.get(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/contacts`)
-
-    /* Do not use cache in request if browser is IE */
-    if (browserInfo.isIE()) getRequest.query({ cachebuster: Date.now().toString() });
+    const getRequest = request.get(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/contacts`);
 
     getRequest.set('Accept', 'application/json').then((response) => {
         this.setState({ contacts: response.body });
