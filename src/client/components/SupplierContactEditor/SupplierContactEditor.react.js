@@ -3,7 +3,6 @@ import request from 'superagent-bluebird-promise';
 import Button from 'react-bootstrap/lib/Button';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
-import _ from 'underscore';
 import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
 import DisplayField from '../../components/DisplayTable/DisplayField.react';
 import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
@@ -113,7 +112,7 @@ class SupplierContactEditor extends Component {
 
   handleUpdate = (contact) => {
     let supplierId = this.props.supplierId;
-    contact.changedBy = this.props.supplierId;// eslint-disable-line no-param-reassign
+    contact.changedBy = this.props.username;// eslint-disable-line no-param-reassign
 
     this.contactApi.updateContact(supplierId, contact.id, contact).then(updatedContact => {
       let contacts = this.state.contacts;
@@ -194,7 +193,7 @@ class SupplierContactEditor extends Component {
 
   handleEdit = (contact) => {
     this.setState({
-      contact: _.clone(contact),
+      contact: JSON.parse(JSON.stringify(contact)),
       editMode: "edit",
       errors: null
     });
