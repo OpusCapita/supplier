@@ -244,7 +244,7 @@ class SupplierBankAccountEditor extends Component {
                   <DisplayField>{ account.accountNumber }</DisplayField>
                   <DisplayField>{ account.bankName }</DisplayField>
                   <DisplayField>{ account.bankIdentificationCode }</DisplayField>
-                  <DisplayCountryTableField actionUrl={this.props.actionUrl} countryId={account.bankCountryKey}/>
+                  <DisplayCountryTableField countryId={account.bankCountryKey}/>
                   <DisplayField>{ account.bankCode }</DisplayField>
                   <DisplayField>{ account.extBankControlKey || '-' }</DisplayField>
                   <DisplayField>{ account.swiftCode }</DisplayField>
@@ -283,7 +283,6 @@ class SupplierBankAccountEditor extends Component {
 
               <SupplierBankAccountEditForm
                 onChange={this.handleChange}
-                actionUrl={this.props.actionUrl}
                 account={account}
                 errors={errors}
                 editMode={editMode}

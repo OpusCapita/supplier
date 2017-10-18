@@ -16,12 +16,8 @@ export default class SupplierSearch extends Component {
         keyword: '',
       },
       data: []
-    }
+    };
   }
-
-  static propTypes = {
-    actionUrl: React.PropTypes.string.isRequired
-  };
 
   static contextTypes = {
     i18n : React.PropTypes.object.isRequired,
@@ -83,7 +79,7 @@ export default class SupplierSearch extends Component {
       {
         Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.countryOfRegistration'),
         accessor: 'countryOfRegistration',
-        Cell: (row) => (<DisplayCountryTableField countryId={row.value} actionUrl={this.props.actionUrl} />)
+        Cell: (row) => (<DisplayCountryTableField countryId={row.value} />)
       },
       {
         Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.commercialRegisterNo'),

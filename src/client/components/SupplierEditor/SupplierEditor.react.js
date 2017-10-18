@@ -11,7 +11,6 @@ import { Supplier } from '../../api';
 class SupplierEditor extends Component {
 
   static propTypes = {
-    actionUrl: PropTypes.string.isRequired,
     supplierId: PropTypes.string.isRequired,
     username: React.PropTypes.string.isRequired,
     dateTimePattern: PropTypes.string.isRequired,

@@ -230,7 +230,6 @@ class SupplierAddressEditor extends Component {
       result = (
         <div className="table-responsive">
           <SupplierAddressListTable
-            actionUrl={this.props.actionUrl}
             supplierAddresses={supplierAddresses}
             readOnly={readOnly}
             onEdit={this.handleEdit}
@@ -254,7 +253,6 @@ class SupplierAddressEditor extends Component {
             <div className="col-md-6">
 
               <SupplierAddressEditorForm
-                actionUrl={this.props.actionUrl}
                 onChange={this.handleChange}
                 supplierAddress={supplierAddress}
                 errors={errors}

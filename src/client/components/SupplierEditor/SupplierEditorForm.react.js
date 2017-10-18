@@ -13,8 +13,7 @@ class SupplierEditorForm extends Component {
     onSupplierChange: PropTypes.func.isRequired,
     dateTimePattern: PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
-    onCancel: React.PropTypes.func,
-    actionUrl: React.PropTypes.string.isRequired
+    onCancel: React.PropTypes.func
   };
 
   static contextTypes = {
@@ -34,7 +33,7 @@ class SupplierEditorForm extends Component {
   };
 
   componentWillMount() {
-    let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
+    let serviceRegistry = (service) => ({ url: `/isodata` });
     const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
 
     this.externalComponents = { CountryField };
@@ -211,7 +210,7 @@ class SupplierEditorForm extends Component {
             fieldName: 'countryOfRegistration',
             component: (
               <CountryField
-                actionUrl={this.props.actionUrl}
+                actionUrl=''
                 value={this.state.supplier['countryOfRegistration']}
                 onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                 onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}

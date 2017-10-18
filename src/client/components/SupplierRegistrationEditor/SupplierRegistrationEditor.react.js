@@ -12,7 +12,6 @@ import { Supplier, Auth, Contact } from '../../api';
 class SupplierRegistrationEditor extends Component {
 
   static propTypes = {
-    actionUrl: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired,
     supplier: PropTypes.object,
     onChange: React.PropTypes.func,

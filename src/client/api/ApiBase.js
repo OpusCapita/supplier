@@ -1,7 +1,6 @@
 const request = require('superagent-bluebird-promise');
 
-class ApiBase
-{
+class ApiBase {
   ajax = request;
 }
 
