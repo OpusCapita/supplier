@@ -20,6 +20,12 @@ class Supplier extends ApiBase {
     return this.ajax.get('/supplier/api/suppliers/exists').set('Accept', 'application/json').
       query(queryParams).then(response => response.body);
   }
+
+  getProfileStrength(supplierId) {
+    return this.ajax.get(`/supplier/api/suppliers/${supplierId}/profile_strength`).
+      set('Accept', 'application/json').
+      then(response => response.body);
+  }
 }
 
 export default Supplier;
