@@ -15,6 +15,8 @@ module.exports = function(app, db, config) {
       });
 
       const average = averages.reduce((sum, num) => { return sum + num; }, 0) / averages.length;
+
+      res.opuscapita.setNoCache();
       return res.json(Math.round(average * 100));
     });
   });

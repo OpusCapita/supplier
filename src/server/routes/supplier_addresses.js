@@ -15,7 +15,8 @@ let sendSupplierAddresses = function(req, res)
 {
   SupplierAddress.all(req.params.supplierId).then(addresses =>
   {
-    res.json(addresses);
+    res.opuscapita.setNoCache();
+    return res.json(addresses);
   });
 };
 
@@ -23,7 +24,8 @@ let sendSupplierAddress = function(req, res)
 {
   SupplierAddress.find(req.params.supplierId, req.params.addressId).then(address =>
   {
-    res.json(address);
+    res.opuscapita.setNoCache();
+    return res.json(address);
   });
 };
 

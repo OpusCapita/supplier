@@ -6,7 +6,6 @@ import i18nMessages from './i18n';
 import Button from 'react-bootstrap/lib/Button';
 import SupplierAddressListTable from './SupplierAddressListTable.react.js';
 import SupplierAddressEditorForm from './SupplierAddressEditorForm.react.js';
-import browserInfo from '../../utils/browserInfo';
 
 class SupplierAddressEditor extends Component {
 
@@ -57,10 +56,7 @@ class SupplierAddressEditor extends Component {
     }
 
     console.log('===== ABOUT TO REQUEST a PROMISE');
-    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}/addresses`)
-
-    /* Do not use cache in request if browser is IE */
-    if (browserInfo.isIE()) getRequest.query({ cachebuster: Date.now().toString() });
+    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}/addresses`);
 
     this.loadAddressesPromise = getRequest.set('Accept', 'application/json').promise();
 

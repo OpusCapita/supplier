@@ -9,7 +9,6 @@ import DisplayField from '../../components/DisplayTable/DisplayField.react';
 import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
 import DisplayEditGroup from '../../components/DisplayTable/DisplayEditGroup.react';
 import SupplierContactEditForm from './SupplierContactEditForm.react';
-import browserInfo from '../../utils/browserInfo';
 
 class SupplierContactEditor extends Component {
 
