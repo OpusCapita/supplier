@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import request from "superagent-bluebird-promise";
 import Button from "react-bootstrap/lib/Button";
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from "./i18n";
@@ -8,13 +7,12 @@ import DisplayTable from "../DisplayTable/DisplayTable.react.js";
 import DisplayRow from "../DisplayTable/DisplayRow.react.js";
 import DisplayField from "../DisplayTable/DisplayField.react.js";
 import DisplayEditGroup from "../../components/DisplayTable/DisplayEditGroup.react.js";
-import _ from "underscore";
 import DisplayCountryTableField from "../DisplayTable/DisplayCountryTableField.react.js";
+import { BankAccount } from '../../api';
 
 class SupplierBankAccountEditor extends Component {
 
   static propTypes = {
-    actionUrl: React.PropTypes.string,
     supplierId: React.PropTypes.string,
     locale: React.PropTypes.string,
     username: React.PropTypes.string,
@@ -39,9 +37,15 @@ class SupplierBankAccountEditor extends Component {
     }
   };
 
-  state = {
-    loadErrors: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loadErrors: false
+    };
+
+    this.bankAccountApi = new BankAccount();
+  }
 
   componentWillMount() {
     this.context.i18n.register('SupplierValidatejs', validationMessages);
@@ -74,38 +78,32 @@ class SupplierBankAccountEditor extends Component {
   }
 
   handleDelete = (account) => {
-    let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
 
-    let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(account.id);
+    this.bankAccountApi.deleteBankAccount(supplierId, account.id).then(() => {
+      let accounts = this.state.accounts;
+      const index = accounts.findIndex(bankAccount => bankAccount.id === account.id);
 
-    request.del(`${actionUrl}/supplier/api/suppliers/${arg0}/bank_accounts/${arg1}`).
-      set('Accept', 'application/json').
-      then((response) => {
-        let accounts = this.state.accounts;
-        let index = _.findIndex(accounts, { id: account.id });
-        if (index === -1) {
-          throw new Error(`Not found bank account for bankAccountId [${account.id}]`);
-        }
+      if (index === -1) {
+        throw new Error(`Not found bank account for bankAccountId [${account.id}]`);
+      }
+      accounts.splice(index, 1);
 
-        accounts.splice(index, 1);
+      const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.objectDeleted');
+      this.setState({ accounts: accounts, account: null });
+      if(this.context.showNotification)
+        this.context.showNotification(message, 'info')
+    }).catch((response) => {
+      if (response.status === 401) {
+        this.props.onUnauthorized();
+      } else {
+        console.log(`Bad request by SupplierID=${supplierId} and ContactID=${account.id}`);
 
-        const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.objectDeleted');
-        this.setState({ accounts: accounts, account: null });
+        const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.deleteFailed');
         if(this.context.showNotification)
-          this.context.showNotification(message, 'info')
-      }).catch((response) => {
-        if (response.status === 401) {
-          this.props.onUnauthorized();
-        } else {
-          console.log(`Bad request by SupplierID=${supplierId} and ContactID=${account.id}`);
-
-          const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.deleteFailed');
-          if(this.context.showNotification)
-            this.context.showNotification(message, 'error')
-        }
-      });
+          this.context.showNotification(message, 'error')
+      }
+    });
   };
 
   handleCreate = () => {
@@ -115,27 +113,17 @@ class SupplierBankAccountEditor extends Component {
   };
 
   handleUpdate = (account) => {
-    let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
     account.changedBy = this.props.username;// eslint-disable-line no-param-reassign
 
-    let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(account.id);
-
-    request.put(`${actionUrl}/supplier/api/suppliers/${arg0}/bank_accounts/${arg1}`).
-      set('Accept', 'application/json').
-      send(account).
-      then((response) => {
-
-        let updatedContact = response.body;
-
+    this.bankAccountApi.updateBankAccount(supplierId, account.id, account).then(updatedAccount => {
         let accounts = this.state.accounts;
-        let index = _.findIndex(accounts, { id: account.id });
+        const index = accounts.findIndex(bankAccount => bankAccount.id === account.id);
 
         if (index === -1) {
           throw new Error(`Not found account by ContactID=${account.id}`);
         }
-        accounts[index] = updatedContact;
+        accounts[index] = updatedAccount;
 
         this.props.onChange({ isDirty: false });
 
@@ -157,19 +145,15 @@ class SupplierBankAccountEditor extends Component {
   };
 
   handleSave = (account) => {
-    let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
 
     account.supplierId = supplierId;
     account.createdBy = this.props.username;
     account.changedBy = this.props.username;
 
-    request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/bank_accounts`).
-      set('Accept', 'application/json').
-      send(account).
-      then((response) => {
+    this.bankAccountApi.createBankAccount(supplierId, account).then(createdAccount => {
         let accounts = this.state.accounts;
-        accounts.push(response.body);
+        accounts.push(createdAccount);
 
         this.props.onChange({ isDirty: false });
 
@@ -202,7 +186,7 @@ class SupplierBankAccountEditor extends Component {
 
   handleEdit = (account) => {
     this.setState({
-      account: _.clone(account),
+      account: JSON.parse(JSON.stringify(account)),
       editMode: 'edit',
       errors: null
     });
@@ -217,12 +201,10 @@ class SupplierBankAccountEditor extends Component {
   };
 
   loadBankAccounts = () => {
-    let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
-    const getRequest = request.get(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/bank_accounts`);
 
-    getRequest.set('Accept', 'application/json').then((response) => {
-      this.setState({ accounts: response.body });
+    this.bankAccountApi.getBankAccounts(supplierId).then(accounts => {
+      this.setState({ accounts: accounts });
     }).catch((response) => {
       if (response.status === 401) {
         this.props.onUnauthorized();
@@ -262,7 +244,7 @@ class SupplierBankAccountEditor extends Component {
                   <DisplayField>{ account.accountNumber }</DisplayField>
                   <DisplayField>{ account.bankName }</DisplayField>
                   <DisplayField>{ account.bankIdentificationCode }</DisplayField>
-                  <DisplayCountryTableField actionUrl={this.props.actionUrl} countryId={account.bankCountryKey}/>
+                  <DisplayCountryTableField countryId={account.bankCountryKey}/>
                   <DisplayField>{ account.bankCode }</DisplayField>
                   <DisplayField>{ account.extBankControlKey || '-' }</DisplayField>
                   <DisplayField>{ account.swiftCode }</DisplayField>
@@ -301,7 +283,6 @@ class SupplierBankAccountEditor extends Component {
 
               <SupplierBankAccountEditForm
                 onChange={this.handleChange}
-                actionUrl={this.props.actionUrl}
                 account={account}
                 errors={errors}
                 editMode={editMode}

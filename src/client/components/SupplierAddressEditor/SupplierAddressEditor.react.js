@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import request from 'superagent-bluebird-promise';
-import _ from 'underscore';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import Button from 'react-bootstrap/lib/Button';
 import SupplierAddressListTable from './SupplierAddressListTable.react.js';
 import SupplierAddressEditorForm from './SupplierAddressEditorForm.react.js';
+import { Address } from '../../api';
 
 class SupplierAddressEditor extends Component {
 
   static propTypes = {
-    actionUrl: React.PropTypes.string.isRequired,
     supplierId: React.PropTypes.string.isRequired,
     username: React.PropTypes.string,
     readOnly: React.PropTypes.bool,
@@ -23,10 +21,6 @@ class SupplierAddressEditor extends Component {
     showNotification: React.PropTypes.func
   };
 
-  loadAddressesPromise = null;
-  updateAddressPromise = null;
-  deleteAddressPromise = null;
-
   static defaultProps = {
     readOnly: false,
     onChange: function(event) {
@@ -38,12 +32,18 @@ class SupplierAddressEditor extends Component {
     }
   };
 
-  state = {
-    isLoaded: false,
-    supplierAddresses: [],
-    supplierAddress: null,
-    loadErrors: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoaded: false,
+      supplierAddresses: [],
+      supplierAddress: null,
+      loadErrors: false
+    };
+
+    this.addressApi = new Address();
+  }
 
   componentWillMount(){
     this.context.i18n.register('SupplierValidatejs', validationMessages);
@@ -51,19 +51,12 @@ class SupplierAddressEditor extends Component {
   }
 
   componentDidMount() {
-    if (this.state.isLoaded) {
-      return;
-    }
+    if (this.state.isLoaded) return;
 
-    console.log('===== ABOUT TO REQUEST a PROMISE');
-    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}/addresses`);
-
-    this.loadAddressesPromise = getRequest.set('Accept', 'application/json').promise();
-
-    this.loadAddressesPromise.then(response => {
+    this.addressApi.getAddresses(this.props.supplierId).then(addresses => {
       this.setState({
         isLoaded: true,
-        supplierAddresses: response.body
+        supplierAddresses: addresses
       });
     }).
     catch(errors => {
@@ -102,23 +95,9 @@ class SupplierAddressEditor extends Component {
     }
   }
 
-  componentWillUnmount() {
-    if (!this.state.isLoaded) {
-      if (this.loadAddressesPromise) {
-        this.loadAddressesPromise.cancel();
-      }
-      if (this.updateAddressPromise) {
-        this.updateAddressPromise.cancel();
-      }
-      if (this.deleteAddressPromise) {
-        this.deleteAddressPromise.cancel();
-      }
-    }
-  }
-
   handleEdit = (supplierAddress) => {
     this.setState({
-      supplierAddress: _.clone(supplierAddress),
+      supplierAddress: JSON.parse(JSON.stringify(supplierAddress)),
       editMode: "edit",
       errors: null
     });
@@ -126,38 +105,26 @@ class SupplierAddressEditor extends Component {
 
   handleView = (supplierAddress) => {
     this.setState({
-      supplierAddress: _.clone(supplierAddress),
+      supplierAddress: JSON.parse(JSON.stringify(supplierAddress)),
       editMode: "view",
       errors: null
     });
   };
 
   handleDelete = (supplierAddress) => {
-    let actionUrl = this.props.actionUrl;
-    let supplierId = this.props.supplierId;
-
-    let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(supplierAddress.id);
-
-    this.deleteAddressPromise = request.del(`${actionUrl}/supplier/api/suppliers/${arg0}/addresses/${arg1}`).set(
-        'Accept', 'application/json').promise();
-
-    return this.deleteAddressPromise.then((response) => {
+    return this.addressApi.deleteAddress(this.props.supplierId, supplierAddress.id).then(() => {
       let supplierAddresses = this.state.supplierAddresses;
-      let index = _.findIndex(supplierAddresses, { id: supplierAddress.id });
+      const index = supplierAddresses.findIndex(address => address.id === supplierAddress.id);
+
       if (index === -1) {
         throw new Error(`Not found SupplierAddress by id [${supplierAddress.id}]`);
       }
-
       supplierAddresses.splice(index, 1);
 
+      this.setState({ supplierAddresses: supplierAddresses, supplierAddress: null });
+
       const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectDeleted');
-      this.setState({
-        supplierAddresses: supplierAddresses,
-        supplierAddress: null
-      });
-      if(this.context.showNotification)
-          this.context.showNotification(message, 'info')
+      if(this.context.showNotification) this.context.showNotification(message, 'info');
     }).catch(errors => {
       if (errors.status === 401) {
         this.props.onUnauthorized();
@@ -171,36 +138,23 @@ class SupplierAddressEditor extends Component {
   };
 
   handleUpdate = (supplierAddress) => {
-    let actionUrl = this.props.actionUrl;
-    let supplierId = this.props.supplierId;
     supplierAddress.changedBy = this.props.username;// eslint-disable-line no-param-reassign
 
-    let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(supplierAddress.id);
-
-    this.updateAddressPromise = request.put(`${actionUrl}/supplier/api/suppliers/${arg0}/addresses/${arg1}`).set(
-      'Accept', 'application/json').send(supplierAddress).promise();
-
-    return this.updateAddressPromise.then((response) => {
-      let updatedSupplierAddress = response.body;
-
+    return this.addressApi.updateAddress(this.props.supplierId, supplierAddress.id, supplierAddress).then(updatedAddress => {
       let supplierAddresses = this.state.supplierAddresses;
-      let index = _.findIndex(supplierAddresses, { id: supplierAddress.id });
+      const index = supplierAddresses.findIndex(address => address.id === supplierAddress.id);
 
       if (index === -1) {
         throw new Error(`Not found SupplierAddress by id [${supplierAddress.id}]`);
       }
-      supplierAddresses[index] = updatedSupplierAddress;
+      supplierAddresses[index] = updatedAddress;
 
       this.props.onChange({ isDirty: false });
 
+      this.setState({ supplierAddresses: supplierAddresses, supplierAddress: null });
+
       const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectUpdated');
-      this.setState({
-        supplierAddresses: supplierAddresses,
-        supplierAddress: null
-      });
-      if(this.context.showNotification)
-        this.context.showNotification(message, 'info')
+      if(this.context.showNotification) this.context.showNotification(message, 'info');
     }).catch(errors => {
       if (errors.status === 401) {
         this.props.onUnauthorized();
@@ -209,34 +163,29 @@ class SupplierAddressEditor extends Component {
   };
 
   handleSave = (supplierAddress) => {
-    let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
 
     supplierAddress.supplierId = supplierId;
     supplierAddress.createdBy = this.props.username;
     supplierAddress.changedBy = this.props.username;
 
-    request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/addresses`).set(
-          'Accept', 'application/json').send(supplierAddress).then((response) => {
-            let supplierAddresses = this.state.supplierAddresses;
-            supplierAddresses.push(response.body);
+    this.addressApi.createAddress(supplierId, supplierAddress).then(address => {
+      let supplierAddresses = this.state.supplierAddresses;
+      supplierAddresses.push(address);
 
-            this.props.onChange({ isDirty: false });
+      this.props.onChange({ isDirty: false });
 
-            const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectSaved');
-            this.setState({
-              supplierAddresses: supplierAddresses,
-              supplierAddress: null
-            });
-            if(this.context.showNotification)
-              this.context.showNotification(message, 'info')
-          }).catch(errors => {
-            if (errors.status === 401) {
-              this.props.onUnauthorized();
-            } else {
-              console.log('Error during create SupplierAddress:');
-            }
-          });
+      this.setState({ supplierAddresses: supplierAddresses, supplierAddress: null });
+
+      const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectSaved');
+      if(this.context.showNotification) this.context.showNotification(message, 'info');
+    }).catch(errors => {
+      if (errors.status === 401) {
+        this.props.onUnauthorized();
+      } else {
+        console.log('Error during create SupplierAddress:');
+      }
+    });
   };
 
   handleCancel = () => {
@@ -245,10 +194,7 @@ class SupplierAddressEditor extends Component {
   };
 
   handleChange = (supplierAddress, name, oldValue, newValue) => {
-    // check only updated objects
-    // if (supplierAddress.id) {
     this.props.onChange({ isDirty: true });
-    // }
   };
 
   addButton() {
@@ -284,7 +230,6 @@ class SupplierAddressEditor extends Component {
       result = (
         <div className="table-responsive">
           <SupplierAddressListTable
-            actionUrl={this.props.actionUrl}
             supplierAddresses={supplierAddresses}
             readOnly={readOnly}
             onEdit={this.handleEdit}
@@ -308,7 +253,6 @@ class SupplierAddressEditor extends Component {
             <div className="col-md-6">
 
               <SupplierAddressEditorForm
-                actionUrl={this.props.actionUrl}
                 onChange={this.handleChange}
                 supplierAddress={supplierAddress}
                 errors={errors}

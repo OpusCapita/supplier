@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
-import request from 'superagent-bluebird-promise';
+import { Country } from '../../api';
 import DisplayField from "./DisplayField.react";
 
 class DisplayCountryTableField extends Component {
 
   static propTypes = {
-    actionUrl: React.PropTypes.string.isRequired,
     countryId: React.PropTypes.string.isRequired
   };
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      country: null
-    }
+    this.state = { country: null };
+    this.countryApi = new Country();
   }
-
-  loadCountryPromise = null;
 
   componentDidMount() {
     this.loadCountry(this.props.countryId);
@@ -29,31 +25,15 @@ class DisplayCountryTableField extends Component {
     }
   }
 
-  componentWillUnmount() {
-    if (this.loadCountryPromise) {
-      this.loadCountryPromise.cancel();
-    }
-  }
-
   loadCountry = (countryId) => {
-    this.loadCountryPromise = request
-      .get(`${this.props.actionUrl}/isodata/countries/${countryId}`)
-      .set('Accept', 'application/json').promise();
-
-    this.loadCountryPromise.then(response => {
-      this.setState({
-        country: response.body.name || response.body.id
-      });
-      return;
+    return this.countryApi.getCountry(countryId).then(country => {
+      this.setState({ country: country });
     }).
     catch(errors => {
       if (errors.status === 401) {
         this.props.onUnauthorized();
-        return;
       }
     });
-
-    return;
   };
 
   render() {

@@ -4,7 +4,6 @@ import DisplayCountryTableField from '../../components/DisplayTable/DisplayCount
 
 class SupplierAddressListTable extends Component {
   static propTypes = {
-    actionUrl: React.PropTypes.string.isRequired,
     supplierAddresses: React.PropTypes.array.isRequired,
     onEdit: React.PropTypes.func.isRequired,
     onDelete: React.PropTypes.func.isRequired,
@@ -57,7 +56,7 @@ class SupplierAddressListTable extends Component {
                     <td>{supplierAddress.street1}</td>
                     <td>{supplierAddress.zipCode}</td>
                     <td>{supplierAddress.city}</td>
-                    <DisplayCountryTableField countryId={supplierAddress.countryId} actionUrl={this.props.actionUrl} />
+                    <DisplayCountryTableField countryId={supplierAddress.countryId} />
                     <td>{supplierAddress.phoneNo}</td>
                     <td>{supplierAddress.faxNo ? supplierAddress.faxNo : '-'}</td>
                     <td className="text-right">

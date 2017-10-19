@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
-import request from 'superagent-bluebird-promise';
 import Button from 'react-bootstrap/lib/Button';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
-import _ from 'underscore';
 import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
 import DisplayField from '../../components/DisplayTable/DisplayField.react';
 import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
 import DisplayEditGroup from '../../components/DisplayTable/DisplayEditGroup.react';
 import SupplierContactEditForm from './SupplierContactEditForm.react';
+import { Contact } from '../../api';
 
 class SupplierContactEditor extends Component {
 
   static propTypes = {
-    actionUrl: React.PropTypes.string,
     supplierId: React.PropTypes.string,
     username: React.PropTypes.string,
     readOnly: React.PropTypes.bool,
@@ -37,9 +35,15 @@ class SupplierContactEditor extends Component {
     }
   };
 
-  state = {
-    loadErrors: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loadErrors: false
+    };
+
+    this.contactApi = new Contact();
+  }
 
   componentWillMount(){
     this.context.i18n.register('SupplierValidatejs', validationMessages);
@@ -71,39 +75,33 @@ class SupplierContactEditor extends Component {
   }
 
   handleDelete = (contact) => {
-    let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
 
-    let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(contact.id);
-    request.del(`${actionUrl}/supplier/api/suppliers/${arg0}/contacts/${arg1}`).
-      set('Accept', 'application/json').
-      then((response) => {
-        let contacts = this.state.contacts;
-        let index = _.findIndex(contacts, { id: contact.id });
-        if (index === -1) {
-          throw new Error(`Not found contact by id [${contact.id}]`);
-        }
+    this.contactApi.deleteContact(supplierId, contact.id).then(() => {
+      let contacts = this.state.contacts;
+      const index = contacts.findIndex(cont => cont.id === contact.id);
+      if (index === -1) {
+        throw new Error(`Not found contact by id [${contact.id}]`);
+      }
 
-        contacts.splice(index, 1);
-        if(this.props.newNotification)
-          this.props.newNotification(true);
-        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectDeleted');
+      contacts.splice(index, 1);
+      if(this.props.newNotification) this.props.newNotification(true);
+
+      const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectDeleted');
+      if(this.context.showNotification) this.context.showNotification(message, 'info');
+
+      this.setState({ contacts: contacts, contact: null });
+    }).catch((response) => {
+      if (response.status === 401) {
+        this.props.onUnauthorized();
+      } else {
+        console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
+        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
         if(this.context.showNotification){
-          this.context.showNotification(message, 'info')
+          this.context.showNotification(message, 'error')
         }
-        this.setState({ contacts: contacts, contact: null });
-      }).catch((response) => {
-        if (response.status === 401) {
-          this.props.onUnauthorized();
-        } else {
-          console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-          const message = this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
-          if(this.context.showNotification){
-            this.context.showNotification(message, 'error')
-          }
-        }
-      });
+      }
+    });
   };
 
   handleCreate = () => {
@@ -112,62 +110,49 @@ class SupplierContactEditor extends Component {
   };
 
   handleUpdate = (contact) => {
-    let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
-    contact.changedBy = this.props.supplierId;// eslint-disable-line no-param-reassign
+    contact.changedBy = this.props.username;// eslint-disable-line no-param-reassign
 
-    let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(contact.id);
-    request.put(`${actionUrl}/supplier/api/suppliers/${arg0}/contacts/${arg1}`).
-      set('Accept', 'application/json').
-      send(contact).
-      then((response) => {
+    this.contactApi.updateContact(supplierId, contact.id, contact).then(updatedContact => {
+      let contacts = this.state.contacts;
+      const index = contacts.findIndex(cont => cont.id === contact.id);
 
-        let updatedContact = response.body;
+      if (index === -1) {
+        throw new Error(`Not found contact by id=${contact.id}`);
+      }
+      contacts[index] = updatedContact;
 
-        let contacts = this.state.contacts;
-        let index = _.findIndex(contacts, { id: contact.id });
-
-        if (index === -1) {
-          throw new Error(`Not found contact by id=${contact.id}`);
-        }
-        contacts[index] = updatedContact;
-
-        this.props.onChange({ isDirty: false });
-        if(this.props.newNotification)
-          this.props.newNotification(true);
-        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
+      this.props.onChange({ isDirty: false });
+      if(this.props.newNotification)
+        this.props.newNotification(true);
+      const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
+      if(this.context.showNotification){
+        this.context.showNotification(message, 'info')
+      }
+      this.setState({ contacts: contacts, contact: null });
+    }).catch(response => {
+      if (response.status === 401) {
+        this.props.onUnauthorized();
+      } else {
+        console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
+        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
         if(this.context.showNotification){
-          this.context.showNotification(message, 'info')
+          this.context.showNotification(message, 'error')
         }
-        this.setState({ contacts: contacts, contact: null });
-      }).catch((response) => {
-        if (response.status === 401) {
-          this.props.onUnauthorized();
-        } else {
-          console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-          const message = this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
-          if(this.context.showNotification){
-            this.context.showNotification(message, 'error')
-          }
-        }
-      });
+      }
+    });
   };
 
   handleSave = (contact) => {
-    let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
 
     contact.supplierId = supplierId;
     contact.createdBy = this.props.username;
     contact.changedBy = this.props.username;
 
-    request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/contacts`).
-      set('Accept', 'application/json').
-      send(contact).
-      then((response) => {
+    this.contactApi.createContact(supplierId, contact).then(createdContact => {
         let contacts = this.state.contacts;
-        contacts.push(response.body);
+        contacts.push(createdContact);
 
         this.props.onChange({ isDirty: false });
 
@@ -207,20 +192,18 @@ class SupplierContactEditor extends Component {
 
   handleEdit = (contact) => {
     this.setState({
-      contact: _.clone(contact),
+      contact: JSON.parse(JSON.stringify(contact)),
       editMode: "edit",
       errors: null
     });
   };
 
   loadContacts = () => {
-    let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
-    const getRequest = request.get(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/contacts`);
 
-    getRequest.set('Accept', 'application/json').then((response) => {
-        this.setState({ contacts: response.body });
-      }).catch((response) => {
+    this.contactApi.getContacts(supplierId).then(contacts => {
+        this.setState({ contacts: contacts });
+      }).catch(response => {
         if (response.status === 401) {
           this.props.onUnauthorized();
         } else {
