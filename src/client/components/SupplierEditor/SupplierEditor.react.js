@@ -99,41 +99,41 @@ class SupplierEditor extends Component {
     delete newSupplier.createdOn;  // eslint-disable-line no-param-reassign
 
     return this.supplierApi.updateSupplier(this.props.supplierId, newSupplier).then(supplier => {
-        this.setState({ supplier: supplier });
+      this.setState({ supplier: supplier });
 
-        if(this.context.showNotification)
-          this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.saved'), 'info')
+      if(this.context.showNotification)
+        this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.saved'), 'info')
 
-        if (this.props.onUpdate && this.props.supplierId !== response.body.supplierId) {
-          // Informing wrapper app (BNP/SIM) about supplier change.
-          this.props.onUpdate({
-            supplierId: response.body.supplierId,
-            supplierName: response.body.supplierName
-          });
-        }
+      if (this.props.onUpdate && this.props.supplierId !== supplier.supplierId) {
+        // Informing wrapper app (BNP/SIM) about supplier change.
+        this.props.onUpdate({
+          supplierId: supplier.supplierId,
+          supplierName: supplier.supplierName
+        });
+      }
 
-        if (this.props.onChange) {
-          this.props.onChange({ isDirty: false });
-        }
-      }).
-      catch(errors => {
-        switch (errors.status) {
-          case 401:
-            this.props.onUnauthorized();
-            break;
-          case 403:
-            if(this.context.showNotification)
-              this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failedModifyingNotAuthoredSupplier'), 'error')
-            break;
-          case 409:
-            if(this.context.showNotification)
-              this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failedCreatingExistingSupplier'), 'error')
-            break;
-          default:
-            if(this.context.showNotification)
-              this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failed'), 'error')
-        }
-      });
+      if (this.props.onChange) {
+        this.props.onChange({ isDirty: false });
+      }
+    }).
+    catch(errors => {
+      switch (errors.status) {
+        case 401:
+          this.props.onUnauthorized();
+          break;
+        case 403:
+          if(this.context.showNotification)
+            this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failedModifyingNotAuthoredSupplier'), 'error')
+          break;
+        case 409:
+          if(this.context.showNotification)
+            this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failedCreatingExistingSupplier'), 'error')
+          break;
+        default:
+          if(this.context.showNotification)
+            this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failed'), 'error')
+      }
+    });
   }
 
   render() {
