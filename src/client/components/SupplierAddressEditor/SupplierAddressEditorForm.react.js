@@ -36,7 +36,7 @@ class SupplierAddressEditorForm extends Component {
   };
 
   componentWillMount() {
-    let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
+    let serviceRegistry = (service) => ({ url: `/isodata` });
     const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
 
     this.externalComponents = { CountryField };
@@ -217,7 +217,7 @@ class SupplierAddressEditorForm extends Component {
             fieldName: 'countryId',
             component: (
               <CountryField
-                actionUrl={this.props.actionUrl}
+                actionUrl=''
                 value={supplierAddress['countryId']}
                 onChange={this.handleCountryChange.bind(this, 'countryId')}
                 onBlur={this.handleBlur.bind(this, 'countryId')}

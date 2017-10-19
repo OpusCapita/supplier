@@ -16,7 +16,6 @@ function getValidator() {
 class SupplierBankAccountEditForm extends Component {
   static propTypes = {
     account: React.PropTypes.object.isRequired,
-    actionUrl: React.PropTypes.string.isRequired,
     errors: React.PropTypes.object,
     editMode: React.PropTypes.oneOf(['edit', 'create', 'create-first', 'view']),
     onSave: React.PropTypes.func.isRequired,
@@ -40,7 +39,7 @@ class SupplierBankAccountEditForm extends Component {
   };
 
   componentWillMount() {
-    let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
+    let serviceRegistry = (service) => ({ url: `/isodata` });
     const CountryField = serviceComponent({
       serviceRegistry,
       serviceName: 'isodata',
@@ -190,7 +189,7 @@ class SupplierBankAccountEditForm extends Component {
           fieldName: 'bankCountryKey',
           component: (
             <CountryField
-              actionUrl={this.props.actionUrl}
+              actionUrl=''
               value={account['bankCountryKey']}
               onChange={this.handleCountryChange.bind(this, 'bankCountryKey')}
               onBlur={this.handleBlur.bind(this, 'bankCountryKey')}

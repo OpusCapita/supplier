@@ -5,6 +5,7 @@ import i18nMessages from './i18n';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';
 import SupplierAccessRequestForm from './SupplierAccessRequestForm.react.js';
 import SupplierAccessView from './SupplierAccessView.react';
+import { Supplier, Auth, Contact } from '../../api';
 
 /**
  * Provide general company information.
@@ -12,7 +13,6 @@ import SupplierAccessView from './SupplierAccessView.react';
 class SupplierRegistrationEditor extends Component {
 
   static propTypes = {
-    actionUrl: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired,
     supplier: PropTypes.object,
     onChange: React.PropTypes.func,
@@ -39,6 +39,10 @@ class SupplierRegistrationEditor extends Component {
       supplierExist: false,
       loading: true
     }
+
+    this.supplierApi = new Supplier();
+    this.authApi = new Auth();
+    this.contactApi = new Contact();
   }
 
   createSupplierPromise = null;
@@ -66,25 +70,14 @@ class SupplierRegistrationEditor extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
       nextContext.i18n.register('SupplierRegistrationEditor', i18nMessages);
     }
   }
 
-  componentWillUnmount() {
-    if (this.createSupplierPromise) {
-      this.createSupplierPromise.cancel();
-    }
-
-    if (this.grantSupplierAccessPromise) {
-      this.grantSupplierAccessPromise.cancel();
-    }
-  }
-
   postSupplierCreate = () => {
-    return request.post('/refreshIdToken').set('Content-Type', 'application/json').then(() => {
+    return this.authApi.refreshIdToken().then(() => {
       console.log("id token refreshed");
 
       const supplier = this.state.supplier;
@@ -99,8 +92,7 @@ class SupplierRegistrationEditor extends Component {
           changedBy: user.id
       }
 
-      return request.post(`/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
-      set('Accept', 'application/json').send(contact).then(response => {
+      return this.contactApi.createContact(supplier.supplierId, contact).then(() => {
         console.log('contact created');
 
         if (this.props.onUpdate) {
@@ -139,14 +131,11 @@ class SupplierRegistrationEditor extends Component {
       changedBy: this.props.user.id
     };
 
-    this.createSupplierPromise = request.post(`/supplier/api/suppliers`).set('Accept', 'application/json').
-      send(newSupplier).promise();
-
-    return this.createSupplierPromise.then(response => {
-      this.setState({ supplier: response.body });
+    return this.supplierApi.createSupplier(newSupplier).then(createdSupplier => {
+      this.setState({ supplier: createdSupplier });
 
       if(this.context.showNotification)
-        this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info');
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info')
 
       return this.postSupplierCreate();
     }).
