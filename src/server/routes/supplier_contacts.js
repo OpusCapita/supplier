@@ -15,6 +15,7 @@ let sendSupplierContacts = function(req, res)
 {
   SupplierContact.all(req.params.supplierId).then(contacts =>
   {
+    res.opuscapita.setNoCache();
     res.json(contacts);
   });
 };
@@ -23,6 +24,7 @@ let sendSupplierContact = function(req, res)
 {
   SupplierContact.find(req.params.supplierId, req.params.contactId).then(contact =>
   {
+    res.opuscapita.setNoCache();
     res.json(contact);
   });
 };

@@ -8,7 +8,8 @@ module.exports = {
     address: './src/client/components/SupplierAddressEditor/index.js',
     contact: './src/client/components/SupplierContactEditor/index.js',
     profile_strength: './src/client/components/SupplierProfileStrength/index.js',
-    bank_accounts: './src/client/components/SupplierBankAccountEditor/index.js'
+    bank_accounts: './src/client/components/SupplierBankAccountEditor/index.js',
+    directory: './src/client/components/SupplierSearch/index.js',
   },
   output: {
     path: path.resolve(__dirname, './src/server/static'),

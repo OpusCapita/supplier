@@ -248,9 +248,7 @@ class SupplierRegistrationEditor extends Component {
     return (
       <div className="container supplier-registration-container">
         <div className='box' id='supplier-registration'>
-
           <h2>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.companyRegistration')}</h2>
-
           {this.toRender()}
         </div>
       </div>

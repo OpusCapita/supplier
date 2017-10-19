@@ -11,8 +11,9 @@ module.exports.init = function(db, config)
   return Promise.resolve(this);
 };
 
-module.exports.all = function(queryObj, includes)
+module.exports.all = function(query, includes)
 {
+  const queryObj = query.supplierId ? { supplierId: { $in: query.supplierId.split(',') }} : {};
   const includeModels = associationsFromIncludes(this.db.models, includes);
 
   return this.db.models.Supplier.findAll({ where: queryObj, include: includeModels }).map(supplier => {
@@ -73,6 +74,26 @@ module.exports.exists = function(supplierId)
   return this.db.models.Supplier.findById(supplierId).then(supplier => Boolean(supplier));
 };
 
+module.exports.searchAll = function(searchValue)
+{
+  const model = this.db.models.Supplier;
+  const search = searchValue.replace(/\W+/g, '* ') + '*';
+  const searchFields = [
+    'SupplierName',
+    'CityOfRegistration',
+    'TaxIdentificationNo',
+    'VatIdentificationNo',
+    'CommercialRegisterNo',
+    'DUNSNo',
+    'GlobalLocationNo'
+  ].join(',');
+
+  return this.db.query(
+    `SELECT ${attributes(model)} FROM Supplier WHERE MATCH (${searchFields}) AGAINST ('${search}' IN BOOLEAN MODE)`,
+    { model:  model }
+  );
+};
+
 module.exports.searchRecord = function(query)
 {
   normalize(query);
@@ -105,11 +126,8 @@ module.exports.searchRecord = function(query)
 
   if (query.supplierId) rawQuery = rawQuery + ` AND SupplierID != '${query.supplierId}'`;
 
-  const rawAttributes = this.db.models.Supplier.rawAttributes;
-  const attributes = Object.keys(rawAttributes).map(fieldName => `${rawAttributes[fieldName].field} AS ${fieldName}`).join(', ');
-
   return this.db.query(
-    `SELECT ${attributes} FROM Supplier WHERE ${rawQuery} LIMIT 1`,
+    `SELECT ${attributes(this.db.models.Supplier)} FROM Supplier WHERE ${rawQuery} LIMIT 1`,
     { model:  this.db.models.Supplier }
   ).then(suppliers => suppliers[0]);
 };
@@ -187,4 +205,10 @@ let matchSQL = function(fieldName, value)
 let equalSQL = function(fieldName, value)
 {
   return `${fieldName} = '${value}'`;
+}
+
+let attributes = function(model)
+{
+  const rawAttributes = model.rawAttributes;
+  return Object.keys(rawAttributes).map(fieldName => `${rawAttributes[fieldName].field} AS ${fieldName}`).join(', ');
 }
