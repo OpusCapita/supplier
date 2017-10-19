@@ -12,11 +12,13 @@ export default class SupplierView extends Component {
 
   renderField = (fieldName) => {
     const { supplier } = this.props;
-    const component = <p style={ { marginTop: '7px' } }>{ supplier[fieldName] || '-' }</p>
+    let value = supplier[fieldName];
+
+    if (fieldName == 'foundedOn') value = new Date(value).toLocaleDateString(this.context.i18n.locale);
 
     return (
       <SupplierViewRow labelText={ this.context.i18n.getMessage(`SupplierEditor.Label.${fieldName}.label`) }>
-        { component }
+        <p style={ { marginTop: '7px' } }>{ value || '-' }</p>
       </SupplierViewRow>
     );
   };
