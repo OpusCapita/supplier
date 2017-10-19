@@ -20,10 +20,6 @@ class SupplierEditorForm extends Component {
     i18n: React.PropTypes.object.isRequired
   };
 
-  static defaultProps = {
-    readOnly: false
-  };
-
   state = {
     supplier: {
       ...this.props.supplier
@@ -181,9 +177,6 @@ class SupplierEditorForm extends Component {
 
     return (
       <div>
-        <h4 className="tab-description">
-          { i18n.getMessage(`SupplierEditor.Description.viewSupplierOrChooseAnother`) }
-        </h4>
         <form className="form-horizontal">
           { this.renderField({ fieldName: 'supplierName' }) }
           { this.renderField({ fieldName: 'homePage' }) }
