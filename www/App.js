@@ -11,6 +11,7 @@ import SupplierSearch from '../src/client/components/SupplierSearch';
 
 const username = 'john.doe@ncc.com';
 const actionUrl = 'http://localhost:8080';
+const userRoles = ['supplier-admin', 'user'];
 
 const supplier = {
   supplierId: "hard001",
@@ -40,6 +41,7 @@ let editor = (
     actionUrl={actionUrl}
     supplierId={supplier.supplierId}
     username={username}
+    userRoles={userRoles}
     dateTimePattern='MM/dd/yyyy'
   />
 );
@@ -73,6 +75,7 @@ let contactEditor = (
     supplierId={supplier.supplierId}
     locale='en'
     username={username}
+    userRoles={userRoles}
   />
 );
 

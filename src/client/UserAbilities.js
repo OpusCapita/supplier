@@ -13,6 +13,14 @@ class UserAbilities {
     return this.abilitiesForRole['supplier']['actions'].includes('edit');
   }
 
+  actionGroupForContacts() {
+    return this.abilitiesForRole['contact']['actions'].reduce((accumulator, action) => {
+      if (action !== 'add') return accumulator.concat(action);
+
+      return accumulator;
+    }, []);
+  }
+
 
 }
 
