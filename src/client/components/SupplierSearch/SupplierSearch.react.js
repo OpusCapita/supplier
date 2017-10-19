@@ -3,7 +3,7 @@ import locales from './i18n';
 import SupplierEditorLocales from './../SupplierEditor/i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import request from 'superagent-bluebird-promise';
+import { Supplier } from '../../api';
 import DisplayCountryTableField from '../DisplayTable/DisplayCountryTableField.react';
 require('./SupplierSearch.css');
 
@@ -12,11 +12,10 @@ export default class SupplierSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      form: {
-        keyword: '',
-      },
+      form: { keyword: '' },
       data: []
     };
+    this.supplierApi = new Supplier();
   }
 
   static contextTypes = {
@@ -37,25 +36,14 @@ export default class SupplierSearch extends Component {
   }
 
   searchSupplier() {
-    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers?search=${this.state.form.keyword}`);
-    let result = getRequest.set('Accept', 'application/json').promise();
-    result.then((data) => {
-      const oldState = this.state;
-      const newState = Object.assign({}, oldState, {
-        data: data.body
-      });
-      this.setState(newState);
+    const queryParam = { search: this.state.form.keyword };
+    this.supplierApi.getSuppliers(queryParam).then(data => {
+      this.setState({ data: data });
     });
   }
 
   onKeywordChange(event) {
-    const oldState = this.state;
-    const newState = Object.assign({}, oldState, {
-      form: {
-        keyword: event.target.value
-      },
-    });
-    this.setState(newState);
+    this.setState({ form: { keyword: event.target.value } });
   }
 
   renderSearchBox() {

@@ -6,6 +6,11 @@ class Supplier extends ApiBase {
       then(response => response.body);
   }
 
+  getSuppliers(queryParams) {
+    return this.ajax.get('/supplier/api/suppliers').set('Accept', 'application/json').
+      query(queryParams || {}).then(response => response.body);
+  }
+
   createSupplier(supplier) {
     return this.ajax.post('/supplier/api/suppliers').set('Accept', 'application/json').send(supplier).
       then(response => response.body);
@@ -23,8 +28,7 @@ class Supplier extends ApiBase {
 
   getProfileStrength(supplierId) {
     return this.ajax.get(`/supplier/api/suppliers/${supplierId}/profile_strength`).
-      set('Accept', 'application/json').
-      then(response => response.body);
+      set('Accept', 'application/json').then(response => response.body);
   }
 }
 
