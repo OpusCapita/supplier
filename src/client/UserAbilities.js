@@ -21,7 +21,13 @@ class UserAbilities {
     }, []);
   }
 
+  actionGroupForAddresses() {
+    return this.abilitiesForRole['address']['actions'].reduce((accumulator, action) => {
+      if (action !== 'add') return accumulator.concat(action);
 
+      return accumulator;
+    }, []);
+  }
 }
 
 export default UserAbilities;

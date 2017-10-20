@@ -64,6 +64,7 @@ let addressEditor = (
     supplierId={supplier.supplierId}
     locale='en'
     username={username}
+    userRoles={userRoles}
   />
 );
 

@@ -193,9 +193,9 @@ class SupplierContactEditor extends Component {
   };
 
   renderActionButtons(contact) {
-    return this.userAbilities.actionGroupForContacts().map(action => {
+    return this.userAbilities.actionGroupForContacts().map((action, index) => {
       return <ActionButton
-                key={action}
+                key={index}
                 action={action}
                 onClick={this[`${action}OnClick`].bind(this, contact)}
                 label={this.context.i18n.getMessage(`SupplierContactEditor.Button.${action}`)}
@@ -214,7 +214,8 @@ class SupplierContactEditor extends Component {
       if (contacts.length > 0) {
         result = (
           <div className="table-responsive">
-            <DisplayTable headers={[{label: this.context.i18n.getMessage('SupplierContactEditor.Label.contactType')},
+            <DisplayTable headers={[
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.contactType')},
               {label: this.context.i18n.getMessage('SupplierContactEditor.Label.department')},
               {label: this.context.i18n.getMessage('SupplierContactEditor.Label.firstName')},
               {label: this.context.i18n.getMessage('SupplierContactEditor.Label.lastName')},
@@ -231,7 +232,7 @@ class SupplierContactEditor extends Component {
                   <DisplayField>{ contact.phone || '-'}</DisplayField>
                   <DisplayField>{ contact.mobile }</DisplayField>
                   <DisplayField>{ contact.email }</DisplayField>
-                  <DisplayField>
+                  <DisplayField classNames='text-right'>
                     {this.renderActionButtons(contact)}
                   </DisplayField>
                 </DisplayRow>))

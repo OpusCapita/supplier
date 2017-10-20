@@ -201,8 +201,7 @@ class SupplierContactEditForm extends Component {
         { this.renderField({ fieldName: 'mobile' }) }
         { this.renderField({ fieldName: 'fax' }) }
         { this.renderField({ fieldName: 'email' }) }
-
-        <div className="col-sm-12 text-right address-form-submit">
+        <div className="col-sm-12 text-right contact-form-submit">
           <ActionButton
             style='link'
             onClick={this.handleCancel}
