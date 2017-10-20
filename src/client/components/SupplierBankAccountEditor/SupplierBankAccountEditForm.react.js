@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Button from "react-bootstrap/lib/Button";
+import ActionButton from "../ActionButton.react";
 import validator from "validate.js";
 import "./SupplierBankAccountEditForm.css";
 import SupplierBankAccountFormConstraints from "./SupplierBankAccountFormConstraints";
@@ -17,7 +17,7 @@ class SupplierBankAccountEditForm extends Component {
   static propTypes = {
     account: React.PropTypes.object.isRequired,
     errors: React.PropTypes.object,
-    editMode: React.PropTypes.oneOf(['edit', 'create', 'create-first', 'view']),
+    editMode: React.PropTypes.oneOf(['edit', 'create']),
     onSave: React.PropTypes.func.isRequired,
     onUpdate: React.PropTypes.func.isRequired,
     onCancel: React.PropTypes.func.isRequired,
@@ -67,9 +67,7 @@ class SupplierBankAccountEditForm extends Component {
     let errors = getValidator()(this.state.account, this.constraints, { fullMessages: false });
 
     if (!errors) {
-      const editMode = this.props.editMode;
-
-      if (editMode === 'edit') {
+      if (this.props.editMode === 'edit') {
         this.props.onUpdate(account);
       } else {
         this.props.onSave(account);
@@ -140,7 +138,7 @@ class SupplierBankAccountEditForm extends Component {
 
   renderField = (attrs) => {
     const { account, errors } = this.state;
-    const { fieldName, disabled } = attrs;
+    const { fieldName } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
 
     let component = attrs.component ||
@@ -149,7 +147,6 @@ class SupplierBankAccountEditForm extends Component {
         value={ typeof account[fieldName] === 'string' ? account[fieldName] : '' }
         onChange={ this.handleChange.bind(this, fieldName) }
         onBlur={ this.handleBlur.bind(this, fieldName) }
-        disabled={disabled}
       />;
 
     let isRequired = fieldNames.some(name => {
@@ -173,18 +170,16 @@ class SupplierBankAccountEditForm extends Component {
   };
 
   render() {
-    const editMode = this.props.editMode;
-    const disabled = editMode === 'view';
     const { account } = this.state;
     const { CountryField } = this.externalComponents;
 
     return (
       <form className="form-horizontal" onSubmit={this.handleSaveOrUpdate}>
-        { this.renderField({ fieldName: 'bankName', disabled: disabled }) }
-        { this.renderField({ fieldName: 'accountNumber', disabled: disabled }) }
-        { this.renderField({ fieldName: 'bankIdentificationCode', disabled: disabled }) }
-        { this.renderField({ fieldName: 'bankCode', disabled: disabled }) }
-        { this.renderField({ fieldName: 'swiftCode', disabled: disabled }) }
+        { this.renderField({ fieldName: 'bankName' }) }
+        { this.renderField({ fieldName: 'accountNumber' }) }
+        { this.renderField({ fieldName: 'bankIdentificationCode' }) }
+        { this.renderField({ fieldName: 'bankCode' }) }
+        { this.renderField({ fieldName: 'swiftCode' }) }
         { this.renderField({
           fieldName: 'bankCountryKey',
           component: (
@@ -199,23 +194,19 @@ class SupplierBankAccountEditForm extends Component {
           )
         })}
 
-        { this.renderField({ fieldName: 'extBankControlKey', disabled: disabled }) }
+        { this.renderField({ fieldName: 'extBankControlKey' }) }
 
         <div className="col-sm-12 text-right address-form-submit">
-          {editMode !== 'create-first' ? (
-            <Button bsStyle="link"
-              onClick={this.handleCancel}
-            >
-              {
-                this.context.i18n.getMessage('SupplierBankAccountEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
-              }
-            </Button>
-          ) : null}
-          {editMode !== 'view' ? (
-            <Button bsStyle="primary"
-                    type="submit"
-            >{this.context.i18n.getMessage('SupplierBankAccountEditor.Button.save')}</Button>
-          ) : null}
+          <ActionButton
+            style='link'
+            onClick={this.handleCancel}
+            label={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.cancel')}
+          />
+          <ActionButton
+            style='primary'
+            type='submit'
+            label={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.save')}
+          />
         </div>
       </form>
     );

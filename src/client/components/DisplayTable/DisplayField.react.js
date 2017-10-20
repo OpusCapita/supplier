@@ -1,10 +1,13 @@
 import React, {Component} from "react";
 
 class DisplayField extends Component {
+  static propTypes = {
+    classNames: React.PropTypes.string
+  };
 
   render() {
     return (
-      <td>{ this.props.children }</td>
+      <td className={this.props.classNames || ''}>{ this.props.children }</td>
     );
   }
 }

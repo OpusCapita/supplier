@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
 import DisplayField from '../../components/DisplayTable/DisplayField.react';
 import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
-import DisplayEditGroup from '../../components/DisplayTable/DisplayEditGroup.react';
 import SupplierContactEditForm from './SupplierContactEditForm.react';
+import ActionButton from '../../components/ActionButton.react';
 import { Contact } from '../../api';
+import UserAbilities from '../../UserAbilities';
 
 class SupplierContactEditor extends Component {
 
   static propTypes = {
-    supplierId: React.PropTypes.string,
+    supplierId: React.PropTypes.string.isRequired,
     username: React.PropTypes.string,
-    readOnly: React.PropTypes.bool,
+    userRoles: React.PropTypes.array.isRequired,
     onChange: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func
   };
@@ -25,7 +25,6 @@ class SupplierContactEditor extends Component {
   };
 
   static defaultProps = {
-    readOnly: false,
     onChange: function(event) {
       if (event.isDirty) {
         console.log('data in form changed');
@@ -43,6 +42,7 @@ class SupplierContactEditor extends Component {
     };
 
     this.contactApi = new Contact();
+    this.userAbilities = new UserAbilities(props.userRoles);
   }
 
   componentWillMount(){
@@ -55,19 +55,6 @@ class SupplierContactEditor extends Component {
   }
 
   componentWillReceiveProps(newProps, nextContext) {
-    let editMode = this.state.editMode;
-
-    if (editMode && this.props.readOnly !== newProps.readOnly) {
-      if (editMode === 'create') {
-        newState.contact = null;
-      } else if (editMode === 'edit') {
-        newState.editMode = 'view';
-      } else if (editMode === 'view') {
-        newState.editMode = 'edit';
-      }
-      this.setState(newState);
-    }
-
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
       nextContext.i18n.register('SupplierContactEditor', i18nMessages);
@@ -104,7 +91,7 @@ class SupplierContactEditor extends Component {
     });
   };
 
-  handleCreate = () => {
+  addOnClick = () => {
     this.props.onChange({ isDirty: true });
     this.setState({ contact: {}, editMode: "create", errors: null });
   };
@@ -123,12 +110,11 @@ class SupplierContactEditor extends Component {
       contacts[index] = updatedContact;
 
       this.props.onChange({ isDirty: false });
-      if(this.props.newNotification)
-        this.props.newNotification(true);
+      if(this.props.newNotification) this.props.newNotification(true);
+
       const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
-      if(this.context.showNotification){
-        this.context.showNotification(message, 'info')
-      }
+      if(this.context.showNotification) this.context.showNotification(message, 'info');
+
       this.setState({ contacts: contacts, contact: null });
     }).catch(response => {
       if (response.status === 401) {
@@ -157,9 +143,8 @@ class SupplierContactEditor extends Component {
         this.props.onChange({ isDirty: false });
 
         const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
-        if(this.context.showNotification){
-          this.context.showNotification(message, 'info')
-        }
+        if(this.context.showNotification) this.context.showNotification(message, 'info');
+
         this.setState({ contacts: contacts, contact: null });
       }).catch((response) => {
         if (response.status === 401) {
@@ -167,9 +152,7 @@ class SupplierContactEditor extends Component {
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
           let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
-          if(this.context.showNotification){
-            this.context.showNotification(message, 'error')
-          }
+          if(this.context.showNotification) this.context.showNotification(message, 'error');
         }
       });
   };
@@ -183,19 +166,15 @@ class SupplierContactEditor extends Component {
     this.props.onChange({ isDirty: true });
   };
 
-  onDelete = (contact) => {
+  deleteOnClick = (contact) => {
     if (!confirm(this.context.i18n.getMessage('SupplierContactEditor.Confirmation.delete'))) {
       return;
     }
     this.handleDelete(contact);
   };
 
-  handleEdit = (contact) => {
-    this.setState({
-      contact: JSON.parse(JSON.stringify(contact)),
-      editMode: "edit",
-      errors: null
-    });
+  editOnClick = (contact) => {
+    this.setState({ contact: JSON.parse(JSON.stringify(contact)), editMode: "edit", errors: null });
   };
 
   loadContacts = () => {
@@ -213,20 +192,30 @@ class SupplierContactEditor extends Component {
       });
   };
 
+  renderActionButtons(contact) {
+    return this.userAbilities.actionGroupForContacts().map((action, index) => {
+      return <ActionButton
+                key={index}
+                action={action}
+                onClick={this[`${action}OnClick`].bind(this, contact)}
+                label={this.context.i18n.getMessage(`SupplierContactEditor.Button.${action}`)}
+                isSmall={true}
+                showIcon={true}
+              />
+    });
+  }
+
   render() {
-    const contacts = this.state.contacts;
-    const loadErrors = this.state.loadErrors;
-    let contact = this.state.contact;
-    let errors = this.state.errors;
-    let editMode = this.state.editMode;
-    let readOnly = this.props.readOnly;
+    const { contacts, loadErrors } = this.state;
+    let { contact, errors, editMode } = this.state;
     let result;
 
     if (contacts) {
       if (contacts.length > 0) {
         result = (
           <div className="table-responsive">
-            <DisplayTable headers={[{label: this.context.i18n.getMessage('SupplierContactEditor.Label.contactType')},
+            <DisplayTable headers={[
+              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.contactType')},
               {label: this.context.i18n.getMessage('SupplierContactEditor.Label.department')},
               {label: this.context.i18n.getMessage('SupplierContactEditor.Label.firstName')},
               {label: this.context.i18n.getMessage('SupplierContactEditor.Label.lastName')},
@@ -243,23 +232,19 @@ class SupplierContactEditor extends Component {
                   <DisplayField>{ contact.phone || '-'}</DisplayField>
                   <DisplayField>{ contact.mobile }</DisplayField>
                   <DisplayField>{ contact.email }</DisplayField>
-                  <DisplayEditGroup editAction={this.handleEdit.bind(this, contact)}
-                             deleteAction={this.onDelete.bind(this,contact)}
-                             editLabel={this.context.i18n.getMessage('SupplierContactEditor.Button.edit')}
-                             deleteLabel={this.context.i18n.getMessage('SupplierContactEditor.Button.delete')}/>
-
+                  <DisplayField classNames='text-right'>
+                    {this.renderActionButtons(contact)}
+                  </DisplayField>
                 </DisplayRow>))
               }
             </DisplayTable>
           </div>
         );
-      } else if (readOnly) {
-        contact = null;
       } else {
         // show create new contact if empty
         contact = {};
         errors = {};
-        editMode = 'create-first';
+        editMode = 'create';
       }
     } else if (loadErrors) {
       result = (<div>Load errors</div>);
@@ -276,7 +261,6 @@ class SupplierContactEditor extends Component {
         {contact ? (
           <div className="row">
             <div className="col-sm-6">
-
               <SupplierContactEditForm
                 onChange={this.handleChange}
                 locale={this.context.i18n.locale}
@@ -291,10 +275,12 @@ class SupplierContactEditor extends Component {
           </div>
         ) : null}
 
-        {!contact && !readOnly ? (
+        {!contact ? (
           <div>
-            <Button onClick={this.handleCreate}>{this.context.i18n.getMessage('SupplierContactEditor.Button.add')}
-            </Button>
+            <ActionButton
+              onClick={this.addOnClick}
+              label={this.context.i18n.getMessage('SupplierContactEditor.Button.add')}
+            />
           </div>
         ) : null}
       </div>

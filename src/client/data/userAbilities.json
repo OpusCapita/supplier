@@ -1,0 +1,30 @@
+{
+  "supplier-admin": {
+    "supplier": {
+      "actions": ["edit"]
+    },
+    "contact": {
+      "actions": ["add", "edit", "delete"]
+    },
+    "address": {
+      "actions": ["add", "edit", "delete"]
+    },
+    "bankAccount": {
+      "actions": ["add", "edit", "delete"]
+    }
+  },
+  "supplier": {
+    "supplier": {
+      "actions": ["view"]
+    },
+    "contact": {
+      "actions": ["add", "edit", "delete"]
+    },
+    "address": {
+      "actions": ["add", "edit", "delete"]
+    },
+    "bankAccount": {
+      "actions": ["view"]
+    }
+  }
+}

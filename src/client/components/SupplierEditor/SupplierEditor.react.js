@@ -3,7 +3,9 @@ import request from 'superagent-bluebird-promise';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import SupplierEditorForm from './SupplierEditorForm.react.js';
+import SupplierView from './SupplierView.react.js';
 import { Supplier } from '../../api';
+import UserAbilities from '../../UserAbilities';
 
 /**
  * Provide general company information.
@@ -13,6 +15,7 @@ class SupplierEditor extends Component {
   static propTypes = {
     supplierId: PropTypes.string.isRequired,
     username: React.PropTypes.string.isRequired,
+    userRoles: React.PropTypes.array.isRequired,
     dateTimePattern: PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
     onUpdate: React.PropTypes.func,
@@ -35,6 +38,7 @@ class SupplierEditor extends Component {
     }
 
     this.supplierApi = new Supplier();
+    this.userAbilities = new UserAbilities(props.userRoles);
   }
 
   componentWillMount() {
@@ -136,8 +140,22 @@ class SupplierEditor extends Component {
     });
   }
 
+  renderAction() {
+    if (this.userAbilities.canEditSupplier()) {
+      return (<SupplierEditorForm
+                {...this.props}
+                supplier={ this.state.supplier }
+                onSupplierChange={ this.handleUpdate }
+                onChange={ this.handleChange }
+                onCancel={ this.props.onLogout }
+              />)
+    }
+
+    return <SupplierView supplier={ this.state.supplier } />
+  }
+
   render() {
-    const { isLoaded, hasErrors, supplier, globalInfoMessage = '', globalErrorMessage = '' } = this.state;
+    const { isLoaded, hasErrors, globalInfoMessage = '', globalErrorMessage = '' } = this.state;
 
     if (!isLoaded) {
       return (
@@ -154,14 +172,10 @@ class SupplierEditor extends Component {
     return (
       <div className="row">
         <div className="col-sm-6">
-
-          <SupplierEditorForm
-            {...this.props}
-            supplier={ supplier }
-            onSupplierChange={ this.handleUpdate }
-            onChange={ this.handleChange }
-            onCancel={ this.props.onLogout }
-          />
+          <h4 className="tab-description">
+            { this.context.i18n.getMessage(`SupplierEditor.Description.viewSupplierOrChooseAnother`) }
+          </h4>
+          {this.renderAction()}
         </div>
       </div>
     );
