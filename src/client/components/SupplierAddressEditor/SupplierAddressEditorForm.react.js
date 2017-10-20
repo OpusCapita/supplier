@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import validator from 'validate.js';
 import './SupplierAddressEditorForm.css';
 import SupplierAddressFormConstraints from './SupplierAddressFormConstraints';
 import SupplierAddressEditorFormRow from '../AttributeValueEditorRow.react.js';
+import ActionButton from '../../components/ActionButton.react';
 const ADDRESS_TYPES = ['default', 'invoice', 'rma', 'plant'];
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 
@@ -14,7 +14,7 @@ class SupplierAddressEditorForm extends Component {
   static propTypes = {
     supplierAddress: React.PropTypes.object.isRequired,
     errors: React.PropTypes.object,
-    editMode: React.PropTypes.oneOf(['edit', 'create', 'create-first', 'view']),
+    editMode: React.PropTypes.oneOf(['edit', 'create']),
     onSave: React.PropTypes.func.isRequired,
     onUpdate: React.PropTypes.func.isRequired,
     onCancel: React.PropTypes.func.isRequired,
@@ -58,9 +58,7 @@ class SupplierAddressEditorForm extends Component {
     let errors = validator(supplierAddress, this.constraints, { fullMessages: false });
 
     if (!errors) {
-      const editMode = this.props.editMode;
-
-      if (editMode === 'edit') {
+      if (this.props.editMode === 'edit') {
         this.props.onUpdate(supplierAddress);
       } else {
         this.props.onSave(supplierAddress);
@@ -130,7 +128,7 @@ class SupplierAddressEditorForm extends Component {
 
   renderField = attrs => {
     const { supplierAddress, errors } = this.state;
-    const { fieldName, disabled } = attrs;
+    const { fieldName } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
 
     let component = attrs.component ||
@@ -139,7 +137,6 @@ class SupplierAddressEditorForm extends Component {
         value={ typeof supplierAddress[fieldName] === 'string' ? supplierAddress[fieldName] : '' }
         onChange={ this.handleChange.bind(this, fieldName) }
         onBlur={ this.handleBlur.bind(this, fieldName) }
-        disabled={disabled}
       />;
 
     let isRequired = fieldNames.some(name => {
@@ -163,29 +160,23 @@ class SupplierAddressEditorForm extends Component {
   };
 
   render() {
-    const editMode = this.props.editMode;
-    const disabled = editMode === 'view';
     const { supplierAddress } = this.state;
     const { CountryField } = this.externalComponents;
-
-    let message = this.context.i18n.getMessage;
 
     let typeOptions = [];
 
     typeOptions.push({
       value: '',
-      label: message('SupplierAddressEditor.Select.type'),
+      label: this.context.i18n.getMessage('SupplierAddressEditor.Select.type'),
       disabled: true
     });
 
-    for (let i = 0; i < ADDRESS_TYPES.length; i++) {
-      let type = ADDRESS_TYPES[i];
-
+    for (const addressType of ADDRESS_TYPES) {
       typeOptions.push({
-        value: type,
-        label: message(`SupplierAddressEditor.AddressType.${type}`),
-        disabled: disabled
-      })
+        value: addressType,
+        label: this.context.i18n.getMessage(`SupplierAddressEditor.AddressType.${addressType}`),
+        disabled: false
+      });
     }
 
     return (
@@ -197,7 +188,6 @@ class SupplierAddressEditorForm extends Component {
                 value={supplierAddress['type'] || ''}
                 onChange={this.handleChange.bind(this, 'type')}
                 onBlur={this.handleBlur.bind(this, 'type')}
-                disabled={disabled}
               >
                 {typeOptions.map((item, index) => {
                   return (<option key={index} disabled={item.disabled} value={item.value}>{item.label}</option>);
@@ -206,12 +196,12 @@ class SupplierAddressEditorForm extends Component {
             )
           }) }
 
-        { this.renderField({ fieldName: 'name', disabled: disabled }) }
-        { this.renderField({ fieldName: 'street1', disabled: disabled }) }
-        { this.renderField({ fieldName: 'street2', disabled: disabled }) }
-        { this.renderField({ fieldName: 'street3', disabled: disabled }) }
-        { this.renderField({ fieldName: 'zipCode', disabled: disabled }) }
-        { this.renderField({ fieldName: 'city', disabled: disabled }) }
+        { this.renderField({ fieldName: 'name' }) }
+        { this.renderField({ fieldName: 'street1' }) }
+        { this.renderField({ fieldName: 'street2' }) }
+        { this.renderField({ fieldName: 'street3' }) }
+        { this.renderField({ fieldName: 'zipCode' }) }
+        { this.renderField({ fieldName: 'city' }) }
 
         { this.renderField({
             fieldName: 'countryId',
@@ -227,29 +217,25 @@ class SupplierAddressEditorForm extends Component {
             )
           })}
 
-        { this.renderField({ fieldName: 'areaCode', disabled: disabled }) }
-        { this.renderField({ fieldName: 'state', disabled: disabled }) }
-        { this.renderField({ fieldName: 'pobox', disabled: disabled }) }
-        { this.renderField({ fieldName: 'poboxZipCode', disabled: disabled }) }
-        { this.renderField({ fieldName: 'phoneNo', disabled: disabled }) }
-        { this.renderField({ fieldName: 'faxNo', disabled: disabled }) }
-        { this.renderField({ fieldName: 'email', disabled: disabled }) }
+        { this.renderField({ fieldName: 'areaCode' }) }
+        { this.renderField({ fieldName: 'state' }) }
+        { this.renderField({ fieldName: 'pobox' }) }
+        { this.renderField({ fieldName: 'poboxZipCode' }) }
+        { this.renderField({ fieldName: 'phoneNo' }) }
+        { this.renderField({ fieldName: 'faxNo' }) }
+        { this.renderField({ fieldName: 'email' }) }
 
         <div className="col-sm-12 text-right address-form-submit">
-          {editMode !== 'create-first' ? (
-            <Button bsStyle="link"
-              onClick={this.handleCancel}
-            >
-            {
-              this.context.i18n.getMessage('SupplierAddressEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
-            }
-            </Button>
-          ) : null}
-          {editMode !== 'view' ? (
-            <Button bsStyle="primary"
-              type="submit"
-            >{this.context.i18n.getMessage('SupplierAddressEditor.Button.save')}</Button>
-          ) : null}
+          <ActionButton
+            style='link'
+            onClick={this.handleCancel}
+            label={this.context.i18n.getMessage('SupplierAddressEditor.Button.cancel')}
+          />
+          <ActionButton
+            style='primary'
+            type='submit'
+            label={this.context.i18n.getMessage('SupplierAddressEditor.Button.save')}
+          />
         </div>
       </form>
     );

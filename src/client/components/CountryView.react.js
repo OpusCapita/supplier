@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Country } from '../../api';
-import DisplayField from "./DisplayField.react";
+import { Country } from '../api';
 
-class DisplayCountryTableField extends Component {
+export default class CountryView extends Component {
 
   static propTypes = {
     countryId: React.PropTypes.string.isRequired
@@ -30,15 +29,12 @@ class DisplayCountryTableField extends Component {
       this.setState({ country: country });
     }).
     catch(errors => {
-      if (errors.status === 401) {
-        this.props.onUnauthorized();
-      }
+      console.log(`Error getting country for ID ${countryId}`);
+      this.setState({ country: countryId });
     });
   };
 
   render() {
-    return (<DisplayField>{this.state.country}</DisplayField>);
+    return (<div>{this.state.country}</div>);
   }
 }
-
-export default DisplayCountryTableField;

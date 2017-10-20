@@ -4,7 +4,8 @@ import SupplierEditorLocales from './../SupplierEditor/i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Supplier } from '../../api';
-import DisplayCountryTableField from '../DisplayTable/DisplayCountryTableField.react';
+import DisplayField from '../DisplayTable/DisplayField.react';
+import CountryView from '../CountryView.react';
 require('./SupplierSearch.css');
 
 export default class SupplierSearch extends Component {
@@ -67,7 +68,7 @@ export default class SupplierSearch extends Component {
       {
         Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.countryOfRegistration'),
         accessor: 'countryOfRegistration',
-        Cell: (row) => (<DisplayCountryTableField countryId={row.value} />)
+        Cell: (row) => (<DisplayField><CountryView countryId={row.value}/></DisplayField>)
       },
       {
         Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.commercialRegisterNo'),
