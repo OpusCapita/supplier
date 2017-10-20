@@ -52,9 +52,7 @@ class SupplierContactEditForm extends Component {
     let errors = validator(this.state.contact, this.constraints, { fullMessages: false });
 
     if (!errors) {
-      const editMode = this.props.editMode;
-
-      if (editMode === 'edit') {
+      if (this.props.editMode === 'edit') {
         this.props.onUpdate(contact);
       } else {
         this.props.onSave(contact);
