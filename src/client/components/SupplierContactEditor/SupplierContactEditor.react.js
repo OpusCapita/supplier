@@ -195,6 +195,7 @@ class SupplierContactEditor extends Component {
   renderActionButtons(contact) {
     return this.userAbilities.actionGroupForContacts().map(action => {
       return <ActionButton
+                key={action}
                 action={action}
                 onClick={this[`${action}OnClick`].bind(this, contact)}
                 label={this.context.i18n.getMessage(`SupplierContactEditor.Button.${action}`)}

@@ -16,12 +16,11 @@ export default class ActionButton extends Component {
     isSmall: false,
     showIcon: false,
     style: 'default',
-    type: 'button'
+    type: 'button',
+    onClick: () => null
   };
 
-  renderIcon() {
-    if (!this.props.showIcon) return null;
-
+  renderLabelWithIcon() {
     const action = this.props.action;
     const classes = classNames({
       'glyphicon': true,
@@ -29,11 +28,11 @@ export default class ActionButton extends Component {
       'glyphicon-edit': action === 'edit',
       'glyphicon-trash': action === 'delete'
     });
-    return (<span className={ classes }></span>);
+    return <div><span className={ classes }></span>&nbsp;{this.props.label}</div>;
   }
 
   render() {
-    const { style, type } = this.props;
+    const { style, type, showIcon, label } = this.props;
     const buttonClassNames = classNames({
       'btn': true,
       'btn-default': style === 'default',
@@ -44,8 +43,7 @@ export default class ActionButton extends Component {
 
     return (
       <button className={buttonClassNames} onClick={this.props.onClick.bind(this)} type={type}>
-        { this.renderIcon() }
-        { this.props.label }
+          {showIcon ? this.renderLabelWithIcon() : label }
       </button>
     );
   }

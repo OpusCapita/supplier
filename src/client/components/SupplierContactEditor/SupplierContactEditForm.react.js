@@ -211,7 +211,6 @@ class SupplierContactEditForm extends Component {
           <ActionButton
             style='primary'
             type='submit'
-            onClick={() => null}
             label={this.context.i18n.getMessage('SupplierContactEditor.Button.save')}
           />
         </div>
