@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import _ from 'underscore';
 import SupplierEditorFormRow from '../AttributeValueEditorRow.react.js';
 import './SupplierEditor.css';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
@@ -38,7 +37,7 @@ class SupplierEditorForm extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (!_.isEqual(this.props.supplier, nextProps.supplier)) {
+    if (JSON.stringify(this.props.supplier) !== JSON.stringify(nextProps.supplier)) {
       this.setState({
         supplier: {
           ...nextProps.supplier

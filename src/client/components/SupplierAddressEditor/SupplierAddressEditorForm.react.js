@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import validator from 'validate.js';
 import './SupplierAddressEditorForm.css';
 import SupplierAddressFormConstraints from './SupplierAddressFormConstraints';
