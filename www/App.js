@@ -94,6 +94,7 @@ let bankEditor = (
     supplierId={supplier.supplierId}
     locale='en'
     username={username}
+    userRoles={userRoles}
   />
 );
 

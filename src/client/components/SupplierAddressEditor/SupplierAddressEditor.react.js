@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
-import Button from 'react-bootstrap/lib/Button';
 import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
 import DisplayField from '../../components/DisplayTable/DisplayField.react';
-import DisplayCountryTableField from '../../components/DisplayTable/DisplayCountryTableField.react.js';
 import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
 import SupplierAddressEditorForm from './SupplierAddressEditorForm.react.js';
 import ActionButton from '../../components/ActionButton.react';
+import CountryView from '../CountryView.react.js';
 import { Address } from '../../api';
 import UserAbilities from '../../UserAbilities';
 
@@ -244,7 +243,7 @@ class SupplierAddressEditor extends Component {
                 <DisplayField>{address.street1}</DisplayField>
                 <DisplayField>{address.zipCode}</DisplayField>
                 <DisplayField>{address.city}</DisplayField>
-                <DisplayCountryTableField countryId={address.countryId} />
+                <DisplayField><CountryView countryId={address.countryId}/></DisplayField>
                 <DisplayField>{address.phoneNo}</DisplayField>
                 <DisplayField>{address.faxNo || '-'}</DisplayField>
                 <DisplayField classNames='text-right'>

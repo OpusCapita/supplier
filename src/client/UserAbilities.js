@@ -13,16 +13,24 @@ class UserAbilities {
     return this.abilitiesForRole['supplier']['actions'].includes('edit');
   }
 
-  actionGroupForContacts() {
-    return this.abilitiesForRole['contact']['actions'].reduce((accumulator, action) => {
-      if (action !== 'add') return accumulator.concat(action);
+  canCreateBankAccount() {
+    return this.abilitiesForRole['bankAccount']['actions'].includes('add');
+  }
 
-      return accumulator;
-    }, []);
+  actionGroupForContacts() {
+    return this._actionGroup('contact');
   }
 
   actionGroupForAddresses() {
-    return this.abilitiesForRole['address']['actions'].reduce((accumulator, action) => {
+    return this._actionGroup('address');
+  }
+
+  actionGroupForBankAccounts() {
+    return this._actionGroup('bankAccount');
+  }
+
+  _actionGroup(model) {
+    return this.abilitiesForRole[model]['actions'].reduce((accumulator, action) => {
       if (action !== 'add') return accumulator.concat(action);
 
       return accumulator;
