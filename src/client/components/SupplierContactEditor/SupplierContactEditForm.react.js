@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Button from "react-bootstrap/lib/Button";
 import validator from "validate.js";
 import "./SupplierContactEditForm.css";
 import SupplierContactFormConstraints from "./SupplierContactFormConstraints";
 import SupplierContactEditFormRow from "../AttributeValueEditorRow.react.js";
+import ActionButton from '../../components/ActionButton.react';
 const CONTACT_TYPES = ['Default', 'Sales', 'Escalation', 'Product', 'Technical'];
 const DEPARTMENTS = ['Management', 'Logistics', 'Sales', 'Accounting', 'Support', 'IT', 'Others'];
 const stringHelper = require('../../../server/utils/string');
@@ -12,7 +12,7 @@ class SupplierContactEditForm extends Component {
   static propTypes = {
     contact: React.PropTypes.object.isRequired,
     errors: React.PropTypes.object,
-    editMode: React.PropTypes.oneOf(['edit', 'create', 'create-first', 'view']),
+    editMode: React.PropTypes.oneOf(['edit', 'create']),
     onSave: React.PropTypes.func.isRequired,
     onUpdate: React.PropTypes.func.isRequired,
     onCancel: React.PropTypes.func.isRequired,
@@ -130,7 +130,7 @@ class SupplierContactEditForm extends Component {
 
   renderField = (attrs) => {
     const { contact, errors } = this.state;
-    const { fieldName, disabled } = attrs;
+    const { fieldName } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
 
     let component = attrs.component ||
@@ -139,7 +139,6 @@ class SupplierContactEditForm extends Component {
         value={ typeof contact[fieldName] === 'string' ? contact[fieldName] : '' }
         onChange={ this.handleChange.bind(this, fieldName) }
         onBlur={ this.handleBlur.bind(this, fieldName) }
-        disabled={disabled}
       />;
 
     let isRequired = fieldNames.some(name => {
@@ -163,8 +162,6 @@ class SupplierContactEditForm extends Component {
   };
 
   render() {
-    const editMode = this.props.editMode;
-    const disabled = editMode === 'view';
     const { contact } = this.state;
 
     return (
@@ -176,7 +173,6 @@ class SupplierContactEditForm extends Component {
                 value={contact['contactType'] || ''}
                 onChange={this.handleChange.bind(this, 'contactType')}
                 onBlur={this.handleBlur.bind(this, 'contactType')}
-                disabled={disabled}
               >
                 {this.selectOptions('contactType', CONTACT_TYPES).map((item, index) => {
                   return (<option key={index} disabled={item.disabled} value={item.value}>{item.label}</option>);
@@ -191,7 +187,6 @@ class SupplierContactEditForm extends Component {
                 value={contact['department'] || ''}
                 onChange={this.handleChange.bind(this, 'department')}
                 onBlur={this.handleBlur.bind(this, 'department')}
-                disabled={disabled}
               >
                 {this.selectOptions('department', DEPARTMENTS).map((item, index) => {
                   return (<option key={index} disabled={item.disabled} value={item.value}>{item.label}</option>);
@@ -199,29 +194,26 @@ class SupplierContactEditForm extends Component {
               </select>
             )
           }) }
-        { this.renderField({ fieldName: 'title', disabled: disabled }) }
-        { this.renderField({ fieldName: 'firstName', disabled: disabled }) }
-        { this.renderField({ fieldName: 'lastName', disabled: disabled }) }
-        { this.renderField({ fieldName: 'phone', disabled: disabled }) }
-        { this.renderField({ fieldName: 'mobile', disabled: disabled }) }
-        { this.renderField({ fieldName: 'fax', disabled: disabled }) }
-        { this.renderField({ fieldName: 'email', disabled: disabled }) }
+        { this.renderField({ fieldName: 'title' }) }
+        { this.renderField({ fieldName: 'firstName' }) }
+        { this.renderField({ fieldName: 'lastName' }) }
+        { this.renderField({ fieldName: 'phone' }) }
+        { this.renderField({ fieldName: 'mobile' }) }
+        { this.renderField({ fieldName: 'fax' }) }
+        { this.renderField({ fieldName: 'email' }) }
 
         <div className="col-sm-12 text-right address-form-submit">
-          {editMode !== 'create-first' ? (
-            <Button bsStyle="link"
-              onClick={this.handleCancel}
-            >
-              {
-                this.context.i18n.getMessage('SupplierContactEditor.Button.' + (editMode === 'view' ? 'close' : 'cancel'))
-              }
-            </Button>
-          ) : null}
-          {editMode !== 'view' ? (
-            <Button bsStyle="primary"
-                    type="submit"
-            >{this.context.i18n.getMessage('SupplierContactEditor.Button.save')}</Button>
-          ) : null}
+          <ActionButton
+            style='link'
+            onClick={this.handleCancel}
+            label={this.context.i18n.getMessage('SupplierContactEditor.Button.cancel')}
+          />
+          <ActionButton
+            style='primary'
+            type='submit'
+            onClick={() => null}
+            label={this.context.i18n.getMessage('SupplierContactEditor.Button.save')}
+          />
         </div>
       </form>
     );

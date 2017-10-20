@@ -3,16 +3,20 @@ import classNames from 'classnames';
 
 export default class ActionButton extends Component {
   static propTypes = {
-    action: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
+    style: PropTypes.string,
+    type: PropTypes.string,
+    action: PropTypes.string,
     isSmall: PropTypes.bool,
     showIcon: PropTypes.bool
   };
 
   static defaultProps = {
     isSmall: false,
-    showIcon: true
+    showIcon: false,
+    style: 'default',
+    type: 'button'
   };
 
   renderIcon() {
@@ -29,14 +33,17 @@ export default class ActionButton extends Component {
   }
 
   render() {
+    const { style, type } = this.props;
     const buttonClassNames = classNames({
       'btn': true,
-      'btn-default': true,
+      'btn-default': style === 'default',
+      'btn-primary': style === 'primary',
+      'btn-link': style === 'link',
       'btn-sm': this.props.isSmall,
     });
 
     return (
-      <button className={ buttonClassNames } onClick={ this.props.onClick.bind(this) }>
+      <button className={buttonClassNames} onClick={this.props.onClick.bind(this)} type={type}>
         { this.renderIcon() }
         { this.props.label }
       </button>

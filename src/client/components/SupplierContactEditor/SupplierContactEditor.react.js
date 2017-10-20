@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/lib/Button';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
@@ -56,19 +55,6 @@ class SupplierContactEditor extends Component {
   }
 
   componentWillReceiveProps(newProps, nextContext) {
-    let editMode = this.state.editMode;
-
-    if (editMode) {
-      if (editMode === 'create') {
-        newState.contact = null;
-      } else if (editMode === 'edit') {
-        newState.editMode = 'view';
-      } else if (editMode === 'view') {
-        newState.editMode = 'edit';
-      }
-      this.setState(newState);
-    }
-
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
       nextContext.i18n.register('SupplierContactEditor', i18nMessages);
@@ -124,12 +110,11 @@ class SupplierContactEditor extends Component {
       contacts[index] = updatedContact;
 
       this.props.onChange({ isDirty: false });
-      if(this.props.newNotification)
-        this.props.newNotification(true);
+      if(this.props.newNotification) this.props.newNotification(true);
+
       const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
-      if(this.context.showNotification){
-        this.context.showNotification(message, 'info')
-      }
+      if(this.context.showNotification) this.context.showNotification(message, 'info');
+
       this.setState({ contacts: contacts, contact: null });
     }).catch(response => {
       if (response.status === 401) {
@@ -158,9 +143,8 @@ class SupplierContactEditor extends Component {
         this.props.onChange({ isDirty: false });
 
         const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
-        if(this.context.showNotification){
-          this.context.showNotification(message, 'info')
-        }
+        if(this.context.showNotification) this.context.showNotification(message, 'info');
+
         this.setState({ contacts: contacts, contact: null });
       }).catch((response) => {
         if (response.status === 401) {
@@ -168,9 +152,7 @@ class SupplierContactEditor extends Component {
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
           let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
-          if(this.context.showNotification){
-            this.context.showNotification(message, 'error')
-          }
+          if(this.context.showNotification) this.context.showNotification(message, 'error');
         }
       });
   };
@@ -192,11 +174,7 @@ class SupplierContactEditor extends Component {
   };
 
   editOnClick = (contact) => {
-    this.setState({
-      contact: JSON.parse(JSON.stringify(contact)),
-      editMode: "edit",
-      errors: null
-    });
+    this.setState({ contact: JSON.parse(JSON.stringify(contact)), editMode: "edit", errors: null });
   };
 
   loadContacts = () => {
@@ -221,16 +199,14 @@ class SupplierContactEditor extends Component {
                 onClick={this[`${action}OnClick`].bind(this, contact)}
                 label={this.context.i18n.getMessage(`SupplierContactEditor.Button.${action}`)}
                 isSmall={true}
+                showIcon={true}
               />
     });
   }
 
   render() {
-    const contacts = this.state.contacts;
-    const loadErrors = this.state.loadErrors;
-    let contact = this.state.contact;
-    let errors = this.state.errors;
-    let editMode = this.state.editMode;
+    const { contacts, loadErrors } = this.state;
+    let { contact, errors, editMode } = this.state;
     let result;
 
     if (contacts) {
@@ -266,7 +242,7 @@ class SupplierContactEditor extends Component {
         // show create new contact if empty
         contact = {};
         errors = {};
-        editMode = 'create-first';
+        editMode = 'create';
       }
     } else if (loadErrors) {
       result = (<div>Load errors</div>);
@@ -283,7 +259,6 @@ class SupplierContactEditor extends Component {
         {contact ? (
           <div className="row">
             <div className="col-sm-6">
-
               <SupplierContactEditForm
                 onChange={this.handleChange}
                 locale={this.context.i18n.locale}
@@ -301,10 +276,8 @@ class SupplierContactEditor extends Component {
         {!contact ? (
           <div>
             <ActionButton
-              action='add'
               onClick={this.addOnClick}
               label={this.context.i18n.getMessage('SupplierContactEditor.Button.add')}
-              showIcon={false}
             />
           </div>
         ) : null}
