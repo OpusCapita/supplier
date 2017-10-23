@@ -6,10 +6,19 @@ module.exports = function(app, db, config) {
 Promise.all([Supplier2Users.init(db, config), Suppliers.init(db, config)]).then(() =>
   {
     app.post('/api/supplier_access', (req, res) => createSupplierAccess(req, res));
+    app.get('/api/supplier_access', (req, res) => sendSupplierAccesses(req, res));
     app.get('/api/supplier_access/:userId', (req, res) => sendSupplierAccess(req, res));
     app.put('/api/grant_supplier_access', (req, res) => addSupplierToUser(req, res));
   });
 };
+
+let sendSupplierAccesses = function(req, res)
+{
+  const supplierId = req.query.supplierId;
+  if (!supplierId) return res.status('400').json({ message: 'supplierId query parameter must be given' });
+
+  return Supplier2Users.all(supplierId).then(supplier2users => res.json(supplier2users));
+}
 
 let sendSupplierAccess = function(req, res)
 {

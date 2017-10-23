@@ -9,6 +9,11 @@ module.exports.init = function(db, config)
   return Promise.resolve(this);
 };
 
+module.exports.all = function(supplierId)
+{
+  return this.db.models.Supplier2User.findAll({ where: { supplierId: supplierId } });
+}
+
 module.exports.find = function(userId)
 {
   return this.db.models.Supplier2User.findOne({ where: { userId: userId } });
