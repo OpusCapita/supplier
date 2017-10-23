@@ -1,5 +1,4 @@
 const SupplierAddress = require('../queries/supplier_addresses');
-const SupplierUser = require('../queries/supplier_user');
 
 module.exports = function(app, db, config) {
 SupplierAddress.init(db, config).then(() =>
@@ -9,18 +8,8 @@ SupplierAddress.init(db, config).then(() =>
     app.get('/api/suppliers/:supplierId/addresses/:addressId', (req, res) => sendSupplierAddress(req, res));
     app.put('/api/suppliers/:supplierId/addresses/:addressId', (req, res) => updateSupplierAddress(req, res));
     app.delete('/api/suppliers/:supplierId/addresses/:addressId', (req, res) => deleteSupplierAddress(req, res));
-    //app.get('/api/supplier/getSupplierAccess', (req, res) => getSupplierAccess(req, res));
   });
 };
-
-// let getSupplierAccess = function(req, res)
-// {
-//   SupplierUser.getSupplierAccess().then(requests =>
-//   {
-//     console.log("REQUEST", requests)
-//     res.json(requests);
-//   });
-// };
 
 let sendSupplierAddresses = function(req, res)
 {

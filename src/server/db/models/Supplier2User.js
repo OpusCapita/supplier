@@ -41,7 +41,8 @@ module.exports = function(sequelize) {
       type: Sequelize.DATE,
       allowNull: false
     },
-  }, {
+  },
+  {
     updatedAt: 'changedOn',
     createdAt: 'createdOn',
     timestamps: true,

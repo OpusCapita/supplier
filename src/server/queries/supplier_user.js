@@ -20,7 +20,27 @@ module.exports.find = function(supplierId, userId)
 };
 
 module.exports.getSupplierAccess = function () {
-  return this.db.models.Supplier2User.findAll({where: { status: 'requested'}})
+  let supplier = this.db.models.Supplier
+  let supplier2user = this.db.models.Supplier2User
+  return supplier.findAll({
+    where: { status: true},
+    include: [
+      { model: supplier2user,
+        required: true,
+        where: {
+          status: 'requested'
+        }
+      }
+    ]
+  })
+  // return this.db.models.Supplier2User.findAll({
+  //   where: { status: 'requested'},
+  //   include: [
+  //     { model: supplier,
+  //       required: true
+  //     }
+  //   ]
+  // })
 };
 
 module.exports.approve = function(supplierId, userId, accessReason)

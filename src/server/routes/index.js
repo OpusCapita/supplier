@@ -18,8 +18,8 @@ const supplierUser = require('./supplier_user');
  * @see [Minimum setup]{@link https://github.com/OpusCapitaBusinessNetwork/web-init#minimum-setup}
  */
 module.exports.init = function(app, db, config) {
-  suppliers(app, db, config);
   supplierUser(app, db, config);
+  suppliers(app, db, config);
   supplierContacts(app, db, config);
   supplierAddresses(app, db, config);
   supplierBanks(app, db, config);
