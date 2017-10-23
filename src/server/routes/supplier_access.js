@@ -7,6 +7,7 @@ Promise.all([Supplier2Users.init(db, config), Suppliers.init(db, config)]).then(
   {
     app.post('/api/supplier_access', (req, res) => createSupplierAccess(req, res));
     app.get('/api/supplier_access', (req, res) => sendSupplierAccesses(req, res));
+    app.put('/api/supplier_access/:id', (req, res) => updateSupplierAccess(req, res));
     app.get('/api/supplier_access/:userId', (req, res) => sendSupplierAccess(req, res));
     app.put('/api/grant_supplier_access', (req, res) => addSupplierToUser(req, res));
   });
@@ -50,6 +51,25 @@ let createSupplierAccess = function(req, res)
 
         return res.status('400').json({ message : error.message });
       });
+  });
+}
+
+let updateSupplierAccess = function(req, res)
+{
+  const supplier2userId = req.params.id;
+
+  return Supplier2Users.exists(supplier2userId).then(exists => {
+    if (exists) {
+      return Supplier2Users.update(supplier2userId, req.body).then(supplier2user => res.json(supplier2user));
+    } else {
+      const message = 'No supplier_access with Id ' + supplier2userId + ' exists.'
+      req.opuscapita.logger.error('Error when updating Supplier2User: %s', message);
+      return res.status('404').json({ message : message });
+    }
+  }).
+  catch(error => {
+    req.opuscapita.logger.error('Error when updating Supplier2User: %s', error.message);
+    return res.status('400').json({ message : error.message });
   });
 }
 
