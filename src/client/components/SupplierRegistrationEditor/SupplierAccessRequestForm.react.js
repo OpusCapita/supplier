@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import request from 'superagent-bluebird-promise';
 import validator from "validate.js";
 import AttributeValueEditorRow from '../AttributeValueEditorRow.react.js';
+import { Supplier } from '../../api';
 
 class SupplierAccessRequestForm extends Component {
   static propTypes = {
@@ -14,11 +15,12 @@ class SupplierAccessRequestForm extends Component {
     i18n : React.PropTypes.object.isRequired
   };
 
-  state = {
-    supplier: {},
-    accessReason: '',
-    fieldErrors: {}
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = { supplier: {}, accessReason: '', fieldErrors: {} };
+    this.supplierApi = new Supplier();
+  }
 
   componentWillMount() {
     this.constraints = {
@@ -31,9 +33,8 @@ class SupplierAccessRequestForm extends Component {
   }
 
   componentDidMount() {
-    const query = this.props.supplierAttributes;
-    request.get('/supplier/api/suppliers/search').query(query).set('Accept', 'application/json').then(response => {
-      this.setState({ supplier: response.body });
+    this.supplierApi.searchSupplier(this.props.supplierAttributes).then(supplier => {
+      this.setState({ supplier: supplier });
     }).catch(error => null);
   }
 

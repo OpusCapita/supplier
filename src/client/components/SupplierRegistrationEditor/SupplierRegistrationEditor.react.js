@@ -5,7 +5,7 @@ import i18nMessages from './i18n';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';
 import SupplierAccessRequestForm from './SupplierAccessRequestForm.react.js';
 import SupplierAccessView from './SupplierAccessView.react';
-import { Supplier, Auth, Contact } from '../../api';
+import { Supplier, Access, Auth, Contact } from '../../api';
 
 /**
  * Provide general company information.
@@ -43,9 +43,8 @@ class SupplierRegistrationEditor extends Component {
     this.supplierApi = new Supplier();
     this.authApi = new Auth();
     this.contactApi = new Contact();
+    this.accessApi = new Access();
   }
-
-  createSupplierPromise = null;
 
   componentWillMount(){
     this.context.i18n.register('SupplierValidatejs', validationMessages);
@@ -53,15 +52,14 @@ class SupplierRegistrationEditor extends Component {
   }
 
   componentDidMount() {
-    request.get(`/supplier/api/supplier_access/${this.props.user.id}`).set('Accept', 'application/json').then(response => {
-      const supplierAccess = response.body;
-      const supplierId = supplierAccess ? supplierAccess.supplierId : undefined;
+    this.accessApi.getAccess(this.props.user.id).then(supplierAccess => {
+      const supplierId = supplierAccess.supplierId;
 
       this.setState({ loading: false, supplierAccess: supplierAccess, supplierExist: Boolean(supplierId) });
 
       if (supplierId) {
-        request.get(`/supplier/api/suppliers/${supplierId}`).set('Accept', 'application/json').then(response => {
-          this.setState({ supplier: response.body });
+        this.supplierApi.getSupplier(supplierId).then(supplier => {
+          this.setState({ supplier: supplier });
         }).catch(error => null);
       }
     }).catch(error => {
@@ -83,13 +81,13 @@ class SupplierRegistrationEditor extends Component {
       const supplier = this.state.supplier;
       const user = this.props.user;
       const contact = {
-          contactType: "Default",
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          supplierId: supplier.supplierId,
-          createdBy: user.id,
-          changedBy: user.id
+        contactType: "Default",
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        supplierId: supplier.supplierId,
+        createdBy: user.id,
+        changedBy: user.id
       }
 
       return this.contactApi.createContact(supplier.supplierId, contact).then(() => {
@@ -121,9 +119,7 @@ class SupplierRegistrationEditor extends Component {
   }
 
   handleUpdate = newSupplier => {
-    if (!newSupplier) {
-      return;
-    }
+    if (!newSupplier) return;
 
     newSupplier = {  // eslint-disable-line no-param-reassign
       ...newSupplier,
@@ -135,7 +131,7 @@ class SupplierRegistrationEditor extends Component {
       this.setState({ supplier: createdSupplier });
 
       if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info')
+        this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info')
 
       return this.postSupplierCreate();
     }).
@@ -164,12 +160,8 @@ class SupplierRegistrationEditor extends Component {
 
   handleAccess = () => {
     const body = { supplierId: this.state.supplier.supplierId, userId: this.props.user.id };
-    this.grantSupplierAccessPromise = request.put(`/supplier/api/grant_supplier_access`).
-      set('Accept', 'application/json').send(body).promise();
 
-    this.grantSupplierAccessPromise.then(() => {
-      return this.postSupplierCreate();
-    }).catch(errors => {
+    this.accessApi.grantAccess(body).then(() => this.postSupplierCreate()).catch(errors => {
       if(this.context.showNotification)
         this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'), 'error');
     });
@@ -185,12 +177,8 @@ class SupplierRegistrationEditor extends Component {
 
   handleSaveAccessRequest = (accessAttributes, supplier) => {
     accessAttributes.userId = this.props.user.id;
-    request.post('/supplier/api/supplier_access').set('Accept', 'application/json').send(accessAttributes).then(response => {
-      this.setState({
-        supplierAccess: response.body,
-        supplierExist: true,
-        supplier: supplier
-      });
+    this.accessApi.createAccess(accessAttributes).then(supplierAccess => {
+      this.setState({ supplierAccess: supplierAccess, supplierExist: true, supplier: supplier });
     });
   }
 
