@@ -262,7 +262,7 @@ class SupplierAddressEditor extends Component {
 
     return (
       <div>
-        <Button onClick={this.handleCreate}>{this.context.i18n.getMessage('SupplierAddressEditor.Button.add')}
+        <Button id="add-button" onClick={this.handleCreate}>{this.context.i18n.getMessage('SupplierAddressEditor.Button.add')}
         </Button>
       </div>
     )

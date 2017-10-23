@@ -237,7 +237,9 @@ class SupplierAddressEditorForm extends Component {
 
         <div className="col-sm-12 text-right address-form-submit">
           {editMode !== 'create-first' ? (
-            <Button bsStyle="link"
+            <Button
+              bsStyle="link"
+              id="address-cancel"
               onClick={this.handleCancel}
             >
             {
@@ -248,6 +250,7 @@ class SupplierAddressEditorForm extends Component {
           {editMode !== 'view' ? (
             <Button bsStyle="primary"
               type="submit"
+              id="address-save"
             >{this.context.i18n.getMessage('SupplierAddressEditor.Button.save')}</Button>
           ) : null}
         </div>
