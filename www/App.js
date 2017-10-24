@@ -8,6 +8,7 @@ import SupplierContactEditor from '../src/client/components/SupplierContactEdito
 import SupplierBankEditor from '../src/client/components/SupplierBankAccountEditor';
 import SupplierProfileStrength from '../src/client/components/SupplierProfileStrength';
 import SupplierSearch from '../src/client/components/SupplierSearch';
+import SupplierApproval from '../src/client/components/SupplierApproval';
 
 const username = 'john.doe@ncc.com';
 const actionUrl = 'http://localhost:8080';
@@ -86,6 +87,12 @@ let searchEditor = (
   />
 );
 
+let supplierApproval = (
+  <SupplierApproval
+    actionUrl={actionUrl}
+  />
+);
+
 let bankEditor = (
   <SupplierBankEditor
     key='contact'
@@ -109,6 +116,7 @@ const App = () => (
     <ul className="nav nav-tabs">
       <li><NavLink exact activeStyle={activeStyle} to='/supplier'>Supplier</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/search'>Supplier Search</NavLink></li>
+      <li><NavLink activeStyle={activeStyle} to='/supplier/approval'>Supplier Approval</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/registration'>Supplier Registration</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/address'>Supplier Address</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/contact'>Supplier Contact</NavLink></li>
@@ -117,6 +125,7 @@ const App = () => (
     </ul>
     <Route exact path='/supplier' render={() => editor }/>
     <Route exact path='/supplier/search' render={() => searchEditor }/>
+    <Route exact path='/supplier/approval' render={() => supplierApproval }/>
     <Route exact path='/supplier/registration' render={() => registrationEditor }/>
     <Route exact path='/supplier/address' render={() => addressEditor }/>
     <Route exact path='/supplier/contact' render={() => contactEditor }/>
