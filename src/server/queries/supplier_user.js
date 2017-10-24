@@ -20,28 +20,19 @@ module.exports.find = function(supplierId, userId)
 };
 
 module.exports.getSupplierAccess = function () {
-  let supplier = this.db.models.Supplier
-  let supplier2user = this.db.models.Supplier2User
-  return supplier.findAll({
-    where: { status: true},
-    include: [
-      { model: supplier2user,
-        required: true,
-        where: {
-          status: 'requested'
-        }
-      }
-    ]
+  return this.db.models.Supplier2User.findAll({
+    where: { status: 'requested'},
   })
-  // return this.db.models.Supplier2User.findAll({
-  //   where: { status: 'requested'},
-  //   include: [
-  //     { model: supplier,
-  //       required: true
-  //     }
-  //   ]
-  // })
 };
+
+module.exports.getContactDetails = function (data) {
+  let supplier = this.db.models.SupplierContact
+  let supplierInformation = []
+  for(let index = 0; index < data.length ; index ++){
+    supplierInformation.push(supplier.findOne({ where: {SupplierId: data[index].dataValues.supplierId}}))
+  }
+  return Promise.all(supplierInformation)
+}
 
 module.exports.approve = function(supplierId, userId, accessReason)
 {

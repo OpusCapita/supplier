@@ -11,12 +11,14 @@ module.exports = {
         type: Sequelize.STRING(30),
         references: {
           model: 'Supplier',
-          key: 'SupplierID'
+          key: 'SupplierID',
+          onDelete: 'CASCADE',
+          onUpdate: 'SET NULL'
         }
       }
     ),
-    queryInterface.addColumn('Supplier2User', 'testcolumn', { type: Sequelize.STRING(1000) })
-
+    // queryInterface.addColumn('Supplier2User', 'testcolumn', { type: Sequelize.STRING(1000) })
+    //
     ])
 },
 
@@ -24,8 +26,16 @@ module.exports = {
     var queryInterface = db.getQueryInterface();
 
     return Promise.all([
-      queryInterface.changeColumn('Supplier2User', 'supplierId'),
-      queryInterface.removeColumn('Supplier2User', 'testcolumn')
+      queryInterface.changeColumn('Supplier2User', 'supplierId', {
+        type: Sequelize.STRING(30),
+        references: {
+          model: 'Supplier',
+          key: 'SupplierID',
+          onDelete: 'CASCADE',
+          onUpdate: 'SET NULL'
+        }
+      }),
+    //queryInterface.removeColumn('Supplier2User', 'testcolumn')
 
     ])
 

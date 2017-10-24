@@ -39,7 +39,7 @@ class SupplierAccess extends Component {
   	request.get(`${this.props.actionUrl}/supplier/api/suppliers/getSupplierAccess`)
 		.set('Accept', 'application/json')
 		.then((data)=> {
-			this.setState({allRequests: data.body, isLoaded: true})
+			this.setState({allRequests: data.body.requests, isLoaded: true})
 		})
 		.catch((errors) => {
       console.log('Error during retrieving Supplier Access list:');
@@ -53,6 +53,22 @@ class SupplierAccess extends Component {
   denyRequest = () => {
 
   }
+
+	getDate = (date) => {
+		let today = new Date(date)
+		let dd = today.getDate();
+		let mm = today.getMonth()+1;
+
+		let yyyy = today.getFullYear();
+		if(dd<10){
+		    dd='0'+dd;
+		}
+		if(mm<10){
+		    mm='0'+mm;
+		}
+		today = dd+'/'+mm+'/'+yyyy;
+		return today
+	}
 
 	render(){
 		//let requests = this.state.allRequests
@@ -72,20 +88,22 @@ class SupplierAccess extends Component {
 					>
 						{ this.state.allRequests.length > 0 ?
 							this.state.allRequests.map((request, index) =>
-							(<DisplayRow key={index}>
-								<DisplayField>{ request.firstName }</DisplayField>
-								<DisplayField>{ request.lastName }</DisplayField>
-								<DisplayField>{ request.email }</DisplayField>
-								<DisplayField>{ request.date }</DisplayField>
-								<DisplayField>{ request.status }</DisplayField>
-								<DisplayField>{ request.comment }</DisplayField>
-								<DisplayField>{ "Action" }</DisplayField>
-							</DisplayRow>))
+
+									(<DisplayRow key={index}>
+										<DisplayField>{ request.details ? request.details.firstName : "Unavailable" }</DisplayField>
+										<DisplayField>{ request.details ? request.details.lastName : "Unavailable"}</DisplayField>
+										<DisplayField>{ request.details ? request.details.email : "Unavailable" }</DisplayField>
+										<DisplayField>{ this.getDate(request.createdOn).toString() }</DisplayField>
+										<DisplayField>{ request.status }</DisplayField>
+										<DisplayField>{ request.comment }</DisplayField>
+										<DisplayField>{ "Action" }</DisplayField>
+									</DisplayRow>)
+							)
 							: null
 						}
 					</DisplayTable>
 
-					: null
+					: "Loading..."
 				}
 	    </div>
 	  )
