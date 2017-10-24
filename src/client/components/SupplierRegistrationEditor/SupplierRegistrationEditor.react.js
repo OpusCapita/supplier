@@ -3,8 +3,9 @@ import request from 'superagent-bluebird-promise';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';
-import SupplierExistsView from './SupplierExistsView.react';
-import { Supplier, Auth, Contact } from '../../api';
+import SupplierAccessRequestForm from './SupplierAccessRequestForm.react.js';
+import SupplierAccessView from './SupplierAccessView.react';
+import { Supplier, Access, Auth, Contact } from '../../api';
 
 /**
  * Provide general company information.
@@ -33,27 +34,82 @@ class SupplierRegistrationEditor extends Component {
       supplier: {
         ...this.props.supplier
       },
-      supplierExist: false
+      supplierAccess: null,
+      supplierAttributes: null,
+      supplierExist: false,
+      loading: true
     }
 
     this.supplierApi = new Supplier();
     this.authApi = new Auth();
     this.contactApi = new Contact();
+    this.accessApi = new Access();
   }
-
-  createSupplierPromise = null;
 
   componentWillMount(){
     this.context.i18n.register('SupplierValidatejs', validationMessages);
     this.context.i18n.register('SupplierRegistrationEditor', i18nMessages);
   }
 
-  componentWillReceiveProps(nextProps, nextContext) {
+  componentDidMount() {
+    this.accessApi.getAccess(this.props.user.id).then(supplierAccess => {
+      const supplierId = supplierAccess.supplierId;
 
+      this.setState({ loading: false, supplierAccess: supplierAccess, supplierExist: Boolean(supplierId) });
+
+      if (supplierId) {
+        this.supplierApi.getSupplier(supplierId).then(supplier => {
+          this.setState({ supplier: supplier });
+        }).catch(error => null);
+      }
+    }).catch(error => {
+      return this.setState({ loading: false, supplierExist: false });
+    });
+  }
+
+  componentWillReceiveProps(nextProps, nextContext) {
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
       nextContext.i18n.register('SupplierRegistrationEditor', i18nMessages);
     }
+  }
+
+  postSupplierCreate = () => {
+    return this.authApi.refreshIdToken().then(() => {
+      console.log("id token refreshed");
+
+      const supplier = this.state.supplier;
+      const user = this.props.user;
+      const contact = {
+        contactType: "Default",
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        supplierId: supplier.supplierId,
+        createdBy: user.id,
+        changedBy: user.id
+      }
+
+      return this.contactApi.createContact(supplier.supplierId, contact).then(() => {
+        console.log('contact created');
+
+        if (this.props.onUpdate) {
+          this.props.onUpdate({ supplierId: supplier.supplierId, supplierName: supplier.supplierName });
+        }
+
+        if (this.props.onChange) {
+          this.props.onChange({ isDirty: false });
+        }
+
+        return Promise.resolve(null);
+      }).catch(err => {
+        console.error('error creating contact: ' + err);
+        throw err;
+      })
+    }).catch(err => {
+      console.err('error refreshing idToken: ' + err);
+      throw err;
+    });
   }
 
   handleChange = () => {
@@ -62,14 +118,8 @@ class SupplierRegistrationEditor extends Component {
     }
   }
 
-  handleBackToForm = () => {
-    this.setState({ supplierExist: false });
-  }
-
   handleUpdate = newSupplier => {
-    if (!newSupplier) {
-      return;
-    }
+    if (!newSupplier) return;
 
     newSupplier = {  // eslint-disable-line no-param-reassign
       ...newSupplier,
@@ -81,92 +131,89 @@ class SupplierRegistrationEditor extends Component {
       this.setState({ supplier: createdSupplier });
 
       if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info')
-      const { supplier } = this.state;
+        this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info')
 
-      // we need to refresh the id token before we can do any calls to backend as supplier user
-      return this.authApi.refreshIdToken().then(() => {
-        console.log("id token refreshed");
-
-        const user = this.props.user;
-        const contact = {
-            contactId: `${user.id}_${supplier.supplierId}`,
-            contactType: "Default",
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            supplierId: supplier.supplierId,
-            createdBy: user.id,
-            changedBy: user.id
-        }
-
-        return this.contactApi.createContact(supplier.supplierId, contact).then(() => {
-          console.log('contact created');
-
-          if (this.props.onUpdate) {
-            this.props.onUpdate({
-              supplierId: supplier.supplierId,
-              supplierName: supplier.supplierName
-            });
-          }
-
-          if (this.props.onChange) {
-            this.props.onChange({ isDirty: false });
-          }
-
-          return Promise.resolve(null);
-        }).catch(err => {
-          console.error('error creating contact: ' + err);
-          throw err;
-        })
-      }).catch(err => {
-        console.err('error refreshing idToken: ' + err);
-        throw err;
-      });
+      return this.postSupplierCreate();
     }).
     catch(errors => {
-      this.setState({
-        supplier: newSupplier
-      })
+      this.setState({ supplier: newSupplier });
 
       switch (errors.status) {
         case 403: case 405:
           if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'), 'error')
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'), 'error');
           break;
         case 401:
           this.props.onUnauthorized();
           break;
         case 409:
-          this.setState({
-            supplierExist: true
-          });
+          this.setState({ supplierExist: true });
           break;
         default:
           if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'), 'error')
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'), 'error');
       }
 
       return Promise.resolve(null);
     });
   }
 
+  handleAccess = () => {
+    const body = { supplierId: this.state.supplier.supplierId, userId: this.props.user.id };
+
+    this.accessApi.grantAccess(body).then(() => this.postSupplierCreate()).catch(errors => {
+      if(this.context.showNotification)
+        this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'), 'error');
+    });
+  }
+
+  handleAccessRequest = (attributes) => {
+    this.setState({ supplierAttributes: attributes });
+  }
+
+  handleCancelAccessRequest = () => {
+    this.setState({ supplierAttributes: null });
+  }
+
+  handleSaveAccessRequest = (accessAttributes, supplier) => {
+    accessAttributes.userId = this.props.user.id;
+    this.accessApi.createAccess(accessAttributes).then(supplierAccess => {
+      this.setState({ supplierAccess: supplierAccess, supplierExist: true, supplier: supplier });
+    });
+  }
+
   toRender = () => {
-    if (this.state.supplierExist) {
-      return <SupplierExistsView i18n={this.context.i18n} onBack={ this.handleBackToForm }/>
-    } else {
-      return <SupplierRegistrationEditorForm
-               {...this.props}
-               supplier={ this.state.supplier }
-               onSupplierChange={ this.handleUpdate }
-               onChange={ this.handleChange }
-               onCancel={ this.props.onLogout }
+    if (this.state.supplierExist) return <SupplierAccessView
+                                          supplierAccess={ this.state.supplierAccess }
+                                          supplier={ this.state.supplier }
+                                          onAccessConfirm= { this.handleAccess }
+                                         />
+
+    if (this.state.supplierAttributes) {
+      return <SupplierAccessRequestForm
+              supplierAttributes={ this.state.supplierAttributes }
+              userId={ this.props.user.id }
+              onCreateSupplierAccess={ this.handleSaveAccessRequest }
+              onCancel={ this.handleCancelAccessRequest }
              />
     }
+
+    return <SupplierRegistrationEditorForm
+             supplier={ this.state.supplier }
+             onSupplierChange={ this.handleUpdate }
+             onChange={ this.handleChange }
+             onCancel={ this.props.onLogout }
+             onAccessRequest={ this.handleAccessRequest }
+           />
   }
 
   render() {
-    const { hasErrors } = this.state;
+    const { loading, hasErrors } = this.state;
+
+    if (loading) {
+      /* Implement loading spinner */
+      return null;
+    }
 
     if (hasErrors) {
       return (

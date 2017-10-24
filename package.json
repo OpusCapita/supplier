@@ -38,6 +38,7 @@
     "classnames": "^2.2.5",
     "cross-env": "^4.0.0",
     "css-loader": "^0.28.1",
+    "handlebars": "^4.0.10",
     "iban": "0.0.8",
     "intel": "^1.1.2",
     "json-loader": "^0.5.4",

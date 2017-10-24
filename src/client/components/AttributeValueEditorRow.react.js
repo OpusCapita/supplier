@@ -10,6 +10,7 @@ export default class AttributeValueEditorRow extends Component {
     labelText: PropTypes.string.isRequired,
     required: PropTypes.bool,
     rowErrors: PropTypes.array,
+    onErrorLinkClick: PropTypes.func,
     marked: PropTypes.bool
   };
 
@@ -25,6 +26,21 @@ export default class AttributeValueEditorRow extends Component {
       padding: '6px',
       border: '0px'
     }
+  }
+
+  handleOnClick(error, event) {
+    event.preventDefault();
+    this.props.onErrorLinkClick(error);
+  }
+
+  renderButtonLink(error) {
+    if (!error.hasLink) return null;
+
+    return (
+      <button className="btn btn-link alert-link" onClick={this.handleOnClick.bind(this, error)}>
+        {error.linkMessage}
+      </button>
+    );
   }
 
   render() {
@@ -53,7 +69,8 @@ export default class AttributeValueEditorRow extends Component {
 
           {rowErrors.map((error, index) =>
             <div className="alert alert-danger" key={index} style={this.errorStyles()}>
-              <span>{ error.message }</span>
+              <p>{ error.message }</p>
+              {this.renderButtonLink(error)}
             </div>
           )}
         </div>

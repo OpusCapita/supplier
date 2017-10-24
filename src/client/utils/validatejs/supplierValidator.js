@@ -1,5 +1,6 @@
 const custom = require('./custom.js');
 const customAsync = require('./customAsync.js');
+const formatters = require('./formatters.js');
 const validatejs = require('validate.js');
 
 module.exports.forRegistration = function() {
@@ -39,6 +40,7 @@ let validator = function(validatejs) {
   customAsync.vatNumberExists(validatejs);
   customAsync.dunsNumberExists(validatejs);
   customAsync.globalLocationNumberExists(validatejs);
+  formatters.groupedDetailed(validatejs);
 
   return validatejs;
 };
