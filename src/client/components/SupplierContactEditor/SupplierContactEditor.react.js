@@ -263,7 +263,6 @@ class SupplierContactEditor extends Component {
             <div className="col-sm-6">
               <SupplierContactEditForm
                 onChange={this.handleChange}
-                locale={this.context.i18n.locale}
                 contact={contact}
                 errors={errors}
                 editMode={editMode}

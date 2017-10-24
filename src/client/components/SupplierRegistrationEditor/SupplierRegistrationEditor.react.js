@@ -199,7 +199,6 @@ class SupplierRegistrationEditor extends Component {
     }
 
     return <SupplierRegistrationEditorForm
-             actionUrl={ this.props.actionUrl }
              supplier={ this.state.supplier }
              onSupplierChange={ this.handleUpdate }
              onChange={ this.handleChange }

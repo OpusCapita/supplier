@@ -10,7 +10,6 @@ import SupplierProfileStrength from '../src/client/components/SupplierProfileStr
 import SupplierSearch from '../src/client/components/SupplierSearch';
 
 const username = 'john.doe@ncc.com';
-const actionUrl = 'http://localhost:8080';
 const userRoles = ['supplier-admin', 'user'];
 
 const supplier = {
@@ -38,7 +37,6 @@ const onboardingUser = {
 let editor = (
   <SupplierEditor
     key='company'
-    actionUrl={actionUrl}
     supplierId={supplier.supplierId}
     username={username}
     userRoles={userRoles}
@@ -49,8 +47,6 @@ let editor = (
 let registrationEditor = (
   <SupplierRegistrationEditor
     key='company'
-    actionUrl={actionUrl}
-    locale='en'
     supplier={onboardingSupplier}
     user={onboardingUser}
   />
@@ -60,9 +56,7 @@ let addressEditor = (
   <SupplierAddressEditor
     key='address'
     readOnly={false}
-    actionUrl={actionUrl}
     supplierId={supplier.supplierId}
-    locale='en'
     username={username}
     userRoles={userRoles}
   />
@@ -72,9 +66,7 @@ let contactEditor = (
   <SupplierContactEditor
     key='contact'
     readOnly={false}
-    actionUrl={actionUrl}
     supplierId={supplier.supplierId}
-    locale='en'
     username={username}
     userRoles={userRoles}
   />
@@ -82,7 +74,7 @@ let contactEditor = (
 
 let searchEditor = (
   <SupplierSearch
-    actionUrl={actionUrl}
+
   />
 );
 
@@ -90,16 +82,14 @@ let bankEditor = (
   <SupplierBankEditor
     key='contact'
     readOnly={false}
-    actionUrl={actionUrl}
     supplierId={supplier.supplierId}
-    locale='en'
     username={username}
     userRoles={userRoles}
   />
 );
 
 let supplierProfileStrenth = (
-  <SupplierProfileStrength actionUrl={actionUrl} supplierId={supplier.supplierId} />
+  <SupplierProfileStrength supplierId={supplier.supplierId} />
 );
 
 const activeStyle = {color:' #ffffff', background: '#006677'};
