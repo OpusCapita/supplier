@@ -41,7 +41,6 @@ let editor = (
     supplierId={supplier.supplierId}
     username={username}
     userRoles={userRoles}
-    dateTimePattern='MM/dd/yyyy'
   />
 );
 
@@ -56,7 +55,6 @@ let registrationEditor = (
 let addressEditor = (
   <SupplierAddressEditor
     key='address'
-    readOnly={false}
     supplierId={supplier.supplierId}
     username={username}
     userRoles={userRoles}
@@ -66,7 +64,6 @@ let addressEditor = (
 let contactEditor = (
   <SupplierContactEditor
     key='contact'
-    readOnly={false}
     supplierId={supplier.supplierId}
     username={username}
     userRoles={userRoles}
@@ -74,15 +71,11 @@ let contactEditor = (
 );
 
 let searchEditor = (
-  <SupplierSearch
-
-  />
+  <SupplierSearch />
 );
 
 let supplierApproval = (
-  <SupplierApproval
-    actionUrl={actionUrl}
-  />
+  <SupplierApproval />
 );
 
 let bankEditor = (
