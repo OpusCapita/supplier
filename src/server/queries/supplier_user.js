@@ -37,7 +37,7 @@ module.exports.getContactDetails = function (data) {
 module.exports.approve = function(supplierId, userId, accessReason)
 {
   var self = this;
-  return this.db.models.Supplier2User.update(accessReason, { where: { supplierId: supplierId, userId: userId  } }).then(() => {
+  return this.db.models.Supplier2User.update({status: accessReason} , { where: { supplierId: supplierId, userId: userId  } }).then(() => {
     return self.find(supplierId, userId);
   });
 };

@@ -4,6 +4,7 @@ module.exports = function(app, db, config) {
 SupplierUser.init(db, config).then(() =>
   {
     app.get('/api/suppliers/getSupplierAccess', (req, res) => getSupplierAccess(req, res));
+    app.post('/api/suppliers/giveAccess', (req, res) => giveAccess(req, res));
   });
 };
 
@@ -25,7 +26,17 @@ let getSupplierAccess = function(req, res)
         data.requests[index].details = details[index].dataValues
       }
     }
-    console.log("dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa++++++++++++++++++++++++++++++++++", data)
     res.json(data);
   })
 };
+
+let giveAccess = function(req, res){
+  if(req.body){
+    if(req.body.supplierId &&  req.body.userId && req.body.accessReason){
+      SupplierUser.approve(req.body.supplierId,  req.body.userId, req.body.accessReason)
+      .then((data) =>{
+        res.json(data)
+      })
+    }
+  }
+}
