@@ -1,5 +1,6 @@
 const Supplier = require('../queries/suppliers');
 const RedisEvents = require('ocbesbn-redis-events');
+const userService = require('../services/user');
 
 module.exports = function(app, db, config) {
   Supplier.init(db, config).then(() =>
@@ -68,11 +69,10 @@ let createSuppliers = function(req, res)
       return Supplier.create(newSupplier)
         .then(supplier => this.events.emit(supplier, 'supplier').then(() => supplier))
         .then(supplier => {
-          const userId = supplier.createdBy;
           const supplierId = supplier.supplierId;
-          const supplierToUserPromise = req.opuscapita.serviceClient.put('user', `/api/users/${userId}`, { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] }, true);
+          const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
 
-          return supplierToUserPromise.then(() => {
+          return userService.update(req.opuscapita.serviceClient, supplier.createdBy, user).then(() => {
               supplier.status = 'assigned';
               Supplier.update(supplierId, supplier.dataValues).then(supplier => {
                 return this.events.emit(supplier, 'supplier').then(() => res.status('200').json(supplier));
