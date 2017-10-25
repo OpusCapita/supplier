@@ -1,6 +1,7 @@
 const Supplier2Users = require('../queries/supplier2users');
 const Suppliers = require('../queries/suppliers');
 const notifier = require('../services/notifier');
+const userService = require('../services/user');
 
 module.exports = function(app, db, config) {
 Promise.all([Supplier2Users.init(db, config), Suppliers.init(db, config)]).then(() =>
@@ -29,7 +30,7 @@ let createSupplierAccess = function(req, res)
     attributes.status = 'requested';
     return Supplier2Users.create(attributes).
       then(supplier2user => {
-        return req.opuscapita.serviceClient.get('user', `/api/users?supplierId=${supplier2user.supplierId}&include=profile`, true).spread(users => {
+        return userService.allForSupplierId(req.opuscapita.serviceClient, supplier2user.supplierId).then(users => {
           for (const user of users) {
             if (user.roles.includes('supplier-admin')) notifier.notifyUserAccessRequest(user.profile, req);
           }
@@ -51,14 +52,15 @@ let addSupplierToUser = function(req, res)
   return Suppliers.exists(supplierId).then(exists =>
   {
     if(exists) {
-      const userId = req.body.userId;
-      const supplierToUserPromise = req.opuscapita.serviceClient.put('user', `/api/users/${userId}`, { supplierId: supplierId, roles: ['supplier'] }, true);
+      const user = { supplierId: supplierId, roles: ['supplier'] };
 
-      return supplierToUserPromise.then(() => res.status('200').json({ message: 'Supplier successfully added to user' }))
-        .catch(error => {
-          req.opuscapita.logger.error('Error when adding Supplier to User: %s', error.message);
-          return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
-        });
+      return userService.update(req.opuscapita.serviceClient, req.body.userId, user).then(() => {
+        res.status('200').json({ message: 'Supplier successfully added to user' });
+      }).
+      catch(error => {
+        req.opuscapita.logger.error('Error when adding Supplier to User: %s', error.message);
+        return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
+      });
     } else {
       const message = 'A supplier with ID ' + supplierId + ' does not exist.';
       req.opuscapita.logger.error('Error when adding Supplier to User: %s', message);
