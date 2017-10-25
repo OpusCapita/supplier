@@ -30,7 +30,7 @@ module.exports.sendAccessApproval = function(userProfile, req) {
   return sendEmail(userProfile.email, accessi18n.subject, html);
 };
 
-module.exports.sendAccessApproval = function(userProfile, req) {
+module.exports.sendAccessRegection = function(userProfile, req) {
   const accessi18n = i18n[userProfile.languageId].email.accessRegection;
   const host = getOriginalProtocolHostPort(req);
   const html = Handlebars.compile(template())({ ocUrl:  host + '/bnp', url: '', i18n: accessi18n });
@@ -38,15 +38,15 @@ module.exports.sendAccessApproval = function(userProfile, req) {
   return sendEmail(userProfile.email, accessi18n.subject, html);
 };
 
-function sendEmail(to, subject, html) {
+let sendEmail = function(to, subject, html) {
   return events.emit({ to: to, subject: subject, html: html }, 'email');
 };
 
-function template() {
+let template = function() {
   return fs.readFileSync(`${process.cwd()}/src/server/email-templates/access.handlebars`, 'utf8');
 };
 
-function getOriginalProtocolHostPort(req) {
+let getOriginalProtocolHostPort = function(req) {
   const externalHost = req.get('X-Forwarded-Host') || req.get('Host');
 
   return req.protocol + '://' + externalHost;
