@@ -19,17 +19,17 @@ export default class CountryView extends Component {
   }
 
   componentDidMount() {
-    this.loadCountry(this.props.countryId);
+    this.loadCountry(this.props.countryId, this.context.i18n.locale);
   }
 
-  componentWillReceiveProps(newProps) {
-    if (this.props.countryId !== newProps.countryId) {
-      this.loadCountry(newProps.countryId);
-    }
+  componentWillReceiveProps(newProps, newContext) {
+    const countryIdNotEqual = this.props.countryId !== newProps.countryId;
+    const localeNotEqual = this.context.i18n.locale !== newContext.i18n.locale;
+    if (countryIdNotEqual || localeNotEqual) this.loadCountry(newProps.countryId, newContext.i18n.locale);
   }
 
-  loadCountry = (countryId) => {
-    return this.countryApi.getCountry(countryId, this.context.i18n.locale).then(country => {
+  loadCountry = (countryId, locale) => {
+    return this.countryApi.getCountry(countryId, locale).then(country => {
       this.setState({ country: country });
     }).
     catch(errors => {
