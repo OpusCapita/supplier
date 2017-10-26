@@ -23,9 +23,8 @@ export default class CountryView extends Component {
   }
 
   componentWillReceiveProps(newProps, newContext) {
-    const countryIdNotEqual = this.props.countryId !== newProps.countryId;
     const localeNotEqual = this.context.i18n.locale !== newContext.i18n.locale;
-    if (countryIdNotEqual || localeNotEqual) this.loadCountry(newProps.countryId, newContext.i18n.locale);
+    if (localeNotEqual) this.loadCountry(newProps.countryId, newContext.i18n.locale);
   }
 
   loadCountry = (countryId, locale) => {
