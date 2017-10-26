@@ -204,7 +204,7 @@ class SupplierEditorForm extends Component {
                 value={this.state.supplier['countryOfRegistration']}
                 onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                 onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
-                locale={this.context.i18n.locale}
+                locale={i18n.locale}
               />
             )
           })}
