@@ -10,7 +10,6 @@ class SupplierEditorForm extends Component {
   static propTypes = {
     supplier: PropTypes.object,
     onSupplierChange: PropTypes.func.isRequired,
-    dateTimePattern: PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
     onCancel: React.PropTypes.func
   };
@@ -168,7 +167,6 @@ class SupplierEditorForm extends Component {
   };
 
   render() {
-    const { dateTimePattern } = this.props;
     const i18n = this.context.i18n;
     const { supplier } = this.state;
     const { CountryField } = this.externalComponents;
@@ -185,7 +183,7 @@ class SupplierEditorForm extends Component {
               <DateInput
                 className="form-control"
                 locale={i18n.locale}
-                dateFormat={dateTimePattern}
+                dateFormat={i18n.dateFormat}
                 value={foundedOn}
                 onChange={this.handleChange.bind(this, 'foundedOn')}
                 onBlur={this.handleBlur.bind(this, 'foundedOn')}

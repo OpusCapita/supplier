@@ -40,7 +40,6 @@ let editor = (
     supplierId={supplier.supplierId}
     username={username}
     userRoles={userRoles}
-    dateTimePattern='MM/dd/yyyy'
   />
 );
 

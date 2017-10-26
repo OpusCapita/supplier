@@ -16,7 +16,6 @@ class SupplierEditor extends Component {
     supplierId: PropTypes.string.isRequired,
     username: React.PropTypes.string.isRequired,
     userRoles: React.PropTypes.array.isRequired,
-    dateTimePattern: PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
     onUpdate: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func,

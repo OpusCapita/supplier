@@ -8,7 +8,6 @@
 |:-----|:----:|:--------:|------------:|
 | supplierId | string | true | ID of Supplier |
 | username | string | true | User (customer) name |
-| dateTimePattern | string | true | Date format . E.g. `dd/MM/yyyy`, `MM.dd.yyyy`, etc. |
 | onUnauthorized | function | false | Callback fired when unauthorized |
 | onChange | function | false | Callback fired on input change `(event) => {}` |
 | onUpdate | function | false | Callback fired on supplier update `(supplier) => {}` |
@@ -23,7 +22,6 @@ import { SupplierEditor } from 'supplier';
   key='company'
   supplierId='hard001'
   username='Marlon Wayans'
-  dateTimePattern='MM/dd/yyyy'
 />
 ```
 
