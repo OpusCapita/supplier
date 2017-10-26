@@ -7,6 +7,10 @@ export default class CountryView extends Component {
     countryId: React.PropTypes.string.isRequired
   };
 
+  static contextTypes = {
+    i18n: React.PropTypes.object.isRequired
+  };
+
   constructor(props) {
     super(props);
 
@@ -25,7 +29,7 @@ export default class CountryView extends Component {
   }
 
   loadCountry = (countryId) => {
-    return this.countryApi.getCountry(countryId).then(country => {
+    return this.countryApi.getCountry(countryId, this.context.i18n.locale).then(country => {
       this.setState({ country: country });
     }).
     catch(errors => {
