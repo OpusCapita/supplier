@@ -19,7 +19,19 @@ let sendSupplierAccesses = function(req, res)
   const supplierId = req.query.supplierId;
   if (!supplierId) return res.status('400').json({ message: 'supplierId query parameter must be given' });
 
-  return Supplier2Users.all(supplierId).then(supplier2users => res.json(supplier2users));
+  return Supplier2Users.all(supplierId).then(supplier2users => {
+    if (req.query.include !== 'user') return res.json(supplier2users);
+
+    //const userIds = supplier2users.map(supplier2user => supplier2user.userId);
+    // userService.allForUserIds(req.opuscapita.serviceClient, userIds).then(users)
+    const supplier2usersWithUsers = supplier2users.map(supplier2user => {
+      let data = supplier2user.dataValues;
+      data.user = { firstName: 'Foo', lastName: 'Bar', email: 'foo@bar.com' };
+      return data;
+    });
+
+    return res.json(supplier2usersWithUsers);
+  });
 }
 
 let sendSupplierAccess = function(req, res)
