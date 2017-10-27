@@ -1,7 +1,8 @@
 // Confirmation dialogs
 let Confirmation = {
   cancel: 'Wollen Sie den Vorgang wirklich abbrechen?',
-  delete: 'Do you really want to delete this contact?'
+  delete: 'Wollen Sie diesen Kontakt wirklich löschen?',
+  linkedToUser: 'Nur der Kontakt wird gelöscht. Der Benutzer wird nicht gelöscht.'
 };
 // eslint-disable-next-line max-len
 let Title = 'Bitte hinterlegen Sie hier die Ansprechpartner aus den Bereichen Geschäftsleitung, Vertrieb, Buchhaltung und Logistik.\nGerne können Sie auch noch weitere Ansprechpartner benennen.';

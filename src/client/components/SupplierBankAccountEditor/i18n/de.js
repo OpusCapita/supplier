@@ -1,7 +1,7 @@
 // Confirmation dialogs
 let Confirmation = {
   cancel: 'Wollen Sie den Vorgang wirklich abbrechen?',
-  delete: 'Do you really want to delete this contact?'
+  delete: 'Wollen Sie dieses Bankkonto wirklich löschen?'
 };
 // eslint-disable-next-line max-len
 let Title = 'Bitte hinterlegen Sie Ihre Bankverbindung.';
