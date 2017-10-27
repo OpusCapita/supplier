@@ -51,32 +51,29 @@ export default class SupplierSearch extends Component {
 
     const columns = [
       {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.supplierName'),
+        Header: 'First Name',
         accessor: 'supplierName',
       },
       {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.countryOfRegistration'),
+        Header: 'Last Name',
         accessor: 'countryOfRegistration',
         Cell: (row) => (<DisplayField><CountryView countryId={row.value}/></DisplayField>)
       },
       {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.commercialRegisterNo'),
+        Header: 'Email',
         accessor: 'commercialRegisterNo'
       }, {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.cityOfRegistration'),
+        Header: 'Date',
         accessor: 'cityOfRegistration'
       }, {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.taxIdentificationNo'),
+        Header: 'Status',
         accessor: 'taxIdentificationNo'
       }, {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.vatIdentificationNo'),
+        Header: 'Comment',
         accessor: 'vatIdentificationNo'
       }, {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.globalLocationNo'),
+        Header: 'Actions',
         accessor:'globalLocationNo'
-      },{
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.dunsNo'),
-        accessor:'dunsNo'
       }];
 
     return (<ReactTable
