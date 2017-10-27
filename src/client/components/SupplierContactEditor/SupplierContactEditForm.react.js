@@ -195,10 +195,10 @@ class SupplierContactEditForm extends Component {
         { this.renderField({ fieldName: 'title' }) }
         { this.renderField({ fieldName: 'firstName' }) }
         { this.renderField({ fieldName: 'lastName' }) }
+        { this.renderField({ fieldName: 'email' }) }
         { this.renderField({ fieldName: 'phone' }) }
         { this.renderField({ fieldName: 'mobile' }) }
         { this.renderField({ fieldName: 'fax' }) }
-        { this.renderField({ fieldName: 'email' }) }
         <div className="col-sm-12 text-right contact-form-submit">
           <ActionButton
             style='link'
