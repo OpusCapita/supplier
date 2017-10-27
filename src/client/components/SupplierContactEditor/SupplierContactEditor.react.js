@@ -168,9 +168,11 @@ class SupplierContactEditor extends Component {
   };
 
   deleteOnClick = (contact) => {
-    if (!confirm(this.context.i18n.getMessage('SupplierContactEditor.Confirmation.delete'))) {
-      return;
-    }
+    let message = this.context.i18n.getMessage('SupplierContactEditor.Confirmation.delete');
+    if (contact.isLinkedToUser) message = `${message} ${this.context.i18n.getMessage('SupplierContactEditor.Confirmation.linkedToUser')}`;
+
+    if (!confirm(message)) return;
+
     this.handleDelete(contact);
   };
 
