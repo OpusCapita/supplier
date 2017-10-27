@@ -5,6 +5,7 @@ import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
 import DisplayField from '../../components/DisplayTable/DisplayField.react';
 import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
 import SupplierContactEditForm from './SupplierContactEditForm.react';
+import SupplierContactView from './SupplierContactView.react';
 import ActionButton from '../../components/ActionButton.react';
 import { Contact } from '../../api';
 import UserAbilities from '../../UserAbilities';
@@ -67,9 +68,7 @@ class SupplierContactEditor extends Component {
     this.contactApi.deleteContact(supplierId, contact.id).then(() => {
       let contacts = this.state.contacts;
       const index = contacts.findIndex(cont => cont.id === contact.id);
-      if (index === -1) {
-        throw new Error(`Not found contact by id [${contact.id}]`);
-      }
+      if (index === -1) throw new Error(`Not found contact by id [${contact.id}]`);
 
       contacts.splice(index, 1);
       if(this.props.newNotification) this.props.newNotification(true);
@@ -84,9 +83,7 @@ class SupplierContactEditor extends Component {
       } else {
         console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
         const message = this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
-        if(this.context.showNotification){
-          this.context.showNotification(message, 'error')
-        }
+        if (this.context.showNotification) this.context.showNotification(message, 'error');
       }
     });
   };
@@ -98,15 +95,13 @@ class SupplierContactEditor extends Component {
 
   handleUpdate = (contact) => {
     let supplierId = this.props.supplierId;
-    contact.changedBy = this.props.username;// eslint-disable-line no-param-reassign
+    contact.changedBy = this.props.username;
 
     this.contactApi.updateContact(supplierId, contact.id, contact).then(updatedContact => {
       let contacts = this.state.contacts;
       const index = contacts.findIndex(cont => cont.id === contact.id);
 
-      if (index === -1) {
-        throw new Error(`Not found contact by id=${contact.id}`);
-      }
+      if (index === -1) throw new Error(`Not found contact by id=${contact.id}`);
       contacts[index] = updatedContact;
 
       this.props.onChange({ isDirty: false });
@@ -137,24 +132,24 @@ class SupplierContactEditor extends Component {
     contact.changedBy = this.props.username;
 
     this.contactApi.createContact(supplierId, contact).then(createdContact => {
-        let contacts = this.state.contacts;
-        contacts.push(createdContact);
+      let contacts = this.state.contacts;
+      contacts.push(createdContact);
 
-        this.props.onChange({ isDirty: false });
+      this.props.onChange({ isDirty: false });
 
-        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
-        if(this.context.showNotification) this.context.showNotification(message, 'info');
+      const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
+      if(this.context.showNotification) this.context.showNotification(message, 'info');
 
-        this.setState({ contacts: contacts, contact: null });
-      }).catch((response) => {
-        if (response.status === 401) {
-          this.props.onUnauthorized();
-        } else {
-          console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-          let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
-          if(this.context.showNotification) this.context.showNotification(message, 'error');
-        }
-      });
+      this.setState({ contacts: contacts, contact: null });
+    }).catch((response) => {
+      if (response.status === 401) {
+        this.props.onUnauthorized();
+      } else {
+        console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
+        let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
+        if(this.context.showNotification) this.context.showNotification(message, 'error');
+      }
+    });
   };
 
   handleCancel = () => {
@@ -167,10 +162,16 @@ class SupplierContactEditor extends Component {
   };
 
   deleteOnClick = (contact) => {
-    if (!confirm(this.context.i18n.getMessage('SupplierContactEditor.Confirmation.delete'))) {
-      return;
-    }
+    let message = this.context.i18n.getMessage('SupplierContactEditor.Confirmation.delete');
+    if (contact.isLinkedToUser) message = `${message} ${this.context.i18n.getMessage('SupplierContactEditor.Confirmation.linkedToUser')}`;
+
+    if (!confirm(message)) return;
+
     this.handleDelete(contact);
+  };
+
+  viewOnClick = (contact) => {
+    this.setState({ contact: JSON.parse(JSON.stringify(contact)), editMode: 'view' });
   };
 
   editOnClick = (contact) => {
@@ -192,8 +193,25 @@ class SupplierContactEditor extends Component {
       });
   };
 
+  renderEditor() {
+    const { errors, editMode, contact } = this.state;
+    if (editMode === 'view') return <SupplierContactView contact={contact} onClose={this.handleCancel}/>;
+
+    return (
+      <SupplierContactEditForm
+        onChange={this.handleChange}
+        contact={contact}
+        errors={errors}
+        editMode={editMode}
+        onSave={this.handleSave}
+        onUpdate={this.handleUpdate}
+        onCancel={this.handleCancel}
+      />
+    );
+  }
+
   renderActionButtons(contact) {
-    return this.userAbilities.actionGroupForContacts().map((action, index) => {
+    return this.userAbilities.actionGroupForContacts(contact.isLinkedToUser).map((action, index) => {
       return <ActionButton
                 key={index}
                 action={action}
@@ -261,15 +279,7 @@ class SupplierContactEditor extends Component {
         {contact ? (
           <div className="row">
             <div className="col-sm-6">
-              <SupplierContactEditForm
-                onChange={this.handleChange}
-                contact={contact}
-                errors={errors}
-                editMode={editMode}
-                onSave={this.handleSave}
-                onUpdate={this.handleUpdate}
-                onCancel={this.handleCancel}
-              />
+              {this.renderEditor()}
             </div>
           </div>
         ) : null}

@@ -1,7 +1,7 @@
 // Confirmation dialogs
 let Confirmation = {
   cancel: 'Do you really want to cancel?',
-  delete: 'Do you really want to delete this contact?'
+  delete: 'Do you really want to delete this bank account?'
 };
 // eslint-disable-next-line max-len
 let Title = 'Please enter your bank account details';

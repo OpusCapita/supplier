@@ -58,6 +58,11 @@ module.exports = function(sequelize) {
       type: Sequelize.STRING(30),
       field: 'SupplierId'
     },
+    isLinkedToUser: {
+      type: Sequelize.BOOLEAN,
+      field: 'IsLinkedToUser',
+      defaultValue: false
+    },
     changedBy: {
       type: Sequelize.STRING(60),
       field: 'ChangedBy'
