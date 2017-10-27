@@ -17,20 +17,22 @@ class UserAbilities {
     return this.abilitiesForRole['bankAccount']['actions'].includes('add');
   }
 
-  actionGroupForContacts() {
-    return this._actionGroup('contact');
+  actionGroupForContacts(isLinkedUser) {
+    if (isLinkedUser) return this._removeAddAction(this.abilitiesForRole['contact']['linkedUser']['actions']);
+
+    return this._removeAddAction(this.abilitiesForRole['contact']['unlinkedUser']['actions']);
   }
 
   actionGroupForAddresses() {
-    return this._actionGroup('address');
+    return this._removeAddAction(this.abilitiesForRole['address']['actions']);
   }
 
   actionGroupForBankAccounts() {
-    return this._actionGroup('bankAccount');
+    return this._removeAddAction(this.abilitiesForRole['bankAccount']['actions']);
   }
 
-  _actionGroup(model) {
-    return this.abilitiesForRole[model]['actions'].reduce((accumulator, action) => {
+  _removeAddAction(actions) {
+    return actions.reduce((accumulator, action) => {
       if (action !== 'add') return accumulator.concat(action);
 
       return accumulator;
