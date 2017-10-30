@@ -23,13 +23,15 @@ export default class ActionButton extends Component {
   renderLabelWithIcon() {
     const action = this.props.action;
     const classes = classNames({
-      'glyphicon': true,
-      'glyphicon-plus': action === 'add',
-      'glyphicon-edit': action === 'edit',
-      'glyphicon-trash': action === 'delete',
-      'glyphicon-eye-open': action === 'view'
+      'fa': true,
+      'fa-fw': true,
+      'fa-plus': action === 'add',
+      'fa-pencil-square-o': action === 'edit',
+      'fa-trash': action === 'delete',
+      'fa-eye': action === 'view',
+      'fa-user-plus': action === 'createUser'
     });
-    return <div><span className={ classes }></span>&nbsp;{this.props.label}</div>;
+    return <div><span className={ classes }></span>{this.props.label}</div>;
   }
 
   render() {

@@ -54,7 +54,8 @@ let Button = {
   save: 'Save',
   view: 'View',
   cancel: 'Cancel',
-  close: 'Close'
+  close: 'Close',
+  createUser: 'Create User'
 };
 
 let ContactInfo = {

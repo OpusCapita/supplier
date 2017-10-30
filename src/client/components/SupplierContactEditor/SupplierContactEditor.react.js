@@ -178,6 +178,8 @@ class SupplierContactEditor extends Component {
     this.setState({ contact: JSON.parse(JSON.stringify(contact)), editMode: "edit", errors: null });
   };
 
+  createUserOnClick = (contact) => null;
+
   loadContacts = () => {
     let supplierId = this.props.supplierId;
 

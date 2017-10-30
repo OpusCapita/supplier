@@ -8,7 +8,7 @@
         "actions": ["add", "view", "delete"]
       },
       "unlinkedUser": {
-        "actions": ["add", "edit", "delete"]
+        "actions": ["add", "createUser", "edit", "delete"]
       }
     },
     "address": {
