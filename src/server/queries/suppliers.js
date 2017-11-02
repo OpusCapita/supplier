@@ -200,7 +200,7 @@ let similar = function(fieldName, value)
 
 let matchSQL = function(fieldName, value)
 {
-  return `MATCH (${fieldName}) AGAINST ('${value}')`;
+  return `MATCH (${fieldName}) AGAINST ('${SqlString.escape(value)}')`;
 }
 
 let equalSQL = function(fieldName, value)
