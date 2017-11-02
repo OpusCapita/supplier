@@ -200,12 +200,12 @@ let similar = function(fieldName, value)
 
 let matchSQL = function(fieldName, value)
 {
-  return `MATCH (${fieldName}) AGAINST ('${SqlString.escape(value)}')`;
+  return `MATCH (${fieldName}) AGAINST (${SqlString.escape(value)})`;
 }
 
 let equalSQL = function(fieldName, value)
 {
-  return `${fieldName} = '${SqlString.escape(value)}'`;
+  return `${fieldName} = ${SqlString.escape(value)}`;
 }
 
 let attributes = function(model)
