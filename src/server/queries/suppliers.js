@@ -1,5 +1,6 @@
 const Promise = require('bluebird');
 const stringHelper = require('../utils/string');
+const SqlString = require('sequelize/lib/sql-string');
 
 module.exports.init = function(db, config)
 {
@@ -100,7 +101,7 @@ module.exports.searchRecord = function(query)
 
   let rawQueryArray = [];
 
-  if (query.supplierName) rawQueryArray.push(equalSQL('SupplierName', query.supplierName));
+  if (query.supplierName) rawQueryArray.push(equalSQL('SupplierName', SqlString.escape(query.supplierName)));
   if (query.vatIdentificationNo) rawQueryArray.push(equalSQL('VatIdentificationNo', query.vatIdentificationNo));
   if (query.dunsNo) rawQueryArray.push(equalSQL('DUNSNo', query.dunsNo));
   if (query.globalLocationNo) rawQueryArray.push(equalSQL('GlobalLocationNo', query.globalLocationNo));
