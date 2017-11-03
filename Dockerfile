@@ -2,6 +2,7 @@ FROM node:8-alpine
 MAINTAINER patrykkopycinski
 
 WORKDIR /home/node/supplier
+ENV NODE_ENV=development
 
 # Bundle app source by overwriting all WORKDIR content.
 COPY . tmp
@@ -22,4 +23,3 @@ EXPOSE 3001
 CMD [ "npm", "start"]
 HEALTHCHECK --interval=15s --timeout=3s --retries=12 \
   CMD curl --silent --fail http://localhost:3001/api/health/check || exit 1
-
