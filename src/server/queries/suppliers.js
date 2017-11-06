@@ -1,5 +1,6 @@
 const Promise = require('bluebird');
 const stringHelper = require('../utils/string');
+const SqlString = require('sequelize/lib/sql-string');
 
 module.exports.init = function(db, config)
 {
@@ -199,12 +200,12 @@ let similar = function(fieldName, value)
 
 let matchSQL = function(fieldName, value)
 {
-  return `MATCH (${fieldName}) AGAINST ('${value}')`;
+  return `MATCH (${fieldName}) AGAINST (${SqlString.escape(value)})`;
 }
 
 let equalSQL = function(fieldName, value)
 {
-  return `${fieldName} = '${value}'`;
+  return `${fieldName} = ${SqlString.escape(value)}`;
 }
 
 let attributes = function(model)
