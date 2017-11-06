@@ -5,6 +5,7 @@ module.exports = function(app, db, config) {
   {
     app.get('/api/suppliers/:supplierId/contacts', (req, res) => sendSupplierContacts(req, res));
     app.post('/api/suppliers/:supplierId/contacts', (req, res) => createSupplierContact(req, res));
+    app.post('/api/suppliers/:supplierId/contacts/createUser', (req, res) => createUserFromContact(req, res));
     app.get('/api/suppliers/:supplierId/contacts/:contactId', (req, res) => sendSupplierContact(req, res));
     app.put('/api/suppliers/:supplierId/contacts/:contactId', (req, res) => updateSupplierContact(req, res));
     app.delete('/api/suppliers/:supplierId/contacts/:contactId', (req, res) => deleteSupplierContact(req, res));
@@ -36,6 +37,10 @@ let createSupplierContact = function(req, res)
     req.opuscapita.logger.error('Error when creating SupplierContact: %s', error.message);
     return res.status('400').json({ message : error.message });
   });
+}
+
+let createUserFromContact = function(req, res)
+{
 }
 
 let updateSupplierContact = function(req, res)

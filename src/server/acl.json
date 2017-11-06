@@ -46,7 +46,7 @@
       {
         "type": "rest",
         "resourceId": "/api/suppliers/${_current_supplier_id}/contacts/[%w | %p]*",
-        "actions": ["view", "edit", "delete"]
+        "actions": ["view", "create", "edit", "delete"]
       },
       {
         "type": "rest",
