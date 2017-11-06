@@ -1,23 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import locales from './i18n';
-import SupplierEditorLocales from './../SupplierEditor/i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { Supplier } from '../../api';
-import DisplayField from '../DisplayTable/DisplayField.react';
-import CountryView from '../CountryView.react';
+import { Access } from '../../api';
+import ActionButton from '../../components/ActionButton.react';
 require('./SupplierApproval.css');
 
-export default class SupplierSearch extends Component {
+export default class SupplierApproval extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      form: { keyword: '' },
-      data: []
-    };
-    this.supplierApi = new Supplier();
+    this.state = { accessRequests: [] };
+    this.accessApi = new Access();
   }
+
+  static propTypes = {
+    supplierId: PropTypes.string.isRequired,
+    username: React.PropTypes.string.isRequired
+  };
 
   static contextTypes = {
     i18n : React.PropTypes.object.isRequired,
@@ -25,55 +25,80 @@ export default class SupplierSearch extends Component {
   };
 
   componentWillMount(){
-    this.context.i18n.register('SupplierEditorLocales', SupplierEditorLocales);
-    this.context.i18n.register('SupplierSearch', locales);
+    this.context.i18n.register('SupplierApproval', locales);
   }
 
   componentWillReceiveProps(nextProps, nextContext){
     if(nextContext.i18n){
-      nextContext.i18n.register('SupplierEditorLocales', SupplierEditorLocales);
-      nextContext.i18n.register('SupplierSearch', locales);
+      nextContext.i18n.register('SupplierApproval', locales);
     }
   }
 
-  searchSupplier() {
-    const queryParam = { search: this.state.form.keyword };
-    this.supplierApi.getSuppliers(queryParam).then(data => {
-      this.setState({ data: data });
+  componentDidMount() {
+    this.accessApi.getAccesses(this.props.supplierId).then(accessRequests => {
+      this.setState({ accessRequests: accessRequests });
     });
   }
 
-  onKeywordChange(event) {
-    this.setState({ form: { keyword: event.target.value } });
-  }
+  approveOnClick = (access) => {
+
+  };
+
+  rejectOnClick = (access) => {
+
+  };
+
+  renderActions = (access) => {
+    if (access.status !== 'requested') return this.context.i18n.getMessage(`SupplierApproval.Status.${access.status}`);
+
+    return (
+      <div className='text-right'>
+        <ActionButton
+          key='approve'
+          action='approve'
+          onClick={this.approveOnClick.bind(this, access)}
+          label={this.context.i18n.getMessage('SupplierApproval.Button.approve')}
+          isSmall={true}
+          showIcon={true}
+        />
+        <ActionButton
+          key='reject'
+          action='reject'
+          onClick={this.rejectOnClick.bind(this, access)}
+          label={this.context.i18n.getMessage('SupplierApproval.Button.reject')}
+          isSmall={true}
+          showIcon={true}
+        />
+      </div>
+    );
+  };
 
   renderTable(data) {
 
     const columns = [
       {
-        Header: 'First Name',
-        accessor: 'supplierName',
+        Header: this.context.i18n.getMessage('SupplierApproval.Label.firstName'),
+        accessor: 'firstName',
       },
       {
-        Header: 'Last Name',
-        accessor: 'countryOfRegistration',
-        Cell: (row) => (<DisplayField><CountryView countryId={row.value}/></DisplayField>)
+        Header: this.context.i18n.getMessage('SupplierApproval.Label.lastName'),
+        accessor: 'lastName'
       },
       {
-        Header: 'Email',
-        accessor: 'commercialRegisterNo'
+        Header: this.context.i18n.getMessage('SupplierApproval.Label.email'),
+        accessor: 'email'
       }, {
-        Header: 'Date',
-        accessor: 'cityOfRegistration'
+        Header: this.context.i18n.getMessage('SupplierApproval.Label.date'),
+        id: 'date',
+        accessor: d => (new Date(d.date)).toLocaleDateString(this.context.i18n.locale)
       }, {
-        Header: 'Status',
-        accessor: 'taxIdentificationNo'
+        Header: this.context.i18n.getMessage('SupplierApproval.Label.comment'),
+        accessor: 'comment'
       }, {
-        Header: 'Comment',
-        accessor: 'vatIdentificationNo'
-      }, {
-        Header: 'Actions',
-        accessor:'globalLocationNo'
+        Header: this.context.i18n.getMessage('SupplierApproval.Label.status'),
+        accessor: d => ({ id: d.id, status: d.status }),
+        id: 'actions',
+        Cell: row => this.renderActions(row.value)
       }];
 
     return (<ReactTable
@@ -87,7 +112,7 @@ export default class SupplierSearch extends Component {
   render() {
     return (<div>
       <div className="table-responsive">
-        { this.renderTable(this.state.data) }
+        { this.renderTable(this.state.accessRequests) }
       </div>
     </div>)
   }

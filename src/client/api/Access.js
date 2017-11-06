@@ -1,6 +1,23 @@
 import ApiBase from './ApiBase';
 
 class Access extends ApiBase {
+  getAccesses(supplierId) {
+    return this.ajax.get(`/supplier/api/supplier_access?supplierId=${supplierId}&include=user`).
+    set('Accept', 'application/json').then(response => {
+      return response.body.map(accessRequest => {
+        return {
+          id: accessRequest.id,
+          firstName: accessRequest.user.firstName,
+          lastName: accessRequest.user.lastName,
+          email: accessRequest.user.email,
+          date: accessRequest.createdOn,
+          comment: accessRequest.accessReason,
+          status: accessRequest.status
+        };
+      })
+    });
+  }
+
   getAccess(userId) {
     return this.ajax.get(`/supplier/api/supplier_access/${userId}`).set('Accept', 'application/json').
       then(response => response.body);

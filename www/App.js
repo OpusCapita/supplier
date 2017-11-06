@@ -75,7 +75,7 @@ let searchEditor = (
 );
 
 let supplierApproval = (
-  <SupplierApproval />
+  <SupplierApproval supplierId={supplier.supplierId} />
 );
 
 let bankEditor = (

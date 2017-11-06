@@ -1,6 +1,21 @@
 let SupplierApproval = {
-  label: 'Search by name, city, VAT id, Tax id, registration number, DUNS number, or Global Location Number',
-  search: 'Search'
+  Label: {
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    email: 'Email',
+    date: 'Request Date',
+    comment: 'Justification',
+    status: 'Status'
+  },
+  Button: {
+    approve: 'Approve',
+    reject: 'Reject'
+  },
+  Status: {
+    requested: 'Requested',
+    approved: 'Approved',
+    rejected: 'Rejected'
+  }
 };
 
 export default {
