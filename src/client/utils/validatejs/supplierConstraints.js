@@ -64,9 +64,9 @@ let allConstraints = function(i18n) {
         message: i18n.getMessage('SupplierValidatejs.blank.message')
       },
       length: {
-        maximum: 50,
+        maximum: 100,
         tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 50
+          limit: 100
         })
       },
       supplierNameExists: {

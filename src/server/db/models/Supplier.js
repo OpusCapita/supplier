@@ -25,7 +25,7 @@ module.exports = function(sequelize) {
     },
     supplierName: {
       allowNull: false,
-      type: Sequelize.STRING(50),
+      type: Sequelize.STRING(100),
       field: "SupplierName",
       validate: {
         notEmpty: true
