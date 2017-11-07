@@ -4,6 +4,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Access } from '../../api';
 import ActionButton from '../../components/ActionButton.react';
+import dateHelper from '../../utils/dateHelper';
 require('./SupplierApproval.css');
 
 export default class SupplierApproval extends Component {
@@ -15,8 +16,7 @@ export default class SupplierApproval extends Component {
   }
 
   static propTypes = {
-    supplierId: PropTypes.string.isRequired,
-    username: React.PropTypes.string.isRequired
+    supplierId: PropTypes.string.isRequired
   };
 
   static contextTypes = {
@@ -40,12 +40,38 @@ export default class SupplierApproval extends Component {
     });
   }
 
-  approveOnClick = (access) => {
+  updateAccessRequests = (access) => {
+    let accessRequests = this.state.accessRequests;
+    const index = accessRequests.findIndex(acc => acc.id === access.id);
 
+    if (index === -1) throw new Error(`Not found accessRequest for id=${access.id}`);
+    accessRequests[index].status = access.status;
+
+    this.setState({ accessRequests: accessRequests });
+  };
+
+  approveOnClick = (access) => {
+    const message = this.context.i18n.getMessage('SupplierApproval.Message.confirmApproval');
+    if (!confirm(message)) return;
+
+    this.accessApi.approveAccess(access.id, access.userId).then(supplierAccess => {
+      this.updateAccessRequests(supplierAccess);
+
+      const info = this.context.i18n.getMessage('SupplierApproval.Notification.success.approved');
+      if(this.context.showNotification) this.context.showNotification(info, 'info');
+    });
   };
 
   rejectOnClick = (access) => {
+    const message = this.context.i18n.getMessage('SupplierApproval.Message.rejectApproval');
+    if (!confirm(message)) return;
 
+    this.accessApi.rejectAccess(access.id, access.userId).then(supplierAccess => {
+      this.updateAccessRequests(supplierAccess);
+
+      const info = this.context.i18n.getMessage('SupplierApproval.Notification.success.rejected');
+      if(this.context.showNotification) this.context.showNotification(info, 'info');
+    });
   };
 
   renderActions = (access) => {
@@ -90,13 +116,13 @@ export default class SupplierApproval extends Component {
       }, {
         Header: this.context.i18n.getMessage('SupplierApproval.Label.date'),
         id: 'date',
-        accessor: d => (new Date(d.date)).toLocaleDateString(this.context.i18n.locale)
+        accessor: element => dateHelper.format(element.date, this.context.i18n.locale)
       }, {
         Header: this.context.i18n.getMessage('SupplierApproval.Label.comment'),
         accessor: 'comment'
       }, {
         Header: this.context.i18n.getMessage('SupplierApproval.Label.status'),
-        accessor: d => ({ id: d.id, status: d.status }),
+        accessor: element => ({ id: element.id, userId: element.userId, status: element.status }),
         id: 'actions',
         Cell: row => this.renderActions(row.value)
       }];

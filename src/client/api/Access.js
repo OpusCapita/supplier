@@ -7,6 +7,7 @@ class Access extends ApiBase {
       return response.body.map(accessRequest => {
         return {
           id: accessRequest.id,
+          userId: accessRequest.userId,
           firstName: accessRequest.user.firstName,
           lastName: accessRequest.user.lastName,
           email: accessRequest.user.email,
@@ -26,6 +27,16 @@ class Access extends ApiBase {
   createAccess(access) {
     return this.ajax.post('/supplier/api/supplier_access').set('Accept', 'application/json').
       send(access).then(response => response.body);
+  }
+
+  approveAccess(id, userId) {
+    return this.ajax.put(`/supplier/api/supplier_access/${id}`).set('Accept', 'application/json').
+      send({ userId: userId, status: 'approved' }).then(response => response.body);
+  }
+
+  rejectAccess(id, userId) {
+    return this.ajax.put(`/supplier/api/supplier_access/${id}`).set('Accept', 'application/json').
+      send({ userId: userId, status: 'rejected' }).then(response => response.body);
   }
 
   grantAccess(access) {

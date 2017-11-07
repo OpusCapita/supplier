@@ -9,12 +9,25 @@ let SupplierApproval = {
   },
   Button: {
     approve: 'Approve',
-    reject: 'Reject'
+    reject: 'Reject',
+    yes: 'Yes',
+    no: 'No'
   },
   Status: {
     requested: 'Requested',
     approved: 'Approved',
     rejected: 'Rejected'
+  },
+  Message: {
+    confirmApproval: 'Are you sure you want to approve user?',
+    rejectApproval: 'Are you sure you want to reject user?'
+  },
+  Notification: {
+    success: {
+      approved: 'User has been successfully approved.',
+      rejected: 'User has been successfully rejected.'
+    },
+    error: {}
   }
 };
 
