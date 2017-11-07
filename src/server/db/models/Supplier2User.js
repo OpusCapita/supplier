@@ -26,6 +26,7 @@ module.exports = function(sequelize) {
     status: {
       type: Sequelize.STRING(50),
       allowNull: false,
+      defaultValue: 'requested',
       validate: {
         isIn: [['requested', 'approved', 'rejected']]
       }

@@ -1,5 +1,6 @@
 import Alert from './Alert';
 import Label from './Label';
+import SupplierApproval from './SupplierApproval';
 import SupplierAddressEditor from './SupplierAddressEditor';
 import SupplierContactEditor from './SupplierContactEditor';
 import SupplierEditor from './SupplierEditor';
@@ -12,6 +13,7 @@ export {
   SupplierAddressEditor,
   SupplierContactEditor,
   SupplierSearch,
+  SupplierApproval,
   SupplierEditor,
   SupplierRegistrationEditor
 }

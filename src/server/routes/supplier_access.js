@@ -7,10 +7,34 @@ module.exports = function(app, db, config) {
 Promise.all([Supplier2Users.init(db, config), Suppliers.init(db, config)]).then(() =>
   {
     app.post('/api/supplier_access', (req, res) => createSupplierAccess(req, res));
+    app.get('/api/supplier_access', (req, res) => sendSupplierAccesses(req, res));
+    app.put('/api/supplier_access/:id', (req, res) => updateSupplierAccess(req, res));
     app.get('/api/supplier_access/:userId', (req, res) => sendSupplierAccess(req, res));
     app.put('/api/grant_supplier_access', (req, res) => addSupplierToUser(req, res));
   });
 };
+
+let sendSupplierAccesses = function(req, res)
+{
+  const supplierId = req.query.supplierId;
+  if (!supplierId) return res.status('400').json({ message: 'supplierId query parameter must be given' });
+
+  return Supplier2Users.all(supplierId).then(supplier2users => {
+    if (req.query.include !== 'user') return res.json(supplier2users);
+
+    const userIds = supplier2users.map(supplier2user => supplier2user.userId);
+    return userService.allForUserIds(req.opuscapita.serviceClient, userIds).then(users => {
+      const supplier2usersWithUsers = supplier2users.map(supplier2user => {
+        let data = supplier2user.dataValues;
+        const user = users.find(us => us.id === data.userId);
+        data.user = user ? user.profile : {};
+        return data;
+      });
+
+      return res.json(supplier2usersWithUsers);
+    });
+  });
+}
 
 let sendSupplierAccess = function(req, res)
 {
@@ -42,6 +66,25 @@ let createSupplierAccess = function(req, res)
 
         return res.status('400').json({ message : error.message });
       });
+  });
+}
+
+let updateSupplierAccess = function(req, res)
+{
+  const supplier2userId = req.params.id;
+
+  return Supplier2Users.exists(supplier2userId).then(exists => {
+    if (exists) {
+      return Supplier2Users.update(supplier2userId, req.body).then(supplier2user => res.json(supplier2user));
+    } else {
+      const message = 'No supplier_access with Id ' + supplier2userId + ' exists.'
+      req.opuscapita.logger.error('Error when updating Supplier2User: %s', message);
+      return res.status('404').json({ message : message });
+    }
+  }).
+  catch(error => {
+    req.opuscapita.logger.error('Error when updating Supplier2User: %s', error.message);
+    return res.status('400').json({ message : error.message });
   });
 }
 
