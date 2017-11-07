@@ -24,14 +24,12 @@ export default class SupplierApproval extends Component {
     showNotification: React.PropTypes.func
   };
 
-  componentWillMount(){
+  componentWillMount() {
     this.context.i18n.register('SupplierApproval', locales);
   }
 
-  componentWillReceiveProps(nextProps, nextContext){
-    if(nextContext.i18n){
-      nextContext.i18n.register('SupplierApproval', locales);
-    }
+  componentWillReceiveProps(nextProps, nextContext) {
+    if(nextContext.i18n) nextContext.i18n.register('SupplierApproval', locales);
   }
 
   componentDidMount() {
@@ -74,30 +72,24 @@ export default class SupplierApproval extends Component {
     });
   };
 
-  renderActions = (access) => {
+  renderActions(access) {
     if (access.status !== 'requested') return this.context.i18n.getMessage(`SupplierApproval.Status.${access.status}`);
 
     return (
       <div className='text-right'>
-        <ActionButton
-          key='approve'
-          action='approve'
-          onClick={this.approveOnClick.bind(this, access)}
-          label={this.context.i18n.getMessage('SupplierApproval.Button.approve')}
-          isSmall={true}
-          showIcon={true}
-        />
-        <ActionButton
-          key='reject'
-          action='reject'
-          onClick={this.rejectOnClick.bind(this, access)}
-          label={this.context.i18n.getMessage('SupplierApproval.Button.reject')}
-          isSmall={true}
-          showIcon={true}
-        />
+        {['approve', 'reject'].map(status => {
+          return <ActionButton
+                    key={status}
+                    action={status}
+                    onClick={this[`${status}OnClick`].bind(this, access)}
+                    label={this.context.i18n.getMessage(`SupplierApproval.Button.${status}`)}
+                    isSmall={true}
+                    showIcon={true}
+                  />
+        })}
       </div>
     );
-  };
+  }
 
   renderTable(data) {
 
@@ -127,19 +119,10 @@ export default class SupplierApproval extends Component {
         Cell: row => this.renderActions(row.value)
       }];
 
-    return (<ReactTable
-      data={data}
-      columns={columns}
-      defaultPageSize={5}
-      className="table"
-    />)
+    return <ReactTable data={data} columns={columns} defaultPageSize={5} className='table' />
   }
 
   render() {
-    return (<div>
-      <div className="table-responsive">
-        { this.renderTable(this.state.accessRequests) }
-      </div>
-    </div>)
+    return <div className='table-responsive'>{this.renderTable(this.state.accessRequests)}</div>
   }
 }

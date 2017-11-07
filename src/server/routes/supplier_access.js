@@ -22,15 +22,16 @@ let sendSupplierAccesses = function(req, res)
   return Supplier2Users.all(supplierId).then(supplier2users => {
     if (req.query.include !== 'user') return res.json(supplier2users);
 
-    //const userIds = supplier2users.map(supplier2user => supplier2user.userId);
-    // userService.allForUserIds(req.opuscapita.serviceClient, userIds).then(users)
-    const supplier2usersWithUsers = supplier2users.map(supplier2user => {
-      let data = supplier2user.dataValues;
-      data.user = { firstName: 'Foo', lastName: 'Bar', email: 'foo@bar.com' };
-      return data;
-    });
+    const userIds = supplier2users.map(supplier2user => supplier2user.userId);
+    return userService.allForUserIds(req.opuscapita.serviceClient, userIds).then(users => {
+      const supplier2usersWithUsers = supplier2users.map(supplier2user => {
+        let data = supplier2user.dataValues;
+        data.user = users.find(us => us.id === data.userId);
+        return data;
+      });
 
-    return res.json(supplier2usersWithUsers);
+      return res.json(supplier2usersWithUsers);
+    });
   });
 }
 
