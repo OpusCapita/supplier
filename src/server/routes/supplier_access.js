@@ -26,7 +26,8 @@ let sendSupplierAccesses = function(req, res)
     return userService.allForUserIds(req.opuscapita.serviceClient, userIds).then(users => {
       const supplier2usersWithUsers = supplier2users.map(supplier2user => {
         let data = supplier2user.dataValues;
-        data.user = users.find(us => us.id === data.userId);
+        const user = users.find(us => us.id === data.userId);
+        data.user = user ? user.profile : {};
         return data;
       });
 
