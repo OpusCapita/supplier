@@ -75,7 +75,17 @@ let updateSupplierAccess = function(req, res)
 
   return Supplier2Users.exists(supplier2userId).then(exists => {
     if (exists) {
-      return Supplier2Users.update(supplier2userId, req.body).then(supplier2user => res.json(supplier2user));
+      const access = req.body;
+      return Supplier2Users.update(supplier2userId, access).then(supplier2user => {
+        if (access.status === 'requested') return res.json(supplier2user);
+
+        userService.getProfile(req.opuscapita.serviceClient, access.userId).then(userProfile => {
+          if (access.status === 'approved') notifier.notifyUserAccessApproval(userProfile, req);
+          if (access.status === 'rejected') notifier.notifyUserAccessRejection(userProfile, req);
+
+          return res.json(supplier2user);
+        });
+      });
     } else {
       const message = 'No supplier_access with Id ' + supplier2userId + ' exists.'
       req.opuscapita.logger.error('Error when updating Supplier2User: %s', message);
