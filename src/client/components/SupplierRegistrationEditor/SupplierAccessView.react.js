@@ -16,6 +16,12 @@ class SupplierAccessView extends Component {
     this.props.onAccessConfirm();
   }
 
+  renderAccessInformation() {
+    if (this.props.supplierAccess.status !== 'requested') return null;
+
+    return <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation4')}</p>
+  }
+
   renderAccessLink() {
     if (this.props.supplierAccess.status !== 'approved') return null;
 
@@ -33,6 +39,7 @@ class SupplierAccessView extends Component {
     return (
       <div className="alert alert-info">
         <h5>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestHeader', { name: this.props.supplier.supplierName })}</h5>
+        {this.renderAccessInformation()}
         <p><strong>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestStatus.text')}: {status}</strong></p>
         {this.renderAccessLink()}
         <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestText')}</p>
