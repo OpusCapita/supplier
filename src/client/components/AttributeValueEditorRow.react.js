@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
+import ActionButton from './ActionButton.react';
 
 /**
  * Provides skeleton for displaying label and input field of ane types.
@@ -36,11 +37,7 @@ export default class AttributeValueEditorRow extends Component {
   renderButtonLink(error) {
     if (!error.hasLink) return null;
 
-    return (
-      <button className="btn btn-link alert-link" onClick={this.handleOnClick.bind(this, error)}>
-        {error.linkMessage}
-      </button>
-    );
+    return <ActionButton onClick={this.handleOnClick.bind(this, error)} label={error.linkMessage} isSmall={true} />;
   }
 
   render() {

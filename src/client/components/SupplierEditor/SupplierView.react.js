@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import SupplierViewRow from '../AttributeValueEditorRow.react.js';
 import CountryView from '../CountryView.react';
+import dateHelper from '../../utils/dateHelper';
 
 export default class SupplierView extends Component {
   static propTypes = {
@@ -16,7 +17,7 @@ export default class SupplierView extends Component {
     const fieldName = attrs.fieldName;
     let value = supplier[fieldName];
 
-    if (fieldName == 'foundedOn') value = new Date(value).toLocaleDateString(this.context.i18n.locale);
+    if (fieldName == 'foundedOn') value = dateHelper.format(value, this.context.i18n.locale);
 
     return (
       <SupplierViewRow labelText={ this.context.i18n.getMessage(`SupplierEditor.Label.${fieldName}.label`) }>

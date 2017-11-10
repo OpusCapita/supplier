@@ -1,6 +1,7 @@
 version: '3'
 services:
   main:
+    image: opuscapita/supplier:dev
     depends_on:
       - mysql
       - consul
@@ -22,7 +23,7 @@ services:
       - '3001:3001'
 
   mysql:
-    image: 'mysql:5.6'
+    image: 'mysql:5.7'
     ports:
       - '3306:3306'
     environment:

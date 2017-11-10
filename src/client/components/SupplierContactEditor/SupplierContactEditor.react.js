@@ -39,6 +39,9 @@ class SupplierContactEditor extends Component {
     super(props);
 
     this.state = {
+      isLoaded: false,
+      contacts: [],
+      contact: null,
       loadErrors: false
     };
 
@@ -184,13 +187,13 @@ class SupplierContactEditor extends Component {
     let supplierId = this.props.supplierId;
 
     this.contactApi.getContacts(supplierId).then(contacts => {
-        this.setState({ contacts: contacts });
+        this.setState({ contacts: contacts, isLoaded: true });
       }).catch(response => {
         if (response.status === 401) {
           this.props.onUnauthorized();
         } else {
           console.log(`Error loading contacts by SupplierID=${supplierId}`);
-          this.setState({ loadErrors: true });
+          this.setState({ isLoaded: true, loadErrors: true });
         }
       });
   };
@@ -212,6 +215,18 @@ class SupplierContactEditor extends Component {
     );
   }
 
+  addButton() {
+    if (!this.state.isLoaded) return null
+    if (this.state.contact) return null;
+
+    return (
+      <ActionButton
+        onClick={this.addOnClick}
+        label={this.context.i18n.getMessage('SupplierContactEditor.Button.add')}
+      />
+    );
+  }
+
   renderActionButtons(contact) {
     return this.userAbilities.actionGroupForContacts(contact.isLinkedToUser).map((action, index) => {
       return <ActionButton
@@ -226,50 +241,46 @@ class SupplierContactEditor extends Component {
   }
 
   render() {
-    const { contacts, loadErrors } = this.state;
-    let { contact, errors, editMode } = this.state;
+    const { contacts, contact, isLoaded, loadErrors } = this.state;
     let result;
 
-    if (contacts) {
-      if (contacts.length > 0) {
-        result = (
-          <div className="table-responsive">
-            <DisplayTable headers={[
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.contactType')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.department')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.firstName')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.lastName')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.phone')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.mobile')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.email')}
-            ]}>
-              { contacts.map((contact, index) =>
-                (<DisplayRow key={index}>
-                  <DisplayField>{ this.context.i18n.getMessage(`SupplierContactEditor.ContactType.${contact.contactType}`)}</DisplayField>
-                  <DisplayField>{ contact.department ? this.context.i18n.getMessage(`SupplierContactEditor.Department.${contact.department}`) : '-' }</DisplayField>
-                  <DisplayField>{ contact.firstName }</DisplayField>
-                  <DisplayField>{ contact.lastName }</DisplayField>
-                  <DisplayField>{ contact.phone || '-'}</DisplayField>
-                  <DisplayField>{ contact.mobile }</DisplayField>
-                  <DisplayField>{ contact.email }</DisplayField>
-                  <DisplayField classNames='text-right'>
-                    {this.renderActionButtons(contact)}
-                  </DisplayField>
-                </DisplayRow>))
-              }
-            </DisplayTable>
-          </div>
-        );
-      } else {
-        // show create new contact if empty
-        contact = {};
-        errors = {};
-        editMode = 'create';
-      }
-    } else if (loadErrors) {
-      result = (<div>Load errors</div>);
-    } else {
-      result = (<div>Loading...</div>);
+    if (!isLoaded) {
+      result = <div>Loading...</div>;
+    }
+
+    if (loadErrors) {
+      result = <div>Load errors</div>;
+    }
+
+    if (contacts.length > 0) {
+      result = (
+        <div className="table-responsive">
+          <DisplayTable headers={[
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.contactType')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.department')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.firstName')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.lastName')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.phone')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.mobile')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.email')}
+          ]}>
+            { contacts.map((contact, index) =>
+              (<DisplayRow key={index}>
+                <DisplayField>{ this.context.i18n.getMessage(`SupplierContactEditor.ContactType.${contact.contactType}`)}</DisplayField>
+                <DisplayField>{ contact.department ? this.context.i18n.getMessage(`SupplierContactEditor.Department.${contact.department}`) : '-' }</DisplayField>
+                <DisplayField>{ contact.firstName }</DisplayField>
+                <DisplayField>{ contact.lastName }</DisplayField>
+                <DisplayField>{ contact.phone || '-'}</DisplayField>
+                <DisplayField>{ contact.mobile }</DisplayField>
+                <DisplayField>{ contact.email }</DisplayField>
+                <DisplayField classNames='text-right'>
+                  {this.renderActionButtons(contact)}
+                </DisplayField>
+              </DisplayRow>))
+            }
+          </DisplayTable>
+        </div>
+      );
     }
 
     return (
@@ -286,14 +297,7 @@ class SupplierContactEditor extends Component {
           </div>
         ) : null}
 
-        {!contact ? (
-          <div>
-            <ActionButton
-              onClick={this.addOnClick}
-              label={this.context.i18n.getMessage('SupplierContactEditor.Button.add')}
-            />
-          </div>
-        ) : null}
+        {this.addButton()}
       </div>
     );
   }

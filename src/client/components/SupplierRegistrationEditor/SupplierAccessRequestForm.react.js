@@ -131,7 +131,12 @@ class SupplierAccessRequestForm extends Component {
             </div>
           </form>
         </div>
-        <div className="col-md-4"></div>
+        <div className="col-md-4">
+          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation1', { name: supplier.supplierName })}</p>
+          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation2')}</p>
+          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation3')}</p>
+          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation4')}</p>
+        </div>
       </div>
     );
   }

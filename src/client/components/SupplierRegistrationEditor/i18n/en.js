@@ -66,6 +66,10 @@ Messages.requestSupplierAccess = 'Request Access';
 Messages.required = '** Please provide your VAT Registration Number. If you do not have one, then provide your Global Location Number or D-U-N-S number.';
 Messages.noVatId = 'My Company does not have a VAT Registration Number.';
 Messages.clickCheckBox = 'Please provide your VAT Registration Number.';
+Messages.accessInformation1 = 'Here you can request access to company {name}. You should request access only if you are an employee of this company.';
+Messages.accessInformation2 = 'Please provide a valid business justification for your access.';
+Messages.accessInformation3 = 'Your request will be forwarded to the administrator managing the company\'s profile.';
+Messages.accessInformation4 = 'Once the administrator approves your access request, you will receive an email notification to your registered email address.';
 
 export default {
   SupplierRegistrationEditor: {

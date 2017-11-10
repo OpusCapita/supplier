@@ -3,6 +3,8 @@ services:
   main:
     build: .
     volumes:
-      - .:/home/node/supplier
-      - /home/node/supplier/node_modules
+      - ./config:/home/node/supplier/config
+      - ./src:/home/node/supplier/src
+      - ./wiki:/home/node/supplier/wiki
+      - ./www:/home/node/supplier/www
     command: 'npm run local'
