@@ -87,7 +87,8 @@ class SupplierRegistrationEditor extends Component {
         email: user.email,
         supplierId: supplier.supplierId,
         createdBy: user.id,
-        changedBy: user.id
+        changedBy: user.id,
+        isLinkedToUser: true
       }
 
       return this.contactApi.createContact(supplier.supplierId, contact).then(() => {
