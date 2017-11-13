@@ -10,6 +10,7 @@ module.exports = {
     profile_strength: './src/client/components/SupplierProfileStrength/index.js',
     bank_accounts: './src/client/components/SupplierBankAccountEditor/index.js',
     directory: './src/client/components/SupplierSearch/index.js',
+    access_approval: './src/client/components/SupplierApproval/index.js'
   },
   output: {
     path: path.resolve(__dirname, './src/server/static'),

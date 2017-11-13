@@ -66,6 +66,10 @@ Messages.requestSupplierAccess = 'Zugang anfordern';
 Messages.required = '** Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer. Wenn Sie keine haben, dann hinterlegen Sie Ihre Global Location Number oder Ihre D-U-N-S-Nummer.';
 Messages.noVatId = 'Meine Firma hat keine Umsatzsteuer-Ident-Nummer.';
 Messages.clickCheckBox = 'Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer.';
+Messages.accessInformation1 = 'Hier können Sie Zugang zur Firma {name} beantragen. Sie sollten Zugang nur anfordern, wenn Sie ein Angestellter der Unternehmens sind.';
+Messages.accessInformation2 = 'Bitte geben Sie eine gültige geschäftliche Rechtfertigung für Ihren Zugang.';
+Messages.accessInformation3 = 'Ihre Anfrage wird an den Administrator weitergeleitet, der das Profil des Unternehmens verwaltet.';
+Messages.accessInformation4 = 'Sobald der Administrator Ihre Zugriffsanforderung genehmigt hat, erhalten Sie eine E-Mail-Benachrichtigung an Ihre registrierte E-Mail-Adresse.';
 
 export default {
   SupplierRegistrationEditor: {
