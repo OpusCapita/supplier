@@ -2,7 +2,8 @@
 let Confirmation = {
   cancel: 'Do you really want to cancel?',
   delete: 'Do you really want to delete this contact?',
-  linkedToUser: 'Only the contact will be deleted. User will not be deleted.'
+  linkedToUser: 'Only the contact will be deleted. User will not be deleted.',
+  createUser: 'Do you really want to create user? Note that if the user exists, the contact information will be synced with user information.'
 };
 // eslint-disable-next-line max-len
 let Title = 'Please state the different contact persons from the following departments here: Management, Sales, Accounting and Logistics.';
