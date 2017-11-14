@@ -70,7 +70,9 @@ let Message = {
   objectSaved: 'Object saved.',
   deleteFailed: 'Failed to delete object, perhaps it is already in use.',
   saveFailed: 'Object save failed.',
-  updateFailed: 'Object update failed.'
+  updateFailed: 'Object update failed.',
+  userCreated: 'User successfully created.',
+  userCreateFailed: 'User creation failed.'
 };
 
 let Error = {

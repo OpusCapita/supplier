@@ -69,7 +69,9 @@ let Message = {
   objectSaved: 'Die Daten wurden erfolgreich gespeichert.',
   deleteFailed: 'Das Objekt kann nicht gelöscht werden, vielleicht ist es bereits im Einsatz.',
   saveFailed: 'Speichern von Objekten fehlgeschlagen.',
-  updateFailed: 'Object update failed.'
+  updateFailed: 'Object update failed.',
+  userCreated: 'Benutzer erfolgreich erstellt.',
+  userCreateFailed: 'Benutzererstellung fehlgeschlagen.'
 };
 
 let Error = {
