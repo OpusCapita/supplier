@@ -65,6 +65,10 @@ class SupplierContactEditor extends Component {
     }
   }
 
+  notify(message, type) {
+    if (this.context.showNotification) this.context.showNotification(message, type);
+  }
+
   handleDelete = (contact) => {
     let supplierId = this.props.supplierId;
 
@@ -74,19 +78,15 @@ class SupplierContactEditor extends Component {
       if (index === -1) throw new Error(`Not found contact by id [${contact.id}]`);
 
       contacts.splice(index, 1);
-      if(this.props.newNotification) this.props.newNotification(true);
-
-      const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectDeleted');
-      if(this.context.showNotification) this.context.showNotification(message, 'info');
-
       this.setState({ contacts: contacts, contact: null });
+
+      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.objectDeleted'), 'info');
     }).catch((response) => {
       if (response.status === 401) {
         this.props.onUnauthorized();
       } else {
         console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
-        if (this.context.showNotification) this.context.showNotification(message, 'error');
+        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed'), 'error');
       }
     });
   };
@@ -101,28 +101,17 @@ class SupplierContactEditor extends Component {
     contact.changedBy = this.props.username;
 
     this.contactApi.updateContact(supplierId, contact.id, contact).then(updatedContact => {
-      let contacts = this.state.contacts;
-      const index = contacts.findIndex(cont => cont.id === contact.id);
-
-      if (index === -1) throw new Error(`Not found contact by id=${contact.id}`);
-      contacts[index] = updatedContact;
+      this.updateContacts(contact, updatedContact);
 
       this.props.onChange({ isDirty: false });
-      if(this.props.newNotification) this.props.newNotification(true);
 
-      const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
-      if(this.context.showNotification) this.context.showNotification(message, 'info');
-
-      this.setState({ contacts: contacts, contact: null });
+      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated'), 'info');
     }).catch(response => {
       if (response.status === 401) {
         this.props.onUnauthorized();
       } else {
         console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
-        if(this.context.showNotification){
-          this.context.showNotification(message, 'error')
-        }
+        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed'), 'error');
       }
     });
   };
@@ -137,20 +126,17 @@ class SupplierContactEditor extends Component {
     this.contactApi.createContact(supplierId, contact).then(createdContact => {
       let contacts = this.state.contacts;
       contacts.push(createdContact);
+      this.setState({ contacts: contacts, contact: null });
 
       this.props.onChange({ isDirty: false });
 
-      const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
-      if(this.context.showNotification) this.context.showNotification(message, 'info');
-
-      this.setState({ contacts: contacts, contact: null });
+      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved'), 'info');
     }).catch((response) => {
       if (response.status === 401) {
         this.props.onUnauthorized();
       } else {
         console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-        let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
-        if(this.context.showNotification) this.context.showNotification(message, 'error');
+        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed'), 'error');
       }
     });
   };
@@ -181,19 +167,41 @@ class SupplierContactEditor extends Component {
     this.setState({ contact: JSON.parse(JSON.stringify(contact)), editMode: "edit", errors: null });
   };
 
+  createUserOnClick = (contact) => {
+    if (!confirm(this.context.i18n.getMessage('SupplierContactEditor.Confirmation.createUser'))) return;
+
+    this.contactApi.createUser(contact.supplierId, contact).then(resContact => {
+      this.updateContacts(contact, resContact);
+
+      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.userCreated'), 'info');
+    }).catch(error => {
+      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.userCreateFailed'), 'error');
+    });
+  };
+
   loadContacts = () => {
     let supplierId = this.props.supplierId;
 
     this.contactApi.getContacts(supplierId).then(contacts => {
-        this.setState({ contacts: contacts, isLoaded: true });
-      }).catch(response => {
-        if (response.status === 401) {
-          this.props.onUnauthorized();
-        } else {
-          console.log(`Error loading contacts by SupplierID=${supplierId}`);
-          this.setState({ isLoaded: true, loadErrors: true });
-        }
-      });
+      this.setState({ contacts: contacts, isLoaded: true });
+    }).catch(response => {
+      if (response.status === 401) {
+        this.props.onUnauthorized();
+      } else {
+        console.log(`Error loading contacts by SupplierID=${supplierId}`);
+        this.setState({ isLoaded: true, loadErrors: true });
+      }
+    });
+  };
+
+  updateContacts = (oldContact, newContact) => {
+    let contacts = this.state.contacts;
+    const index = contacts.findIndex(cont => cont.id === oldContact.id);
+
+    if (index === -1) throw new Error(`Not found contact by id=${oldContact.id}`);
+    contacts[index] = newContact;
+
+    this.setState({ contacts: contacts, contact: null });
   };
 
   renderEditor() {
