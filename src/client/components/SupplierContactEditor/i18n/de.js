@@ -55,7 +55,8 @@ let Button = {
   save: 'Speichern',
   view: 'Ansehen',
   cancel: 'Abbrechen',
-  close: 'Schliessen'
+  close: 'Schliessen',
+  createUser: 'Benutzer erstellen'
 };
 
 let ContactInfo = {
