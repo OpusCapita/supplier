@@ -32,7 +32,7 @@ export default class ActionButton extends Component {
       'glyphicon-remove': action === 'reject',
       'glyphicon-user': action === 'createUser'
     });
-    return <div><span className={ classes }></span>{this.props.label}</div>;
+    return <div><span className={ classes }></span>&nbsp;{this.props.label}</div>;
   }
 
   render() {
