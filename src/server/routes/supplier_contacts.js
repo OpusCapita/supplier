@@ -59,14 +59,15 @@ let createUserFromContact = function(req, res)
       return updateAndRenderContact(contact.supplierId, contact.id, attributes, res);
     }).catch(error => {
       if (error.response && error.response.statusCode == '404') {
-        const authUser = {
-          firstName: contact.firstName,
-          lastName: contact.lastName,
-          email: contact.email,
+        const user = {
+          id: contact.email,
+          acceptedConditions: null,
+          status: 'emailVerification',
           supplierId: contact.supplierId,
-          roles: ['supplier']
+          roles: ['supplier'],
+          profile: { firstName: contact.firstName, lastName: contact.lastName, email: contact.email }
         };
-        return authService.createUser(req.opuscapita.serviceClient, authUser).then(() => {
+        return authService.createUser(req.opuscapita.serviceClient, user).then(() => {
           return updateAndRenderContact(contact.supplierId, contact.id, { isLinkedToUser: true }, res);
         });
       } else {
