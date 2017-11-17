@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import _ from 'underscore';
 import SupplierEditorFormRow from '../AttributeValueEditorRow.react.js';
 import './SupplierEditor.css';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
@@ -13,16 +12,11 @@ class SupplierEditorForm extends Component {
     onSupplierChange: PropTypes.func.isRequired,
     dateTimePattern: PropTypes.string.isRequired,
     onChange: React.PropTypes.func,
-    onCancel: React.PropTypes.func,
-    actionUrl: React.PropTypes.string.isRequired
+    onCancel: React.PropTypes.func
   };
 
   static contextTypes = {
     i18n: React.PropTypes.object.isRequired
-  };
-
-  static defaultProps = {
-    readOnly: false
   };
 
   state = {
@@ -34,7 +28,7 @@ class SupplierEditorForm extends Component {
   };
 
   componentWillMount() {
-    let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
+    let serviceRegistry = (service) => ({ url: `/isodata` });
     const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
 
     this.externalComponents = { CountryField };
@@ -43,7 +37,7 @@ class SupplierEditorForm extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (!_.isEqual(this.props.supplier, nextProps.supplier)) {
+    if (JSON.stringify(this.props.supplier) !== JSON.stringify(nextProps.supplier)) {
       this.setState({
         supplier: {
           ...nextProps.supplier
@@ -182,9 +176,6 @@ class SupplierEditorForm extends Component {
 
     return (
       <div>
-        <h4 className="tab-description">
-          { i18n.getMessage(`SupplierEditor.Description.viewSupplierOrChooseAnother`) }
-        </h4>
         <form className="form-horizontal">
           { this.renderField({ fieldName: 'supplierName' }) }
           { this.renderField({ fieldName: 'homePage' }) }
@@ -211,7 +202,7 @@ class SupplierEditorForm extends Component {
             fieldName: 'countryOfRegistration',
             component: (
               <CountryField
-                actionUrl={this.props.actionUrl}
+                actionUrl=''
                 value={this.state.supplier['countryOfRegistration']}
                 onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                 onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}

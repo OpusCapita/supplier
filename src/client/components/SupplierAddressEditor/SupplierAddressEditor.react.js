@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
-import request from 'superagent-bluebird-promise';
-import _ from 'underscore';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
-import Button from 'react-bootstrap/lib/Button';
-import SupplierAddressListTable from './SupplierAddressListTable.react.js';
+import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
+import DisplayField from '../../components/DisplayTable/DisplayField.react';
+import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
 import SupplierAddressEditorForm from './SupplierAddressEditorForm.react.js';
-import browserInfo from '../../utils/browserInfo';
+import ActionButton from '../../components/ActionButton.react';
+import CountryView from '../CountryView.react.js';
+import { Address } from '../../api';
+import UserAbilities from '../../UserAbilities';
 
 class SupplierAddressEditor extends Component {
 
   static propTypes = {
-    actionUrl: React.PropTypes.string.isRequired,
     supplierId: React.PropTypes.string.isRequired,
+    userRoles: React.PropTypes.array.isRequired,
     username: React.PropTypes.string,
-    readOnly: React.PropTypes.bool,
     onChange: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func
   };
@@ -24,12 +25,7 @@ class SupplierAddressEditor extends Component {
     showNotification: React.PropTypes.func
   };
 
-  loadAddressesPromise = null;
-  updateAddressPromise = null;
-  deleteAddressPromise = null;
-
   static defaultProps = {
-    readOnly: false,
     onChange: function(event) {
       if (event.isDirty) {
         console.log('data in form changed');
@@ -39,12 +35,19 @@ class SupplierAddressEditor extends Component {
     }
   };
 
-  state = {
-    isLoaded: false,
-    supplierAddresses: [],
-    supplierAddress: null,
-    loadErrors: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoaded: false,
+      supplierAddresses: [],
+      supplierAddress: null,
+      loadErrors: false
+    };
+
+    this.addressApi = new Address();
+    this.userAbilities = new UserAbilities(props.userRoles);
+  }
 
   componentWillMount(){
     this.context.i18n.register('SupplierValidatejs', validationMessages);
@@ -52,22 +55,12 @@ class SupplierAddressEditor extends Component {
   }
 
   componentDidMount() {
-    if (this.state.isLoaded) {
-      return;
-    }
+    if (this.state.isLoaded) return;
 
-    console.log('===== ABOUT TO REQUEST a PROMISE');
-    const getRequest = request.get(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(this.props.supplierId)}/addresses`)
-
-    /* Do not use cache in request if browser is IE */
-    if (browserInfo.isIE()) getRequest.query({ cachebuster: Date.now().toString() });
-
-    this.loadAddressesPromise = getRequest.set('Accept', 'application/json').promise();
-
-    this.loadAddressesPromise.then(response => {
+    this.addressApi.getAddresses(this.props.supplierId).then(addresses => {
       this.setState({
         isLoaded: true,
-        supplierAddresses: response.body
+        supplierAddresses: addresses
       });
     }).
     catch(errors => {
@@ -86,82 +79,41 @@ class SupplierAddressEditor extends Component {
   }
 
   componentWillReceiveProps(newProps, nextContext) {
-    let editMode = this.state.editMode;
-
-    if (editMode && this.props.readOnly !== newProps.readOnly) {
-
-      if (editMode === 'create') {
-        newState.supplierAddress = null;
-      } else if (editMode === 'edit') {
-        newState.editMode = 'view';
-      } else if (editMode === 'view') {
-        newState.editMode = 'edit';
-      }
-      this.setState(newState);
-    }
-
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
       nextContext.i18n.register('SupplierAddressEditor', i18nMessages);
     }
   }
 
-  componentWillUnmount() {
-    if (!this.state.isLoaded) {
-      if (this.loadAddressesPromise) {
-        this.loadAddressesPromise.cancel();
-      }
-      if (this.updateAddressPromise) {
-        this.updateAddressPromise.cancel();
-      }
-      if (this.deleteAddressPromise) {
-        this.deleteAddressPromise.cancel();
-      }
-    }
-  }
-
-  handleEdit = (supplierAddress) => {
+  editOnClick = (supplierAddress) => {
     this.setState({
-      supplierAddress: _.clone(supplierAddress),
+      supplierAddress: JSON.parse(JSON.stringify(supplierAddress)),
       editMode: "edit",
       errors: null
     });
   };
 
-  handleView = (supplierAddress) => {
-    this.setState({
-      supplierAddress: _.clone(supplierAddress),
-      editMode: "view",
-      errors: null
-    });
+  deleteOnClick = (supplierAddress) => {
+    if (!confirm(this.context.i18n.getMessage('SupplierAddressEditor.Confirmation.delete'))) {
+      return;
+    }
+    this.props.onDelete(supplierAddress);
   };
 
   handleDelete = (supplierAddress) => {
-    let actionUrl = this.props.actionUrl;
-    let supplierId = this.props.supplierId;
-
-    let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(supplierAddress.id);
-
-    this.deleteAddressPromise = request.del(`${actionUrl}/supplier/api/suppliers/${arg0}/addresses/${arg1}`).set(
-        'Accept', 'application/json').promise();
-
-    return this.deleteAddressPromise.then((response) => {
+    return this.addressApi.deleteAddress(this.props.supplierId, supplierAddress.id).then(() => {
       let supplierAddresses = this.state.supplierAddresses;
-      let index = _.findIndex(supplierAddresses, { id: supplierAddress.id });
+      const index = supplierAddresses.findIndex(address => address.id === supplierAddress.id);
+
       if (index === -1) {
         throw new Error(`Not found SupplierAddress by id [${supplierAddress.id}]`);
       }
-
       supplierAddresses.splice(index, 1);
 
+      this.setState({ supplierAddresses: supplierAddresses, supplierAddress: null });
+
       const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectDeleted');
-      this.setState({
-        supplierAddresses: supplierAddresses,
-        supplierAddress: null
-      });
-      if(this.context.showNotification)
-          this.context.showNotification(message, 'info')
+      if(this.context.showNotification) this.context.showNotification(message, 'info');
     }).catch(errors => {
       if (errors.status === 401) {
         this.props.onUnauthorized();
@@ -169,42 +121,29 @@ class SupplierAddressEditor extends Component {
     });
   };
 
-  handleCreate = () => {
+  addOnClick = () => {
     this.props.onChange({ isDirty: true });
     this.setState({ supplierAddress: {}, editMode: 'create', errors: null });
   };
 
   handleUpdate = (supplierAddress) => {
-    let actionUrl = this.props.actionUrl;
-    let supplierId = this.props.supplierId;
     supplierAddress.changedBy = this.props.username;// eslint-disable-line no-param-reassign
 
-    let arg0 = encodeURIComponent(supplierId);
-    let arg1 = encodeURIComponent(supplierAddress.id);
-
-    this.updateAddressPromise = request.put(`${actionUrl}/supplier/api/suppliers/${arg0}/addresses/${arg1}`).set(
-      'Accept', 'application/json').send(supplierAddress).promise();
-
-    return this.updateAddressPromise.then((response) => {
-      let updatedSupplierAddress = response.body;
-
+    return this.addressApi.updateAddress(this.props.supplierId, supplierAddress.id, supplierAddress).then(updatedAddress => {
       let supplierAddresses = this.state.supplierAddresses;
-      let index = _.findIndex(supplierAddresses, { id: supplierAddress.id });
+      const index = supplierAddresses.findIndex(address => address.id === supplierAddress.id);
 
       if (index === -1) {
         throw new Error(`Not found SupplierAddress by id [${supplierAddress.id}]`);
       }
-      supplierAddresses[index] = updatedSupplierAddress;
+      supplierAddresses[index] = updatedAddress;
 
       this.props.onChange({ isDirty: false });
 
+      this.setState({ supplierAddresses: supplierAddresses, supplierAddress: null });
+
       const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectUpdated');
-      this.setState({
-        supplierAddresses: supplierAddresses,
-        supplierAddress: null
-      });
-      if(this.context.showNotification)
-        this.context.showNotification(message, 'info')
+      if(this.context.showNotification) this.context.showNotification(message, 'info');
     }).catch(errors => {
       if (errors.status === 401) {
         this.props.onUnauthorized();
@@ -213,34 +152,29 @@ class SupplierAddressEditor extends Component {
   };
 
   handleSave = (supplierAddress) => {
-    let actionUrl = this.props.actionUrl;
     let supplierId = this.props.supplierId;
 
     supplierAddress.supplierId = supplierId;
     supplierAddress.createdBy = this.props.username;
     supplierAddress.changedBy = this.props.username;
 
-    request.post(`${actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplierId)}/addresses`).set(
-          'Accept', 'application/json').send(supplierAddress).then((response) => {
-            let supplierAddresses = this.state.supplierAddresses;
-            supplierAddresses.push(response.body);
+    this.addressApi.createAddress(supplierId, supplierAddress).then(address => {
+      let supplierAddresses = this.state.supplierAddresses;
+      supplierAddresses.push(address);
 
-            this.props.onChange({ isDirty: false });
+      this.props.onChange({ isDirty: false });
 
-            const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectSaved');
-            this.setState({
-              supplierAddresses: supplierAddresses,
-              supplierAddress: null
-            });
-            if(this.context.showNotification)
-              this.context.showNotification(message, 'info')
-          }).catch(errors => {
-            if (errors.status === 401) {
-              this.props.onUnauthorized();
-            } else {
-              console.log('Error during create SupplierAddress:');
-            }
-          });
+      this.setState({ supplierAddresses: supplierAddresses, supplierAddress: null });
+
+      const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectSaved');
+      if(this.context.showNotification) this.context.showNotification(message, 'info');
+    }).catch(errors => {
+      if (errors.status === 401) {
+        this.props.onUnauthorized();
+      } else {
+        console.log('Error during create SupplierAddress:');
+      }
+    });
   };
 
   handleCancel = () => {
@@ -249,31 +183,39 @@ class SupplierAddressEditor extends Component {
   };
 
   handleChange = (supplierAddress, name, oldValue, newValue) => {
-    // check only updated objects
-    // if (supplierAddress.id) {
     this.props.onChange({ isDirty: true });
-    // }
   };
 
   addButton() {
-    if (this.state.supplierAddress || this.state.readOnly) {
+    if (this.state.supplierAddress) {
       return;
     }
 
     return (
-      <div>
-        <Button id="add-button" onClick={this.handleCreate}>{this.context.i18n.getMessage('SupplierAddressEditor.Button.add')}
-        </Button>
-      </div>
-    )
+      <ActionButton
+        id="add-button"
+        onClick={this.addOnClick}
+        label={this.context.i18n.getMessage('SupplierAddressEditor.Button.add')}
+      />
+    );
+  }
+
+  renderActionButtons(address) {
+    return this.userAbilities.actionGroupForAddresses().map((action, index) => {
+      return <ActionButton
+                key={index}
+                action={action}
+                onClick={this[`${action}OnClick`].bind(this, address)}
+                label={this.context.i18n.getMessage(`SupplierAddressEditor.Button.${action}`)}
+                isSmall={true}
+                showIcon={true}
+              />
+    });
   }
 
   render() {
 
     const { supplierAddresses, supplierAddress, loadErrors, errors, editMode, isLoaded } = this.state;
-
-    let readOnly = this.props.readOnly;
-
     let result;
 
     if (!isLoaded) {
@@ -287,14 +229,30 @@ class SupplierAddressEditor extends Component {
     if (supplierAddresses.length > 0) {
       result = (
         <div className="table-responsive">
-          <SupplierAddressListTable
-            actionUrl={this.props.actionUrl}
-            supplierAddresses={supplierAddresses}
-            readOnly={readOnly}
-            onEdit={this.handleEdit}
-            onDelete={this.handleDelete}
-            onView={this.handleView}
-          />
+          <DisplayTable headers={[
+              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.type')},
+              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.street')},
+              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.zipCode')},
+              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.city')},
+              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.countryId')},
+              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.phoneNo')},
+              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.faxNo')}
+          ]}>
+            { supplierAddresses.map((address, index) =>
+              (<DisplayRow key={index}>
+                <DisplayField>{this.context.i18n.getMessage(`SupplierAddressEditor.AddressType.${address.type}`)}</DisplayField>
+                <DisplayField>{address.street1}</DisplayField>
+                <DisplayField>{address.zipCode}</DisplayField>
+                <DisplayField>{address.city}</DisplayField>
+                <DisplayField><CountryView countryId={address.countryId}/></DisplayField>
+                <DisplayField>{address.phoneNo}</DisplayField>
+                <DisplayField>{address.faxNo || '-'}</DisplayField>
+                <DisplayField classNames='text-right'>
+                  {this.renderActionButtons(address)}
+                </DisplayField>
+              </DisplayRow>))
+            }
+          </DisplayTable>
         </div>
       );
     }
@@ -310,9 +268,7 @@ class SupplierAddressEditor extends Component {
         {supplierAddress ? (
           <div className="row">
             <div className="col-md-6">
-
               <SupplierAddressEditorForm
-                actionUrl={this.props.actionUrl}
                 onChange={this.handleChange}
                 supplierAddress={supplierAddress}
                 errors={errors}

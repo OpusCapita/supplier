@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import _ from 'underscore';
 import AttributeValueEditorRow from '../AttributeValueEditorRow.react.js';
 import './SupplierRegistrationEditor.css';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
@@ -11,8 +10,7 @@ class SupplierRegistrationEditorForm extends Component {
     supplier: PropTypes.object,
     onSupplierChange: PropTypes.func.isRequired,
     onChange: React.PropTypes.func,
-    onCancel: React.PropTypes.func,
-    actionUrl: React.PropTypes.string.isRequired
+    onCancel: React.PropTypes.func
   };
 
   static contextTypes = {
@@ -28,7 +26,7 @@ class SupplierRegistrationEditorForm extends Component {
   };
 
   componentWillMount() {
-    let serviceRegistry = (service) => ({ url: `${this.props.actionUrl}/isodata` });
+    let serviceRegistry = (service) => ({ url: `/isodata` });
     const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
 
     this.externalComponents = { CountryField };
@@ -37,16 +35,14 @@ class SupplierRegistrationEditorForm extends Component {
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if (_.isEqual(this.props.supplier, nextProps.supplier)) {
-      return;
+    if (JSON.stringify(this.props.supplier) !== JSON.stringify(nextProps.supplier)) {
+      this.setState({
+        supplier: {
+          ...nextProps.supplier
+        },
+        fieldErrors: {},
+      });
     }
-
-    this.setState({
-      supplier: {
-        ...nextProps.supplier
-      },
-      fieldErrors: {},
-    });
 
     this.constraints = new SupplierConstraints(nextContext.i18n);
   }
@@ -180,7 +176,7 @@ class SupplierRegistrationEditorForm extends Component {
                   fieldName: 'countryOfRegistration',
                   component: (
                     <CountryField
-                      actionUrl={this.props.actionUrl}
+                      actionUrl=''
                       value={this.state.supplier['countryOfRegistration']}
                       onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                       onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}

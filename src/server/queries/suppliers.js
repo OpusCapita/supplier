@@ -77,7 +77,7 @@ module.exports.exists = function(supplierId)
 module.exports.searchAll = function(searchValue)
 {
   const model = this.db.models.Supplier;
-  const search = searchValue.replace(/\W+/g, ' ');
+  const search = searchValue.replace(/\W+/g, '* ') + '*';
   const searchFields = [
     'SupplierName',
     'CityOfRegistration',

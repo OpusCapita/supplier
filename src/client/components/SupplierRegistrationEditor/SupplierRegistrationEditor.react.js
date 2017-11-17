@@ -4,6 +4,7 @@ import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';
 import SupplierExistsView from './SupplierExistsView.react';
+import { Supplier, Auth, Contact } from '../../api';
 
 /**
  * Provide general company information.
@@ -11,7 +12,6 @@ import SupplierExistsView from './SupplierExistsView.react';
 class SupplierRegistrationEditor extends Component {
 
   static propTypes = {
-    actionUrl: PropTypes.string.isRequired,
     user: PropTypes.object.isRequired,
     supplier: PropTypes.object,
     onChange: React.PropTypes.func,
@@ -35,6 +35,10 @@ class SupplierRegistrationEditor extends Component {
       },
       supplierExist: false
     }
+
+    this.supplierApi = new Supplier();
+    this.authApi = new Auth();
+    this.contactApi = new Contact();
   }
 
   createSupplierPromise = null;
@@ -49,12 +53,6 @@ class SupplierRegistrationEditor extends Component {
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
       nextContext.i18n.register('SupplierRegistrationEditor', i18nMessages);
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.createSupplierPromise) {
-      this.createSupplierPromise.cancel();
     }
   }
 
@@ -79,21 +77,15 @@ class SupplierRegistrationEditor extends Component {
       changedBy: this.props.user.id
     };
 
-    this.createSupplierPromise = request.post(`${this.props.actionUrl}/supplier/api/suppliers`).
-      set('Accept', 'application/json').
-      send(newSupplier).
-      promise();
+    return this.supplierApi.createSupplier(newSupplier).then(createdSupplier => {
+      this.setState({ supplier: createdSupplier });
 
-    return this.createSupplierPromise.then(response => {
-      this.setState({
-        supplier: response.body
-      });
       if(this.context.showNotification)
             this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info')
       const { supplier } = this.state;
 
       // we need to refresh the id token before we can do any calls to backend as supplier user
-      return request.post('/refreshIdToken').set('Content-Type', 'application/json').then((resp) => {
+      return this.authApi.refreshIdToken().then(() => {
         console.log("id token refreshed");
 
         const user = this.props.user;
@@ -108,8 +100,7 @@ class SupplierRegistrationEditor extends Component {
             changedBy: user.id
         }
 
-        return request.post(`${this.props.actionUrl}/supplier/api/suppliers/${encodeURIComponent(supplier.supplierId)}/contacts`).
-        set('Accept', 'application/json').send(contact).then(response => {
+        return this.contactApi.createContact(supplier.supplierId, contact).then(() => {
           console.log('contact created');
 
           if (this.props.onUpdate) {
