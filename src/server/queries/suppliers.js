@@ -75,7 +75,7 @@ module.exports.exists = function(supplierId)
   return this.db.models.Supplier.findById(supplierId).then(supplier => Boolean(supplier));
 };
 
-module.exports.searchAll = function(searchValue)
+module.exports.searchAll = function(searchValue, capabilities)
 {
   const model = this.db.models.Supplier;
   const search = searchValue.replace(/\W+/g, '* ') + '*';
@@ -89,10 +89,15 @@ module.exports.searchAll = function(searchValue)
     'GlobalLocationNo'
   ].join(',');
 
-  return this.db.query(
-    `SELECT ${attributes(model)} FROM Supplier WHERE MATCH (${searchFields}) AGAINST ('${search}' IN BOOLEAN MODE)`,
-    { model:  model }
-  );
+  const select = `SELECT ${attributes(model)}, Capability.capabilityId FROM Supplier `;
+  const leftJoin = 'LEFT JOIN Capability ON Supplier.SupplierID = Capability.supplierId ';
+  const match = `MATCH (${searchFields}) AGAINST ('${search}' IN BOOLEAN MODE)`;
+
+  if (capabilities.length < 1) return this.db.query(select + leftJoin + `WHERE ${match}`, { model: model }).then(suppliers => aggregateSeach(suppliers));
+
+  const innerJoin = 'INNER JOIN Capability ON Supplier.SupplierID = Capability.supplierId ';
+  const capabilityQuery = capabilities.map(capability => `Capability.capabilityId = ${SqlString.escape(capability)}`).join(' OR ');
+  return this.db.query(select + innerJoin + `WHERE ${match} AND ${capabilityQuery}`, { model: model }).then(suppliers => aggregateSeach(suppliers));
 };
 
 module.exports.searchRecord = function(query)
@@ -211,5 +216,22 @@ let equalSQL = function(fieldName, value)
 let attributes = function(model)
 {
   const rawAttributes = model.rawAttributes;
-  return Object.keys(rawAttributes).map(fieldName => `${rawAttributes[fieldName].field} AS ${fieldName}`).join(', ');
+  return Object.keys(rawAttributes).map(fieldName => `Supplier.${rawAttributes[fieldName].field} AS ${fieldName}`).join(', ');
+}
+
+let aggregateSeach = function(suppliers)
+{
+  const suppliersById = suppliers.reduce((accumulator, supplier) => {
+    let object = supplier.dataValues;
+    if (!accumulator[object.supplierId]) {
+      accumulator[object.supplierId] = JSON.parse(JSON.stringify(object));
+      accumulator[object.supplierId].capabilities = [];
+      delete accumulator[object.supplierId].capabilityId;
+    }
+
+    if (object.capabilityId) accumulator[object.supplierId].capabilities.push(object.capabilityId);
+    return accumulator;
+  }, {});
+
+  return Object.values(suppliersById);
 }

@@ -33,7 +33,8 @@ let sendSupplier = function(req, res)
 let sendSuppliers = function(req, res)
 {
   if (req.query.search) {
-    Supplier.searchAll(req.query.search).then(suppliers => res.json(suppliers));
+    const capabilities = req.query.capabilities ? req.query.capabilities.split(',') : [];
+    Supplier.searchAll(req.query.search, capabilities).then(suppliers => res.json(suppliers));
   } else {
     const includes = req.query.include ? req.query.include.split(',') : [];
     delete req.query.include
