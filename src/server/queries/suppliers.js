@@ -89,13 +89,14 @@ module.exports.searchAll = function(searchValue, capabilities)
     'GlobalLocationNo'
   ].join(',');
 
+  const select = `SELECT ${attributes(model)}, Capability.capabilityId FROM Supplier `;
+  const leftJoin = 'LEFT JOIN Capability ON Supplier.SupplierID = Capability.supplierId ';
   const match = `MATCH (${searchFields}) AGAINST ('${search}' IN BOOLEAN MODE)`;
 
-  if (capabilities.length < 1) return this.db.query(`SELECT ${attributes(model)} FROM Supplier WHERE ${match}`, { model: model }).then(suppliers => aggregateSeach(suppliers));
+  if (capabilities.length < 1) return this.db.query(select + leftJoin + `WHERE ${match}`, { model: model }).then(suppliers => aggregateSeach(suppliers));
 
-  const select = `SELECT ${attributes(model)}, capabilities.capabilityId FROM Supplier `;
-  const innerJoin = 'INNER JOIN Capability AS capabilities ON Supplier.SupplierID = capabilities.supplierId ';
-  const capabilityQuery = capabilities.map(capability => `capabilities.capabilityId = ${SqlString.escape(capability)}`).join(' OR ');
+  const innerJoin = 'INNER JOIN Capability ON Supplier.SupplierID = Capability.supplierId ';
+  const capabilityQuery = capabilities.map(capability => `Capability.capabilityId = ${SqlString.escape(capability)}`).join(' OR ');
   return this.db.query(select + innerJoin + `WHERE ${match} AND ${capabilityQuery}`, { model: model }).then(suppliers => aggregateSeach(suppliers));
 };
 
