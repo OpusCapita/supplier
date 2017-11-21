@@ -3,7 +3,7 @@ import locales from './i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Access } from '../../api';
-import ActionButton from '../../components/ActionButton.react';
+import ActionButton from '../ActionButton.react';
 import dateHelper from '../../utils/dateHelper';
 require('./SupplierApproval.css');
 
