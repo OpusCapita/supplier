@@ -223,9 +223,8 @@ let aggregateSeach = function(suppliers)
   const suppliersById = suppliers.reduce((accumulator, supplier) => {
     let object = supplier.dataValues;
     if (!accumulator[object.supplierId]) {
-      accumulator[object.supplierId] = object;
+      accumulator[object.supplierId] = JSON.parse(JSON.stringify(object));
       accumulator[object.supplierId].capabilities = [];
-      if (object.capabilityId) accumulator[object.supplierId].capabilities.push(object.capabilityId);
       delete accumulator[object.supplierId].capabilityId;
     }
 
