@@ -12,10 +12,7 @@ export default class SupplierSearch extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      form: { keyword: '' },
-      data: []
-    };
+    this.state = { searchWord: '', capability: null, data: [] };
     this.supplierApi = new Supplier();
   }
 
@@ -33,20 +30,36 @@ export default class SupplierSearch extends Component {
   }
 
   searchSupplier() {
-    const queryParam = { search: this.state.form.keyword };
-    this.supplierApi.getSuppliers(queryParam).then(data => {
-      this.setState({ data: data });
-    });
+    const queryParam = { search: this.state.searchWord, capabilities: this.state.capability };
+    this.supplierApi.getSuppliers(queryParam).then(data => this.setState({ data: data }));
   }
 
-  onKeywordChange(event) {
-    this.setState({ form: { keyword: event.target.value } });
+  onSearchWordChange(event) {
+    this.setState({ searchWord: event.target.value });
+  }
+
+  handleChange(event) {
+    this.setState({ capability: event.target.value });
   }
 
   renderSearchBox() {
     return (<div className="form-group search-box">
-      <label className="control-label">{this.context.i18n.getMessage('SupplierSearch.searchInput.label')}</label>
-      <input value={this.state.form.keyword} onChange={this.onKeywordChange.bind(this)} className="form-control"/>
+      <div className='row'>
+        <div className='col-xs-10'>
+          <input value={this.state.searchWord} onChange={this.onSearchWordChange.bind(this)} className="form-control"/>
+          <label className="control-label">{this.context.i18n.getMessage('SupplierSearch.searchInput.label')}</label>
+        </div>
+        <div className='col-xs-2'>
+          <select className="form-control"
+            value={this.state.capability}
+            onChange={this.handleChange.bind(this)}
+          >
+            <option key='1' value={null}></option>
+            <option key='2' value='einvoice'>einvoice</option>
+          </select>
+          <label className="control-label">{'Capability'}</label>
+        </div>
+      </div>
       <div className="text-right form-submit">
         <ActionButton
           style='primary'
@@ -107,12 +120,7 @@ export default class SupplierSearch extends Component {
         id: 'capabilities'
       }];
 
-    return (<ReactTable
-      data={data}
-      columns={columns}
-      defaultPageSize={5}
-      className="table"
-    />)
+    return <ReactTable data={data} columns={columns} defaultPageSize={10} className="table"/>;
   }
 
   render() {
