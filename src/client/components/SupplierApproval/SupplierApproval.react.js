@@ -5,7 +5,6 @@ import 'react-table/react-table.css';
 import { Access } from '../../api';
 import ActionButton from '../ActionButton.react';
 import dateHelper from '../../utils/dateHelper';
-require('./SupplierApproval.css');
 
 export default class SupplierApproval extends Component {
 
