@@ -19,6 +19,7 @@ let SupplierApproval = {
     rejected: 'Rejected'
   },
   Message: {
+    heading: 'Please approve or reject user access request.',
     confirmApproval: 'Are you sure you want to approve user?',
     rejectApproval: 'Are you sure you want to reject user?'
   },

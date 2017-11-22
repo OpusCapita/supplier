@@ -122,6 +122,11 @@ export default class SupplierApproval extends Component {
   }
 
   render() {
-    return <div className='table-responsive'>{this.renderTable(this.state.accessRequests)}</div>
+    return (
+      <div>
+        <h4 className="tab-description">{this.context.i18n.getMessage('SupplierApproval.Message.heading')}</h4>
+        <div className='table-responsive'>{this.renderTable(this.state.accessRequests)}</div>
+      </div>
+    );
   }
 }
