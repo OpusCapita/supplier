@@ -1,5 +1,6 @@
 let SupplierSearch = {
   'SupplierSearch.searchInput.label': 'Suche nach Name, Stadt, Umsatzsteuer-ID, Steuernummer, Registrierungsnummer, DUNS-Nummer oder Global Location Number',
+  'SupplierSearch.capability.label': 'Fähigkeit',
   'SupplierSearch.buttonLabel.search': 'Suche',
   'SupplierSearch.tableHeader.supplierName': 'Name des Unternehmens',
   'SupplierSearch.tableHeader.cityOfRegistration': 'Stadt',

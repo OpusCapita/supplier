@@ -45,19 +45,18 @@ export default class SupplierSearch extends Component {
   renderSearchBox() {
     return (<div className="form-group search-box">
       <div className='row'>
+        <label className="control-label col-xs-10">{this.context.i18n.getMessage('SupplierSearch.searchInput.label')}</label>
+        <label className="control-label col-xs-2">{this.context.i18n.getMessage('SupplierSearch.capability.label')}</label>
+      </div>
+      <div className='row'>
         <div className='col-xs-10'>
           <input value={this.state.searchWord} onChange={this.onSearchWordChange.bind(this)} className="form-control"/>
-          <label className="control-label">{this.context.i18n.getMessage('SupplierSearch.searchInput.label')}</label>
         </div>
         <div className='col-xs-2'>
-          <select className="form-control"
-            value={this.state.capability}
-            onChange={this.handleChange.bind(this)}
-          >
+          <select value={this.state.capability} onChange={this.handleChange.bind(this)} className="form-control" >
             <option key='1' value={null}></option>
-            <option key='2' value='einvoice'>einvoice</option>
+            <option key='2' value='einvoice'>eInvoice</option>
           </select>
-          <label className="control-label">{'Capability'}</label>
         </div>
       </div>
       <div className="text-right form-submit">
