@@ -61,6 +61,7 @@ export default class SupplierSearch extends Component {
       </div>
       <div className="text-right form-submit">
         <ActionButton
+          id="supplier-editor__search"
           style='primary'
           onClick={this.searchSupplier.bind(this)}
           label={this.context.i18n.getMessage('SupplierSearch.buttonLabel.search')}

@@ -226,7 +226,7 @@ class SupplierEditorForm extends Component {
 
           <div className='supplier-form-submit'>
             <div className='text-right form-submit'>
-              <button className="btn btn-primary" onClick={ this.handleUpdate }>
+              <button id='supplier-editor__form-submit' className="btn btn-primary" onClick={ this.handleUpdate }>
                 { i18n.getMessage('SupplierEditor.ButtonLabel.save') }
               </button>
             </div>
