@@ -3,9 +3,8 @@ import locales from './i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Access } from '../../api';
-import ActionButton from '../../components/ActionButton.react';
+import ActionButton from '../ActionButton.react';
 import dateHelper from '../../utils/dateHelper';
-require('./SupplierApproval.css');
 
 export default class SupplierApproval extends Component {
 
@@ -123,6 +122,11 @@ export default class SupplierApproval extends Component {
   }
 
   render() {
-    return <div className='table-responsive'>{this.renderTable(this.state.accessRequests)}</div>
+    return (
+      <div>
+        <h4 className="tab-description">{this.context.i18n.getMessage('SupplierApproval.Message.heading')}</h4>
+        <div className='table-responsive'>{this.renderTable(this.state.accessRequests)}</div>
+      </div>
+    );
   }
 }

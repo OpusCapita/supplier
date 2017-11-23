@@ -91,13 +91,16 @@ module.exports.searchAll = function(searchValue, capabilities)
 
   const select = `SELECT ${attributes(model)}, Capability.capabilityId FROM Supplier `;
   const leftJoin = 'LEFT JOIN Capability ON Supplier.SupplierID = Capability.supplierId ';
-  const match = `MATCH (${searchFields}) AGAINST ('${search}' IN BOOLEAN MODE)`;
+  const matchQuery = `WHERE MATCH (${searchFields}) AGAINST ('${search}' IN BOOLEAN MODE)`;
+  let query = select + leftJoin + (searchValue ? matchQuery : '');
 
-  if (capabilities.length < 1) return this.db.query(select + leftJoin + `WHERE ${match}`, { model: model }).then(suppliers => aggregateSeach(suppliers));
+  if (capabilities.length < 1) return this.db.query(query, { model: model }).then(suppliers => aggregateSeach(suppliers));
 
   const innerJoin = 'INNER JOIN Capability ON Supplier.SupplierID = Capability.supplierId ';
   const capabilityQuery = capabilities.map(capability => `Capability.capabilityId = ${SqlString.escape(capability)}`).join(' OR ');
-  return this.db.query(select + innerJoin + `WHERE ${match} AND ${capabilityQuery}`, { model: model }).then(suppliers => aggregateSeach(suppliers));
+
+  query = select + innerJoin + (searchValue ? `${matchQuery} AND ${capabilityQuery}` : `WHERE ${capabilityQuery}`);
+  return this.db.query(query, { model: model }).then(suppliers => aggregateSeach(suppliers));
 };
 
 module.exports.searchRecord = function(query)
@@ -222,7 +225,7 @@ let attributes = function(model)
 let aggregateSeach = function(suppliers)
 {
   const suppliersById = suppliers.reduce((accumulator, supplier) => {
-    let object = supplier.dataValues;
+    const object = supplier.dataValues;
     if (!accumulator[object.supplierId]) {
       accumulator[object.supplierId] = JSON.parse(JSON.stringify(object));
       accumulator[object.supplierId].capabilities = [];
