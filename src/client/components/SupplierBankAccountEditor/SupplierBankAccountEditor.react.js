@@ -216,12 +216,13 @@ class SupplierBankAccountEditor extends Component {
   }
 
   addButton() {
-    if (!this.state.isLoaded) return null
+    if (!this.state.isLoaded) return null;
     if (this.state.account) return null;
     if (!this.userAbilities.canCreateBankAccount()) return null;
 
     return (
       <ActionButton
+        id='supplier-bank-editor__add'
         onClick={this.addOnClick}
         label={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.add')}
       />
@@ -232,6 +233,7 @@ class SupplierBankAccountEditor extends Component {
     return this.userAbilities.actionGroupForBankAccounts().map((action, index) => {
       return <ActionButton
                 key={index}
+                id={`supplier-bank-editor__${action}`}
                 action={action}
                 onClick={this[`${action}OnClick`].bind(this, account)}
                 label={this.context.i18n.getMessage(`SupplierBankAccountEditor.Button.${action}`)}

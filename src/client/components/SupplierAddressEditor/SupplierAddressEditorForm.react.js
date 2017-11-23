@@ -227,11 +227,13 @@ class SupplierAddressEditorForm extends Component {
 
         <div className="col-sm-12 text-right address-form-submit">
           <ActionButton
+            id='supplier-address__cancel'
             style='link'
             onClick={this.handleCancel}
             label={this.context.i18n.getMessage('SupplierAddressEditor.Button.cancel')}
           />
           <ActionButton
+            id='supplier-address__save'
             style='primary'
             type='submit'
             label={this.context.i18n.getMessage('SupplierAddressEditor.Button.save')}

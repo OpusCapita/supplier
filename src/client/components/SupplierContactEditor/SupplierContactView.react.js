@@ -47,6 +47,7 @@ export default class SupplierContactView extends Component {
         { this.renderField({ fieldName: 'mobile' }) }
         { this.renderField({ fieldName: 'fax' }) }
         <ActionButton
+          id='supplier-contact-editor__close'
           onClick={this.props.onClose}
           label={this.context.i18n.getMessage('SupplierContactEditor.Button.close')}
         />

@@ -222,12 +222,13 @@ class SupplierContactEditor extends Component {
   }
 
   addButton() {
-    if (!this.state.isLoaded) return null
+    if (!this.state.isLoaded) return null;
     if (this.state.contact) return null;
 
     return (
       <ActionButton
         onClick={this.addOnClick}
+        id='supplier-contact-editor__add'
         label={this.context.i18n.getMessage('SupplierContactEditor.Button.add')}
       />
     );
@@ -236,6 +237,7 @@ class SupplierContactEditor extends Component {
   renderActionButtons(contact) {
     return this.userAbilities.actionGroupForContacts(contact.isLinkedToUser).map((action, index) => {
       return <ActionButton
+                id={ `supplier-contact-editor__${action}` }
                 key={index}
                 action={action}
                 onClick={this[`${action}OnClick`].bind(this, contact)}

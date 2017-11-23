@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 export default class ActionButton extends Component {
   static propTypes = {
+    id: PropTypes.string,
     onClick: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     style: PropTypes.string,
@@ -46,7 +47,7 @@ export default class ActionButton extends Component {
     });
 
     return (
-      <button className={buttonClassNames} onClick={this.props.onClick.bind(this)} type={type}>
+      <button id={this.props.id} className={buttonClassNames} onClick={this.props.onClick.bind(this)} type={type}>
           {showIcon ? this.renderLabelWithIcon() : label }
       </button>
     );
