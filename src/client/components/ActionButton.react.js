@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 export default class ActionButton extends Component {
   static propTypes = {
+    id: PropTypes.string,
     onClick: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     style: PropTypes.string,
