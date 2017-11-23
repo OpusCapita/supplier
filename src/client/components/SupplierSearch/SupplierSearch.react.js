@@ -52,7 +52,7 @@ export default class SupplierSearch extends Component {
       <label className="control-label">{this.context.i18n.getMessage('SupplierSearch.label')}</label>
       <input value={this.state.form.keyword} onChange={this.onKeywordChange.bind(this)} className="form-control"/>
       <div className="text-right form-submit">
-        <button className="btn btn-primary"
+        <button id="supplier-editor__search" className="btn btn-primary"
                 onClick={this.searchSupplier.bind(this)}>{this.context.i18n.getMessage('SupplierSearch.search')}</button>
       </div>
     </div>)
