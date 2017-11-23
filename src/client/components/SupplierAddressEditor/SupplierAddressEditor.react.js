@@ -88,7 +88,7 @@ class SupplierAddressEditor extends Component {
   editOnClick = (supplierAddress) => {
     this.setState({
       supplierAddress: JSON.parse(JSON.stringify(supplierAddress)),
-      editMode: "edit",
+      editMode: 'edit',
       errors: null
     });
   };
@@ -187,12 +187,12 @@ class SupplierAddressEditor extends Component {
   };
 
   addButton() {
-    if (!this.state.isLoaded) return null
+    if (!this.state.isLoaded) return null;
     if (this.state.supplierAddress) return null;
 
     return (
       <ActionButton
-        id="add-button"
+        id='supplier-address-editor__add'
         onClick={this.addOnClick}
         label={this.context.i18n.getMessage('SupplierAddressEditor.Button.add')}
       />
@@ -202,6 +202,7 @@ class SupplierAddressEditor extends Component {
   renderActionButtons(address) {
     return this.userAbilities.actionGroupForAddresses().map((action, index) => {
       return <ActionButton
+                id={ `supplier-address-editor__${action}` }
                 key={index}
                 action={action}
                 onClick={this[`${action}OnClick`].bind(this, address)}
@@ -227,7 +228,7 @@ class SupplierAddressEditor extends Component {
 
     if (supplierAddresses.length > 0) {
       result = (
-        <div className="table-responsive">
+        <div className='table-responsive'>
           <DisplayTable headers={[
               {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.type')},
               {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.street')},
@@ -259,14 +260,14 @@ class SupplierAddressEditor extends Component {
     return (
       <div>
         <div>
-          <h4 className="tab-description">{this.context.i18n.getMessage('SupplierAddressEditor.Title')}</h4>
+          <h4 className='tab-description'>{this.context.i18n.getMessage('SupplierAddressEditor.Title')}</h4>
         </div>
 
         {result}
 
         {supplierAddress ? (
-          <div className="row">
-            <div className="col-md-6">
+          <div className='row'>
+            <div className='col-md-6'>
               <SupplierAddressEditorForm
                 onChange={this.handleChange}
                 supplierAddress={supplierAddress}
