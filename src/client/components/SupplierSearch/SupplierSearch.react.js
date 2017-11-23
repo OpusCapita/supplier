@@ -55,7 +55,7 @@ export default class SupplierSearch extends Component {
         <div className='col-xs-2'>
           <select value={this.state.capability} onChange={this.handleChange.bind(this)} className="form-control" >
             <option key='1' value={null}></option>
-            <option key='2' value='einvoice'>eInvoice</option>
+            <option key='2' value='eInvoice-send'>{this.context.i18n.getMessage('SupplierSearch.capability.eInvoice-send')}</option>
           </select>
         </div>
       </div>
@@ -115,7 +115,11 @@ export default class SupplierSearch extends Component {
       },
       {
         Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.capabilities'),
-        accessor: element => element.capabilities ? element.capabilities.join(', ') : element.capabilities,
+        accessor: element => {
+          if (!element.capabilities) return null;
+
+          return element.capabilities.map(cap => this.context.i18n.getMessage(`SupplierSearch.capability.${cap}`)).join(', ');
+        },
         id: 'capabilities'
       }];
 
