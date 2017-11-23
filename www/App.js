@@ -8,9 +8,9 @@ import SupplierContactEditor from '../src/client/components/SupplierContactEdito
 import SupplierBankEditor from '../src/client/components/SupplierBankAccountEditor';
 import SupplierProfileStrength from '../src/client/components/SupplierProfileStrength';
 import SupplierSearch from '../src/client/components/SupplierSearch';
+import SupplierApproval from '../src/client/components/SupplierApproval';
 
 const username = 'john.doe@ncc.com';
-const actionUrl = 'http://localhost:8080';
 const userRoles = ['supplier-admin', 'user'];
 
 const supplier = {
@@ -38,19 +38,15 @@ const onboardingUser = {
 let editor = (
   <SupplierEditor
     key='company'
-    actionUrl={actionUrl}
     supplierId={supplier.supplierId}
     username={username}
     userRoles={userRoles}
-    dateTimePattern='MM/dd/yyyy'
   />
 );
 
 let registrationEditor = (
   <SupplierRegistrationEditor
     key='company'
-    actionUrl={actionUrl}
-    locale='en'
     supplier={onboardingSupplier}
     user={onboardingUser}
   />
@@ -59,10 +55,7 @@ let registrationEditor = (
 let addressEditor = (
   <SupplierAddressEditor
     key='address'
-    readOnly={false}
-    actionUrl={actionUrl}
     supplierId={supplier.supplierId}
-    locale='en'
     username={username}
     userRoles={userRoles}
   />
@@ -71,35 +64,32 @@ let addressEditor = (
 let contactEditor = (
   <SupplierContactEditor
     key='contact'
-    readOnly={false}
-    actionUrl={actionUrl}
     supplierId={supplier.supplierId}
-    locale='en'
     username={username}
     userRoles={userRoles}
   />
 );
 
 let searchEditor = (
-  <SupplierSearch
-    actionUrl={actionUrl}
-  />
+  <SupplierSearch />
+);
+
+let supplierApproval = (
+  <SupplierApproval supplierId={supplier.supplierId} />
 );
 
 let bankEditor = (
   <SupplierBankEditor
     key='contact'
     readOnly={false}
-    actionUrl={actionUrl}
     supplierId={supplier.supplierId}
-    locale='en'
     username={username}
     userRoles={userRoles}
   />
 );
 
 let supplierProfileStrenth = (
-  <SupplierProfileStrength actionUrl={actionUrl} supplierId={supplier.supplierId} />
+  <SupplierProfileStrength supplierId={supplier.supplierId} />
 );
 
 const activeStyle = {color:' #ffffff', background: '#006677'};
@@ -109,6 +99,7 @@ const App = () => (
     <ul className="nav nav-tabs">
       <li><NavLink exact activeStyle={activeStyle} to='/supplier'>Supplier</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/search'>Supplier Search</NavLink></li>
+      <li><NavLink activeStyle={activeStyle} to='/supplier/approval'>Supplier Approval</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/registration'>Supplier Registration</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/address'>Supplier Address</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/contact'>Supplier Contact</NavLink></li>
@@ -117,6 +108,7 @@ const App = () => (
     </ul>
     <Route exact path='/supplier' render={() => editor }/>
     <Route exact path='/supplier/search' render={() => searchEditor }/>
+    <Route exact path='/supplier/approval' render={() => supplierApproval }/>
     <Route exact path='/supplier/registration' render={() => registrationEditor }/>
     <Route exact path='/supplier/address' render={() => addressEditor }/>
     <Route exact path='/supplier/contact' render={() => contactEditor }/>

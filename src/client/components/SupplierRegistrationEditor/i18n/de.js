@@ -1,4 +1,4 @@
-let ButtonLabel = { continue: 'Weiter', cancel: 'Abbrechen', back: 'Zurück' };
+let ButtonLabel = { continue: 'Weiter', cancel: 'Abbrechen', request: 'Anfordern', access: 'Zugreifen' };
 
 let Select = {};
 Select.country = 'Bitte ein Land auswählen ...';
@@ -20,7 +20,8 @@ let Label = {
   dunsNo: {},
   globalLocationNo: {},
   isNewSupplier: {},
-  supplier: {}
+  supplier: {},
+  accessReason: {}
 };
 Label.supplierName.label = 'Name des Unternehmens';
 Label.supplierId.label = 'Firmen-ID';
@@ -39,25 +40,36 @@ Label.dunsNo.label = 'D-U-N-S-Nr.';
 Label.globalLocationNo.label = 'Global Location Number (GLN/ILN)';
 Label.isNewSupplier.label = 'Existierenden Lieferanten auswählen';
 Label.supplier.label = 'Lieferant';
+Label.accessReason.label = 'Zugang Grund';
 
 let SupplierRegistrationEditor = {};
 SupplierRegistrationEditor.created = 'Die Informationen auf diesem Reiter wurden erstmalig durch {by} am {on} erstellt.';
 SupplierRegistrationEditor.changed = 'Die Informationen wurden zuletzt am {on} durch {by} bearbeitet.';
 
 const Messages = {};
+Messages.supplierAccessRequestStatus = {};
 Messages.companyRegistration = 'Unternehmensregistrierung';
 Messages.loading = 'Laden...';
 Messages.unableToRender = 'Der Editor kann nicht geöffnet werden';
 Messages.saved = 'Die Daten wurden erfolgreich gespeichert';
 Messages.failed = 'Lieferantenerstellung fehlgeschlagen.';
 Messages.failedUnauthorized = 'Lieferantenerstellung fehlgeschlagen: nicht autorisiert.';
-Messages.supplierExistsHeader = 'Lieferant bereits vorhanden!';
-Messages.supplierExistsText = 'Scheinbar wurde Ihr Unternehmen bereits registriert. Bitte kontaktieren Sie unseren Support via +49 231 3967 350 oder customerservice.de@opuscapita.com, um einen Zugang zu diesem Unternehmen anzufordern.';
+Messages.supplierAccessRequestHeader = 'Sie haben den Zugang zum Firma {name} beantragt.';
+Messages.supplierAccessRequestText = 'Bitte kontaktieren Sie unseren Support via +49 231 3967 350 oder customerservice.de@opuscapita.com für weitere Informationen.';
+Messages.supplierAccessRequestStatus.text = 'Aktuelle Status';
+Messages.supplierAccessRequestStatus.requested = 'angefordert';
+Messages.supplierAccessRequestStatus.rejected = 'abgelehnt';
+Messages.supplierAccessRequestStatus.approved = 'genehmigt';
 Messages.information1 = 'Bitte hinterlegen Sie hier Informationen zur eindeutigen Identifizierung Ihres Unternehmens.'
 Messages.information2 = 'Bitte füllen Sie alle mit Stern markierten Pflichtfelder aus, um mit der Registrierung fortfahren zu können.'
+Messages.requestSupplierAccess = 'Zugang anfordern';
 Messages.required = '** Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer. Wenn Sie keine haben, dann hinterlegen Sie Ihre Global Location Number oder Ihre D-U-N-S-Nummer.';
 Messages.noVatId = 'Meine Firma hat keine Umsatzsteuer-Ident-Nummer.';
 Messages.clickCheckBox = 'Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer.';
+Messages.accessInformation1 = 'Hier können Sie Zugang zur Firma {name} beantragen. Sie sollten Zugang nur anfordern, wenn Sie ein Angestellter der Unternehmens sind.';
+Messages.accessInformation2 = 'Bitte geben Sie eine gültige geschäftliche Rechtfertigung für Ihren Zugang.';
+Messages.accessInformation3 = 'Ihre Anfrage wird an den Administrator weitergeleitet, der das Profil des Unternehmens verwaltet.';
+Messages.accessInformation4 = 'Sobald der Administrator Ihre Zugriffsanforderung genehmigt hat, erhalten Sie eine E-Mail-Benachrichtigung an Ihre registrierte E-Mail-Adresse.';
 
 export default {
   SupplierRegistrationEditor: {

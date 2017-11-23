@@ -97,7 +97,7 @@ class SupplierAddressEditor extends Component {
     if (!confirm(this.context.i18n.getMessage('SupplierAddressEditor.Confirmation.delete'))) {
       return;
     }
-    this.props.onDelete(supplierAddress);
+    this.handleDelete(supplierAddress);
   };
 
   handleDelete = (supplierAddress) => {
@@ -187,9 +187,8 @@ class SupplierAddressEditor extends Component {
   };
 
   addButton() {
-    if (this.state.supplierAddress) {
-      return;
-    }
+    if (!this.state.isLoaded) return null
+    if (this.state.supplierAddress) return null;
 
     return (
       <ActionButton

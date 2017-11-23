@@ -40,8 +40,10 @@ class SupplierBankAccountEditor extends Component {
     super(props);
 
     this.state = {
-      loadErrors: false,
-      editMode: 'view'
+      isLoaded: false,
+      accounts: [],
+      account: null,
+      loadErrors: false
     };
 
     this.bankAccountApi = new BankAccount();
@@ -185,13 +187,13 @@ class SupplierBankAccountEditor extends Component {
     let supplierId = this.props.supplierId;
 
     this.bankAccountApi.getBankAccounts(supplierId).then(accounts => {
-      this.setState({ accounts: accounts });
+      this.setState({ accounts: accounts, isLoaded: true });
     }).catch((response) => {
       if (response.status === 401) {
         this.props.onUnauthorized();
       } else {
         console.log(`Error loading accounts by SupplierID=${supplierId}`);
-        this.setState({ loadErrors: true });
+        this.setState({ isLoaded: true, loadErrors: true });
       }
     });
   };
@@ -213,10 +215,25 @@ class SupplierBankAccountEditor extends Component {
     );
   }
 
+  addButton() {
+    if (!this.state.isLoaded) return null;
+    if (this.state.account) return null;
+    if (!this.userAbilities.canCreateBankAccount()) return null;
+
+    return (
+      <ActionButton
+        id='supplier-bank-editor__add'
+        onClick={this.addOnClick}
+        label={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.add')}
+      />
+    );
+  }
+
   renderActionButtons(account) {
     return this.userAbilities.actionGroupForBankAccounts().map((action, index) => {
       return <ActionButton
                 key={index}
+                id={`supplier-bank-editor__${action}`}
                 action={action}
                 onClick={this[`${action}OnClick`].bind(this, account)}
                 label={this.context.i18n.getMessage(`SupplierBankAccountEditor.Button.${action}`)}
@@ -227,50 +244,48 @@ class SupplierBankAccountEditor extends Component {
   }
 
   render() {
-    const { accounts, loadErrors} = this.state;
-    let { account, errors } = this.state;
+    const { accounts, account, isLoaded, loadErrors} = this.state;
     let result;
 
-    if (accounts) {
-      if (accounts.length > 0) {
-        result = (
-          <div className='table-responsive'>
-            <DisplayTable
-              headers={[
-                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.accountNumber') },
-                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankName') },
-                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankIdentificationCode') },
-                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankCountryKey') },
-                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankCode') },
-                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.extBankControlKey') },
-                { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.swiftCode') }
-              ]}
-            >
-              { accounts.map((account, index) =>
-                (<DisplayRow key={index}>
-                  <DisplayField>{ account.accountNumber }</DisplayField>
-                  <DisplayField>{ account.bankName }</DisplayField>
-                  <DisplayField>{ account.bankIdentificationCode }</DisplayField>
-                  <DisplayField><CountryView countryId={account.bankCountryKey}/></DisplayField>
-                  <DisplayField>{ account.bankCode }</DisplayField>
-                  <DisplayField>{ account.extBankControlKey || '-' }</DisplayField>
-                  <DisplayField>{ account.swiftCode }</DisplayField>
-                  <DisplayField classNames='text-right'>
-                    {this.renderActionButtons(account)}
-                  </DisplayField>
-                </DisplayRow>))
-              }
-            </DisplayTable>
-          </div>)
-      } else {
-        // show create new account if empty
-        account = {};
-        errors = {};
-      }
-    } else if (loadErrors) {
-      result = (<div>Load errors</div>);
-    } else {
-      result = (<div>Loading...</div>);
+    if (!isLoaded) {
+      result = <div>Loading...</div>;
+    }
+
+    if (loadErrors) {
+      result = <div>Load errors</div>;
+    }
+
+    if (accounts.length > 0) {
+      result = (
+        <div className='table-responsive'>
+          <DisplayTable
+            headers={[
+              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.accountNumber') },
+              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankName') },
+              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankIdentificationCode') },
+              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankCountryKey') },
+              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankCode') },
+              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.extBankControlKey') },
+              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.swiftCode') }
+            ]}
+          >
+            { accounts.map((account, index) =>
+              (<DisplayRow key={index}>
+                <DisplayField>{ account.accountNumber }</DisplayField>
+                <DisplayField>{ account.bankName }</DisplayField>
+                <DisplayField>{ account.bankIdentificationCode }</DisplayField>
+                <DisplayField><CountryView countryId={account.bankCountryKey}/></DisplayField>
+                <DisplayField>{ account.bankCode }</DisplayField>
+                <DisplayField>{ account.extBankControlKey || '-' }</DisplayField>
+                <DisplayField>{ account.swiftCode }</DisplayField>
+                <DisplayField classNames='text-right'>
+                  {this.renderActionButtons(account)}
+                </DisplayField>
+              </DisplayRow>))
+            }
+          </DisplayTable>
+        </div>
+      );
     }
 
     return (
@@ -287,12 +302,7 @@ class SupplierBankAccountEditor extends Component {
           </div>
         ) : null}
 
-        {!account && this.userAbilities.canCreateBankAccount() ? (
-          <ActionButton
-            onClick={this.addOnClick}
-            label={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.add')}
-          />
-        ) : null}
+        {this.addButton()}
       </div>
     );
   }

@@ -1,5 +1,6 @@
 const Supplier = require('../queries/suppliers');
 const RedisEvents = require('ocbesbn-redis-events');
+const userService = require('../services/user');
 
 module.exports = function(app, db, config) {
   Supplier.init(db, config).then(() =>
@@ -7,6 +8,7 @@ module.exports = function(app, db, config) {
     this.events = new RedisEvents({ consul : { host : 'consul' } });
     app.get('/api/suppliers', (req, res) => sendSuppliers(req, res));
     app.get('/api/suppliers/exists', (req, res) => existsSuppliers(req, res));
+    app.get('/api/suppliers/search', (req, res) => querySupplier(req, res));
     app.post('/api/suppliers', (req, res) => createSuppliers(req, res));
     app.get('/api/suppliers/:supplierId', (req, res) => sendSupplier(req, res));
     app.put('/api/suppliers/:supplierId', (req, res) => updateSupplier(req, res));
@@ -31,7 +33,8 @@ let sendSupplier = function(req, res)
 let sendSuppliers = function(req, res)
 {
   if (req.query.search) {
-    Supplier.searchAll(req.query.search).then(suppliers => res.json(suppliers));
+    const capabilities = req.query.capabilities ? req.query.capabilities.split(',') : [];
+    Supplier.searchAll(req.query.search, capabilities).then(suppliers => res.json(suppliers));
   } else {
     const includes = req.query.include ? req.query.include.split(',') : [];
     delete req.query.include
@@ -42,6 +45,17 @@ let sendSuppliers = function(req, res)
 let existsSuppliers = function(req, res)
 {
   Supplier.recordExists(req.query).then(exists => res.json(exists));
+};
+
+let querySupplier = function(req, res)
+{
+  Supplier.searchRecord(req.query).then(supplier => {
+    if (supplier) {
+      res.json(supplier);
+    } else {
+      res.status('404').json(supplier);
+    }
+  });
 };
 
 let createSuppliers = function(req, res)
@@ -56,11 +70,10 @@ let createSuppliers = function(req, res)
       return Supplier.create(newSupplier)
         .then(supplier => this.events.emit(supplier, 'supplier').then(() => supplier))
         .then(supplier => {
-          const userId = supplier.createdBy;
           const supplierId = supplier.supplierId;
-          const supplierToUserPromise = req.opuscapita.serviceClient.put('user', `/api/users/${userId}`, { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] }, true);
+          const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
 
-          return supplierToUserPromise.then(() => {
+          return userService.update(req.opuscapita.serviceClient, supplier.createdBy, user).then(() => {
               supplier.status = 'assigned';
               Supplier.update(supplierId, supplier.dataValues).then(supplier => {
                 return this.events.emit(supplier, 'supplier').then(() => res.status('200').json(supplier));
@@ -112,7 +125,7 @@ let updateSupplier = function(req, res)
         return this.events.emit(supplier, 'supplier').then(() => res.status('200').json(supplier));
       });
     } else {
-      const message = 'A supplier with this ID does not exist.';
+      const message = 'A supplier with ID ' + supplierId + ' does not exist.';
       req.opuscapita.logger.error('Error when updating Supplier: %s', message);
       return res.status('404').json({ message : message });
     }

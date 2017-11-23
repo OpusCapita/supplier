@@ -46,7 +46,7 @@
       {
         "type": "rest",
         "resourceId": "/api/suppliers/${_current_supplier_id}/contacts/[%w | %p]*",
-        "actions": ["view", "edit", "delete"]
+        "actions": ["view", "create", "edit", "delete"]
       },
       {
         "type": "rest",
@@ -77,6 +77,11 @@
         "type": "rest",
         "resourceId": "/api/suppliers/exists",
         "actions": ["view"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/supplier_access[%w | %p]*",
+        "actions": ["create", "view", "edit"]
       }
     ]
   },
@@ -132,7 +137,7 @@
       {
         "type": "rest",
         "resourceId": "/api/suppliers/${_current_supplier_id}/contacts[%w | %p]*",
-        "actions": ["view"]
+        "actions": ["create", "view"]
       },
       {
         "type": "rest",
@@ -153,6 +158,16 @@
         "type": "rest",
         "resourceId": "/api/suppliers/exists",
         "actions": ["view"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/grant_supplier_access",
+        "actions": ["edit"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/supplier_access[%w | %p]*",
+        "actions": ["create", "view"]
       }
     ]
   }

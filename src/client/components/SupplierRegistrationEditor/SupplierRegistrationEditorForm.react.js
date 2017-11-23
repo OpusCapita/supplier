@@ -10,7 +10,8 @@ class SupplierRegistrationEditorForm extends Component {
     supplier: PropTypes.object,
     onSupplierChange: PropTypes.func.isRequired,
     onChange: React.PropTypes.func,
-    onCancel: React.PropTypes.func
+    onCancel: React.PropTypes.func,
+    onAccessRequest: React.PropTypes.func.isRequired,
   };
 
   static contextTypes = {
@@ -51,7 +52,16 @@ class SupplierRegistrationEditorForm extends Component {
     this.setState({
       fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
         ...rez,
-        [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
+        [fieldName]: errors[fieldName].map(error => {
+          return {
+            message: error.message,
+            value: error.value,
+            fieldName: fieldName,
+            attributes: error.attributes,
+            hasLink: error.validator && error.validator.includes('Exists'),
+            linkMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.requestSupplierAccess')
+          };
+        })
       }), this.state.fieldErrors)
     });
   };
@@ -77,7 +87,8 @@ class SupplierRegistrationEditorForm extends Component {
     });
   };
 
-  handleBlur = (fieldName) => {
+  handleBlur = (fieldName, event) => {
+    event.preventDefault();
     const constraints = this.constraints.forField(fieldName);
 
     this.setState({
@@ -91,7 +102,8 @@ class SupplierRegistrationEditorForm extends Component {
       this.setFieldErrorsStates(errors);
     };
 
-    validator.forRegistration().async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
+    const options = { fullMessages: false, format: 'groupedDetailed' };
+    validator.forRegistration().async(this.state.supplier, constraints, options).then(null, error);
   };
 
   handleCancel = event => {
@@ -107,7 +119,7 @@ class SupplierRegistrationEditorForm extends Component {
     const constraints = this.constraints.forRegistration();
 
     if (!supplier.vatIdentificationNo && this.state.hasVATId) {
-      this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.clickCheckBox')] });
+      this.setFieldErrorsStates({ noVatReason: [{ message: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.clickCheckBox') }] });
     } else {
       const success = () => {
         supplier.noVatReason = supplier.vatIdentificationNo ? null : 'No VAT Registration Number';
@@ -119,8 +131,14 @@ class SupplierRegistrationEditorForm extends Component {
         onSupplierChange(null);
       };
 
-      validator.forRegistration().async(supplier, constraints, { fullMessages: false }).then(success, error);
+      const options = { fullMessages: false, format: 'groupedDetailed' };
+      validator.forRegistration().async(supplier, constraints, options).then(success, error);
     }
+  };
+
+  requestSupplierAccess = (error) => {
+    const { onAccessRequest } = this.props;
+    if (onAccessRequest) onAccessRequest(error.attributes);
   };
 
   handleCheckboxChange = () => {
@@ -153,7 +171,9 @@ class SupplierRegistrationEditorForm extends Component {
         labelText={ attrs.labelText || this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
         required={ isRequired }
         marked = { attrs.marked }
-        rowErrors={ rowErrors }>
+        rowErrors={ rowErrors }
+        onErrorLinkClick={ this.requestSupplierAccess }
+      >
         { component }
       </AttributeValueEditorRow>
     );

@@ -1,7 +1,9 @@
 // Confirmation dialogs
 let Confirmation = {
   cancel: 'Wollen Sie den Vorgang wirklich abbrechen?',
-  delete: 'Do you really want to delete this contact?'
+  delete: 'Wollen Sie diesen Kontakt wirklich löschen?',
+  linkedToUser: 'Nur der Kontakt wird gelöscht. Der Benutzer wird nicht gelöscht.',
+  createUser: 'Wollen Sie wirklich einen Benutzer erstellen? Beachten Sie dass die Kontaktinformationen mit den Benutzerinformationen synchronisiert werden, wenn der Benutzer vorhanden ist.'
 };
 // eslint-disable-next-line max-len
 let Title = 'Bitte hinterlegen Sie hier die Ansprechpartner aus den Bereichen Geschäftsleitung, Vertrieb, Buchhaltung und Logistik.\nGerne können Sie auch noch weitere Ansprechpartner benennen.';
@@ -53,7 +55,8 @@ let Button = {
   save: 'Speichern',
   view: 'Ansehen',
   cancel: 'Abbrechen',
-  close: 'Schliessen'
+  close: 'Schliessen',
+  createUser: 'Benutzer erstellen'
 };
 
 let ContactInfo = {
@@ -67,7 +70,9 @@ let Message = {
   objectSaved: 'Die Daten wurden erfolgreich gespeichert.',
   deleteFailed: 'Das Objekt kann nicht gelöscht werden, vielleicht ist es bereits im Einsatz.',
   saveFailed: 'Speichern von Objekten fehlgeschlagen.',
-  updateFailed: 'Object update failed.'
+  updateFailed: 'Object update failed.',
+  userCreated: 'Benutzer erfolgreich erstellt.',
+  userCreateFailed: 'Benutzererstellung fehlgeschlagen.'
 };
 
 let Error = {

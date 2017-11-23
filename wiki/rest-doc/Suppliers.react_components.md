@@ -6,10 +6,8 @@
 
 | Name | Type | Required | Description |
 |:-----|:----:|:--------:|------------:|
-| actionUrl | string | true | Base url of service |
 | supplierId | string | true | ID of Supplier |
 | username | string | true | User (customer) name |
-| dateTimePattern | string | true | Date format . E.g. `dd/MM/yyyy`, `MM.dd.yyyy`, etc. |
 | onUnauthorized | function | false | Callback fired when unauthorized |
 | onChange | function | false | Callback fired on input change `(event) => {}` |
 | onUpdate | function | false | Callback fired on supplier update `(supplier) => {}` |
@@ -22,10 +20,8 @@ import { SupplierEditor } from 'supplier';
 
 <SupplierEditor
   key='company'
-  actionUrl='http://localhost:8080'
   supplierId='hard001'
   username='Marlon Wayans'
-  dateTimePattern='MM/dd/yyyy'
 />
 ```
 
@@ -37,7 +33,6 @@ import { SupplierEditor } from 'supplier';
 
 | Name | Type | Required | Description |
 |:-----|:----:|:--------:|------------:|
-| actionUrl | string | true | Base url of service |
 | supplier | object | false | Supplier object |
 | user | object | true | User object. Should contain attributes `id`, `firstName`, `lastName` and `email` |
 | onUnauthorized | function | false | Callback fired when unauthorized |
@@ -62,7 +57,6 @@ const newSupplier = {
 
 <SupplierRegistrationEditor
   key='company'
-  actionUrl='http://localhost:8080'
   supplier={newSupplier}
   user={{ id: 'john.doe@example.com', firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com' }}
 />
@@ -77,8 +71,6 @@ const newSupplier = {
 
 | Name | Type | Required | Description |
 |:-----|:----:|:--------:|------------:|
-| readOnly | boolean | false | Read only input |
-| actionUrl | string | true | Base url of service |
 | supplierId | string | true | ID of Supplier |
 | username | string | true | User (customer) name |
 | onUnauthorized | function | false | Callback fired when unauthorized |
@@ -91,8 +83,6 @@ import { SupplierAddressEditor } from 'supplier';
 
 <SupplierAddressEditor
   key='address'
-  readOnly={false}
-  actionUrl='http://localhost:8080'
   supplierId='hard001'
   username='Marlon Wayans'
 />
@@ -106,10 +96,7 @@ import { SupplierAddressEditor } from 'supplier';
 
 | Name | Type | Required | Description |
 |:-----|:----:|:--------:|------------:|
-| readOnly | boolean | false | Read only input |
-| actionUrl | string | true | Base url of service |
 | supplierId | string | true | ID of Supplier |
-| locale | string | false | Locale |
 | username | string | true | User (customer) name |
 | onUnauthorized | function | false | Callback fired when unauthorized |
 | onChange | function | false | Callback fired on input change `(event) => {}` |
@@ -121,10 +108,7 @@ import { SupplierContactEditor } from 'supplier';
 
 <SupplierContactEditor
   key='contact'
-  readOnly={false}
-  actionUrl='http://localhost:8080'
   supplierId='hard001'
-  locale='en'
   username='Marlon Wayans'
 />
 ```
@@ -137,7 +121,6 @@ import { SupplierContactEditor } from 'supplier';
 
 | Name | Type | Required | Description |
 |:-----|:----:|:--------:|------------:|
-| actionUrl | string | true | Base url of service |
 | supplierId | string | true | ID of Supplier |
 
 ### Basic Example
@@ -147,7 +130,6 @@ import { SupplierProfileStrength } from 'supplier';
 
 <SupplierProfileStrength
   key='profile_strength'
-  actionUrl='http://localhost:8080'
   supplierId='hard001'
 />
 ```

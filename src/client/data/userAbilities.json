@@ -4,7 +4,12 @@
       "actions": ["edit"]
     },
     "contact": {
-      "actions": ["add", "edit", "delete"]
+      "linkedUser": {
+        "actions": ["add", "view", "delete"]
+      },
+      "unlinkedUser": {
+        "actions": ["add", "createUser", "edit", "delete"]
+      }
     },
     "address": {
       "actions": ["add", "edit", "delete"]
@@ -18,7 +23,12 @@
       "actions": ["view"]
     },
     "contact": {
-      "actions": ["add", "edit", "delete"]
+      "linkedUser": {
+        "actions": ["add", "view", "delete"]
+      },
+      "unlinkedUser": {
+        "actions": ["add", "edit", "delete"]
+      }
     },
     "address": {
       "actions": ["add", "edit", "delete"]

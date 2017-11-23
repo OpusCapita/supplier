@@ -26,7 +26,11 @@ export default class ActionButton extends Component {
       'glyphicon': true,
       'glyphicon-plus': action === 'add',
       'glyphicon-edit': action === 'edit',
-      'glyphicon-trash': action === 'delete'
+      'glyphicon-trash': action === 'delete',
+      'glyphicon-eye-open': action === 'view',
+      'glyphicon-ok': action === 'approve',
+      'glyphicon-remove': action === 'reject',
+      'glyphicon-user': action === 'createUser'
     });
     return <div><span className={ classes }></span>&nbsp;{this.props.label}</div>;
   }

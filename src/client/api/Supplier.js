@@ -21,6 +21,11 @@ class Supplier extends ApiBase {
       send(supplier).then(response => response.body);
   }
 
+  searchSupplier(queryParams) {
+    return this.ajax.get('/supplier/api/suppliers/search').set('Accept', 'application/json').
+      query(queryParams).then(response => response.body);
+  }
+
   supplierExists(queryParams) {
     return this.ajax.get('/supplier/api/suppliers/exists').set('Accept', 'application/json').
       query(queryParams).then(response => response.body);

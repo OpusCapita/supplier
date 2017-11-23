@@ -8,7 +8,8 @@ class Layout extends Component
   };
 
   getChildContext() {
-    return { i18n: new I18nManager({ locale: 'de', fallbackLocale: 'en', localeFormattingInfo: {} }) };
+    const formatting = { 'en': { datePattern: 'dd/MM/yyyy' }, 'de': { datePattern: 'dd.MM.yyyy' } };
+    return { i18n: new I18nManager({ locale: 'de', fallbackLocale: 'en', localeFormattingInfo: formatting }) };
   }
 
   render() {

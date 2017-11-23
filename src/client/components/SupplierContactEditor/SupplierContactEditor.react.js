@@ -5,6 +5,7 @@ import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
 import DisplayField from '../../components/DisplayTable/DisplayField.react';
 import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
 import SupplierContactEditForm from './SupplierContactEditForm.react';
+import SupplierContactView from './SupplierContactView.react';
 import ActionButton from '../../components/ActionButton.react';
 import { Contact } from '../../api';
 import UserAbilities from '../../UserAbilities';
@@ -38,6 +39,9 @@ class SupplierContactEditor extends Component {
     super(props);
 
     this.state = {
+      isLoaded: false,
+      contacts: [],
+      contact: null,
       loadErrors: false
     };
 
@@ -61,32 +65,28 @@ class SupplierContactEditor extends Component {
     }
   }
 
+  notify(message, type) {
+    if (this.context.showNotification) this.context.showNotification(message, type);
+  }
+
   handleDelete = (contact) => {
     let supplierId = this.props.supplierId;
 
     this.contactApi.deleteContact(supplierId, contact.id).then(() => {
       let contacts = this.state.contacts;
       const index = contacts.findIndex(cont => cont.id === contact.id);
-      if (index === -1) {
-        throw new Error(`Not found contact by id [${contact.id}]`);
-      }
+      if (index === -1) throw new Error(`Not found contact by id [${contact.id}]`);
 
       contacts.splice(index, 1);
-      if(this.props.newNotification) this.props.newNotification(true);
-
-      const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectDeleted');
-      if(this.context.showNotification) this.context.showNotification(message, 'info');
-
       this.setState({ contacts: contacts, contact: null });
+
+      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.objectDeleted'), 'info');
     }).catch((response) => {
       if (response.status === 401) {
         this.props.onUnauthorized();
       } else {
         console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed');
-        if(this.context.showNotification){
-          this.context.showNotification(message, 'error')
-        }
+        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed'), 'error');
       }
     });
   };
@@ -98,33 +98,20 @@ class SupplierContactEditor extends Component {
 
   handleUpdate = (contact) => {
     let supplierId = this.props.supplierId;
-    contact.changedBy = this.props.username;// eslint-disable-line no-param-reassign
+    contact.changedBy = this.props.username;
 
     this.contactApi.updateContact(supplierId, contact.id, contact).then(updatedContact => {
-      let contacts = this.state.contacts;
-      const index = contacts.findIndex(cont => cont.id === contact.id);
-
-      if (index === -1) {
-        throw new Error(`Not found contact by id=${contact.id}`);
-      }
-      contacts[index] = updatedContact;
+      this.updateContacts(contact, updatedContact);
 
       this.props.onChange({ isDirty: false });
-      if(this.props.newNotification) this.props.newNotification(true);
 
-      const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated');
-      if(this.context.showNotification) this.context.showNotification(message, 'info');
-
-      this.setState({ contacts: contacts, contact: null });
+      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated'), 'info');
     }).catch(response => {
       if (response.status === 401) {
         this.props.onUnauthorized();
       } else {
         console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed');
-        if(this.context.showNotification){
-          this.context.showNotification(message, 'error')
-        }
+        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed'), 'error');
       }
     });
   };
@@ -137,24 +124,21 @@ class SupplierContactEditor extends Component {
     contact.changedBy = this.props.username;
 
     this.contactApi.createContact(supplierId, contact).then(createdContact => {
-        let contacts = this.state.contacts;
-        contacts.push(createdContact);
+      let contacts = this.state.contacts;
+      contacts.push(createdContact);
+      this.setState({ contacts: contacts, contact: null });
 
-        this.props.onChange({ isDirty: false });
+      this.props.onChange({ isDirty: false });
 
-        const message = this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved');
-        if(this.context.showNotification) this.context.showNotification(message, 'info');
-
-        this.setState({ contacts: contacts, contact: null });
-      }).catch((response) => {
-        if (response.status === 401) {
-          this.props.onUnauthorized();
-        } else {
-          console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-          let message = this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed');
-          if(this.context.showNotification) this.context.showNotification(message, 'error');
-        }
-      });
+      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved'), 'info');
+    }).catch((response) => {
+      if (response.status === 401) {
+        this.props.onUnauthorized();
+      } else {
+        console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
+        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed'), 'error');
+      }
+    });
   };
 
   handleCancel = () => {
@@ -167,34 +151,93 @@ class SupplierContactEditor extends Component {
   };
 
   deleteOnClick = (contact) => {
-    if (!confirm(this.context.i18n.getMessage('SupplierContactEditor.Confirmation.delete'))) {
-      return;
-    }
+    let message = this.context.i18n.getMessage('SupplierContactEditor.Confirmation.delete');
+    if (contact.isLinkedToUser) message = `${message} ${this.context.i18n.getMessage('SupplierContactEditor.Confirmation.linkedToUser')}`;
+
+    if (!confirm(message)) return;
+
     this.handleDelete(contact);
+  };
+
+  viewOnClick = (contact) => {
+    this.setState({ contact: JSON.parse(JSON.stringify(contact)), editMode: 'view' });
   };
 
   editOnClick = (contact) => {
     this.setState({ contact: JSON.parse(JSON.stringify(contact)), editMode: "edit", errors: null });
   };
 
+  createUserOnClick = (contact) => {
+    if (!confirm(this.context.i18n.getMessage('SupplierContactEditor.Confirmation.createUser'))) return;
+
+    this.contactApi.createUser(contact.supplierId, contact).then(resContact => {
+      this.updateContacts(contact, resContact);
+
+      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.userCreated'), 'info');
+    }).catch(error => {
+      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.userCreateFailed'), 'error');
+    });
+  };
+
   loadContacts = () => {
     let supplierId = this.props.supplierId;
 
     this.contactApi.getContacts(supplierId).then(contacts => {
-        this.setState({ contacts: contacts });
-      }).catch(response => {
-        if (response.status === 401) {
-          this.props.onUnauthorized();
-        } else {
-          console.log(`Error loading contacts by SupplierID=${supplierId}`);
-          this.setState({ loadErrors: true });
-        }
-      });
+      this.setState({ contacts: contacts, isLoaded: true });
+    }).catch(response => {
+      if (response.status === 401) {
+        this.props.onUnauthorized();
+      } else {
+        console.log(`Error loading contacts by SupplierID=${supplierId}`);
+        this.setState({ isLoaded: true, loadErrors: true });
+      }
+    });
   };
 
+  updateContacts = (oldContact, newContact) => {
+    let contacts = this.state.contacts;
+    const index = contacts.findIndex(cont => cont.id === oldContact.id);
+
+    if (index === -1) throw new Error(`Not found contact by id=${oldContact.id}`);
+    contacts[index] = newContact;
+
+    this.setState({ contacts: contacts, contact: null });
+  };
+
+  renderEditor() {
+    const { errors, editMode, contact } = this.state;
+    if (editMode === 'view') return <SupplierContactView contact={contact} onClose={this.handleCancel}/>;
+
+    return (
+      <SupplierContactEditForm
+        onChange={this.handleChange}
+        contact={contact}
+        errors={errors}
+        editMode={editMode}
+        onSave={this.handleSave}
+        onUpdate={this.handleUpdate}
+        onCancel={this.handleCancel}
+      />
+    );
+  }
+
+  addButton() {
+    if (!this.state.isLoaded) return null;
+    if (this.state.contact) return null;
+
+    return (
+      <ActionButton
+        onClick={this.addOnClick}
+        id='supplier-contact-editor__add'
+        label={this.context.i18n.getMessage('SupplierContactEditor.Button.add')}
+      />
+    );
+  }
+
   renderActionButtons(contact) {
-    return this.userAbilities.actionGroupForContacts().map((action, index) => {
+    return this.userAbilities.actionGroupForContacts(contact.isLinkedToUser).map((action, index) => {
       return <ActionButton
+                id={ `supplier-contact-editor__${action}` }
                 key={index}
                 action={action}
                 onClick={this[`${action}OnClick`].bind(this, contact)}
@@ -206,50 +249,46 @@ class SupplierContactEditor extends Component {
   }
 
   render() {
-    const { contacts, loadErrors } = this.state;
-    let { contact, errors, editMode } = this.state;
+    const { contacts, contact, isLoaded, loadErrors } = this.state;
     let result;
 
-    if (contacts) {
-      if (contacts.length > 0) {
-        result = (
-          <div className="table-responsive">
-            <DisplayTable headers={[
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.contactType')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.department')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.firstName')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.lastName')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.phone')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.mobile')},
-              {label: this.context.i18n.getMessage('SupplierContactEditor.Label.email')}
-            ]}>
-              { contacts.map((contact, index) =>
-                (<DisplayRow key={index}>
-                  <DisplayField>{ this.context.i18n.getMessage(`SupplierContactEditor.ContactType.${contact.contactType}`)}</DisplayField>
-                  <DisplayField>{ contact.department ? this.context.i18n.getMessage(`SupplierContactEditor.Department.${contact.department}`) : '-' }</DisplayField>
-                  <DisplayField>{ contact.firstName }</DisplayField>
-                  <DisplayField>{ contact.lastName }</DisplayField>
-                  <DisplayField>{ contact.phone || '-'}</DisplayField>
-                  <DisplayField>{ contact.mobile }</DisplayField>
-                  <DisplayField>{ contact.email }</DisplayField>
-                  <DisplayField classNames='text-right'>
-                    {this.renderActionButtons(contact)}
-                  </DisplayField>
-                </DisplayRow>))
-              }
-            </DisplayTable>
-          </div>
-        );
-      } else {
-        // show create new contact if empty
-        contact = {};
-        errors = {};
-        editMode = 'create';
-      }
-    } else if (loadErrors) {
-      result = (<div>Load errors</div>);
-    } else {
-      result = (<div>Loading...</div>);
+    if (!isLoaded) {
+      result = <div>Loading...</div>;
+    }
+
+    if (loadErrors) {
+      result = <div>Load errors</div>;
+    }
+
+    if (contacts.length > 0) {
+      result = (
+        <div className="table-responsive">
+          <DisplayTable headers={[
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.contactType')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.department')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.firstName')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.lastName')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.phone')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.mobile')},
+            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.email')}
+          ]}>
+            { contacts.map((contact, index) =>
+              (<DisplayRow key={index}>
+                <DisplayField>{ this.context.i18n.getMessage(`SupplierContactEditor.ContactType.${contact.contactType}`)}</DisplayField>
+                <DisplayField>{ contact.department ? this.context.i18n.getMessage(`SupplierContactEditor.Department.${contact.department}`) : '-' }</DisplayField>
+                <DisplayField>{ contact.firstName }</DisplayField>
+                <DisplayField>{ contact.lastName }</DisplayField>
+                <DisplayField>{ contact.phone || '-'}</DisplayField>
+                <DisplayField>{ contact.mobile }</DisplayField>
+                <DisplayField>{ contact.email }</DisplayField>
+                <DisplayField classNames='text-right'>
+                  {this.renderActionButtons(contact)}
+                </DisplayField>
+              </DisplayRow>))
+            }
+          </DisplayTable>
+        </div>
+      );
     }
 
     return (
@@ -261,28 +300,12 @@ class SupplierContactEditor extends Component {
         {contact ? (
           <div className="row">
             <div className="col-sm-6">
-              <SupplierContactEditForm
-                onChange={this.handleChange}
-                locale={this.context.i18n.locale}
-                contact={contact}
-                errors={errors}
-                editMode={editMode}
-                onSave={this.handleSave}
-                onUpdate={this.handleUpdate}
-                onCancel={this.handleCancel}
-              />
+              {this.renderEditor()}
             </div>
           </div>
         ) : null}
 
-        {!contact ? (
-          <div>
-            <ActionButton
-              onClick={this.addOnClick}
-              label={this.context.i18n.getMessage('SupplierContactEditor.Button.add')}
-            />
-          </div>
-        ) : null}
+        {this.addButton()}
       </div>
     );
   }
