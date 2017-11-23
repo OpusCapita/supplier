@@ -19,6 +19,7 @@ let SupplierApproval = {
     rejected: 'Abgelehnt'
   },
   Message: {
+    heading: 'Bitte genehmigen oder lehnen Sie die Benutzerzugriffsanfrage ab.',
     confirmApproval: 'Möchten Sie den Benutzer wirklich genehmigen?',
     rejectApproval: 'Möchten Sie den Benutzer wirklich ablehnen?'
   },

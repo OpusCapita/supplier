@@ -1,21 +1,18 @@
 import React, { Component, PropTypes } from 'react';
 import locales from './i18n';
-import SupplierEditorLocales from './../SupplierEditor/i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Supplier } from '../../api';
 import DisplayField from '../DisplayTable/DisplayField.react';
 import CountryView from '../CountryView.react';
+import ActionButton from '../ActionButton.react';
 require('./SupplierSearch.css');
 
 export default class SupplierSearch extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      form: { keyword: '' },
-      data: []
-    };
+    this.state = { searchWord: '', capability: null, data: [] };
     this.supplierApi = new Supplier();
   }
 
@@ -25,35 +22,50 @@ export default class SupplierSearch extends Component {
   };
 
   componentWillMount(){
-    this.context.i18n.register('SupplierEditorLocales', SupplierEditorLocales);
     this.context.i18n.register('SupplierSearch', locales);
   }
 
   componentWillReceiveProps(nextProps, nextContext){
-    if(nextContext.i18n){
-      nextContext.i18n.register('SupplierEditorLocales', SupplierEditorLocales);
-      nextContext.i18n.register('SupplierSearch', locales);
-    }
+    if(nextContext.i18n) nextContext.i18n.register('SupplierSearch', locales);
   }
 
   searchSupplier() {
-    const queryParam = { search: this.state.form.keyword };
-    this.supplierApi.getSuppliers(queryParam).then(data => {
-      this.setState({ data: data });
-    });
+    const queryParam = { search: this.state.searchWord, capabilities: this.state.capability };
+    this.supplierApi.getSuppliers(queryParam).then(data => this.setState({ data: data }));
   }
 
-  onKeywordChange(event) {
-    this.setState({ form: { keyword: event.target.value } });
+  onSearchWordChange(event) {
+    this.setState({ searchWord: event.target.value });
+  }
+
+  handleChange(event) {
+    this.setState({ capability: event.target.value });
   }
 
   renderSearchBox() {
     return (<div className="form-group search-box">
-      <label className="control-label">{this.context.i18n.getMessage('SupplierSearch.label')}</label>
-      <input value={this.state.form.keyword} onChange={this.onKeywordChange.bind(this)} className="form-control"/>
+      <div className='row'>
+        <label className="control-label col-xs-10">{this.context.i18n.getMessage('SupplierSearch.searchInput.label')}</label>
+        <label className="control-label col-xs-2">{this.context.i18n.getMessage('SupplierSearch.capability.label')}</label>
+      </div>
+      <div className='row'>
+        <div className='col-xs-10'>
+          <input value={this.state.searchWord} onChange={this.onSearchWordChange.bind(this)} className="form-control"/>
+        </div>
+        <div className='col-xs-2'>
+          <select value={this.state.capability} onChange={this.handleChange.bind(this)} className="form-control" >
+            <option key='1' value={null}></option>
+            <option key='2' value='eInvoice-send'>{this.context.i18n.getMessage('SupplierSearch.capability.eInvoice-send')}</option>
+          </select>
+        </div>
+      </div>
       <div className="text-right form-submit">
-        <button id="supplier-editor__search" className="btn btn-primary"
-                onClick={this.searchSupplier.bind(this)}>{this.context.i18n.getMessage('SupplierSearch.search')}</button>
+        <ActionButton
+          id="supplier-editor__search"
+          style='primary'
+          onClick={this.searchSupplier.bind(this)}
+          label={this.context.i18n.getMessage('SupplierSearch.buttonLabel.search')}
+        />
       </div>
     </div>)
   }
@@ -62,40 +74,57 @@ export default class SupplierSearch extends Component {
 
     const columns = [
       {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.supplierName'),
+        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.supplierName'),
         accessor: 'supplierName',
       },
       {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.countryOfRegistration'),
+        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.cityOfRegistration'),
+        accessor: 'cityOfRegistration'
+      },
+      {
+        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.countryOfRegistration'),
         accessor: 'countryOfRegistration',
         Cell: (row) => (<DisplayField><CountryView countryId={row.value}/></DisplayField>)
       },
       {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.commercialRegisterNo'),
+        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.commercialRegisterNo'),
         accessor: 'commercialRegisterNo'
-      }, {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.cityOfRegistration'),
-        accessor: 'cityOfRegistration'
-      }, {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.taxIdentificationNo'),
+      },
+      {
+        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.taxIdentificationNo'),
         accessor: 'taxIdentificationNo'
-      }, {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.vatIdentificationNo'),
-        accessor: 'vatIdentificationNo'
-      }, {
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.globalLocationNo'),
-        accessor:'globalLocationNo'
-      },{
-        Header: this.context.i18n.getMessage('SupplierEditor.TableHeader.dunsNo'),
-        accessor:'dunsNo'
+      },
+      {
+        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.supplierIdentifiers'),
+        accessor: element => ({ vatId: element.vatIdentificationNo, gln: element.globalLocationNo, duns: element.dunsNo }),
+        id: 'supplierIdentifiers',
+        Cell: row => {
+          const keys = Object.keys(row.value);
+          return (
+            <div>
+              {Object.values(row.value).map((identifier, index) => {
+                if (!identifier) return null;
+
+                return <div key={index}>
+                  <div><strong>{this.context.i18n.getMessage(`SupplierSearch.identifier.${keys[index]}`)}</strong></div>
+                  <div>{identifier}</div>
+                </div>
+              })}
+            </div>
+          );
+        }
+      },
+      {
+        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.capabilities'),
+        accessor: element => {
+          if (!element.capabilities) return null;
+
+          return element.capabilities.map(cap => this.context.i18n.getMessage(`SupplierSearch.capability.${cap}`)).join(', ');
+        },
+        id: 'capabilities'
       }];
 
-    return (<ReactTable
-      data={data}
-      columns={columns}
-      defaultPageSize={5}
-      className="table"
-    />)
+    return <ReactTable data={data} columns={columns} defaultPageSize={10} className="table"/>;
   }
 
   render() {
