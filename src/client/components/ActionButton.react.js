@@ -47,7 +47,7 @@ export default class ActionButton extends Component {
     });
 
     return (
-      <button className={buttonClassNames} onClick={this.props.onClick.bind(this)} type={type}>
+      <button id={this.props.id} className={buttonClassNames} onClick={this.props.onClick.bind(this)} type={type}>
           {showIcon ? this.renderLabelWithIcon() : label }
       </button>
     );
