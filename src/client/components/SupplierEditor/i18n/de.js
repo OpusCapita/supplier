@@ -11,19 +11,6 @@ ButtonLabel.attach = 'Dokument hinzufügen';
 ButtonLabel.save = 'Speichern';
 ButtonLabel.cancel = 'Abbrechen';
 
-let TableHeader = {};
-TableHeader.supplierName = 'Name des Unternehmens';
-TableHeader.homePage = 'Homepage';
-TableHeader.foundedOn = 'Datum der Firmengründung';
-TableHeader.legalForm = 'Rechtsform der Unternehmung';
-TableHeader.commercialRegisterNo = 'Handelsregisternummer';
-TableHeader.cityOfRegistration = 'Ort der Registrierung';
-TableHeader.countryOfRegistration = 'Land der Registrierung';
-TableHeader.taxIdentificationNo = 'Steuernummer';
-TableHeader.vatIdentificationNo = 'Umsatzsteuer-Ident-Nr.';
-TableHeader.dunsNo = 'D-U-N-S-Nr.';
-TableHeader.globalLocationNo = 'Global Location Number (GLN/ILN)';
-
 let Select = {};
 Select.country = 'Bitte ein Land auswählen ...';
 
@@ -89,7 +76,6 @@ export default {
   SupplierEditor: {
     Confirmation: Confirmation,
     ButtonLabel: ButtonLabel,
-    TableHeader: TableHeader,
     Description: Description,
     Select: Select,
     SupplierEditor: SupplierEditor,

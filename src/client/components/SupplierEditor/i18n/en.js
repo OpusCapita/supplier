@@ -10,19 +10,6 @@ ButtonLabel.delete = 'Delete';
 ButtonLabel.save = 'Save';
 ButtonLabel.cancel = 'Cancel';
 
-let TableHeader = {};
-TableHeader.supplierName = 'Company name';
-TableHeader.homePage = 'Home page';
-TableHeader.foundedOn = 'Founded/Established on';
-TableHeader.legalForm = 'Legal form';
-TableHeader.commercialRegisterNo = 'Company registration number';
-TableHeader.cityOfRegistration = 'City of registration';
-TableHeader.countryOfRegistration = 'Country of registration';
-TableHeader.taxIdentificationNo = 'Tax identification number';
-TableHeader.vatIdentificationNo = 'VAT registration number';
-TableHeader.dunsNo = 'D-U-N-S number';
-TableHeader.globalLocationNo = 'Global location number';
-
 let Description = {};
 Description.viewSupplierOrChooseAnother = 'General company information.';
 
@@ -87,7 +74,6 @@ export default {
   SupplierEditor: {
     Confirmation: Confirmation,
     ButtonLabel: ButtonLabel,
-    TableHeader: TableHeader,
     Description: Description,
     Select: Select,
     SupplierEditor: SupplierEditor,

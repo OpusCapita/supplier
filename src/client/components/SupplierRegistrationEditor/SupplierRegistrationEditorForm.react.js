@@ -223,10 +223,10 @@ class SupplierRegistrationEditorForm extends Component {
 
                 <div className='supplier-registration-form-submit'>
                   <div className='text-right form-submit'>
-                    <button className="btn btn-link" onClick={this.handleCancel}>
+                    <button id='supplier-registration__cancel' className="btn btn-link" onClick={this.handleCancel}>
                       {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.cancel')}
                     </button>
-                    <button className="btn btn-primary" onClick={ this.handleUpdate }>
+                    <button id='supplier-registration__continue' className="btn btn-primary" onClick={ this.handleUpdate }>
                       {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.continue')}
                     </button>
                   </div>

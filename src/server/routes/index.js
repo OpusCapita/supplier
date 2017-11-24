@@ -8,6 +8,7 @@ const supplierAddresses = require('./supplier_addresses');
 const supplierBanks = require('./supplier_banks');
 const supplierProfileStrength = require('./supplier_profile_strength');
 const supplierAccess = require('./supplier_access');
+const capabilities = require('./capabilities');
 
 /**
  * Initializes all routes for RESTful access.
@@ -25,5 +26,6 @@ module.exports.init = function(app, db, config) {
   supplierBanks(app, db, config);
   supplierProfileStrength(app, db, config);
   supplierAccess(app, db, config);
+  capabilities(app, db, config);
   return Promise.resolve();
 };
