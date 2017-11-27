@@ -29,7 +29,7 @@ const SupplierRegistrationEditor = {
   'SupplierRegistrationEditor.Messages.information1': 'Bitte hinterlegen Sie hier Informationen zur eindeutigen Identifizierung Ihres Unternehmens.',
   'SupplierRegistrationEditor.Messages.information2': 'Bitte füllen Sie alle mit Stern markierten Pflichtfelder aus, um mit der Registrierung fortfahren zu können.',
   'SupplierRegistrationEditor.Messages.requestSupplierAccess': 'Zugang anfordern',
-  'SupplierRegistrationEditor.Messages.required': '** Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer. Wenn Sie keine haben, dann hinterlegen Sie Ihre Global Location Number oder Ihre D-U-N-S-Nummer.',
+  'SupplierRegistrationEditor.Messages.required': '** Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer. Wenn Sie keine haben, dann hinterlegen Sie Ihre Global Location Number, Ihre D-U-N-S-Nummer, oder Ihre IBAN.',
   'SupplierRegistrationEditor.Messages.noVatId': 'Meine Firma hat keine Umsatzsteuer-Ident-Nummer.',
   'SupplierRegistrationEditor.Messages.clickCheckBox': 'Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer.',
   'SupplierRegistrationEditor.Messages.accessInformation1': 'Hier können Sie Zugang zur Firma {name} beantragen. Sie sollten Zugang nur anfordern, wenn Sie ein Angestellter der Unternehmens sind.',

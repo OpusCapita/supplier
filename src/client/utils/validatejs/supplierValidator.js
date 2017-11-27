@@ -33,6 +33,7 @@ let validator = function(validatejs) {
   custom.vatNumber(validatejs);
   custom.dunsNumber(validatejs);
   custom.globalLocationNumber(validatejs);
+  custom.iban(validatejs);
   custom.uniqueIdentifier(validatejs);
   customAsync.supplierNameExists(validatejs);
   customAsync.registerationNumberExists(validatejs);

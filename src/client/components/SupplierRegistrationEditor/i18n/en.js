@@ -29,7 +29,7 @@ const SupplierRegistrationEditor = {
   'SupplierRegistrationEditor.Messages.information1': 'Please provide information that helps us to uniquely identify your company and allows us to add it to our trading partner directory.',
   'SupplierRegistrationEditor.Messages.information2': 'After providing this information you are ready to login.',
   'SupplierRegistrationEditor.Messages.requestSupplierAccess': 'Request Access',
-  'SupplierRegistrationEditor.Messages.required': '** Please provide your VAT Registration Number. If you do not have one, then provide your Global Location Number or D-U-N-S number.',
+  'SupplierRegistrationEditor.Messages.required': '** Please provide your VAT Registration Number. If you do not have one, then provide your Global Location Number, D-U-N-S number or IBAN.',
   'SupplierRegistrationEditor.Messages.noVatId': 'My Company does not have a VAT Registration Number.',
   'SupplierRegistrationEditor.Messages.clickCheckBox': 'Please provide your VAT Registration Number.',
   'SupplierRegistrationEditor.Messages.accessInformation1': 'Here you can request access to company {name}. You should request access only if you are an employee of this company.',
