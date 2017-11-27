@@ -34,7 +34,7 @@ class SupplierEditor extends Component {
       isLoaded: false,
       hasErrors: false,
       supplier: {}
-    }
+    };
 
     this.supplierApi = new Supplier();
     this.userAbilities = new UserAbilities(props.userRoles);
