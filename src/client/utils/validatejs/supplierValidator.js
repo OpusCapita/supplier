@@ -41,6 +41,7 @@ let validator = function(validatejs) {
   customAsync.vatNumberExists(validatejs);
   customAsync.dunsNumberExists(validatejs);
   customAsync.globalLocationNumberExists(validatejs);
+  customAsync.ibanExists(validatejs);
   formatters.groupedDetailed(validatejs);
 
   return validatejs;

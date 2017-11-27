@@ -34,6 +34,14 @@ module.exports.globalLocationNumberExists = function(validate) {
   };
 };
 
+module.exports.ibanExists = function(validate) {
+  return validate.validators.ibanExists = function(value, options, key, attributes) {
+    let queryParams = { iban: value }
+
+    return recordExists(value, validate, queryParams, options.message, attributes['supplierId']);
+  };
+};
+
 module.exports.taxIdNumberExists = function(validate) {
   return validate.validators.taxIdNumberExists = function(value, options, key, attributes) {
     let queryParams = {

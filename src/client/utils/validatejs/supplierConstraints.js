@@ -182,6 +182,11 @@ let allConstraints = function(i18n) {
       iban: {
         message: i18n.getMessage('SupplierValidatejs.invalid.iban.message')
       },
+      ibanExists: {
+        message: i18n.getMessage('SupplierValidatejs.supplierExists', {
+          message: i18n.getMessage('SupplierValidatejs.duplicate.iban.message')
+        })
+      },
       uniqueIdentifier: {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
       }

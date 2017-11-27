@@ -30,15 +30,8 @@ const SupplierValidatejs = {
   'SupplierValidatejs.duplicate.vatNumber.message': "Ein Unternehmen existiert bereits mit dieser Umsatzsteuer-Identifikationsnummer.",
   'SupplierValidatejs.duplicate.dunsNumber.message': "Ein Unternehmen existiert bereits mit dieser D-U-N-S-Nummer.",
   'SupplierValidatejs.duplicate.globalLocationNumber.message': "Ein Unternehmen existiert bereits mit dieser Global Location Number.",
-  'SupplierValidatejs.typeMismatch.java.net.URL': "Die Wert muss eine g\u00fcltige URL sein",
-  'SupplierValidatejs.typeMismatch.java.net.URI': "Die Wert muss eine g\u00fcltige URI sein",
+  'SupplierValidatejs.duplicate.iban.message': "Ein Unternehmen existiert bereits mit dieser IBAN.",
   'SupplierValidatejs.typeMismatch.util.Date': "Die Wert muss ein g\u00fcltiges Datum sein",
-  'SupplierValidatejs.typeMismatch.java.lang.Double': "Die Wert muss eine g\u00fcltige Zahl sein",
-  'SupplierValidatejs.typeMismatch.java.lang.Integer': "Die Wert muss eine g\u00fcltige Zahl sein",
-  'SupplierValidatejs.typeMismatch.java.lang.Long': "Die Wert muss eine g\u00fcltige Zahl sein",
-  'SupplierValidatejs.typeMismatch.java.lang.Short': "Die Wert muss eine g\u00fcltige Zahl sein",
-  'SupplierValidatejs.typeMismatch.java.math.BigDecimal': "Die Wert muss eine g\u00fcltige Zahl sein",
-  'SupplierValidatejs.typeMismatch.java.math.BigInteger': "Die Wert muss eine g\u00fcltige Zahl sein",
   'SupplierValidatejs.supplierExists': "{message}\nBitte kontaktieren Sie unseren Support via +49 231 3967 350 oder customerservice.de@opuscapita.com, um einen Zugang zu diesem Unternehmen anzufordern."
 };
 

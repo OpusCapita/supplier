@@ -113,6 +113,7 @@ module.exports.searchRecord = function(query)
   if (query.vatIdentificationNo) rawQueryArray.push(equalSQL('VatIdentificationNo', query.vatIdentificationNo));
   if (query.dunsNo) rawQueryArray.push(equalSQL('DUNSNo', query.dunsNo));
   if (query.globalLocationNo) rawQueryArray.push(equalSQL('GlobalLocationNo', query.globalLocationNo));
+  if (query.iban) rawQueryArray.push(equalSQL('SupplierBankAccount.AccountNumber', query.iban));
 
   if (query.commercialRegisterNo) {
     const commercialRegisterNoQuery = [
@@ -135,10 +136,10 @@ module.exports.searchRecord = function(query)
 
   if (query.supplierId) rawQuery = rawQuery + ` AND SupplierID != '${query.supplierId}'`;
 
-  return this.db.query(
-    `SELECT ${attributes(this.db.models.Supplier)} FROM Supplier WHERE ${rawQuery} LIMIT 1`,
-    { model:  this.db.models.Supplier }
-  ).then(suppliers => suppliers[0]);
+  const model = this.db.models.Supplier;
+  const select = `SELECT ${attributes(model)} FROM Supplier`;
+  const leftJoin = 'LEFT JOIN SupplierBankAccount ON Supplier.SupplierID = SupplierBankAccount.SupplierID';
+  return this.db.query(`${select} ${leftJoin} WHERE ${rawQuery} LIMIT 1`, { model:  model }).then(suppliers => suppliers[0]);
 };
 
 module.exports.recordExists = function(supplier)
