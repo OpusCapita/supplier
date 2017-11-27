@@ -168,7 +168,7 @@ class SupplierRegistrationEditorForm extends Component {
 
     return (
       <AttributeValueEditorRow
-        labelText={ attrs.labelText || this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
+        labelText={ attrs.labelText || this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}`) }
         required={ isRequired }
         marked = { attrs.marked }
         rowErrors={ rowErrors }
@@ -220,6 +220,7 @@ class SupplierRegistrationEditorForm extends Component {
                 }) }
                 { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
                 { this.renderField({ fieldName: 'dunsNo', marked: true }) }
+                { this.renderField({ fieldName: 'iban', marked: true }) }
 
                 <div className='supplier-registration-form-submit'>
                   <div className='text-right form-submit'>
