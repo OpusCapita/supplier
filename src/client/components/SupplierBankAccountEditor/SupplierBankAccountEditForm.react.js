@@ -1,17 +1,11 @@
-import React, { Component } from "react";
-import ActionButton from "../ActionButton.react";
-import validator from "validate.js";
-import "./SupplierBankAccountEditForm.css";
-import SupplierBankAccountFormConstraints from "./SupplierBankAccountFormConstraints";
-import SupplierBankAccountEditFormRow from "../AttributeValueEditorRow.react.js";
-import serviceComponent from "@opuscapita/react-loaders/lib/serviceComponent";
-import customValidation from "../../utils/validatejs/custom.js";
+import React, { Component } from 'react';
+import ActionButton from '../ActionButton.react';
+import validator from './supplierBankAccountValidator';
+import './SupplierBankAccountEditForm.css';
+import SupplierBankAccountConstraints from './supplierBankAccountConstraints';
+import SupplierBankAccountEditFormRow from '../AttributeValueEditorRow.react.js';
+import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 
-function getValidator() {
-  customValidation.iban(validator);
-  customValidation.bic(validator);
-  return validator;
-}
 
 class SupplierBankAccountEditForm extends Component {
   static propTypes = {
@@ -49,7 +43,7 @@ class SupplierBankAccountEditForm extends Component {
 
     this.externalComponents = {CountryField};
 
-    this.constraints = SupplierBankAccountFormConstraints(this.context.i18n);
+    this.constraints = new SupplierBankAccountConstraints(this.context.i18n);
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -57,42 +51,44 @@ class SupplierBankAccountEditForm extends Component {
       this.setState({account: nextProps.account, errors: nextProps.errors || {}});
     }
 
-    this.constraints = SupplierBankAccountFormConstraints(nextContext.i18n);
+    this.constraints = new SupplierBankAccountConstraints(nextContext.i18n);
   }
+
+  setFieldErrorsStates = (errors) => {
+    this.setState({
+      errors: Object.keys(errors).reduce((rez, fieldName) => ({
+        ...rez,
+        [fieldName]: errors[fieldName].map(msg => ({ message: msg }))
+      }), this.state.errors)
+    });
+  };
 
   handleSaveOrUpdate = (event) => {
     event.preventDefault();
-
     const account = this.state.account;
-    let errors = getValidator()(this.state.account, this.constraints, { fullMessages: false });
+    const constraints = { ...this.constraints.all, supplierId: {} };
 
-    if (!errors) {
+    let success = () => {
       if (this.props.editMode === 'edit') {
         this.props.onUpdate(account);
       } else {
         this.props.onSave(account);
       }
-    } else {
-      let errorsReformatted = Object.keys(errors).map(key => ({ [key]:
-        errors[key].map((element)=>({
-          message: element
-        }))})).reduce((current, prev, {}) => {
-        return Object.assign(current, prev);
-      });
+    };
 
-      this.setState({ errors: errorsReformatted });
-    }
+    let error = (errors) => {
+      this.setFieldErrorsStates(errors);
+    };
+
+    validator.validate().async(account, constraints, { fullMessages: false }).then(success, error);
   };
 
   handleCancel = () => {
-    const account = this.state.account;
-    this.props.onCancel(account);
+    this.props.onCancel(this.state.account);
   };
 
   handleCountryChange = (fieldName, country) => {
-    if (this.props.onChange) {
-      this.props.onChange(fieldName, this.state.account[fieldName], country);
-    }
+    if (this.props.onChange) this.props.onChange(fieldName, this.state.account[fieldName], country);
 
     this.setState({
       account: {
@@ -117,46 +113,39 @@ class SupplierBankAccountEditForm extends Component {
     });
   };
 
-  handleBlur = (fieldName/* , event*/) => {
-    const errors = getValidator()(
-      this.state.account, {
-        [fieldName]: this.constraints[fieldName]
-      }, {
-        fullMessages: false
-      }
-    );
+  handleBlur = (fieldName) => {
+    const constraints = { ...this.constraints.forField(fieldName), supplierId: {} };
 
     this.setState({
-      errors: {
-        ...this.state.errors,
-        [fieldName]: errors ?
-          errors[fieldName].map(msg => ({ message: msg })) :
-          []
-      }
+      errors: Object.keys(constraints).reduce((rez, fieldName) => ({
+        ...rez,
+        [fieldName]: []
+      }), this.state.errors)
     });
+
+    let error = (errors) => {
+      this.setFieldErrorsStates(errors);
+    };
+
+    validator.validate().async(this.state.account, constraints, { fullMessages: false }).then(null, error);
   };
 
   renderField = (attrs) => {
     const { account, errors } = this.state;
     const { fieldName } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
+    const constraints = this.constraints.all;
 
     let component = attrs.component ||
-      <input className="form-control"
-        type="text"
+      <input className='form-control'
+        type='text'
         value={ typeof account[fieldName] === 'string' ? account[fieldName] : '' }
         onChange={ this.handleChange.bind(this, fieldName) }
         onBlur={ this.handleBlur.bind(this, fieldName) }
       />;
 
-    let isRequired = fieldNames.some(name => {
-      return this.constraints[name] && this.constraints[name].presence;
-    });
-
-    let rowErrors = fieldNames.reduce(
-      (rez, name) => rez.concat(errors[name] || []),
-      []
-    );
+    let isRequired = fieldNames.some(name => constraints[name] && constraints[name].presence);
+    let rowErrors = fieldNames.reduce((rez, name) => rez.concat(errors[name] || []), []);
 
     return (
       <SupplierBankAccountEditFormRow
@@ -174,7 +163,7 @@ class SupplierBankAccountEditForm extends Component {
     const { CountryField } = this.externalComponents;
 
     return (
-      <form className="form-horizontal" onSubmit={this.handleSaveOrUpdate}>
+      <form className='form-horizontal' onSubmit={this.handleSaveOrUpdate}>
         { this.renderField({ fieldName: 'bankName' }) }
         { this.renderField({ fieldName: 'accountNumber' }) }
         { this.renderField({ fieldName: 'bankIdentificationCode' }) }
@@ -196,7 +185,7 @@ class SupplierBankAccountEditForm extends Component {
 
         { this.renderField({ fieldName: 'extBankControlKey' }) }
 
-        <div className="col-sm-12 text-right address-form-submit">
+        <div className='col-sm-12 text-right address-form-submit'>
           <ActionButton
             style='link'
             onClick={this.handleCancel}
