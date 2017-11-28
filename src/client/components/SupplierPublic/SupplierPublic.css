@@ -1,0 +1,14 @@
+.supplierPublic__header {
+  color: grey;
+  font-size: 50px;
+}
+
+.supplierPublic__label {
+  color: grey;
+  font-weight: 700;
+}
+
+.supplierPublic__value {
+  font-weight: 500;
+}
+
