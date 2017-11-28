@@ -134,7 +134,7 @@ module.exports.searchRecord = function(query)
 
   let rawQuery = rawQueryArray.length > 1 ? '(' + rawQueryArray.join(' OR ') + ')' : rawQueryArray[0];
 
-  if (query.supplierId) rawQuery = rawQuery + ` AND SupplierID != '${query.supplierId}'`;
+  if (query.supplierId) rawQuery = rawQuery + ` AND Supplier.SupplierID != '${query.supplierId}'`;
 
   const model = this.db.models.Supplier;
   const select = `SELECT ${attributes(model)} FROM Supplier`;
