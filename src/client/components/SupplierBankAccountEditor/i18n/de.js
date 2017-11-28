@@ -1,65 +1,32 @@
-// Confirmation dialogs
-let Confirmation = {
-  cancel: 'Wollen Sie den Vorgang wirklich abbrechen?',
-  delete: 'Wollen Sie dieses Bankkonto wirklich löschen?'
-};
-// eslint-disable-next-line max-len
-let Title = 'Bitte hinterlegen Sie Ihre Bankverbindung.';
-
-let Label = {
-  accountNumber: 'IBAN',
-  bankIdentificationCode: 'BIC',
-  bankCountryKey: 'Bank Land',
-  bankCode: 'Bankleitzahl',
-  bankName: 'Bank Name',
-  extBankControlKey: 'External Bank Control Key',
-  swiftCode: 'SWIFT-Code'
-};
-
-let Tooltip = {
-  // eslint-disable-next-line max-len
-  email: 'Die hier hinterlegte E-Mail wird für die weitere Kommunikation mit Ihnen verwendet. Bitte stellen Sie sicher, dass es sich um eine korrekte E-Mail Adresse handelt und diese zum angegebenen Ansprechpartner passt.',
-  // eslint-disable-next-line max-len
-  contactType: 'Der "LSA-Verantwortliche" Mitarbeiter ist Ihr Ansprechpartner rund um die Lieferantenstammdaten.\nDer "Katalog-Verantwortliche" Mitarbeiter ist Ihr Ansprechpartner rund um das Katalogmanagement.\n"Mitarbeiter" sind alle weiteren Ansprechpartner Ihres Unternehmens.'
-};
-
-let Button = {
-  add: 'Hinzufügen',
-  edit: 'Bearbeiten',
-  delete: 'Löschen',
-  save: 'Speichern',
-  view: 'Ansehen',
-  cancel: 'Abbrechen',
-  close: 'Schliessen'
+const SupplierBankAccountEditor = {
+  'SupplierBankAccountEditor.Confirmation.cancel': 'Wollen Sie den Vorgang wirklich abbrechen?',
+  'SupplierBankAccountEditor.Confirmation.delete': 'Wollen Sie dieses Bankkonto wirklich löschen?',
+  'SupplierBankAccountEditor.Title': 'Bitte hinterlegen Sie Ihre Bankverbindung.',
+  'SupplierBankAccountEditor.Label.accountNumber': 'IBAN',
+  'SupplierBankAccountEditor.Label.bankIdentificationCode': 'BIC',
+  'SupplierBankAccountEditor.Label.bankCountryKey': 'Bank Land',
+  'SupplierBankAccountEditor.Label.bankCode': 'Bankleitzahl',
+  'SupplierBankAccountEditor.Label.bankName': 'Bank Name',
+  'SupplierBankAccountEditor.Label.extBankControlKey': 'External Bank Control Key',
+  'SupplierBankAccountEditor.Label.swiftCode': 'SWIFT-Code',
+  'SupplierBankAccountEditor.Tooltip.email': 'Die hier hinterlegte E-Mail wird für die weitere Kommunikation mit Ihnen verwendet. Bitte stellen Sie sicher, dass es sich um eine korrekte E-Mail Adresse handelt und diese zum angegebenen Ansprechpartner passt.',
+  'SupplierBankAccountEditor.Tooltip.contactType': 'Der "LSA-Verantwortliche" Mitarbeiter ist Ihr Ansprechpartner rund um die Lieferantenstammdaten.\nDer "Katalog-Verantwortliche" Mitarbeiter ist Ihr Ansprechpartner rund um das Katalogmanagement.\n"Mitarbeiter" sind alle weiteren Ansprechpartner Ihres Unternehmens.',
+  'SupplierBankAccountEditor.Button.add': 'Hinzufügen',
+  'SupplierBankAccountEditor.Button.edit': 'Bearbeiten',
+  'SupplierBankAccountEditor.Button.delete': 'Löschen',
+  'SupplierBankAccountEditor.Button.save': 'Speichern',
+  'SupplierBankAccountEditor.Button.view': 'Ansehen',
+  'SupplierBankAccountEditor.Button.cancel': 'Abbrechen',
+  'SupplierBankAccountEditor.Button.close': 'Schliessen',
+  'SupplierBankAccountEditor.ContactInfo.created': 'Die Informationen auf diesem Reiter wurden erstmalig durch {by} am {on} erstellt.',
+  'SupplierBankAccountEditor.ContactInfo.changed': 'Die Informationen wurden zuletzt am {on} durch {by} bearbeitet.',
+  'SupplierBankAccountEditor.Message.objectDeleted': 'Objekt gelöscht.',
+  'SupplierBankAccountEditor.Message.objectUpdated': 'Objekt aktualisiert.',
+  'SupplierBankAccountEditor.Message.objectSaved': 'Die Daten wurden erfolgreich gespeichert.',
+  'SupplierBankAccountEditor.Message.deleteFailed': 'Das Objekt kann nicht gelöscht werden, vielleicht ist es bereits im Einsatz.',
+  'SupplierBankAccountEditor.Message.saveFailed': 'Speichern von Objekten fehlgeschlagen.',
+  'SupplierBankAccountEditor.Message.updateFailed': 'Object update failed.',
+  'SupplierBankAccountEditor.Error.notUnique': 'Der Wert darf nur einmal vorkommen'
 };
 
-let ContactInfo = {
-  created: 'Die Informationen auf diesem Reiter wurden erstmalig durch {by} am {on} erstellt.',
-  changed: 'Die Informationen wurden zuletzt am {on} durch {by} bearbeitet.'
-};
-
-let Message = {
-  objectDeleted: 'Objekt gelöscht.',
-  objectUpdated: 'Objekt aktualisiert.',
-  objectSaved: 'Die Daten wurden erfolgreich gespeichert.',
-  deleteFailed: 'Das Objekt kann nicht gelöscht werden, vielleicht ist es bereits im Einsatz.',
-  saveFailed: 'Speichern von Objekten fehlgeschlagen.',
-  updateFailed: 'Object update failed.'
-};
-
-let Error = {
-  notUnique: 'Der Wert darf nur einmal vorkommen'
-};
-
-export default {
-  SupplierBankAccountEditor: {
-    Title: Title,
-    Tooltip: Tooltip,
-    Message: Message,
-    Error: Error,
-    ContactInfo: ContactInfo,
-    Confirmation: Confirmation,
-    Button: Button,
-    Label: Label,
-  },
-};
+export default SupplierBankAccountEditor;
