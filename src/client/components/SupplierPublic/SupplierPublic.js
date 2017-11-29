@@ -41,6 +41,7 @@ export default class SupplierPublic extends Component {
                   <div>{ this.state.supplier.taxIdentificationNo || 'TAX-12345'}</div>
                 </div>
               </div>
+              <div>{ this.state.addresses.map(() => {}) }</div>
             </div>
           </div>
         ) }
@@ -49,31 +50,27 @@ export default class SupplierPublic extends Component {
   }
   
   componentDidMount() {
-    
-    
-    this.addressApi.getAddresses(this.props.supplierId).then(supplier => {
-   
-    }).
-    catch(errors => {
-      if (errors.status === 401) {
-        this.props.onUnauthorized();
-        return;
-      }
-    });
-    
-    this.supplierApi.getSupplier(this.props.supplierId).then(supplier => {
-      this.setState({
-        isLoaded: true,
-        supplier: supplier
-      });
-      console.log(supplier.addresses);
-    }).
-    catch(errors => {
-      if (errors.status === 401) {
-        this.props.onUnauthorized();
-        return;
-      }
-    });
-    
+    Promise.all([
+      this.supplierApi.getSupplier(this.props.supplierId)
+        .then(supplier => {
+          console.log('supplier', supplier);
+          this.setState({
+            isLoaded: true,
+            supplier: supplier
+          });
+        })
+        .catch(errors => {
+          if (errors.status === 401) {
+            this.props.onUnauthorized();
+            return;
+          }
+        }),
+      this.addressApi.getAddresses(this.props.supplierId)
+        .then(addresses => {
+          this.setState({
+            addresses: addresses
+          })
+        }),
+    ]);
   }
 };
