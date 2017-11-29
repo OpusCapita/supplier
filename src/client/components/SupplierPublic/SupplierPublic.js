@@ -39,9 +39,16 @@ export default class SupplierPublic extends Component {
                   <div>{ this.state.supplier.vatIdentificationNo || 'VAT-12345'}</div>
                   <span className='supplierPublic__label'>Tax registration number</span>
                   <div>{ this.state.supplier.taxIdentificationNo || 'TAX-12345'}</div>
+                  <div  className='supplierPublic__label'>Address</div>
+                  <div>{ this.state.addresses.map((address) => <div key={address.id}>
+                    <div>{ address.name }</div>
+                    <div>{ address.street }</div>
+                    <div>{ address.street1 }</div>
+                    <div>{ address.street2 }</div>
+                    <div>{ address.street3 }</div>
+                  </div>) }</div>
                 </div>
               </div>
-              <div>{ this.state.addresses.map(() => {}) }</div>
             </div>
           </div>
         ) }
@@ -67,6 +74,7 @@ export default class SupplierPublic extends Component {
         }),
       this.addressApi.getAddresses(this.props.supplierId)
         .then(addresses => {
+          console.log(addresses);
           this.setState({
             addresses: addresses
           })
