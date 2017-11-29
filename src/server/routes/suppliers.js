@@ -151,7 +151,7 @@ let createBankAccount = function(iban, supplier)
     accountNumber: iban,
     supplierId: supplier.supplierId,
     createdBy: supplier.createdBy,
-    updatedBy: supplier.updatedBy
+    changedBy: supplier.createdBy
   };
   return SupplierBank.create(bankAccount);
 }
