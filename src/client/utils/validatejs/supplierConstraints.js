@@ -4,7 +4,10 @@ class SupplierConstraints {
   }
 
   forUpdate() {
-    return this.constraints;
+    let constraints = this.constraints;
+    delete constraints['iban'];
+
+    return constraints;
   }
 
   forRegistration() {
@@ -46,11 +49,12 @@ class SupplierConstraints {
         countryOfRegistration: this.constraints['countryOfRegistration']
       };
 
-    if (['vatIdentificationNo', 'dunsNo', 'globalLocationNo'].indexOf(fieldName) > -1)
+    if (['vatIdentificationNo', 'dunsNo', 'globalLocationNo', 'iban'].indexOf(fieldName) > -1)
       return {
         vatIdentificationNo: this.constraints['vatIdentificationNo'],
         dunsNo: this.constraints['dunsNo'],
         globalLocationNo: this.constraints['globalLocationNo'],
+        iban: this.constraints['iban'],
       };
 
     return { [fieldName]: this.constraints[fieldName] };
@@ -87,7 +91,7 @@ let allConstraints = function(i18n) {
     foundedOn: {
       presence: false,
       datetime: {
-        message: i18n.getMessage('SupplierValidatejs.typeMismatch.java.util.Date')
+        message: i18n.getMessage('SupplierValidatejs.typeMismatch.util.Date')
       }
     },
     legalForm: {
@@ -167,6 +171,20 @@ let allConstraints = function(i18n) {
       dunsNumberExists: {
         message: i18n.getMessage('SupplierValidatejs.supplierExists', {
           message: i18n.getMessage('SupplierValidatejs.duplicate.dunsNumber.message')
+        })
+      },
+      uniqueIdentifier: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
+      }
+    },
+    iban: {
+      presence: false,
+      iban: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.iban.message')
+      },
+      ibanExists: {
+        message: i18n.getMessage('SupplierValidatejs.supplierExists', {
+          message: i18n.getMessage('SupplierValidatejs.duplicate.iban.message')
         })
       },
       uniqueIdentifier: {

@@ -41,50 +41,25 @@ module.exports = function (sequelize, config) {
       /** Bank Identifier Code (BIC) */
       bankIdentificationCode: {
         field: 'BankIdentificationCode',
-        type: Sequelize.STRING(15),
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-          isValid(value) {
-            if (bic.isInvalid(value)) throw new Error('bankIdentificationCode value is invalid');
-          }
-        }
+        type: Sequelize.STRING(15)
       },
       /** Society for Worldwide Interbank Financial Telecommunication (SWIFT) Code. Same as BIC*/
       swiftCode: {
         field: 'SwiftCode',
-        type: Sequelize.STRING(11),
-        allowNull: false,
-        validate: {
-          notEmpty: true,
-          isValid(value) {
-            if (bic.isInvalid(value)) throw new Error('swiftCode value is invalid');
-          }
-        }
+        type: Sequelize.STRING(11)
       },
       /** The bank's country as in ISO 3166-1 alpha2 */
       bankCountryKey: {
         field: 'BankCountryKey',
-        type: Sequelize.STRING(2),
-        validate: {
-          notEmpty: true
-        }
+        type: Sequelize.STRING(2)
       },
       bankCode: {
         field: 'BankCode',
         type: Sequelize.STRING(12),
-        allowNull: false,
-        validate: {
-          notEmpty: true
-        }
       },
       bankName: {
         field: 'BankName',
-        type: Sequelize.STRING(50),
-        allowNull: false,
-        validate: {
-          notEmpty: true
-        }
+        type: Sequelize.STRING(50)
       },
       createdOn: {
         field: 'CreatedOn',

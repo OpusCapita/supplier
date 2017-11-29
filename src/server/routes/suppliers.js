@@ -1,9 +1,11 @@
 const Supplier = require('../queries/suppliers');
+const SupplierBank = require('../queries/supplier_bank_accounts');
 const RedisEvents = require('ocbesbn-redis-events');
 const userService = require('../services/user');
+const Promise = require('bluebird');
 
 module.exports = function(app, db, config) {
-  Supplier.init(db, config).then(() =>
+  Promise.all([Supplier.init(db, config), SupplierBank.init(db, config)]).then(() =>
   {
     this.events = new RedisEvents({ consul : { host : 'consul' } });
     app.get('/api/suppliers', (req, res) => sendSuppliers(req, res));
@@ -66,7 +68,11 @@ let createSuppliers = function(req, res)
     if(exists) {
       return res.status('409').json({ message : 'A supplier already exists' });
     } else {
+      const iban = newSupplier.iban;
+
+      delete newSupplier.iban;
       newSupplier.status = 'new';
+
       return Supplier.create(newSupplier)
         .then(supplier => this.events.emit(supplier, 'supplier').then(() => supplier))
         .then(supplier => {
@@ -75,7 +81,8 @@ let createSuppliers = function(req, res)
 
           return userService.update(req.opuscapita.serviceClient, supplier.createdBy, user).then(() => {
               supplier.status = 'assigned';
-              Supplier.update(supplierId, supplier.dataValues).then(supplier => {
+              const supp = supplier.dataValues;
+              Promise.all([Supplier.update(supplierId, supp), createBankAccount(iban, supp)]).spread((supplier, account) => {
                 return this.events.emit(supplier, 'supplier').then(() => res.status('200').json(supplier));
               });
             })
@@ -134,4 +141,17 @@ let updateSupplier = function(req, res)
     req.opuscapita.logger.error('Error when updating Supplier: %s', error.message);
     return res.status('400').json({ message : error.message });
   });
+}
+
+let createBankAccount = function(iban, supplier)
+{
+  if (!iban) return Promise.resolve();
+
+  const bankAccount = {
+    accountNumber: iban,
+    supplierId: supplier.supplierId,
+    createdBy: supplier.createdBy,
+    updatedBy: supplier.updatedBy
+  };
+  return SupplierBank.create(bankAccount);
 }

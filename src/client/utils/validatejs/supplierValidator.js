@@ -33,6 +33,7 @@ let validator = function(validatejs) {
   custom.vatNumber(validatejs);
   custom.dunsNumber(validatejs);
   custom.globalLocationNumber(validatejs);
+  custom.iban(validatejs);
   custom.uniqueIdentifier(validatejs);
   customAsync.supplierNameExists(validatejs);
   customAsync.registerationNumberExists(validatejs);
@@ -40,6 +41,7 @@ let validator = function(validatejs) {
   customAsync.vatNumberExists(validatejs);
   customAsync.dunsNumberExists(validatejs);
   customAsync.globalLocationNumberExists(validatejs);
+  customAsync.ibanExists(validatejs);
   formatters.groupedDetailed(validatejs);
 
   return validatejs;

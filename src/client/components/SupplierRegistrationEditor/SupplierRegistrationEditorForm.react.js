@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import AttributeValueEditorRow from '../AttributeValueEditorRow.react.js';
+import ActionButton from '../ActionButton.react';
 import './SupplierRegistrationEditor.css';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
@@ -168,7 +169,7 @@ class SupplierRegistrationEditorForm extends Component {
 
     return (
       <AttributeValueEditorRow
-        labelText={ attrs.labelText || this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
+        labelText={ attrs.labelText || this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}`) }
         required={ isRequired }
         marked = { attrs.marked }
         rowErrors={ rowErrors }
@@ -220,15 +221,22 @@ class SupplierRegistrationEditorForm extends Component {
                 }) }
                 { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
                 { this.renderField({ fieldName: 'dunsNo', marked: true }) }
+                { this.renderField({ fieldName: 'iban', marked: true }) }
 
                 <div className='supplier-registration-form-submit'>
                   <div className='text-right form-submit'>
-                    <button id='supplier-registration__cancel' className="btn btn-link" onClick={this.handleCancel}>
-                      {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.cancel')}
-                    </button>
-                    <button id='supplier-registration__continue' className="btn btn-primary" onClick={ this.handleUpdate }>
-                      {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.continue')}
-                    </button>
+                    <ActionButton
+                      id='supplier-registration__cancel'
+                      style='link'
+                      onClick={this.handleCancel}
+                      label={this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.cancel')}
+                    />
+                    <ActionButton
+                      id='supplier-registration__continue'
+                      style='primary'
+                      onClick={this.handleUpdate}
+                      label={this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.continue')}
+                    />
                   </div>
                 </div>
               </div>
