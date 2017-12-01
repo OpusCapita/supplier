@@ -129,7 +129,7 @@ export default class SupplierPublic extends Component {
   }
   
   componentDidMount() {
-    const queryParam = { include: 'addresses, capabilities' };
+    const queryParam = { include: 'addresses,capabilities' };
     this.supplierApi.getSupplier(this.props.supplierId, queryParam)
       .then(supplier => {
         this.setState({
