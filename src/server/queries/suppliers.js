@@ -7,6 +7,7 @@ module.exports.init = function(db, config)
   db.models.Supplier.hasMany(db.models.SupplierContact, { foreignKey: 'supplierId', sourceKey: 'supplierId' });
   db.models.Supplier.hasMany(db.models.SupplierAddress, { foreignKey: 'supplierId', sourceKey: 'supplierId' });
   db.models.Supplier.hasMany(db.models.SupplierBankAccount, { foreignKey: 'supplierId', sourceKey: 'supplierId' });
+  db.models.Supplier.hasMany(db.models.Capability, { foreignKey: 'supplierId', sourceKey: 'supplierId' });
 
   this.db = db;
   return Promise.resolve(this);
@@ -161,7 +162,8 @@ let associationsFromIncludes = function(dbModels, includes)
   const associations = {
     contacts: dbModels.SupplierContact,
     addresses: dbModels.SupplierAddress,
-    bankAccounts: dbModels.SupplierBankAccount
+    bankAccounts: dbModels.SupplierBankAccount,
+    capabilities: dbModels.Capability
   };
 
   let includeModels = [];
@@ -180,10 +182,12 @@ let supplierWithAssociations = function(supplier)
   supplier.dataValues.contacts = supplier.SupplierContacts;
   supplier.dataValues.addresses = supplier.SupplierAddresses;
   supplier.dataValues.bankAccounts = supplier.SupplierBankAccounts;
+  supplier.dataValues.capabilities = supplier.Capabilities;
 
   delete supplier.dataValues.SupplierContacts;
   delete supplier.dataValues.SupplierAddresses;
   delete supplier.dataValues.SupplierBankAccounts;
+  delete supplier.dataValues.Capabilities;
 
   return supplier.dataValues;
 }
