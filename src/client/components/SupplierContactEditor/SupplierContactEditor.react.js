@@ -175,7 +175,11 @@ class SupplierContactEditor extends Component {
 
       this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.userCreated'), 'info');
     }).catch(error => {
-      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.userCreateFailed'), 'error');
+      if (error.status == '409') {
+        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Error.userExists'), 'error');
+      } else {
+        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.userCreateFailed'), 'error');
+      }
     });
   };
 

@@ -1,96 +1,55 @@
-// Confirmation dialogs
-let Confirmation = {
-  cancel: 'Do you really want to cancel?',
-  delete: 'Do you really want to delete this contact?',
-  linkedToUser: 'Only the contact will be deleted. User will not be deleted.',
-  createUser: 'Do you really want to create user? Note that if the user exists, the contact information will be synced with user information.'
-};
-// eslint-disable-next-line max-len
-let Title = 'Please state the different contact persons from the following departments here: Management, Sales, Accounting and Logistics.';
+let SupplierContactEditor = {
+  'SupplierContactEditor.Confirmation.cancel': 'Do you really want to cancel?',
+  'SupplierContactEditor.Confirmation.delete': 'Do you really want to delete this contact?',
+  'SupplierContactEditor.Confirmation.linkedToUser': 'Only the contact will be deleted. User will not be deleted.',
+  'SupplierContactEditor.Confirmation.createUser': 'Do you really want to create user?',
+  'SupplierContactEditor.Title': 'Please state the different contact persons from the following departments here: Management, Sales, Accounting and Logistics.',
+  'SupplierContactEditor.ContactType.Default': 'Default',
+  'SupplierContactEditor.ContactType.Sales': 'Sales',
+  'SupplierContactEditor.ContactType.Escalation': 'Escalation',
+  'SupplierContactEditor.ContactType.Product': 'Product',
+  'SupplierContactEditor.ContactType.Technical': 'Technical',
+  'SupplierContactEditor.Department.Management': 'Management',
+  'SupplierContactEditor.Department.Logistics': 'Logistics',
+  'SupplierContactEditor.Department.Sales': 'Sales',
+  'SupplierContactEditor.Department.Accounting': 'Accounting',
+  'SupplierContactEditor.Department.Support': 'Support',
+  'SupplierContactEditor.Department.IT': 'IT',
+  'SupplierContactEditor.Department.Others': 'Others',
+  'SupplierContactEditor.Select.contactType': 'Select type...',
+  'SupplierContactEditor.Select.department': 'Select department...',
+  'SupplierContactEditor.Label.contactId': 'Contact ID',
+  'SupplierContactEditor.Label.contactType': 'Contact Type',
+  'SupplierContactEditor.Label.firstName': 'First Name',
+  'SupplierContactEditor.Label.lastName': 'Last Name',
+  'SupplierContactEditor.Label.email': 'Email',
+  'SupplierContactEditor.Label.phone': 'Phone',
+  'SupplierContactEditor.Label.mobile': 'Mobile',
+  'SupplierContactEditor.Label.department': 'Department',
+  'SupplierContactEditor.Label.title': 'Salutation',
+  'SupplierContactEditor.Label.fax': 'Fax',
+  'SupplierContactEditor.Tooltip.email': 'The email address provided here will be used for further communication. Please ensure that the email is correct.',
+  'SupplierContactEditor.Tooltip.contactType': '"Supplier Information Manager" is the main contact regarding all supplier master data.\nThe "Catalog Manager" is the main contact regarding catalog and content management.\n"Employees" are all other staff members.',
+  'SupplierContactEditor.Button.add': 'Add',
+  'SupplierContactEditor.Button.edit': 'Edit',
+  'SupplierContactEditor.Button.delete': 'Delete',
+  'SupplierContactEditor.Button.save': 'Save',
+  'SupplierContactEditor.Button.view': 'View',
+  'SupplierContactEditor.Button.cancel': 'Cancel',
+  'SupplierContactEditor.Button.close': 'Close',
+  'SupplierContactEditor.Button.createUser': 'Create User',
+  'SupplierContactEditor.ContactInfo.created': 'Information on this page was initially created by {by} on {on}.',
+  'SupplierContactEditor.ContactInfo.changed': 'Information on this page was last updated on {on} by {by}.',
+  'SupplierContactEditor.Message.objectDeleted': 'Object deleted.',
+  'SupplierContactEditor.Message.objectUpdated': 'Object updated.',
+  'SupplierContactEditor.Message.objectSaved': 'Object saved.',
+  'SupplierContactEditor.Message.deleteFailed': 'Failed to delete object, perhaps it is already in use.',
+  'SupplierContactEditor.Message.saveFailed': 'Object save failed.',
+  'SupplierContactEditor.Message.updateFailed': 'Object update failed.',
+  'SupplierContactEditor.Message.userCreated': 'User successfully created.',
+  'SupplierContactEditor.Message.userCreateFailed': 'User creation failed.',
+  'SupplierContactEditor.Error.userExists': 'User already exists.',
+  'SupplierContactEditor.Error.notUnique': 'Value must be unique',
+}
 
-let ContactType = {};
-ContactType.Default = 'Default';
-ContactType.Sales = 'Sales';
-ContactType.Escalation = 'Escalation';
-ContactType.Product = 'Product';
-ContactType.Technical = 'Technical';
-
-let Department = {};
-Department.Management = 'Management';
-Department.Logistics = 'Logistics';
-Department.Sales = 'Sales';
-Department.Accounting = 'Accounting';
-Department.Support = 'Support';
-Department.IT = 'IT';
-Department.Others = 'Others';
-
-let Select = {};
-Select.contactType = 'Select type...';
-Select.department = 'Select department...';
-
-let Label = {
-  contactId: 'Contact ID',
-  contactType: 'Contact Type',
-  firstName: 'First Name',
-  lastName: 'Last Name',
-  email: 'Email',
-  phone: 'Phone',
-  mobile: 'Mobile',
-  department: 'Department',
-  title: 'Salutation',
-  fax: 'Fax'
-};
-
-let Tooltip = {
-  // eslint-disable-next-line max-len
-  email: 'The email address provided here will be used for further communication. Please ensure that the email is correct.',
-  // eslint-disable-next-line max-len
-  contactType: '"Supplier Information Manager" is the main contact regarding all supplier master data.\nThe "Catalog Manager" is the main contact regarding catalog and content management.\n"Employees" are all other staff members.'
-};
-
-let Button = {
-  add: 'Add',
-  edit: 'Edit',
-  delete: 'Delete',
-  save: 'Save',
-  view: 'View',
-  cancel: 'Cancel',
-  close: 'Close',
-  createUser: 'Create User'
-};
-
-let ContactInfo = {
-  created: 'Information on this page was initially created by {by} on {on}.',
-  changed: 'Information on this page was last updated on {on} by {by}.'
-};
-
-let Message = {
-  objectDeleted: 'Object deleted.',
-  objectUpdated: 'Object updated.',
-  objectSaved: 'Object saved.',
-  deleteFailed: 'Failed to delete object, perhaps it is already in use.',
-  saveFailed: 'Object save failed.',
-  updateFailed: 'Object update failed.',
-  userCreated: 'User successfully created.',
-  userCreateFailed: 'User creation failed.'
-};
-
-let Error = {
-  notUnique: 'Value must be unique'
-};
-
-export default {
-  SupplierContactEditor: {
-    Title: Title,
-    Tooltip: Tooltip,
-    Select: Select,
-    ContactType: ContactType,
-    Department: Department,
-    Message: Message,
-    Error: Error,
-    ContactInfo: ContactInfo,
-    Confirmation: Confirmation,
-    Button: Button,
-    Label: Label,
-  },
-};
+export default SupplierContactEditor;

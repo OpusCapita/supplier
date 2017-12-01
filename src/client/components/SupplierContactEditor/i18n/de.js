@@ -1,96 +1,55 @@
-// Confirmation dialogs
-let Confirmation = {
-  cancel: 'Wollen Sie den Vorgang wirklich abbrechen?',
-  delete: 'Wollen Sie diesen Kontakt wirklich löschen?',
-  linkedToUser: 'Nur der Kontakt wird gelöscht. Der Benutzer wird nicht gelöscht.',
-  createUser: 'Wollen Sie wirklich einen Benutzer erstellen? Beachten Sie dass die Kontaktinformationen mit den Benutzerinformationen synchronisiert werden, wenn der Benutzer vorhanden ist.'
-};
-// eslint-disable-next-line max-len
-let Title = 'Bitte hinterlegen Sie hier die Ansprechpartner aus den Bereichen Geschäftsleitung, Vertrieb, Buchhaltung und Logistik.\nGerne können Sie auch noch weitere Ansprechpartner benennen.';
-
-let ContactType = {};
-ContactType.Default = 'Default';
-ContactType.Sales = 'Verkauf';
-ContactType.Escalation = 'Eskalation';
-ContactType.Product = 'Produkt';
-ContactType.Technical = 'Technisch';
-
-let Department = {};
-Department.Management = 'Geschäftsführung';
-Department.Logistics = 'Logistik';
-Department.Sales = 'Vertrieb';
-Department.Accounting = 'Buchhaltung';
-Department.Support = 'Kundenbetreuung';
-Department.IT = 'Datenmanagement';
-Department.Others = 'Sonstiges';
-
-let Select = {};
-Select.contactType = 'Ansprechpartner-Typ auswählen ...';
-Select.department = 'Abteilung auswählen ...';
-
-let Label = {
-  contactId: 'Kontakt ID',
-  contactType: 'Ansprechpartner-Typ',
-  firstName: 'Vorname',
-  lastName: 'Nachname',
-  email: 'E-Mail',
-  phone: 'Telefon',
-  mobile: 'Mobiltelefon',
-  department: 'Abteilung',
-  title: 'Anrede',
-  fax: 'Telefax'
-};
-
-let Tooltip = {
-  // eslint-disable-next-line max-len
-  email: 'Die hier hinterlegte E-Mail wird für die weitere Kommunikation mit Ihnen verwendet. Bitte stellen Sie sicher, dass es sich um eine korrekte E-Mail Adresse handelt und diese zum angegebenen Ansprechpartner passt.',
-  // eslint-disable-next-line max-len
-  contactType: 'Der "LSA-Verantwortliche" Mitarbeiter ist Ihr Ansprechpartner rund um die Lieferantenstammdaten.\nDer "Katalog-Verantwortliche" Mitarbeiter ist Ihr Ansprechpartner rund um das Katalogmanagement.\n"Mitarbeiter" sind alle weiteren Ansprechpartner Ihres Unternehmens.'
-};
-
-let Button = {
-  add: 'Hinzufügen',
-  edit: 'Bearbeiten',
-  delete: 'Löschen',
-  save: 'Speichern',
-  view: 'Ansehen',
-  cancel: 'Abbrechen',
-  close: 'Schliessen',
-  createUser: 'Benutzer erstellen'
+let SupplierContactEditor = {
+  'SupplierContactEditor.Confirmation.cancel': 'Wollen Sie den Vorgang wirklich abbrechen?',
+  'SupplierContactEditor.Confirmation.delete': 'Wollen Sie diesen Kontakt wirklich löschen?',
+  'SupplierContactEditor.Confirmation.linkedToUser': 'Nur der Kontakt wird gelöscht. Der Benutzer wird nicht gelöscht.',
+  'SupplierContactEditor.Confirmation.createUser': 'Wollen Sie wirklich einen Benutzer erstellen?',
+  'SupplierContactEditor.Title': 'Bitte hinterlegen Sie hier die Ansprechpartner aus den Bereichen Geschäftsleitung, Vertrieb, Buchhaltung und Logistik.\nGerne können Sie auch noch weitere Ansprechpartner benennen.',
+  'SupplierContactEditor.ContactType.Default': 'Default',
+  'SupplierContactEditor.ContactType.Sales': 'Verkauf',
+  'SupplierContactEditor.ContactType.Escalation': 'Eskalation',
+  'SupplierContactEditor.ContactType.Product': 'Produkt',
+  'SupplierContactEditor.ContactType.Technical': 'Technisch',
+  'SupplierContactEditor.Department.Management': 'Geschäftsführung',
+  'SupplierContactEditor.Department.Logistics': 'Logistik',
+  'SupplierContactEditor.Department.Sales': 'Vertrieb',
+  'SupplierContactEditor.Department.Accounting': 'Buchhaltung',
+  'SupplierContactEditor.Department.Support': 'Kundenbetreuung',
+  'SupplierContactEditor.Department.IT': 'Datenmanagement',
+  'SupplierContactEditor.Department.Others': 'Sonstiges',
+  'SupplierContactEditor.Select.contactType': 'Ansprechpartner-Typ auswählen ...',
+  'SupplierContactEditor.Select.department': 'Abteilung auswählen ...',
+  'SupplierContactEditor.Label.contactId': 'Kontakt ID',
+  'SupplierContactEditor.Label.contactType': 'Ansprechpartner-Typ',
+  'SupplierContactEditor.Label.firstName': 'Vorname',
+  'SupplierContactEditor.Label.lastName': 'Nachname',
+  'SupplierContactEditor.Label.email': 'E-Mail',
+  'SupplierContactEditor.Label.phone': 'Telefon',
+  'SupplierContactEditor.Label.mobile': 'Mobiltelefon',
+  'SupplierContactEditor.Label.department': 'Abteilung',
+  'SupplierContactEditor.Label.title': 'Anrede',
+  'SupplierContactEditor.Label.fax': 'Telefax',
+  'SupplierContactEditor.Tooltip.email': 'Die hier hinterlegte E-Mail wird für die weitere Kommunikation mit Ihnen verwendet. Bitte stellen Sie sicher, dass es sich um eine korrekte E-Mail Adresse handelt und diese zum angegebenen Ansprechpartner passt.',
+  'SupplierContactEditor.Tooltip.contactType': 'Der "LSA-Verantwortliche" Mitarbeiter ist Ihr Ansprechpartner rund um die Lieferantenstammdaten.\nDer "Katalog-Verantwortliche" Mitarbeiter ist Ihr Ansprechpartner rund um das Katalogmanagement.\n"Mitarbeiter" sind alle weiteren Ansprechpartner Ihres Unternehmens.',
+  'SupplierContactEditor.Button.add': 'Hinzufügen',
+  'SupplierContactEditor.Button.edit': 'Bearbeiten',
+  'SupplierContactEditor.Button.delete': 'Löschen',
+  'SupplierContactEditor.Button.save': 'Speichern',
+  'SupplierContactEditor.Button.view': 'Ansehen',
+  'SupplierContactEditor.Button.cancel': 'Abbrechen',
+  'SupplierContactEditor.Button.close': 'Schliessen',
+  'SupplierContactEditor.Button.createUser': 'Benutzer erstellen',
+  'SupplierContactEditor.ContactInfo.created': 'Die Informationen auf diesem Reiter wurden erstmalig durch {by} am {on} erstellt.',
+  'SupplierContactEditor.ContactInfo.changed': 'Die Informationen wurden zuletzt am {on} durch {by} bearbeitet.',
+  'SupplierContactEditor.Message.objectDeleted': 'Objekt gelöscht.',
+  'SupplierContactEditor.Message.objectUpdated': 'Objekt aktualisiert.',
+  'SupplierContactEditor.Message.objectSaved': 'Die Daten wurden erfolgreich gespeichert.',
+  'SupplierContactEditor.Message.deleteFailed': 'Das Objekt kann nicht gelöscht werden, vielleicht ist es bereits im Einsatz.',
+  'SupplierContactEditor.Message.saveFailed': 'Speichern von Objekten fehlgeschlagen.',
+  'SupplierContactEditor.Message.updateFailed': 'Object update failed.',
+  'SupplierContactEditor.Message.userCreated': 'Benutzer erfolgreich erstellt.',
+  'SupplierContactEditor.Message.userCreateFailed': 'Benutzererstellung fehlgeschlagen.',
+  'SupplierContactEditor.Error.userExists': 'Der Benutzer existiert bereits.',
+  'SupplierContactEditor.Error.notUnique': 'Der Wert darf nur einmal vorkommen'
 };
 
-let ContactInfo = {
-  created: 'Die Informationen auf diesem Reiter wurden erstmalig durch {by} am {on} erstellt.',
-  changed: 'Die Informationen wurden zuletzt am {on} durch {by} bearbeitet.'
-};
-
-let Message = {
-  objectDeleted: 'Objekt gelöscht.',
-  objectUpdated: 'Objekt aktualisiert.',
-  objectSaved: 'Die Daten wurden erfolgreich gespeichert.',
-  deleteFailed: 'Das Objekt kann nicht gelöscht werden, vielleicht ist es bereits im Einsatz.',
-  saveFailed: 'Speichern von Objekten fehlgeschlagen.',
-  updateFailed: 'Object update failed.',
-  userCreated: 'Benutzer erfolgreich erstellt.',
-  userCreateFailed: 'Benutzererstellung fehlgeschlagen.'
-};
-
-let Error = {
-  notUnique: 'Der Wert darf nur einmal vorkommen'
-};
-
-export default {
-  SupplierContactEditor: {
-    Title: Title,
-    Tooltip: Tooltip,
-    Select: Select,
-    ContactType: ContactType,
-    Department: Department,
-    Message: Message,
-    Error: Error,
-    ContactInfo: ContactInfo,
-    Confirmation: Confirmation,
-    Button: Button,
-    Label: Label,
-  },
-};
+export default SupplierContactEditor;
