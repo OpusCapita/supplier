@@ -82,7 +82,7 @@ class SupplierAccessRequestForm extends Component {
 
     return (
       <AttributeValueEditorRow
-        labelText={ this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}.label`) }
+        labelText={ this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}`) }
         required={ isRequired || false }
         rowErrors={ rowErrors }
       >
