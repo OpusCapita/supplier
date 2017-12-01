@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { Supplier, Address } from '../../api';
+import { Address, Supplier } from '../../api';
 import CountryView from '../CountryView.react';
+
 require('./SupplierPublic.css');
 
 export default class SupplierPublic extends Component {
@@ -20,35 +21,94 @@ export default class SupplierPublic extends Component {
     this.addressApi = new Address();
   }
   
+  renderDefault(argument, defaultValue) {
+    return argument ? argument : defaultValue;
+  }
+  
   render() {
     return (
       <div className="form-horizontal">
         { this.state.supplier && (
           <div>
-            <div className="row">
-              <div className="col-sm-6">
-                <div className='supplierPublic__header'>Organisation</div>
+            <div className="col-sm-12">
+                <span className='supplierPublic__label'>Supplier</span>
                 <div>
-                  <div className='supplierPublic__label'>Name</div>
-                  <div className='supplierPublic__value'>{ this.state.supplier.supplierName }</div>
-                  <span className='supplierPublic__label'>City of registration:</span>
-                  <div>{ this.state.supplier.countryOfRegistration }</div>
-                  <span className='supplierPublic__label'>Country of registration:</span>
-                  <CountryView countryId={ this.state.supplier.countryOfRegistration} />
-                  <span className='supplierPublic__label'>VAT registration number</span>
-                  <div>{ this.state.supplier.vatIdentificationNo || 'VAT-12345'}</div>
-                  <span className='supplierPublic__label'>Tax registration number</span>
-                  <div>{ this.state.supplier.taxIdentificationNo || 'TAX-12345'}</div>
-                  <div  className='supplierPublic__label'>Address</div>
-                  <div>{ this.state.addresses.map((address) => <div key={address.id}>
-                    <div>{ address.name }</div>
-                    <div>{ address.street }</div>
-                    <div>{ address.street1 }</div>
-                    <div>{ address.street2 }</div>
-                    <div>{ address.street3 }</div>
-                  </div>) }</div>
+                  <div className='col-sm-8'>
+                    <label className='col-sm-4'>Name</label>
+                    <span className='col-sm-4'>{ this.state.supplier.supplierName }</span>
+                  </div>
+                  <div className='col-sm-8'>
+                    <label className='col-sm-4'>City of registration:</label>
+                    <span className='col-sm-4'>{ this.state.supplier.cityOfRegistration }</span>
+                  </div>
+                  <div className='col-sm-8'>
+                    <label className='col-sm-4'>Legal form</label>
+                    <span className='col-sm-4'>{ this.state.supplier.legalForm }</span>
+                  </div>
+                  <div className='col-sm-8'>
+                    <label className='col-sm-4'>Homepage</label>
+                    <span className='col-sm-4'>{ this.state.supplier.homePage }</span>
+                  </div>
+                  <div className='col-sm-8'>
+                    <label className='col-sm-4'>Tax identification number</label>
+                    <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.taxIdNumber, '-') }</span>
+                  </div>
+                  <div className='col-sm-8'>
+                    <label className='col-sm-4'>VAT identification number</label>
+                    <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.vatIdentificationNo, '-') }</span>
+                  </div>
+                  <div className='col-sm-8'>
+                    <label className='col-sm-4'>Global location</label>
+                    <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.globalLocationNo, '-') }</span>
+                  </div>
+                  <div className='col-sm-8'>
+                    <label className='col-sm-4'>Country of registration:</label>
+                    <span className='col-sm-4'><CountryView countryId={ this.state.supplier.countryOfRegistration} /></span>
+                  </div>
+                  <div className='col-sm-8'>
+                    <label className='col-sm-4'>DUNS Number:</label>
+                    <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.dunsNo, '-')}</span>
+                  </div>
+                  <div className='col-sm-8'>
+                    <label className='col-sm-4'>Commercial register number</label>
+                    <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.commercialRegisterNo, '-') }</span>
+                  </div>
                 </div>
               </div>
+            <div className='col-sm-12'>
+              <span className='supplierPublic__label'>Address</span>
+              { this.state.addresses.map((address) => <div key={address.id}>
+                <div className='col-sm-8'>
+                  <label className='col-sm-4'>Name</label>
+                  <span className='col-sm-4'>{ address.name }</span>
+                </div>
+                <div className='col-sm-8'>
+                  <label className='col-sm-4'>Street</label>
+                  <span className='col-sm-4'>{ address.street1 }</span>
+                </div>
+                <div className='col-sm-8'>
+                  <label className='col-sm-4'>City</label>
+                  <span className='col-sm-4'>{ address.city }</span>
+                </div>
+                <div className='col-sm-8'>
+                  <label className='col-sm-4'>Zip Code</label>
+                  <span className='col-sm-4'>{ address.zipCode }</span>
+                </div>
+                <div className='col-sm-8'>
+                  <label className='col-sm-4'>Email</label>
+                  <span className='col-sm-4'>{ address.email }</span>
+                </div>
+                <div className='col-sm-8'>
+                  <label className='col-sm-4'>Phone number</label>
+                  <span className='col-sm-4'>{ address.phoneNo }</span>
+                </div>
+                <div className='col-sm-8'>
+                  <label className='col-sm-4'>Country</label>
+                  <span className='col-sm-4'>
+                    <CountryView countryId={ this.state.supplier.countryOfRegistration} />
+                  </span>
+                </div>
+              </div>) }
             </div>
           </div>
         ) }
