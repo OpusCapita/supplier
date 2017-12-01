@@ -5,7 +5,7 @@ class Supplier extends ApiBase {
     return this.ajax.get(`/supplier/api/suppliers/${supplierId}`).set('Accept', 'application/json').
       query(queryParams || {}).then(response => response.body);
   }
-
+  
   getSuppliers(queryParams) {
     return this.ajax.get('/supplier/api/suppliers').set('Accept', 'application/json').
       query(queryParams || {}).then(response => response.body);

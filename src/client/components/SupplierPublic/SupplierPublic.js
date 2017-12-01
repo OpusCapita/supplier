@@ -77,7 +77,7 @@ export default class SupplierPublic extends Component {
               </div>
             <div className='col-sm-12'>
               <span className='supplierPublic__label'>Address</span>
-              { this.state.addresses.map((address) => <div key={address.id}>
+              { this.state.supplier.addresses.map((address) => <div key={address.id}>
                 <div className='col-sm-8'>
                   <label className='col-sm-4'>Name</label>
                   <span className='col-sm-4'>{ address.name }</span>
@@ -108,8 +108,20 @@ export default class SupplierPublic extends Component {
                     <CountryView countryId={ this.state.supplier.countryOfRegistration} />
                   </span>
                 </div>
-              </div>) }
+              </div>
+              ) }
             </div>
+            { this.state.supplier.capabilities &&
+              <div className='col-sm-12'>
+                <span className='supplierPublic__label'>Capabilities</span>
+                { this.state.supplier.capabilities.map((capabilities) => <div key={capabilities.id}>
+                    <div className='col-sm-8'>
+                      <label className='col-sm-4'>Name</label>
+                      <span className='col-sm-4'>{ capabilities.name }</span>
+                    </div>
+                  </div>
+                ) }
+              </div> }
           </div>
         ) }
       </div>
@@ -117,28 +129,13 @@ export default class SupplierPublic extends Component {
   }
   
   componentDidMount() {
-    Promise.all([
-      this.supplierApi.getSupplier(this.props.supplierId)
-        .then(supplier => {
-          console.log('supplier', supplier);
-          this.setState({
-            isLoaded: true,
-            supplier: supplier
-          });
-        })
-        .catch(errors => {
-          if (errors.status === 401) {
-            this.props.onUnauthorized();
-            return;
-          }
-        }),
-      this.addressApi.getAddresses(this.props.supplierId)
-        .then(addresses => {
-          console.log(addresses);
-          this.setState({
-            addresses: addresses
-          })
-        }),
-    ]);
+    const queryParam = { include: 'addresses, capabilities' };
+    this.supplierApi.getSupplier(this.props.supplierId, queryParam)
+      .then(supplier => {
+        this.setState({
+          isLoaded: true,
+          supplier: supplier,
+        });
+      });
   }
 };
