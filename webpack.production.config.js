@@ -10,7 +10,8 @@ module.exports = {
     profile_strength: './src/client/components/SupplierProfileStrength/index.js',
     bank_accounts: './src/client/components/SupplierBankAccountEditor/index.js',
     directory: './src/client/components/SupplierSearch/index.js',
-    access_approval: './src/client/components/SupplierApproval/index.js'
+    access_approval: './src/client/components/SupplierApproval/index.js',
+    supplier_input: './src/client/components/ReferenceSearch/SupplierInput/index.js'
   },
   output: {
     path: path.resolve(__dirname, './src/server/static'),
@@ -19,6 +20,10 @@ module.exports = {
     library: 'supplier-[name]',
     libraryTarget: 'umd',
     umdNamedDefine: true
+  },
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM'
   },
 
   //exclude empty dependencies, require for Joi
