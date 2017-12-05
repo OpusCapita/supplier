@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import request from 'superagent-bluebird-promise';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from './i18n';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';

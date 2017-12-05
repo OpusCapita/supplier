@@ -14,7 +14,10 @@ module.exports.init = function(db, config)
 
 module.exports.all = function(query, includes)
 {
-  const queryObj = query.supplierId ? { supplierId: { $in: query.supplierId.split(',') }} : {};
+  let queryObj = {};
+  if (query.supplierId) queryObj.supplierId = { $in: query.supplierId.split(',') };
+  if (query.supplierName) queryObj.supplierName = { $like: `%${query.supplierName}%` };
+
   const includeModels = associationsFromIncludes(this.db.models, includes);
 
   return this.db.models.Supplier.findAll({ where: queryObj, include: includeModels }).map(supplier => {

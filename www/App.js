@@ -9,6 +9,7 @@ import SupplierBankEditor from '../src/client/components/SupplierBankAccountEdit
 import SupplierProfileStrength from '../src/client/components/SupplierProfileStrength';
 import SupplierSearch from '../src/client/components/SupplierSearch';
 import SupplierApproval from '../src/client/components/SupplierApproval';
+import SupplierAutocomplete from '../src/client/components/SupplierAutocomplete';
 
 const username = 'john.doe@ncc.com';
 const userRoles = ['supplier-admin', 'user'];
@@ -92,6 +93,8 @@ let supplierProfileStrenth = (
   <SupplierProfileStrength supplierId={supplier.supplierId} />
 );
 
+let supplierAutocomplete = <SupplierAutocomplete />;
+
 const activeStyle = {color:' #ffffff', background: '#006677'};
 
 const App = () => (
@@ -105,6 +108,7 @@ const App = () => (
       <li><NavLink activeStyle={activeStyle} to='/supplier/contact'>Supplier Contact</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/bank'>Supplier Bank</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/profile_strength'>Supplier Profile Strength</NavLink></li>
+      <li><NavLink activeStyle={activeStyle} to='/supplier/autocomplete'>Supplier Autocomplete</NavLink></li>
     </ul>
     <Route exact path='/supplier' render={() => editor }/>
     <Route exact path='/supplier/search' render={() => searchEditor }/>
@@ -114,6 +118,7 @@ const App = () => (
     <Route exact path='/supplier/contact' render={() => contactEditor }/>
     <Route exact path='/supplier/bank' render={() => bankEditor }/>
     <Route exact path='/supplier/profile_strength' render={() => supplierProfileStrenth }/>
+    <Route exact path='/supplier/autocomplete' render={() => supplierAutocomplete }/>
   </Layout>
 );
 
