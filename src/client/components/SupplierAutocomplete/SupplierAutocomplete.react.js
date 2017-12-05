@@ -8,6 +8,11 @@ export default class SupplierAutocomplete extends Component {
     this.supplierApi = new Supplier();
   }
 
+  static propTypes = {
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func
+  };
+
   render() {
     return (
       <ReferenceAutocomplete
@@ -20,6 +25,8 @@ export default class SupplierAutocomplete extends Component {
         value=''
         labelProperty='supplierName'
         valueProperty='supplierId'
+        onChange={this.props.onChange}
+        onBlur={this.props.onBlur}
       />
     );
   }
