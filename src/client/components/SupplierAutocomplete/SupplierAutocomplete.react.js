@@ -22,7 +22,7 @@ export default class SupplierAutocomplete extends Component {
             return new Promise((resolve) => resolve({ options: suppliers, complete: false }));
           });
         }}
-        value=''
+        value={null}
         labelProperty='supplierName'
         valueProperty='supplierId'
         onChange={this.props.onChange}
