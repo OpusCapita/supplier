@@ -19,7 +19,7 @@ const SupplierRegistrationEditor = {
   'SupplierRegistrationEditor.Messages.unableToRender': 'Unable to render editor',
   'SupplierRegistrationEditor.Messages.saved': 'Supplier successfully created',
   'SupplierRegistrationEditor.Messages.failed': 'Supplier creation failed',
-  'SupplierRegistrationEditor.Messages.failedUnauthorized': 'Supplier creation failed: not authorized',
+  'SupplierRegistrationEditor.Messages.failedUserSupplier': 'Supplier creation failed: you are already associated to a supplier.',
   'SupplierRegistrationEditor.Messages.supplierAccessRequestHeader': 'You have requested access to the company {name}.',
   'SupplierRegistrationEditor.Messages.supplierAccessRequestText': 'Please reach out to our support at +49 231 3967 350 or customerservice.de@opuscapita.com for further information.',
   'SupplierRegistrationEditor.Messages.supplierAccessRequestStatus.text': 'Current status',
