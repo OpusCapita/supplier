@@ -50,14 +50,6 @@ export default class SupplierPublic extends Component {
                     <span className='col-sm-4'>{ this.state.supplier.homePage }</span>
                   </div>
                   <div className='col-sm-8'>
-                    <label className='col-sm-4'>Tax identification number</label>
-                    <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.taxIdNumber, '-') }</span>
-                  </div>
-                  <div className='col-sm-8'>
-                    <label className='col-sm-4'>VAT identification number</label>
-                    <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.vatIdentificationNo, '-') }</span>
-                  </div>
-                  <div className='col-sm-8'>
                     <label className='col-sm-4'>Global location</label>
                     <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.globalLocationNo, '-') }</span>
                   </div>
@@ -65,16 +57,29 @@ export default class SupplierPublic extends Component {
                     <label className='col-sm-4'>Country of registration:</label>
                     <span className='col-sm-4'><CountryView countryId={ this.state.supplier.countryOfRegistration} /></span>
                   </div>
-                  <div className='col-sm-8'>
-                    <label className='col-sm-4'>DUNS Number:</label>
-                    <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.dunsNo, '-')}</span>
-                  </div>
-                  <div className='col-sm-8'>
-                    <label className='col-sm-4'>Commercial register number</label>
-                    <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.commercialRegisterNo, '-') }</span>
-                  </div>
                 </div>
               </div>
+            <div className="col-sm-12">
+              <span className='supplierPublic__label'>Tax</span>
+              <div>
+                <div className='col-sm-8'>
+                  <label className='col-sm-4'>Tax identification number</label>
+                  <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.taxIdNumber, '-') }</span>
+                </div>
+                <div className='col-sm-8'>
+                  <label className='col-sm-4'>VAT identification number</label>
+                  <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.vatIdentificationNo, '-') }</span>
+                </div>
+                <div className='col-sm-8'>
+                  <label className='col-sm-4'>DUNS Number:</label>
+                  <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.dunsNo, '-')}</span>
+                </div>
+                <div className='col-sm-8'>
+                  <label className='col-sm-4'>Commercial register number</label>
+                  <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.commercialRegisterNo, '-') }</span>
+                </div>
+              </div>
+            </div>
             <div className='col-sm-12'>
               <span className='supplierPublic__label'>Address</span>
               { this.state.supplier.addresses.map((address) => <div key={address.id}>
@@ -111,7 +116,7 @@ export default class SupplierPublic extends Component {
               </div>
               ) }
             </div>
-            { this.state.supplier.capabilities &&
+            { this.state.supplier.capabilities && this.state.supplier.capabilities.length > 0 &&
               <div className='col-sm-12'>
                 <span className='supplierPublic__label'>Capabilities</span>
                 { this.state.supplier.capabilities.map((capabilities) => <div key={capabilities.id}>
