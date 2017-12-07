@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Address, Supplier } from '../../api';
 import CountryView from '../CountryView.react';
-
 require('./SupplierPublic.css');
 
 export default class SupplierPublic extends Component {
