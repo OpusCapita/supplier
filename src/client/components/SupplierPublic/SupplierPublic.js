@@ -11,9 +11,14 @@ const AddressComponent = ({ supplier }) => (<div className='supplierPublic__cont
 const AddressSection = ({ address, supplier }) => (
   <div className='supplierPublic__section supplierPublic__address' key={address.id}>
     <div className='col-sm-8'>
+      <label className='col-sm-4'>Type</label>
+      <span className='col-sm-4'>{ address.type }</span>
+    </div>
+    <div className='col-sm-8'>
       <label className='col-sm-4'>Name</label>
       <span className='col-sm-4'>{ address.name }</span>
     </div>
+    
     <div className='col-sm-8'>
       <label className='col-sm-4'>Street</label>
       <span className='col-sm-4'>{ address.street1 }</span>
@@ -21,10 +26,6 @@ const AddressSection = ({ address, supplier }) => (
     <div className='col-sm-8'>
       <label className='col-sm-4'>City</label>
       <span className='col-sm-4'>{ address.city }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='col-sm-4'>Type</label>
-      <span className='col-sm-4'>{ address.type }</span>
     </div>
     <div className='col-sm-8'>
       <label className='col-sm-4'>Zip Code</label>
@@ -127,11 +128,10 @@ export default class SupplierPublic extends Component {
             { this.state.supplier.capabilities && this.state.supplier.capabilities.length > 0 &&
               <div className='col-sm-12'>
                 <span className='supplierPublic__label'>Capabilities</span>
-                { this.state.supplier.capabilities.map((capabilities) => <div key={capabilities.id}>
-                    <div className='col-sm-8'>
-                      <label className='col-sm-4'>Name</label>
-                      <span className='col-sm-4'>{ capabilities.id }</span>
-                    </div>
+                { this.state.supplier.capabilities.map((capabilities) => <div key={capabilities.capabilityId}>
+                    <ul className='col-sm-8'>
+                      <li className='col-sm-4'>{ capabilities.capabilityId }</li>
+                    </ul>
                   </div>
                 ) }
               </div> }
