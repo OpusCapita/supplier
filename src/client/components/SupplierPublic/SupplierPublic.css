@@ -3,11 +3,23 @@
   font-size: 50px;
 }
 
+.supplierPublic__section {
+  display: block;
+  overflow: auto;
+  padding: 20px 0;
+}
+
+.supplierPublic__container {
+}
+
+.supplierPublic__address {
+  box-shadow: 0 24px 1px -24px gray;
+}
+
 .supplierPublic__label {
   display: block;
   color: grey;
   border-bottom: 1px solid grey;
-  margin: 10px 0;
   font-weight: 700;
 }
 
