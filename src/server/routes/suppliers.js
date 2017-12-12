@@ -65,12 +65,14 @@ let createSuppliers = function(req, res)
   const newSupplier = req.body;
   Supplier.recordExists(newSupplier).then(exists =>
   {
-    if(exists) {
-      return res.status('409').json({ message : 'A supplier already exists' });
-    } else {
-      const iban = newSupplier.iban;
+    if (exists) return res.status('409').json({ message : 'A supplier already exists' });
 
+    return userService.get(req.opuscapita.serviceClient, newSupplier.createdBy).then(userObj => {
+      if (userObj.supplierId) return res.status('403').json({ message : 'User already has a supplier' });
+
+      const iban = newSupplier.iban;
       delete newSupplier.iban;
+
       newSupplier.status = 'new';
 
       return Supplier.create(newSupplier)
@@ -98,7 +100,7 @@ let createSuppliers = function(req, res)
 
           return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
         });
-    }
+    });
   })
   .catch(error => {
     req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);

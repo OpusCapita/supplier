@@ -141,7 +141,7 @@ class SupplierRegistrationEditor extends Component {
       switch (errors.status) {
         case 403: case 405:
           if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUnauthorized'), 'error');
+            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUserSupplier'), 'error');
           break;
         case 401:
           this.props.onUnauthorized();

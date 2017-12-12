@@ -19,7 +19,7 @@ const SupplierRegistrationEditor = {
   'SupplierRegistrationEditor.Messages.unableToRender': 'Der Editor kann nicht geöffnet werden',
   'SupplierRegistrationEditor.Messages.saved': 'Lieferantenerstellung erfolgreich.',
   'SupplierRegistrationEditor.Messages.failed': 'Lieferantenerstellung fehlgeschlagen.',
-  'SupplierRegistrationEditor.Messages.failedUnauthorized': 'Lieferantenerstellung fehlgeschlagen: nicht autorisiert.',
+  'SupplierRegistrationEditor.Messages.failedUserSupplier': 'Lieferantenerstellung fehlgeschlagen: Sie sind bereits einem Lieferanten zugeordnet.',
   'SupplierRegistrationEditor.Messages.supplierAccessRequestHeader': 'Sie haben den Zugang zum Firma {name} beantragt.',
   'SupplierRegistrationEditor.Messages.supplierAccessRequestText': 'Bitte kontaktieren Sie unseren Support via +49 231 3967 350 oder customerservice.de@opuscapita.com für weitere Informationen.',
   'SupplierRegistrationEditor.Messages.supplierAccessRequestStatus.text': 'Aktuelle Status',
@@ -37,6 +37,5 @@ const SupplierRegistrationEditor = {
   'SupplierRegistrationEditor.Messages.accessInformation3': 'Ihre Anfrage wird an den Administrator weitergeleitet, der das Profil des Unternehmens verwaltet.',
   'SupplierRegistrationEditor.Messages.accessInformation4': 'Sobald der Administrator Ihre Zugriffsanforderung genehmigt hat, erhalten Sie eine E-Mail-Benachrichtigung an Ihre registrierte E-Mail-Adresse.'
 }
-
 
 export default SupplierRegistrationEditor;

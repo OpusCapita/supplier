@@ -9,9 +9,12 @@ export default class SupplierAutocomplete extends Component {
   }
 
   static propTypes = {
+    value: PropTypes.object,
     onChange: PropTypes.func,
     onBlur: PropTypes.func
   };
+
+  static defaultProps = { value: null };
 
   render() {
     return (
@@ -22,7 +25,7 @@ export default class SupplierAutocomplete extends Component {
             return new Promise((resolve) => resolve({ options: suppliers, complete: false }));
           });
         }}
-        value={null}
+        value={this.props.value}
         labelProperty='supplierName'
         valueProperty='supplierId'
         onChange={this.props.onChange}

@@ -258,6 +258,7 @@ import { SupplierProfileStrength } from 'supplier-profile_strength';
 
 | Name | Type | Required | Description |
 |:-----|:----:|:--------:|------------:|
+| value | object | false | Initial Supplier object |
 | onChange | function | false | Callback fired when the value changes |
 | onBlur | function | false | Callback fired when the component loose focus |
 
