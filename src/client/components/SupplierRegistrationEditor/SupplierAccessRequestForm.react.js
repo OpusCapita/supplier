@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import request from 'superagent-bluebird-promise';
 import validator from "validate.js";
 import AttributeValueEditorRow from '../AttributeValueEditorRow.react.js';
 import { Supplier } from '../../api';

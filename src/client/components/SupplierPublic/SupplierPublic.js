@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Address, Supplier } from '../../api';
 import CountryView from '../CountryView.react';
+import i18nMessages from './i18n';
 require('./SupplierPublic.css');
 
 const AddressComponent = ({ supplier }) => (<div className='supplierPublic__container col-sm-12'>
@@ -11,14 +12,13 @@ const AddressComponent = ({ supplier }) => (<div className='supplierPublic__cont
 const AddressSection = ({ address, supplier }) => (
   <div className='supplierPublic__section supplierPublic__address' key={address.id}>
     <div className='col-sm-8'>
-      <label className='col-sm-4'>Type</label>
-      <span className='col-sm-4'>{ address.type }</span>
+      <label className='supplierPublic__subheading col-sm-4'>Type</label>
+      <span className='supplierPublic__subheading col-sm-4'>{ address.type }</span>
     </div>
     <div className='col-sm-8'>
       <label className='col-sm-4'>Name</label>
       <span className='col-sm-4'>{ address.name }</span>
     </div>
-    
     <div className='col-sm-8'>
       <label className='col-sm-4'>Street</label>
       <span className='col-sm-4'>{ address.street1 }</span>
@@ -54,6 +54,10 @@ export default class SupplierPublic extends Component {
     supplierId: PropTypes.string.isRequired
   };
   
+  static contextTypes = {
+    i18n : React.PropTypes.object.isRequired,
+  };
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -63,6 +67,16 @@ export default class SupplierPublic extends Component {
   
     this.supplierApi = new Supplier();
     this.addressApi = new Address();
+  }
+  
+  componentWillMount(){
+    this.context.i18n.register('SupplierPublic', i18nMessages);
+  }
+  
+  componentWillReceiveProps(nextProps, nextContext) {
+    if(nextContext.i18n){
+      nextContext.i18n.register('SupplierPublic', i18nMessages);
+    }
   }
   
   renderDefault(argument, defaultValue) {
@@ -75,35 +89,39 @@ export default class SupplierPublic extends Component {
         { this.state.supplier && (
           <div>
             <div className="col-sm-12">
-                <span className='supplierPublic__label'>Company</span>
+                <span className='supplierPublic__label'>{ this.context.i18n.getMessage('SupplierPublic.Label.supplier') }</span>
                 <div className='supplierPublic__section'>
                   <div className='col-sm-8'>
-                    <label className='col-sm-4'>Name</label>
+                    <label className='col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.supplierName') }</label>
                     <span className='col-sm-4'>{ this.state.supplier.supplierName }</span>
                   </div>
                   <div className='col-sm-8'>
-                    <label className='col-sm-4'>City of registration:</label>
+                    <label className='col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.cityOfRegistration') } </label>
                     <span className='col-sm-4'>{ this.state.supplier.cityOfRegistration }</span>
                   </div>
                   <div className='col-sm-8'>
-                    <label className='col-sm-4'>Legal form</label>
+                    <label className='col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.legalForm') }</label>
                     <span className='col-sm-4'>{ this.state.supplier.legalForm }</span>
                   </div>
                   <div className='col-sm-8'>
-                    <label className='col-sm-4'>Homepage</label>
+                    <label className='col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.homePage') }</label>
                     <span className='col-sm-4'>{ this.state.supplier.homePage }</span>
                   </div>
                   <div className='col-sm-8'>
-                    <label className='col-sm-4'>Tax identification number</label>
+                    <label className='col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.taxIdNumber') }</label>
                     <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.taxIdNumber, '-') }</span>
                   </div>
                   <div className='col-sm-8'>
-                    <label className='col-sm-4'>Global location</label>
+                    <label className='col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.commercialRegisterNo') }</label>
+                    <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.commercialRegisterNo, '-') }</span>
+                  </div>
+                  <div className='col-sm-8'>
+                    <label className='col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.globalLocationNo') }</label>
                     <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.globalLocationNo, '-') }</span>
                   </div>
                   <div className='col-sm-8'>
-                    <label className='col-sm-4'>Country of registration:</label>
-                    <span className='col-sm-4'><CountryView countryId={ this.state.supplier.countryOfRegistration} /></span>
+                    <label className='col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.countryOfRegistration') }</label>
+                    <span className='col-sm-4'><CountryView countryId={ this.state.supplier.countryOfRegistration } /></span>
                   </div>
                 </div>
               </div>
@@ -111,23 +129,19 @@ export default class SupplierPublic extends Component {
               <span className='supplierPublic__label'>Company Identifiers</span>
               <div className='supplierPublic__section'>
                 <div className='col-sm-8'>
-                  <label className='col-sm-4'>VAT identification number</label>
+                  <label className='col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.vatIdentificationNo') }</label>
                   <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.vatIdentificationNo, '-') }</span>
                 </div>
                 <div className='col-sm-8'>
-                  <label className='col-sm-4'>DUNS Number:</label>
-                  <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.dunsNo, '-')}</span>
-                </div>
-                <div className='col-sm-8'>
-                  <label className='col-sm-4'>Commercial register number</label>
-                  <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.commercialRegisterNo, '-') }</span>
+                  <label className='col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.dunsNo') }</label>
+                  <span className='col-sm-4'>{ this.renderDefault(this.state.supplier.dunsNo, '-') }</span>
                 </div>
               </div>
             </div>
             <AddressComponent supplier={ this.state.supplier } />
             { this.state.supplier.capabilities && this.state.supplier.capabilities.length > 0 &&
               <div className='col-sm-12'>
-                <span className='supplierPublic__label'>Capabilities</span>
+                <span className='supplierPublic__label'>{ this.context.i18n.getMessage('SupplierPublic.Label.capabilities') }</span>
                 { this.state.supplier.capabilities.map((capabilities) => <div key={capabilities.capabilityId}>
                     <ul className='col-sm-8'>
                       <li className='col-sm-4'>{ capabilities.capabilityId }</li>
