@@ -1,18 +1,11 @@
 const SupplierPublic = {
-  
   'SupplierPublic.Label.name': 'Name',
   'SupplierPublic.Label.supplierName': 'Company Name',
   'SupplierPublic.Label.cityOfRegistration': 'City Of Registration',
   'SupplierPublic.Label.homePage': 'HomePage',
   'SupplierPublic.Label.legalForm': 'Legal form',
   'SupplierPublic.Label.taxIdNumber': 'Tax identification number',
-  
-  'SupplierPublic.ButtonLabel.continue': 'Continue',
-  'SupplierPublic.ButtonLabel.cancel': 'Cancel',
-  'SupplierPublic.ButtonLabel.request': 'Request',
-  'SupplierPublic.ButtonLabel.access': 'Access',
-  'SupplierPublic.Label.supplier': 'Company',
-  
+  'SupplierPublic.Label.companyIdentifiers': 'Company Identifiers',
   'SupplierPublic.Label.commercialRegisterNo': 'Company Registration Number',
   'SupplierPublic.Label.countryOfRegistration': 'Country Of Registration',
   'SupplierPublic.Label.taxIdentificationNo': 'Tax Identification Number',
@@ -21,28 +14,6 @@ const SupplierPublic = {
   'SupplierPublic.Label.dunsNo': 'D-U-N-S Number',
   'SupplierPublic.Label.iban': 'IBAN',
   'SupplierPublic.Label.accessReason': 'Access Reason',
-  'SupplierPublic.Messages.companyRegistration': 'Company Registration',
-  'SupplierPublic.Messages.loading': 'Loading...',
-  'SupplierPublic.Messages.unableToRender': 'Unable to render editor',
-  'SupplierPublic.Messages.saved': 'Supplier successfully created',
-  'SupplierPublic.Messages.failed': 'Supplier creation failed',
-  'SupplierPublic.Messages.failedUnauthorized': 'Supplier creation failed: not authorized',
-  'SupplierPublic.Messages.supplierAccessRequestHeader': 'You have requested access to the company {name}.',
-  'SupplierPublic.Messages.supplierAccessRequestText': 'Please reach out to our support at +49 231 3967 350 or customerservice.de@opuscapita.com for further information.',
-  'SupplierPublic.Messages.supplierAccessRequestStatus.text': 'Current status',
-  'SupplierPublic.Messages.supplierAccessRequestStatus.requested': 'requested',
-  'SupplierPublic.Messages.supplierAccessRequestStatus.rejected': 'rejected',
-  'SupplierPublic.Messages.supplierAccessRequestStatus.approved': 'approved',
-  'SupplierPublic.Messages.information1': 'Please provide information that helps us to uniquely identify your company and allows us to add it to our trading partner directory.',
-  'SupplierPublic.Messages.information2': 'After providing this information you are ready to login.',
-  'SupplierPublic.Messages.requestSupplierAccess': 'Request Access',
-  'SupplierPublic.Messages.required': '** Please provide your VAT Registration Number. If you do not have one, then provide your Global Location Number, D-U-N-S number or IBAN.',
-  'SupplierPublic.Messages.noVatId': 'My Company does not have a VAT Registration Number.',
-  'SupplierPublic.Messages.clickCheckBox': 'Please provide your VAT Registration Number.',
-  'SupplierPublic.Messages.accessInformation1': 'Here you can request access to company {name}. You should request access only if you are an employee of this company.',
-  'SupplierPublic.Messages.accessInformation2': 'Please provide a valid business justification for your access.',
-  'SupplierPublic.Messages.accessInformation3': 'Your request will be forwarded to the administrator managing the company\'s profile.',
-  'SupplierPublic.Messages.accessInformation4': 'Once the administrator approves your access request, you will receive an email notification to your registered email address.'
 };
 
 export default SupplierPublic;

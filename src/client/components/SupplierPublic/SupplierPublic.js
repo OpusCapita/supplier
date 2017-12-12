@@ -126,7 +126,7 @@ export default class SupplierPublic extends Component {
                 </div>
               </div>
             <div className="col-sm-12">
-              <span className='supplierPublic__label'>Company Identifiers</span>
+              <span className='supplierPublic__label'>{ this.context.i18n.getMessage('SupplierPublic.Label.companyIdentifiers') }</span>
               <div className='supplierPublic__section'>
                 <div className='col-sm-8'>
                   <label className='col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.vatIdentificationNo') }</label>
