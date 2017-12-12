@@ -5,14 +5,14 @@ import i18nMessages from './i18n';
 require('./SupplierPublic.css');
 
 const AddressComponent = ({ supplier, i18n }) => (<div className='supplierPublic__container col-sm-12'>
-    <span className='supplierPublic__label'>Addresses</span>
+    <span className='supplierPublic__label'>{ i18n.getMessage('SupplierPublic.Label.address.addresses') }</span>
     { supplier.addresses.map((address) => <AddressSection key={address.id} supplier={ supplier } address={ address } i18n={ i18n }/>)}
 </div>);
 
 const AddressSection = ({ address, supplier, i18n }) => (
   <div className='supplierPublic__section supplierPublic__address' key={address.id}>
     <div className='col-sm-8'>
-      <label className='supplierPublic__subheading col-sm-4'>Type</label>
+      <label className='supplierPublic__subheading col-sm-4'>{ i18n.getMessage('SupplierPublic.Label.address.type') }</label>
       <span className='supplierPublic__subheading col-sm-4'>{ i18n.getMessage(`SupplierPublic.Label.address.${address.type}`) }</span>
     </div>
     <div className='col-sm-8'>

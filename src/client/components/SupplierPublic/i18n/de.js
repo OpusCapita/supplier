@@ -1,4 +1,5 @@
 const SupplierPublic = {
+  'SupplierPublic.Label.address.addresses': 'Adressen',
   'SupplierPublic.Label.address.type': 'Typ',
   'SupplierPublic.Label.address.default': 'Standard',
   'SupplierPublic.Label.address.invoice': 'Rechnung',
