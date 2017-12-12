@@ -42,6 +42,7 @@ let validator = function(validatejs) {
   customAsync.dunsNumberExists(validatejs);
   customAsync.globalLocationNumberExists(validatejs);
   customAsync.ibanExists(validatejs);
+  customAsync.uniqueIdentifierWithBankAccount(validatejs);
   formatters.groupedDetailed(validatejs);
 
   return validatejs;

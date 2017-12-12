@@ -5,7 +5,10 @@ class SupplierConstraints {
 
   forUpdate() {
     let constraints = this.constraints;
-    delete constraints['iban'];
+    delete constraints.iban;
+    delete constraints.vatIdentificationNo.uniqueIdentifier;
+    delete constraints.globalLocationNo.uniqueIdentifier;
+    delete constraints.dunsNo.uniqueIdentifier;
 
     return constraints;
   }
@@ -13,9 +16,12 @@ class SupplierConstraints {
   forRegistration() {
     let constraints = this.constraints;
 
-    delete constraints['homePage'];
-    delete constraints['foundedOn'];
-    delete constraints['legalForm'];
+    delete constraints.homePage;
+    delete constraints.foundedOn;
+    delete constraints.legalForm;
+    delete constraints.vatIdentificationNo.uniqueIdentifierWithBankAccount;
+    delete constraints.globalLocationNo.uniqueIdentifierWithBankAccount;
+    delete constraints.dunsNo.uniqueIdentifierWithBankAccount;
 
     return constraints;
   }
@@ -147,6 +153,9 @@ let allConstraints = function(i18n) {
       },
       uniqueIdentifier: {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
+      },
+      uniqueIdentifierWithBankAccount: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message')
       }
     },
     globalLocationNo: {
@@ -161,6 +170,9 @@ let allConstraints = function(i18n) {
       },
       uniqueIdentifier: {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
+      },
+      uniqueIdentifierWithBankAccount: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message')
       }
     },
     dunsNo: {
@@ -175,6 +187,9 @@ let allConstraints = function(i18n) {
       },
       uniqueIdentifier: {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
+      },
+      uniqueIdentifierWithBankAccount: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message')
       }
     },
     iban: {
