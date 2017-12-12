@@ -1,5 +1,6 @@
 const SupplierPublic = {
   'SupplierPublic.Label.name': 'Name',
+  'SupplierPublic.Label.company': 'Lieferant',
   'SupplierPublic.Label.supplierName': 'Name des Unternehmens',
   'SupplierPublic.Label.cityOfRegistration': 'Ort der Registrierung',
   'SupplierPublic.Label.homePage': 'HomePage',
@@ -8,7 +9,6 @@ const SupplierPublic = {
   'SupplierPublic.Label.companyIdentifiers': 'Company Identifiers',
   'SupplierPublic.Label.commercialRegisterNo': 'Handelsregisternummer',
   'SupplierPublic.Label.dunsNo': 'D-U-N-S-Nr.',
-  'SupplierPublic.Label.supplier': 'Lieferant',
   'SupplierPublic.Label.countryOfRegistration': 'Land der Registrierung',
   'SupplierPublic.Label.taxIdentificationNo': 'Steuernummer',
   'SupplierPublic.Label.vatIdentificationNo': 'Umsatzsteuer-Ident-Nr.',

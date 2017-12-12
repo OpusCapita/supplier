@@ -1,6 +1,6 @@
 const SupplierPublic = {
   'SupplierPublic.Label.name': 'Name',
-  'SupplierPublic.Label.supplier': 'Supplier',
+  'SupplierPublic.Label.company': 'Company',
   'SupplierPublic.Label.supplierName': 'Company Name',
   'SupplierPublic.Label.cityOfRegistration': 'City Of Registration',
   'SupplierPublic.Label.homePage': 'HomePage',
