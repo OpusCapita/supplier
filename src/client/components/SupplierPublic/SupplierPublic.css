@@ -22,6 +22,10 @@
   box-shadow: 0 24px 1px -24px gray;
 }
 
+.supplierPublic__address:last-child {
+  box-shadow: none;
+}
+
 .supplierPublic__fieldLabel {
   padding: 0;
   margin: 0;
