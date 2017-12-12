@@ -11,6 +11,8 @@
 
 .supplierPublic__subheading {
   font-size: 17px;
+  padding: 0;
+  margin: 0;
 }
 
 .supplierPublic__container {
@@ -20,13 +22,23 @@
   box-shadow: 0 24px 1px -24px gray;
 }
 
+.supplierPublic__fieldLabel {
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.supplierPublic__value {
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .supplierPublic__label {
   display: block;
   color: grey;
   border-bottom: 1px solid grey;
   font-weight: 700;
-}
-
-.supplierPublic__value {
-  font-weight: 500;
 }

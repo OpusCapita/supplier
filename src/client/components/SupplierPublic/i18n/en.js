@@ -1,5 +1,6 @@
 const SupplierPublic = {
   'SupplierPublic.Label.name': 'Name',
+  'SupplierPublic.Label.supplier': 'Supplier',
   'SupplierPublic.Label.supplierName': 'Company Name',
   'SupplierPublic.Label.cityOfRegistration': 'City Of Registration',
   'SupplierPublic.Label.homePage': 'HomePage',
@@ -13,7 +14,6 @@ const SupplierPublic = {
   'SupplierPublic.Label.globalLocationNo': 'Global Location Number',
   'SupplierPublic.Label.dunsNo': 'D-U-N-S Number',
   'SupplierPublic.Label.iban': 'IBAN',
-  'SupplierPublic.Label.accessReason': 'Access Reason',
 };
 
 export default SupplierPublic;
