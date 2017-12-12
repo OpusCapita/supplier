@@ -201,7 +201,7 @@ let normalize = function(supplier)
 let similar = function(fieldName, value)
 {
   /* Min length for MATCH is 4 */
-  if (value.length > 4) return matchSQL(fieldName, value);
+  if (value && value.length > 4) return matchSQL(fieldName, value);
 
   return equalSQL(fieldName, value);
 }
