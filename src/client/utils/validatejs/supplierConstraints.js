@@ -155,7 +155,7 @@ let allConstraints = function(i18n) {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
       },
       uniqueIdentifierWithBankAccount: {
-        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message')
       }
     },
     globalLocationNo: {
@@ -172,7 +172,7 @@ let allConstraints = function(i18n) {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
       },
       uniqueIdentifierWithBankAccount: {
-        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message')
       }
     },
     dunsNo: {
@@ -189,7 +189,7 @@ let allConstraints = function(i18n) {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
       },
       uniqueIdentifierWithBankAccount: {
-        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message')
       }
     },
     iban: {
