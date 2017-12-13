@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Address, Supplier } from '../../api';
+import { Supplier } from '../../api';
 import CountryView from '../CountryView.react';
 import i18nMessages from './i18n';
 require('./SupplierPublic.css');
@@ -61,12 +61,10 @@ export default class SupplierPublic extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      supplier : null,
-      addresses: null,
+      supplier : null
     };
 
     this.supplierApi = new Supplier();
-    this.addressApi = new Address();
   }
 
   componentWillMount(){
