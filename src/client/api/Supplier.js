@@ -1,11 +1,11 @@
 import ApiBase from './ApiBase';
 
 class Supplier extends ApiBase {
-  getSupplier(supplierId) {
+  getSupplier(supplierId, queryParams) {
     return this.ajax.get(`/supplier/api/suppliers/${supplierId}`).set('Accept', 'application/json').
-      then(response => response.body);
+      query(queryParams || {}).then(response => response.body);
   }
-
+  
   getSuppliers(queryParams) {
     return this.ajax.get('/supplier/api/suppliers').set('Accept', 'application/json').
       query(queryParams || {}).then(response => response.body);

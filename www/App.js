@@ -10,6 +10,7 @@ import SupplierProfileStrength from '../src/client/components/SupplierProfileStr
 import SupplierSearch from '../src/client/components/SupplierSearch';
 import SupplierApproval from '../src/client/components/SupplierApproval';
 import SupplierAutocomplete from '../src/client/components/SupplierAutocomplete';
+import SupplierPublic from '../src/client/components/SupplierPublic/SupplierPublic';
 
 const username = 'john.doe@ncc.com';
 const userRoles = ['supplier-admin', 'user'];
@@ -71,6 +72,10 @@ let contactEditor = (
   />
 );
 
+let supplierPublic = (
+  <SupplierPublic supplierId={supplier.supplierId}/>
+);
+
 let searchEditor = (
   <SupplierSearch />
 );
@@ -102,6 +107,7 @@ const App = () => (
     <ul className="nav nav-tabs">
       <li><NavLink exact activeStyle={activeStyle} to='/supplier'>Supplier</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/search'>Supplier Search</NavLink></li>
+      <li><NavLink activeStyle={activeStyle} to='/supplier/public'>Supplier Public</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/approval'>Supplier Approval</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/registration'>Supplier Registration</NavLink></li>
       <li><NavLink activeStyle={activeStyle} to='/supplier/address'>Supplier Address</NavLink></li>
@@ -112,6 +118,7 @@ const App = () => (
     </ul>
     <Route exact path='/supplier' render={() => editor }/>
     <Route exact path='/supplier/search' render={() => searchEditor }/>
+    <Route exact path='/supplier/public' render={() => supplierPublic }/>
     <Route exact path='/supplier/approval' render={() => supplierApproval }/>
     <Route exact path='/supplier/registration' render={() => registrationEditor }/>
     <Route exact path='/supplier/address' render={() => addressEditor }/>

@@ -1,0 +1,32 @@
+const SupplierPublic = {
+  'SupplierPublic.Label.address.addresses': 'Adressen',
+  'SupplierPublic.Label.address.type': 'Typ',
+  'SupplierPublic.Label.address.default': 'Standard',
+  'SupplierPublic.Label.address.invoice': 'Rechnung',
+  'SupplierPublic.Label.address.rma': 'Retour',
+  'SupplierPublic.Label.address.plant': 'Werk',
+  'SupplierPublic.Label.address.name': 'Name',
+  'SupplierPublic.Label.address.street': 'Straße',
+  'SupplierPublic.Label.address.city': 'Stradt',
+  'SupplierPublic.Label.address.zipCode': 'Postleitzahl',
+  'SupplierPublic.Label.address.country': 'Land',
+  'SupplierPublic.Label.address.phoneNumber': 'Telefonnummer',
+  'SupplierPublic.Label.address.email': 'Email',
+  'SupplierPublic.Label.supplier.supplierName': 'Name des Unternehmens',
+  'SupplierPublic.Label.supplier.cityOfRegistration': 'Ort der Registrierung',
+  'SupplierPublic.Label.supplier.homePage': 'Startseite',
+  'SupplierPublic.Label.supplier.legalForm': 'Rechtsform',
+  'SupplierPublic.Label.supplier.taxIdNumber': 'Tax identification number',
+  'SupplierPublic.Label.supplier.companyIdentifiers': 'Unternehmenskennungen',
+  'SupplierPublic.Label.supplier.dunsNo': 'D-U-N-S-Nr.',
+  'SupplierPublic.Label.supplier.company': 'Unternehmen',
+  'SupplierPublic.Label.supplier.commercialRegisterNo': 'Handelsregisternummer',
+  'SupplierPublic.Label.supplier.countryOfRegistration': 'Land der Registrierung',
+  'SupplierPublic.Label.supplier.taxIdentificationNo': 'Steuernummer',
+  'SupplierPublic.Label.supplier.vatIdentificationNo': 'Umsatzsteuer-Ident-Nr.',
+  'SupplierPublic.Label.supplier.globalLocationNo': 'Global Location Number',
+  'SupplierPublic.Label.supplier.capabilities': 'Fähigkeiten',
+  'SupplierPublic.Label.supplier.capabilities.eInvoice-send': 'Rechnung - schicken'
+};
+
+export default SupplierPublic;
