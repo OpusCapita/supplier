@@ -17,6 +17,53 @@
       }
     ]
   },
+    "x-tenant-read": {
+        "translations": {
+            "name": {
+                "en": "Grants read access to all company data.",
+                "de": "Erlaubt den LeseZugriff auf alle Lieferantendaten."
+            },
+            "description": {
+                "en": "Enables listing and viewing of any supplier data in the system.",
+                "de": "Ermöglich das Auflisten und Anzeigen aller Lieferantendaten im System."
+            }
+        },
+        "resources": [{
+            "type": "rest",
+            "resourceId": "/api/suppliers[%w | %p]*",
+            "actions": ["view"]
+        }]
+    },
+  "x-tenant-read-public": {
+    "translations": {
+      "name": {
+        "en": "Grants read access to all company's public data.",
+        "de": "Erlaubt den Lesezugriff auf alle öffentlichen Lieferantendaten."
+      },
+      "description": {
+        "en": "Enables viewing of all company's public data such as company profile, public addresses, etc.",
+        "de": "Ermöglicht die Anzeige aller öffentlichen Lieferantendaten, wie Firmenprofil, öffentliche Adressen usw."
+      }
+    },
+    "resources": [{
+          "type": "rest",
+          "resourceId": "/api/suppliers[/]?$",
+          "actions": ["view"],
+          "fields": ["supplierId", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
+                     "vatIdentificationNo", "globalLocationNo", "dunsNo", "homePage", "status", "noVatReason", "addresses", "capabilities"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[^/]+/addresses[%w | %p]*",
+        "actions": ["view"]
+      },
+      {
+        "type": "rest",
+        "resourceId": "/api/suppliers/[^/]+/capabilities[%w | %p]*",
+        "actions": ["view"]
+      }
+    ]
+  },
   "manage": {
     "translations": {
       "name": {
@@ -82,34 +129,6 @@
         "type": "rest",
         "resourceId": "/api/supplier_access[%w | %p]*",
         "actions": ["create", "view", "edit"]
-      }
-    ]
-  },
-  "x-tenant-read-public": {
-    "translations": {
-      "name": {
-        "en": "Read all company's public data",
-        "de": ""
-      },
-      "description": {
-        "en": "View all company's public data which such as company profile, contacts, public addresses, etc.",
-        "de": ""
-      }
-    },
-    "resources": [{
-          "type": "rest",
-          "resourceId": "/api/suppliers[%w | %p]*",
-          "actions": ["view"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/suppliers/[^/]+/contacts[%w | %p]*",
-        "actions": ["view"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/suppliers/[^/]+/addresses[%w | %p]*",
-        "actions": ["view"]
       }
     ]
   },
