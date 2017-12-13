@@ -53,6 +53,13 @@
                      "vatIdentificationNo", "globalLocationNo", "dunsNo", "homePage", "status", "noVatReason", "addresses", "capabilities"]
       },
       {
+          "type": "rest",
+          "resourceId": "/api/suppliers/[^/]+$",
+          "actions": ["view"],
+          "fields": ["supplierId", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
+                     "vatIdentificationNo", "globalLocationNo", "dunsNo", "homePage", "status", "noVatReason", "addresses", "capabilities"]
+      },
+      {
         "type": "rest",
         "resourceId": "/api/suppliers/[^/]+/addresses[%w | %p]*",
         "actions": ["view"]
