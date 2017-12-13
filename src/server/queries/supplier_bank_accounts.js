@@ -21,12 +21,14 @@ module.exports.find = function(supplierId, bankAccountId)
 
 module.exports.create = function(bankAccount)
 {
+  normalize(bankAccount);
   return this.db.models.SupplierBankAccount.create(bankAccount);
 };
 
 module.exports.update = function(supplierId, bankAccountId, bankAccount)
 {
   let self = this;
+  normalize(bankAccount);
   return this.db.models.SupplierBankAccount.update(bankAccount, { where: { id: bankAccountId } }).then(() => {
     return self.find(supplierId, bankAccountId);
   });
@@ -40,4 +42,11 @@ module.exports.delete = function(supplierId, bankAccountId)
 module.exports.bankExists = function(supplierId, bankAccountId)
 {
   return this.find(supplierId, bankAccountId).then(accounts => Boolean(accounts));
+};
+
+let normalize = function(bankAccount)
+{
+  for (const fieldName of ['accountNumber', 'bankIdentificationCode', 'bankCode']) {
+    if (bankAccount[fieldName]) bankAccount[fieldName] = bankAccount[fieldName].replace(/\W+/g, '');
+  }
 };
