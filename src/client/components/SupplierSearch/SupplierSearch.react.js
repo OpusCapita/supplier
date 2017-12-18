@@ -1,14 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import locales from './i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Supplier } from '../../api';
+import { Components } from '@opuscapita/service-base-ui';
 import DisplayField from '../DisplayTable/DisplayField.react';
 import CountryView from '../CountryView.react';
 import ActionButton from '../ActionButton.react';
 require('./SupplierSearch.css');
 
-export default class SupplierSearch extends Component {
+export default class SupplierSearch extends Components.ContextComponent  {
 
   constructor(props) {
     super(props);
@@ -17,16 +18,19 @@ export default class SupplierSearch extends Component {
   }
 
   static contextTypes = {
-    i18n : React.PropTypes.object.isRequired,
-    showNotification: React.PropTypes.func
+    i18n : PropTypes.object.isRequired,
+    showNotification: PropTypes.func,
+    showModalDialog: PropTypes.func,
   };
 
   componentWillMount(){
     this.context.i18n.register('SupplierSearch', locales);
+    this.context.showModalDialog('Tile', 'Text');
   }
 
   componentWillReceiveProps(nextProps, nextContext){
     if(nextContext.i18n) nextContext.i18n.register('SupplierSearch', locales);
+    this.nextContext.showModalDialog('Tile', 'Text');
   }
 
   searchSupplier() {

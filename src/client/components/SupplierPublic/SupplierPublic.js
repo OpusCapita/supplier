@@ -58,7 +58,7 @@ export default class SupplierPublic extends Component {
     i18n : React.PropTypes.object.isRequired,
   };
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
     this.state = {
       supplier : null

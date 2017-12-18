@@ -77,7 +77,7 @@ let supplierPublic = (
 );
 
 let searchEditor = (
-  <SupplierSearch />
+  <SupplierSearch supplierId={supplier.supplierId} />
 );
 
 let supplierApproval = (
