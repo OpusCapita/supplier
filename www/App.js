@@ -1,6 +1,7 @@
 import React from 'react';
-import { Route, NavLink } from 'react-router-dom';
+import { Route } from 'react-router';
 import Layout from './layout';
+import { Containers } from '@opuscapita/service-base-ui';
 import SupplierEditor from '../src/client/components/SupplierEditor';
 import SupplierRegistrationEditor from '../src/client/components/SupplierRegistrationEditor';
 import SupplierAddressEditor from '../src/client/components/SupplierAddressEditor';
@@ -103,6 +104,12 @@ let supplierAutocomplete = <SupplierAutocomplete />;
 const activeStyle = {color:' #ffffff', background: '#006677'};
 
 const App = () => (
+  <Containers.ServiceLayout serviceName="user">
+    <Route exact path='/supplier' render={() => bankEditor }/>
+  </Containers.ServiceLayout>
+);
+
+/*const App = () => (
   <Layout>
     <ul className="nav nav-tabs">
       <li><NavLink exact activeStyle={activeStyle} to='/supplier'>Supplier</NavLink></li>
@@ -127,6 +134,6 @@ const App = () => (
     <Route exact path='/supplier/profile_strength' render={() => supplierProfileStrenth }/>
     <Route exact path='/supplier/autocomplete' render={() => supplierAutocomplete }/>
   </Layout>
-);
+);*/
 
 export default App;
