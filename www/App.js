@@ -104,8 +104,8 @@ let supplierAutocomplete = <SupplierAutocomplete />;
 const activeStyle = {color:' #ffffff', background: '#006677'};
 
 const App = () => (
-  <Containers.ServiceLayout serviceName="user">
-    <Route exact path='/supplier' render={() => bankEditor }/>
+  <Containers.ServiceLayout serviceName="supplier">
+    <Route path="/" component={() => bankEditor} />
   </Containers.ServiceLayout>
 );
 
