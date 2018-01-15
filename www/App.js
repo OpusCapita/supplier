@@ -10,7 +10,6 @@ import SupplierProfileStrength from '../src/client/components/SupplierProfileStr
 import SupplierSearch from '../src/client/components/SupplierSearch';
 import SupplierApproval from '../src/client/components/SupplierApproval';
 import SupplierAutocomplete from '../src/client/components/SupplierAutocomplete';
-import SupplierPublic from '../src/client/components/SupplierPublic/SupplierPublic';
 
 const username = 'john.doe@ncc.com';
 const userRoles = ['supplier-admin', 'user'];
@@ -70,10 +69,6 @@ let contactEditor = (
     username={username}
     userRoles={userRoles}
   />
-);
-
-let supplierPublic = (
-  <SupplierPublic supplierId={supplier.supplierId}/>
 );
 
 let searchEditor = (
