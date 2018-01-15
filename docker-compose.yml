@@ -68,6 +68,7 @@ services:
       - acl
     labels:
       SERVICE_NAME: 'user'
+      SERVICE_TAGS: 'external,kong'
     environment:
       MYSQL_DATABASE: $MYSQL_DATABASE
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD

@@ -1,24 +1,27 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import locales from './i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Supplier } from '../../api';
+import { Components } from '@opuscapita/service-base-ui';
 import DisplayField from '../DisplayTable/DisplayField.react';
 import CountryView from '../CountryView.react';
 import ActionButton from '../ActionButton.react';
+import SupplierPublic from '../SupplierPublic/SupplierPublic.react';
 require('./SupplierSearch.css');
 
-export default class SupplierSearch extends Component {
+export default class SupplierSearch extends Components.ContextComponent  {
 
   constructor(props) {
     super(props);
-    this.state = { searchWord: '', capability: null, data: [] };
+    this.state = { searchWord: '', capability: null, supplierId: null, data: [] };
     this.supplierApi = new Supplier();
+    this.supplierPublicModal = null;
   }
 
   static contextTypes = {
-    i18n : React.PropTypes.object.isRequired,
-    showNotification: React.PropTypes.func
+    i18n : PropTypes.object.isRequired,
+    showNotification: PropTypes.func
   };
 
   componentWillMount(){
@@ -40,6 +43,11 @@ export default class SupplierSearch extends Component {
 
   handleChange(event) {
     this.setState({ capability: event.target.value });
+  }
+
+  handleShowSupplier(supplierId) {
+    this.setState({ supplierId: supplierId });
+    this.supplierPublicModal.show(this.context.i18n.getMessage('SupplierSearch.modalHeader.title'), undefined, null, {});
   }
 
   renderSearchBox() {
@@ -75,7 +83,9 @@ export default class SupplierSearch extends Component {
     const columns = [
       {
         Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.supplierName'),
-        accessor: 'supplierName',
+        id: 'supplierName',
+        accessor: element => ({ name: element.supplierName, id: element.supplierId }),
+        Cell: (row) => (<ActionButton style='link' label={row.value.name} onClick={this.handleShowSupplier.bind(this, row.value.id)} />)
       },
       {
         Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.cityOfRegistration'),
@@ -133,6 +143,9 @@ export default class SupplierSearch extends Component {
       <div className="table-responsive">
         { this.renderTable(this.state.data) }
       </div>
+      <Components.ModalDialog ref={node => this.supplierPublicModal = node} size='large'>
+          <SupplierPublic supplierId={this.state.supplierId}/>
+      </Components.ModalDialog>
     </div>)
   }
 }
