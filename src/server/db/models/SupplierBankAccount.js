@@ -44,6 +44,7 @@ module.exports = function (sequelize, config) {
         validate: {
           notEmpty: true,
           isValid(value) {
+            if (!value) return null;
             if (BIC.isInvalid(value)) throw new Error('bankIdentificationCode value is invalid');
           }
         }
