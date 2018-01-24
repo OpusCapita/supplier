@@ -91,11 +91,26 @@ services:
       SERVICE_3013_CHECK_HTTP: /api/health/check
       SERVICE_3013_CHECK_INTERVAL: 15s
       SERVICE_3013_CHECK_TIMEOUT: 3s
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
     ports:
      - '3013:3013'
     depends_on:
       - consul
+      - rabbitmq
     command: 'npm run dev'
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+        - '4369:4369'
+        - '5671:5671'
+        - '5672:5672'
+        - '15672:15672'
+    environment:
+        RABBITMQ_DEFAULT_USER: $RABBITMQ_USER
+        RABBITMQ_DEFAULT_PASS: $RABBITMQ_PASS
+        SERVICE_5672_NAME: 'rabbitmq-amqp'
 
   redis:
     image: opuscapita/redis:dev

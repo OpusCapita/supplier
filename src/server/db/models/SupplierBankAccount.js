@@ -1,7 +1,6 @@
 'use strict';
 const Sequelize = require('sequelize');
-const iban = require('../../utils/validators/iban.js');
-const bic = require('../../utils/validators/bic.js');
+const { IBAN, BIC } = require('@opuscapita/field-validators');
 
 module.exports = function (sequelize, config) {
   /**
@@ -34,14 +33,20 @@ module.exports = function (sequelize, config) {
         validate: {
           notEmpty: true,
           isValid(value) {
-            if (iban.isInvalid(value)) throw new Error('accountNumber value is invalid');
+            if (IBAN.isInvalid(value)) throw new Error('accountNumber value is invalid');
           }
         }
       },
       /** Bank Identifier Code (BIC) */
       bankIdentificationCode: {
         field: 'BankIdentificationCode',
-        type: Sequelize.STRING(15)
+        type: Sequelize.STRING(15),
+        validate: {
+          notEmpty: true,
+          isValid(value) {
+            if (BIC.isInvalid(value)) throw new Error('bankIdentificationCode value is invalid');
+          }
+        }
       },
       /** Society for Worldwide Interbank Financial Telecommunication (SWIFT) Code. Same as BIC*/
       swiftCode: {

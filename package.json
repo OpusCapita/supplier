@@ -29,6 +29,7 @@
   "license": "jCatalog",
   "readme": "README.md",
   "dependencies": {
+    "@opuscapita/field-validators": "^0.0.1",
     "@opuscapita/i18n": "^1.1.0",
     "@opuscapita/react-dates": "^0.2.16",
     "@opuscapita/react-loaders": "^0.1.9",
