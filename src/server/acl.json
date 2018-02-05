@@ -12,7 +12,7 @@
     },
     "resources": [{
         "type": "rest",
-        "resourceId": "/api/suppliers[%w | %p]*",
+        "resourceId": "/api/suppliers",
         "actions": ["create", "view", "edit", "delete"]
       }
     ]
@@ -30,7 +30,7 @@
         },
         "resources": [{
             "type": "rest",
-            "resourceId": "/api/suppliers[%w | %p]*",
+            "resourceId": "/api/suppliers",
             "actions": ["view"]
         }]
     },
@@ -61,12 +61,12 @@
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/[^/]+/addresses[%w | %p]*",
+        "resourceId": "/api/suppliers/[^/]+/addresses",
         "actions": ["view"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/[^/]+/capabilities[%w | %p]*",
+        "resourceId": "/api/suppliers/[^/]+/capabilities",
         "actions": ["view"]
       }
     ]
@@ -89,52 +89,37 @@
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}",
+        "resourceId": "/api/suppliers/${_current_supplier_id}$",
         "actions": ["view", "edit"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/contacts[/]?$",
-        "actions": ["view", "create"]
+        "resourceId": "/api/suppliers/${_current_supplier_id}/contacts",
+        "actions": ["create", "view", "edit", "delete"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/contacts/[%w | %p]*",
-        "actions": ["view", "create", "edit", "delete"]
+        "resourceId": "/api/suppliers/${_current_supplier_id}/addresses",
+        "actions": ["create", "view", "edit", "delete"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/addresses[/]?$",
-        "actions": ["view", "create"]
+        "resourceId": "/api/suppliers/${_current_supplier_id}/bank_accounts",
+        "actions": ["create", "view", "edit", "delete"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/addresses/[%w | %p]*",
-        "actions": ["view", "edit", "delete"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/bank_accounts[/]?$",
-        "actions": ["view", "create"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/bank_accounts/[%w | %p]*",
-        "actions": ["view", "edit", "delete"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/profile_strength",
+        "resourceId": "/api/suppliers/${_current_supplier_id}/profile_strength$",
         "actions": ["view"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/exists",
+        "resourceId": "/api/suppliers/exists$",
         "actions": ["view"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/supplier_access[%w | %p]*",
+        "resourceId": "/api/supplier_access",
         "actions": ["create", "view", "edit"]
       }
     ]
@@ -157,43 +142,38 @@
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}",
+        "resourceId": "/api/suppliers/${_current_supplier_id}$",
         "actions": ["view"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/contacts[%w | %p]*",
+        "resourceId": "/api/suppliers/${_current_supplier_id}/contacts",
         "actions": ["create", "view"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/addresses[%w | %p]*",
+        "resourceId": "/api/suppliers/${_current_supplier_id}/addresses",
         "actions": ["view"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/bank_accounts[%w | %p]*",
+        "resourceId": "/api/suppliers/${_current_supplier_id}/bank_accounts",
         "actions": ["view"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/profile_strength",
+        "resourceId": "/api/suppliers/${_current_supplier_id}/profile_strength$",
         "actions": ["view"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/exists",
+        "resourceId": "/api/suppliers/exists$",
         "actions": ["view"]
       },
       {
         "type": "rest",
-        "resourceId": "/api/grant_supplier_access",
-        "actions": ["edit"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/supplier_access[%w | %p]*",
-        "actions": ["create", "view"]
+        "resourceId": "/api/supplier_access",
+        "actions": ["create", "edit", "view"]
       }
     ]
   }
