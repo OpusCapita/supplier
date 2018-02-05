@@ -198,7 +198,7 @@ let supplierWithAssociations = function(supplier)
 
 let normalize = function(supplier)
 {
-  for (const fieldName of ['vatIdentificationNo', 'dunsNo']) {
+  for (const fieldName of ['vatIdentificationNo', 'dunsNo', 'iban']) {
     if (supplier[fieldName]) supplier[fieldName] = supplier[fieldName].replace(/\s+/g, '');
   }
   for (const fieldName of ['supplierName', 'commercialRegisterNo', 'cityOfRegistration', 'taxIdentificationNo']) {
