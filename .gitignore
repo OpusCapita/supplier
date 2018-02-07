@@ -24,6 +24,8 @@ base-image/node_modules/
 /lib
 /apidoc
 /src/server/static/bundle.js
+/wiki
+wiki/rest-doc/Suppliers.endpoint.md
 
 # All the below is taken from
 # https://github.com/github/gitignore/blob/master/Node.gitignore

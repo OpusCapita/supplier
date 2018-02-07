@@ -15,8 +15,8 @@
     "lint": "eslint src",
     "esdoc": "rimraf esdoc && esdoc -c esdoc.json",
     "domain-doc": "mkdir -p wiki/domain-doc ; sq2md --path-bl=index.js -o file-per-src -p wiki/domain-doc --field-bl=createdAt,updatedAt --output-ext=.model.md src/server/db/models",
-    "rest-doc": "mkdir -p wiki/rest-doc ; ./node_modules/.bin/raml2md -o file-per-resource -p wiki/rest-doc --output-ext=.endpoint.md rest-doc/main.raml",
-    "doc": "npm run domain-doc"
+    "rest-doc": "mkdir -p wiki/rest-doc ;npx raml2md -o file-per-resource -p wiki/rest-doc --output-ext=.endpoint.md rest-doc/main.raml",
+    "doc": "npm run rest-doc ; npm run domain-doc"
   },
   "repository": {
     "type": "git",
