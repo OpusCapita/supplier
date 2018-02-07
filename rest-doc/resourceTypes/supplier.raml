@@ -12,12 +12,12 @@ get:
             type: string
             required: false
             description: Limits the output to the passed supplierIds.
-            example: supplierId=ocadmin,svc_supplier,svc_auth
+            example: supplierId=admin,foo,bar
         include:
             type: string
             required: false
             description: Additional, comma separated supplier associations to include. Existing associations are `addresses`, `contacts`, and `bankAccounts`.
-            example: include=addresses,bankAccounts
+            example: include=addresses,contacts
     responses:
         200:
             body:
@@ -27,7 +27,7 @@ post:
     description: Adds a new supplier.
     body:
         application/json:
-            type: Supplier
+            type: SupplierNew
     responses:
         200:
             body:
@@ -58,7 +58,7 @@ post:
         description: Updates a supplier.
         body:
             application/json:
-                type: Supplier
+                type: SupplierNew
         responses:
             200:
                 body:

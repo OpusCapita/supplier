@@ -26,6 +26,10 @@ The react components are compiled and bundled into libraries using webpack. Thes
 | SupplierEditor | supplier-information | information-bundle |
 | SupplierContactEditor | supplier-contact | contact-bundle |
 | SupplierAddressEditor | supplier-address | address-bundle |
+| SupplierBankAccountEditor | supplier-bank_accounts | bank_accounts-bundle |
+| SupplierSearch | supplier-directory | directory-bundle |
+| SupplierApproval | supplier-access_approval | access_approval-bundle |
+| SupplierAutocomplete | supplier-autocomplete | autocomplete-bundle |
 
 # Integration of a Service in Other Services
 
