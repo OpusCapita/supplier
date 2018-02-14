@@ -8,7 +8,3 @@ services:
       - ./wiki:/home/node/supplier/wiki
       - ./www:/home/node/supplier/www
     command: 'npm run local'
-
-  nginx:
-    environment:
-      USER_IDENTITY: '{\"id\":\"scott.tiger@example.com\",\"roles\":[\"user\", \"supplier-admin\"],\"supplierId\":\"hard001\"}'
