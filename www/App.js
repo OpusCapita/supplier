@@ -10,6 +10,7 @@ import SupplierProfileStrength from '../src/client/components/SupplierProfileStr
 import SupplierSearch from '../src/client/components/SupplierSearch';
 import SupplierApproval from '../src/client/components/SupplierApproval';
 import SupplierAutocomplete from '../src/client/components/SupplierAutocomplete';
+import SupplierList from '../src/client/components/SupplierList';
 
 const username = 'john.doe@ncc.com';
 const userRoles = ['supplier-admin', 'user'];
@@ -95,6 +96,7 @@ let supplierProfileStrenth = (
 
 let supplierAutocomplete = <SupplierAutocomplete />;
 
+let list = <SupplierList onEdit={(id) => console.log(id)} onCreateUser={(id) => console.log(id)} />;
 
 var tabData = [
   { name: 'Registration', isActive: true },
@@ -105,7 +107,8 @@ var tabData = [
   { name: 'Bank Account', isActive: false },
   { name: 'Search', isActive: false },
   { name: 'Profile Strength', isActive: false },
-  { name: 'Autocomplete', isActive: false }
+  { name: 'Autocomplete', isActive: false },
+  { name: 'List', isActive: false }
 ];
 
 class Tabs extends React.Component
@@ -148,6 +151,7 @@ class Content extends React.Component
         {this.props.activeTab.name === 'Search' ? searchEditor :null}
         {this.props.activeTab.name === 'Profile Strength' ? supplierProfileStrenth :null}
         {this.props.activeTab.name === 'Autocomplete' ? supplierAutocomplete :null}
+        {this.props.activeTab.name === 'List' ? list : null}
       </div>
     );
   }
