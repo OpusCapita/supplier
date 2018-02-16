@@ -2,7 +2,9 @@ import abilities from './data/userAbilities';
 
 class UserAbilities {
   constructor(roles) {
-    if (roles.includes('supplier-admin')) {
+    if (roles.includes('admin')) {
+      this.abilitiesForRole = abilities['admin'];
+    } else if (roles.includes('supplier-admin')) {
       this.abilitiesForRole = abilities['supplier-admin'];
     } else {
       this.abilitiesForRole = abilities['supplier'];
