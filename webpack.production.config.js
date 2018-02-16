@@ -11,7 +11,8 @@ module.exports = {
     bank_accounts: './src/client/components/SupplierBankAccountEditor/index.js',
     directory: './src/client/components/SupplierSearch/index.js',
     access_approval: './src/client/components/SupplierApproval/index.js',
-    autocomplete: './src/client/components/SupplierAutocomplete/index.js'
+    autocomplete: './src/client/components/SupplierAutocomplete/index.js',
+    list: './src/client/components/SupplierList/index.js'
   },
   output: {
     path: path.resolve(__dirname, './src/server/static'),
