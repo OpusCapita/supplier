@@ -1,2 +1,2 @@
-import SupplierPublic from './SupplierContactEditor.react.js';
+import SupplierPublic from './SupplierPublic.react.js';
 export default SupplierPublic;

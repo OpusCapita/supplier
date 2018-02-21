@@ -58,11 +58,9 @@ export default class SupplierPublic extends Component {
     i18n : React.PropTypes.object.isRequired,
   };
 
-  constructor(props) {
+  constructor(props, context) {
     super(props);
-    this.state = {
-      supplier : null
-    };
+    this.state = { supplier : null };
 
     this.supplierApi = new Supplier();
   }
@@ -71,14 +69,27 @@ export default class SupplierPublic extends Component {
     this.context.i18n.register('SupplierPublic', i18nMessages);
   }
 
+  componentDidMount() {
+    this.loadSupplier(this.props.supplierId);
+  }
+
   componentWillReceiveProps(nextProps, nextContext) {
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierPublic', i18nMessages);
     }
+
+    this.loadSupplier(nextProps.supplierId);
   }
 
   renderDefault(argument, defaultValue) {
     return argument ? argument : defaultValue;
+  }
+
+  loadSupplier(supplierId) {
+    const queryParam = { include: 'addresses,capabilities' };
+    if (!supplierId) return;
+
+    this.supplierApi.getSupplier(supplierId, queryParam).then(supplier => this.setState({ supplier: supplier }));
   }
 
   render() {
@@ -151,16 +162,5 @@ export default class SupplierPublic extends Component {
         ) }
       </div>
     );
-  }
-
-  componentDidMount() {
-    const queryParam = { include: 'addresses,capabilities' };
-    this.supplierApi.getSupplier(this.props.supplierId, queryParam)
-      .then(supplier => {
-        this.setState({
-          isLoaded: true,
-          supplier: supplier
-        });
-      });
   }
 };

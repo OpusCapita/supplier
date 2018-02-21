@@ -1,4 +1,23 @@
 {
+  "admin": {
+    "supplier": {
+      "actions": ["edit"]
+    },
+    "contact": {
+      "linkedUser": {
+        "actions": ["add", "view", "delete"]
+      },
+      "unlinkedUser": {
+        "actions": ["add", "createUser", "edit", "delete"]
+      }
+    },
+    "address": {
+      "actions": ["add", "edit", "delete"]
+    },
+    "bankAccount": {
+      "actions": ["add", "edit", "delete"]
+    }
+  },
   "supplier-admin": {
     "supplier": {
       "actions": ["edit"]

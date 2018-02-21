@@ -2,6 +2,22 @@ displayName: Suppliers
 description: Work with `Supplier` objects.
 get:
     description: List of `Supplier` objects.
+    queryParameters:
+        supplierName:
+            type: string
+            required: false
+            description: Limit the output to the suppliers with name contained passed supplierName.
+            example: supplierName=hardware
+        supplierId:
+            type: string
+            required: false
+            description: Limits the output to the passed supplierIds.
+            example: supplierId=admin,foo,bar
+        include:
+            type: string
+            required: false
+            description: Additional, comma separated supplier associations to include. Existing associations are `addresses`, `contacts`, and `bankAccounts`.
+            example: include=addresses,contacts
     responses:
         200:
             body:
@@ -11,7 +27,7 @@ post:
     description: Adds a new supplier.
     body:
         application/json:
-            type: Supplier
+            type: SupplierNew
     responses:
         200:
             body:
@@ -27,6 +43,12 @@ post:
             description: Identifier of a supplier.
     get:
         description: Single `Supplier` object.
+        queryParameters:
+            include:
+                type: string
+                required: false
+                description: Endpoint will return the included comma seperated models
+                example: include=addresses
         responses:
             200:
                 body:
@@ -36,7 +58,7 @@ post:
         description: Updates a supplier.
         body:
             application/json:
-                type: Supplier
+                type: SupplierNew
         responses:
             200:
                 body:

@@ -16,7 +16,7 @@ docker service create --name supplier --log-driver gelf --log-opt gelf-address=u
 ```
 
 ## React Components
-There are four react components. Look at how to use them [here](/wiki/rest-doc/Suppliers.react_components.md)
+There are four react components. Look at how to use them [here](/Suppliers.react_components.md)
 
 The react components are compiled and bundled into libraries using webpack. These are:
 
@@ -26,6 +26,10 @@ The react components are compiled and bundled into libraries using webpack. Thes
 | SupplierEditor | supplier-information | information-bundle |
 | SupplierContactEditor | supplier-contact | contact-bundle |
 | SupplierAddressEditor | supplier-address | address-bundle |
+| SupplierBankAccountEditor | supplier-bank_accounts | bank_accounts-bundle |
+| SupplierSearch | supplier-directory | directory-bundle |
+| SupplierApproval | supplier-access_approval | access_approval-bundle |
+| SupplierAutocomplete | supplier-autocomplete | autocomplete-bundle |
 
 # Integration of a Service in Other Services
 

@@ -1,8 +1,6 @@
 'use strict';
 const Sequelize = require('sequelize');
-const vatNumber = require('../../utils/validators/vatNumber.js');
-const dunsNumber = require('../../utils/validators/dunsNumber.js');
-const globalLocationNumber = require('../../utils/validators/globalLocationNumber.js');
+const { VAT, DUNS, GLN } = require('@opuscapita/field-validators');
 
 module.exports = function(sequelize) {
   /**
@@ -79,7 +77,7 @@ module.exports = function(sequelize) {
         isValid(value) {
           if (value.length === 0) return;
 
-          if (vatNumber.isInvalid(value)) throw new Error('vatIdentificationNo value is invalid');
+          if (VAT.isInvalid(value)) throw new Error('vatIdentificationNo value is invalid');
         }
       }
     },
@@ -91,7 +89,7 @@ module.exports = function(sequelize) {
         isValid(value) {
           if (value.length === 0) return;
 
-          if (globalLocationNumber.isInvalid(value)) throw new Error('globalLocationNo value is invalid');
+          if (GLN.isInvalid(value)) throw new Error('globalLocationNo value is invalid');
         }
       }
     },
@@ -115,7 +113,7 @@ module.exports = function(sequelize) {
         isValid(value) {
           if (value.length === 0) return;
 
-          if (dunsNumber.isInvalid(value)) throw new Error('dunsNo value is invalid');
+          if (DUNS.isInvalid(value)) throw new Error('dunsNo value is invalid');
         }
       }
     },

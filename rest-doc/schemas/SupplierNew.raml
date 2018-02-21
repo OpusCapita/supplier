@@ -2,10 +2,6 @@ type: object
 displayName: Supplier
 description: Object representing a single supplier item.
 properties:
-    supplierId:
-        type: string
-        description: Internal identifier of tradingPartner (humanReadable, i.e. alphanumeric). Ideally we generate a proposal based on name field by stripping spaces and invalid special chars, if required append a number for uniqueness, e.g. OpusCapita Software GmbH -> opuscapitasoftwaregmbh
-        required: true
     supplierName:
         type: string
         description: The official name of the company as registered, e.g. OpusCapita Software GmbH
@@ -40,24 +36,12 @@ properties:
         type: string
         required: false
         description: Duns stands for 'Data Universal Numbering System'. It is a nine-digit number issued by D&B (Dun & Bradstreet) and assigned to each business location in the D&B database having a unique, separate, and distinct operation to businesses for the purpose of identifying them.
-    createdOn:
-        type: string
-    changedOn:
-        type: string
     changedBy:
         type: string
     createdBy:
         type: string
-    contacts:
-        type: array
-        description: List of contacts assigned to supplier.
+    iban:
+        type: string
+        description: The International Bank Account Number (IBAN).
         required: false
-    addresses:
-        type: array
-        description: List of addresses assigned to supplier.
-        required: false
-    bankAccounts:
-        type: array
-        description: List of bank accounts assigned to supplier.
-        required: false
-example: !include ../examples/Supplier.json
+example: !include ../examples/SupplierNew.json

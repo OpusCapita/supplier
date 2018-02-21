@@ -1,6 +1,6 @@
 import React from 'react';
-import { Route, NavLink } from 'react-router-dom';
-import Layout from './layout';
+import { Route } from 'react-router';
+import { Containers } from '@opuscapita/service-base-ui';
 import SupplierEditor from '../src/client/components/SupplierEditor';
 import SupplierRegistrationEditor from '../src/client/components/SupplierRegistrationEditor';
 import SupplierAddressEditor from '../src/client/components/SupplierAddressEditor';
@@ -10,7 +10,7 @@ import SupplierProfileStrength from '../src/client/components/SupplierProfileStr
 import SupplierSearch from '../src/client/components/SupplierSearch';
 import SupplierApproval from '../src/client/components/SupplierApproval';
 import SupplierAutocomplete from '../src/client/components/SupplierAutocomplete';
-import SupplierPublic from '../src/client/components/SupplierPublic/SupplierPublic';
+import SupplierList from '../src/client/components/SupplierList';
 
 const username = 'john.doe@ncc.com';
 const userRoles = ['supplier-admin', 'user'];
@@ -72,12 +72,8 @@ let contactEditor = (
   />
 );
 
-let supplierPublic = (
-  <SupplierPublic supplierId={supplier.supplierId}/>
-);
-
 let searchEditor = (
-  <SupplierSearch />
+  <SupplierSearch supplierId={supplier.supplierId} />
 );
 
 let supplierApproval = (
@@ -100,33 +96,99 @@ let supplierProfileStrenth = (
 
 let supplierAutocomplete = <SupplierAutocomplete />;
 
-const activeStyle = {color:' #ffffff', background: '#006677'};
+let list = <SupplierList onEdit={(id) => console.log(id)} onCreateUser={(id) => console.log(id)} />;
 
-const App = () => (
-  <Layout>
-    <ul className="nav nav-tabs">
-      <li><NavLink exact activeStyle={activeStyle} to='/supplier'>Supplier</NavLink></li>
-      <li><NavLink activeStyle={activeStyle} to='/supplier/search'>Supplier Search</NavLink></li>
-      <li><NavLink activeStyle={activeStyle} to='/supplier/public'>Supplier Public</NavLink></li>
-      <li><NavLink activeStyle={activeStyle} to='/supplier/approval'>Supplier Approval</NavLink></li>
-      <li><NavLink activeStyle={activeStyle} to='/supplier/registration'>Supplier Registration</NavLink></li>
-      <li><NavLink activeStyle={activeStyle} to='/supplier/address'>Supplier Address</NavLink></li>
-      <li><NavLink activeStyle={activeStyle} to='/supplier/contact'>Supplier Contact</NavLink></li>
-      <li><NavLink activeStyle={activeStyle} to='/supplier/bank'>Supplier Bank</NavLink></li>
-      <li><NavLink activeStyle={activeStyle} to='/supplier/profile_strength'>Supplier Profile Strength</NavLink></li>
-      <li><NavLink activeStyle={activeStyle} to='/supplier/autocomplete'>Supplier Autocomplete</NavLink></li>
-    </ul>
-    <Route exact path='/supplier' render={() => editor }/>
-    <Route exact path='/supplier/search' render={() => searchEditor }/>
-    <Route exact path='/supplier/public' render={() => supplierPublic }/>
-    <Route exact path='/supplier/approval' render={() => supplierApproval }/>
-    <Route exact path='/supplier/registration' render={() => registrationEditor }/>
-    <Route exact path='/supplier/address' render={() => addressEditor }/>
-    <Route exact path='/supplier/contact' render={() => contactEditor }/>
-    <Route exact path='/supplier/bank' render={() => bankEditor }/>
-    <Route exact path='/supplier/profile_strength' render={() => supplierProfileStrenth }/>
-    <Route exact path='/supplier/autocomplete' render={() => supplierAutocomplete }/>
-  </Layout>
-);
+var tabData = [
+  { name: 'Registration', isActive: true },
+  { name: 'Editor', isActive: false },
+  { name: 'Approval', isActive: false },
+  { name: 'Address', isActive: false },
+  { name: 'Contact', isActive: false },
+  { name: 'Bank Account', isActive: false },
+  { name: 'Search', isActive: false },
+  { name: 'Profile Strength', isActive: false },
+  { name: 'Autocomplete', isActive: false },
+  { name: 'List', isActive: false }
+];
+
+class Tabs extends React.Component
+{
+  render() {
+    return (
+      <ul className="nav nav-tabs">
+        {tabData.map(tab => {
+          return (
+            <Tab key={tab.name} data={tab} isActive={this.props.activeTab === tab} handleClick={this.props.changeTab.bind(this,tab)} />
+          );
+        })}
+      </ul>
+    );
+  }
+};
+
+class Tab extends React.Component
+{
+  render() {
+    return (
+      <li onClick={this.props.handleClick} className={this.props.isActive ? "active" : null}>
+        <a href="#">{this.props.data.name}</a>
+      </li>
+    );
+  }
+};
+
+class Content extends React.Component
+{
+  render() {
+    return (
+      <div>
+        {this.props.activeTab.name === 'Registration' ? registrationEditor :null}
+        {this.props.activeTab.name === 'Editor' ? editor :null}
+        {this.props.activeTab.name === 'Approval' ? supplierApproval :null}
+        {this.props.activeTab.name === 'Address' ? addressEditor :null}
+        {this.props.activeTab.name === 'Contact' ? contactEditor :null}
+        {this.props.activeTab.name === 'Bank Account' ? bankEditor :null}
+        {this.props.activeTab.name === 'Search' ? searchEditor :null}
+        {this.props.activeTab.name === 'Profile Strength' ? supplierProfileStrenth :null}
+        {this.props.activeTab.name === 'Autocomplete' ? supplierAutocomplete :null}
+        {this.props.activeTab.name === 'List' ? list : null}
+      </div>
+    );
+  }
+};
+
+class Page extends React.Component
+{
+  constructor(props) {
+    super(props);
+    this.state = { activeTab: tabData[0] };
+  }
+
+  handleClick(tab) {
+    this.setState({ activeTab: tab });
+  }
+
+  render() {
+    return (
+      <div>
+        <Tabs activeTab={this.state.activeTab} changeTab={this.handleClick.bind(this)} />
+        <Content activeTab={this.state.activeTab} />
+      </div>
+    );
+  }
+};
+
+
+class App extends React.Component
+{
+  render()
+  {
+    return(
+      <Containers.ServiceLayout serviceName="supplier">
+        <Route exact path='/' component={() => <Page /> }/>
+      </Containers.ServiceLayout>
+    );
+  }
+}
 
 export default App;

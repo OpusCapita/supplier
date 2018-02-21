@@ -47,7 +47,7 @@ let createUserFromContact = function(req, res)
   return SupplierContact.contactExists(req.params.supplierId, contact.id).then(exists => {
     if (!exists) return handleContactNotExistError(res, contact.id, req.opuscapita.logger);
 
-    return userService.getProfile(req.opuscapita.serviceClient, contact.email).then(() => {
+    return userService.get(req.opuscapita.serviceClient, contact.email).then(() => {
       return res.status('409').json({ message : 'User already exists' });
     }).catch(error => {
       if (error.response && error.response.statusCode == '404') {

@@ -24,6 +24,7 @@ base-image/node_modules/
 /lib
 /apidoc
 /src/server/static/bundle.js
+/wiki
 
 # All the below is taken from
 # https://github.com/github/gitignore/blob/master/Node.gitignore
