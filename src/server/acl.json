@@ -15,10 +15,10 @@
       }
     ]
   },
-  "x-tenant-read": {
+    "x-tenant-read": {
       "name": {
-          "en": "Grants read access to all company data.",
-          "de": "Erlaubt den LeseZugriff auf alle Lieferantendaten."
+        "en": "Grants read access to all company data.",
+        "de": "Erlaubt den LeseZugriff auf alle Lieferantendaten."
       },
       "description": {
           "en": "Enables listing and viewing of any supplier data in the system.",
@@ -29,7 +29,7 @@
           "resourceId": "/api/suppliers",
           "actions": ["view"]
       }]
-  },
+    },
   "x-tenant-read-public": {
     "name": {
       "en": "Grants read access to all company's public data.",
