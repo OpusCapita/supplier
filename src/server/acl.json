@@ -66,6 +66,12 @@
       },
       {
         "type": "rest",
+        "resourceId": "/api/suppliers/[^/]+/bank_accounts",
+        "actions": ["view"],
+        "fields": ["accountNumber"]
+      },
+      {
+        "type": "rest",
         "resourceId": "/api/suppliers/[^/]+/capabilities",
         "actions": ["view"]
       }
