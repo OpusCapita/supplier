@@ -1,8 +1,8 @@
 {
   "x-tenant-manage": {
     "name": {
-      "en": "Management all company master data",
-      "de": "Verwaltung aller Unternehmensstammdaten"
+      "en": "Management all company master data.",
+      "de": "Verwaltung aller Unternehmensstammdaten."
     },
     "description": {
       "en": "Suppplier management includes all administrative functions for managing own company data, such as supplier modification, contact, address and bank account creation, edit, and deletion.",
