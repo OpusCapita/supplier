@@ -1,14 +1,12 @@
 {
   "x-tenant-manage": {
-    "translations": {
-      "name": {
-        "en": "Management all company master data",
-        "de": "Verwaltung aller Unternehmensstammdaten"
-      },
-      "description": {
-        "en": "Suppplier management includes all administrative functions for managing own company data, such as supplier modification, contact, address and bank account creation, edit, and deletion.",
-        "de": "Das Lieferantenmanagement umfasst alle administrativen Funktionen für die Verwaltung eigener Unternehmensdaten wie Lieferantenänderung, Kontakt, Adress- und Bankkonto-Erstellung, Bearbeiten und Löschen."
-      }
+    "name": {
+      "en": "Management all company master data.",
+      "de": "Verwaltung aller Unternehmensstammdaten."
+    },
+    "description": {
+      "en": "Suppplier management includes all administrative functions for managing own company data, such as supplier modification, contact, address and bank account creation, edit, and deletion.",
+      "de": "Das Lieferantenmanagement umfasst alle administrativen Funktionen für die Verwaltung eigener Unternehmensdaten wie Lieferantenänderung, Kontakt, Adress- und Bankkonto-Erstellung, Bearbeiten und Löschen."
     },
     "resources": [{
         "type": "rest",
@@ -18,46 +16,46 @@
     ]
   },
     "x-tenant-read": {
-        "translations": {
-            "name": {
-                "en": "Grants read access to all company data.",
-                "de": "Erlaubt den LeseZugriff auf alle Lieferantendaten."
-            },
-            "description": {
-                "en": "Enables listing and viewing of any supplier data in the system.",
-                "de": "Ermöglich das Auflisten und Anzeigen aller Lieferantendaten im System."
-            }
-        },
-        "resources": [{
-            "type": "rest",
-            "resourceId": "/api/suppliers",
-            "actions": ["view"]
-        }]
-    },
-  "x-tenant-read-public": {
-    "translations": {
       "name": {
-        "en": "Grants read access to all company's public data.",
-        "de": "Erlaubt den Lesezugriff auf alle öffentlichen Lieferantendaten."
+        "en": "Grants read access to all company data.",
+        "de": "Erlaubt den LeseZugriff auf alle Lieferantendaten."
       },
       "description": {
-        "en": "Enables viewing of all company's public data such as company profile, public addresses, etc.",
-        "de": "Ermöglicht die Anzeige aller öffentlichen Lieferantendaten, wie Firmenprofil, öffentliche Adressen usw."
-      }
+          "en": "Enables listing and viewing of any supplier data in the system.",
+          "de": "Ermöglich das Auflisten und Anzeigen aller Lieferantendaten im System."
+      },
+      "resources": [{
+          "type": "rest",
+          "resourceId": "/api/suppliers",
+          "actions": ["view"]
+      }]
+    },
+  "x-tenant-read-public": {
+    "name": {
+      "en": "Grants read access to all company's public data.",
+      "de": "Erlaubt den Lesezugriff auf alle öffentlichen Lieferantendaten."
+    },
+    "description": {
+      "en": "Enables viewing of all company's public data such as company profile, public addresses, etc.",
+      "de": "Ermöglicht die Anzeige aller öffentlichen Lieferantendaten, wie Firmenprofil, öffentliche Adressen usw."
     },
     "resources": [{
           "type": "rest",
           "resourceId": "/api/suppliers[/]?$",
           "actions": ["view"],
-          "fields": ["supplierId", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
+          "responseFields": {
+            "allow": ["supplierId", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
                      "vatIdentificationNo", "globalLocationNo", "dunsNo", "homePage", "status", "noVatReason", "addresses", "capabilities"]
+          }
       },
       {
           "type": "rest",
           "resourceId": "/api/suppliers/[^/]+$",
           "actions": ["view"],
-          "fields": ["supplierId", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
+          "responseFields": {
+            "allow": ["supplierId", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
                      "vatIdentificationNo", "globalLocationNo", "dunsNo", "homePage", "status", "noVatReason", "addresses", "capabilities"]
+          }
       },
       {
         "type": "rest",
@@ -68,7 +66,9 @@
         "type": "rest",
         "resourceId": "/api/suppliers/[^/]+/bank_accounts",
         "actions": ["view"],
-        "fields": ["accountNumber"]
+        "responseFields": {
+            "allow" : ["accountNumber"]
+        }
       },
       {
         "type": "rest",
@@ -78,15 +78,13 @@
     ]
   },
   "manage": {
-    "translations": {
-      "name": {
-        "en": "Management of own company master data",
-        "de": "Verwaltung eigener Unternehmensstammdaten"
-      },
-      "description": {
-        "en": "Suppplier management includes all administrative functions for managing own company data, such as supplier modification, contact, address and bank account creation, edit, and deletion.",
-        "de": "Das Lieferantenmanagement umfasst alle administrativen Funktionen für die Verwaltung eigener Unternehmensdaten wie Lieferantenänderung, Kontakt, Adress- und Bankkonto-Erstellung, Bearbeiten und Löschen."
-      }
+    "name": {
+      "en": "Management of own company master data",
+      "de": "Verwaltung eigener Unternehmensstammdaten"
+    },
+    "description": {
+      "en": "Suppplier management includes all administrative functions for managing own company data, such as supplier modification, contact, address and bank account creation, edit, and deletion.",
+      "de": "Das Lieferantenmanagement umfasst alle administrativen Funktionen für die Verwaltung eigener Unternehmensdaten wie Lieferantenänderung, Kontakt, Adress- und Bankkonto-Erstellung, Bearbeiten und Löschen."
     },
     "resources": [{
         "type": "rest",
@@ -131,15 +129,13 @@
     ]
   },
   "read": {
-    "translations": {
-      "name": {
-        "en": "Suppplier own company data view",
-        "de": "Lieferanten eigene Unternehmensdaten Ansicht"
-      },
-      "description": {
-        "en": "View for own company data which such as company profile, contacts, addresses, bank accounts, and profile strength.",
-        "de": "Ansicht für eigene Unternehmensdaten wie Firmenprofil, Kontakte, Adressen, Bankkonten und Profilstärke."
-      }
+    "name": {
+      "en": "Suppplier own company data view",
+      "de": "Lieferanten eigene Unternehmensdaten Ansicht"
+    },
+    "description": {
+      "en": "View for own company data which such as company profile, contacts, addresses, bank accounts, and profile strength.",
+      "de": "Ansicht für eigene Unternehmensdaten wie Firmenprofil, Kontakte, Adressen, Bankkonten und Profilstärke."
     },
     "resources": [{
         "type": "rest",
