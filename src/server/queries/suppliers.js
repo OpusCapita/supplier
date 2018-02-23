@@ -61,6 +61,8 @@ module.exports.create = function(supplier)
 
 module.exports.update = function(supplierId, supplier)
 {
+  [ 'supplierId', 'createdBy', 'createdOn', 'updatedOn' ].forEach(key => delete supplier[key]);
+
   normalize(supplier);
 
   let self = this;
