@@ -112,7 +112,7 @@ let updateSupplier = function(req, res)
 {
   let supplierId = req.params.supplierId;
 
-  if (supplierId !== req.body.supplierId || !req.body.createdBy) {
+  if (supplierId !== req.body.supplierId) {
     const message = 'Inconsistent data';
     req.opuscapita.logger.error('Error when updating Supplier: %s', message);
     return res.status('422').json({ message: message });

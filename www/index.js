@@ -13,7 +13,8 @@ db.init({ consul : { host : 'consul' } })
       webpack: {
         useWebpack: true,
         configFilePath: __dirname + '/../webpack.development.config.js'
-      }
+      },
+      enableBouncer: false
     },
     serviceClient : {
       injectIntoRequest : true,
