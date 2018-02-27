@@ -65,7 +65,10 @@
       {
         "type": "rest",
         "resourceId": "/api/suppliers/[^/]+/bank_accounts",
-        "actions": ["view"]
+        "actions": ["view"],
+        "responseFields": {
+          "allow" : ["accountNumber"]
+        }
       },
       {
         "type": "rest",

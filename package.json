@@ -35,7 +35,7 @@
     "@opuscapita/react-loaders": "^0.1.9",
     "@opuscapita/react-reference-select": "^1.0.4",
     "@opuscapita/service-base-ui": "^1.0.83",
-    "@opuscapita/web-init": "^3.0.13",
+    "@opuscapita/web-init": "^3.0.16",
     "babel-loader": "^7.1.2",
     "babel-runtime": "^6.26.0",
     "bluebird": "^3.5.1",
