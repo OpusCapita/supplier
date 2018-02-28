@@ -1,7 +1,7 @@
 'use strict';
 
 const db = require('ocbesbn-db-init');
-const server = require('ocbesbn-web-init');
+const server = require('@opuscapita/web-init');
 
 db.init({ consul : { host : 'consul' } })
   .then(db => server.init({
@@ -13,7 +13,8 @@ db.init({ consul : { host : 'consul' } })
       webpack: {
         useWebpack: true,
         configFilePath: __dirname + '/../webpack.development.config.js'
-      }
+      },
+      enableBouncer: false
     },
     serviceClient : {
       injectIntoRequest : true,
