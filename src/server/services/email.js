@@ -3,8 +3,6 @@
 const i18n = require('../i18n');
 const Handlebars = require('handlebars');
 const fs = require('fs');
-const RedisEvents = require('ocbesbn-redis-events');
-var events = new RedisEvents({ consul : { host : 'consul' } });
 
 module.exports.sendAccessRequest = function(userProfile, req) {
   const accessi18n = i18n[userProfile.languageId].email.accessRequest;
@@ -15,7 +13,7 @@ module.exports.sendAccessRequest = function(userProfile, req) {
     i18n: accessi18n
   });
 
-  return sendEmail(userProfile.email, accessi18n.subject, html);
+  return sendEmail(req, userProfile.email, accessi18n.subject, html);
 };
 
 module.exports.sendAccessApproval = function(userProfile, req) {
@@ -27,7 +25,7 @@ module.exports.sendAccessApproval = function(userProfile, req) {
     i18n: accessi18n
   });
 
-  return sendEmail(userProfile.email, accessi18n.subject, html);
+  return sendEmail(req, userProfile.email, accessi18n.subject, html);
 };
 
 module.exports.sendAccessRegection = function(userProfile, req) {
@@ -35,11 +33,12 @@ module.exports.sendAccessRegection = function(userProfile, req) {
   const host = getOriginalProtocolHostPort(req);
   const html = Handlebars.compile(template())({ ocUrl:  host + '/bnp', url: '', i18n: accessi18n });
 
-  return sendEmail(userProfile.email, accessi18n.subject, html);
+  return sendEmail(req, userProfile.email, accessi18n.subject, html);
 };
 
-let sendEmail = function(to, subject, html) {
-  return events.emit({ to: to, subject: subject, html: html }, 'email');
+let sendEmail = function(req, to, subject, html) {
+  const body = { to: to, subject: subject, html: html };
+  return req.opuscapita.serviceClient.post('email', '/api/send', body, true);
 };
 
 let template = function() {
