@@ -55,10 +55,16 @@ let createSupplierAccess = function(req, res)
     return Supplier2Users.create(attributes).
       then(supplier2user => {
         return userService.allForSupplierId(req.opuscapita.serviceClient, supplier2user.supplierId).then(users => {
-          for (const user of users) {
-            if (user.roles.includes('supplier-admin')) notifier.notifyUserAccessRequest(user.profile, req);
-          }
-          return res.status('201').json(supplier2user);
+          const notifiersPromises = uses.reduce((arr, user) => {
+            if (user.roles.includes('supplier-admin')) arr.push(notifier.notifyUserAccessRequest(user.profile, req));
+            return arr;
+          }, []);
+          return Promise.all(notifiersPromises).then(() => res.status('201').json(supplier2user)).
+            catch(error => {
+              req.opuscapita.logger.warn('Error when sending email: %s', error.message);
+              supplier2user.warning = error.message;
+              return res.status('201').json(supplier2user);
+            });
         });
       }).
       catch(error => {
@@ -79,11 +85,17 @@ let updateSupplierAccess = function(req, res)
       return Supplier2Users.update(supplier2userId, access).then(supplier2user => {
         if (access.status === 'requested') return res.json(supplier2user);
 
-        userService.getProfile(req.opuscapita.serviceClient, access.userId).then(userProfile => {
-          if (access.status === 'approved') notifier.notifyUserAccessApproval(userProfile, req);
-          if (access.status === 'rejected') notifier.notifyUserAccessRejection(userProfile, req);
+        return userService.getProfile(req.opuscapita.serviceClient, access.userId).then(userProfile => {
+          let notifierPromise;
+          if (access.status === 'approved') notifierPromise = notifier.notifyUserAccessApproval(userProfile, req);
+          if (access.status === 'rejected') notifierPromise = notifier.notifyUserAccessRejection(userProfile, req);
 
-          return res.json(supplier2user);
+          return notifierPromise.then(() => res.json(supplier2user)).
+            catch(error => {
+              req.opuscapita.logger.warn('Error when sending email: %s', error.message);
+              supplier2user.warning = error.message;
+              return res.json(supplier2user);
+            });
         });
       });
     } else {
