@@ -69,7 +69,7 @@ class SupplierConstraints {
 
 let allConstraints = function(i18n) {
   return {
-    supplierName: {
+    name: {
       presence: {
         message: i18n.getMessage('SupplierValidatejs.blank.message')
       },
@@ -81,7 +81,7 @@ let allConstraints = function(i18n) {
       },
       supplierNameExists: {
         message: i18n.getMessage('SupplierValidatejs.supplierExists', {
-          message: i18n.getMessage('SupplierValidatejs.duplicate.supplierName.message')
+          message: i18n.getMessage('SupplierValidatejs.duplicate.name.message')
         })
       }
     },

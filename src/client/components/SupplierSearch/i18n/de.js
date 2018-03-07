@@ -4,7 +4,7 @@ let SupplierSearch = {
   'SupplierSearch.capability.eInvoice-send': 'Rechnung - senden',
   'SupplierSearch.buttonLabel.search': 'Suche',
   'SupplierSearch.modalHeader.title': 'Unternehmensinformationen',
-  'SupplierSearch.tableHeader.supplierName': 'Name des Unternehmens',
+  'SupplierSearch.tableHeader.name': 'Name des Unternehmens',
   'SupplierSearch.tableHeader.cityOfRegistration': 'Stadt',
   'SupplierSearch.tableHeader.countryOfRegistration': 'Land',
   'SupplierSearch.tableHeader.commercialRegisterNo': 'Handelsregisternummer',

@@ -29,7 +29,7 @@ export default class SupplierView extends Component {
   render() {
     return (
       <div className="form-horizontal">
-        { this.renderField({ fieldName: 'supplierName' }) }
+        { this.renderField({ fieldName: 'name' }) }
         { this.renderField({ fieldName: 'homePage' }) }
         { this.renderField({ fieldName: 'foundedOn' }) }
         { this.renderField({ fieldName: 'legalForm' }) }

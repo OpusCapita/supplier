@@ -38,7 +38,7 @@ class SupplierAccessView extends Component {
     const status = this.context.i18n.getMessage(`SupplierRegistrationEditor.Messages.supplierAccessRequestStatus.${this.props.supplierAccess.status}`);
     return (
       <div className="alert alert-info">
-        <h5>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestHeader', { name: this.props.supplier.supplierName })}</h5>
+        <h5>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestHeader', { name: this.props.supplier.name })}</h5>
         {this.renderAccessInformation()}
         <p><strong>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestStatus.text')}: {status}</strong></p>
         {this.renderAccessLink()}

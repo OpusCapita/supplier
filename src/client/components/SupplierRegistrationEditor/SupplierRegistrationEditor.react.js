@@ -84,17 +84,17 @@ class SupplierRegistrationEditor extends Component {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        supplierId: supplier.supplierId,
+        supplierId: supplier.id,
         createdBy: user.id,
         changedBy: user.id,
         isLinkedToUser: true
       }
 
-      return this.contactApi.createContact(supplier.supplierId, contact).then(() => {
+      return this.contactApi.createContact(supplier.id, contact).then(() => {
         console.log('contact created');
 
         if (this.props.onUpdate) {
-          this.props.onUpdate({ supplierId: supplier.supplierId, supplierName: supplier.supplierName });
+          this.props.onUpdate({ id: supplier.id, name: supplier.name });
         }
 
         if (this.props.onChange) {
@@ -159,7 +159,7 @@ class SupplierRegistrationEditor extends Component {
   }
 
   handleAccess = () => {
-    const body = { supplierId: this.state.supplier.supplierId, userId: this.props.user.id };
+    const body = { supplierId: this.state.supplier.id, userId: this.props.user.id };
 
     this.accessApi.grantAccess(body).then(() => this.postSupplierCreate()).catch(errors => {
       if(this.context.showNotification)

@@ -24,7 +24,7 @@ const SupplierValidatejs = {
   'SupplierValidatejs.invalid.swiftCode.message': "Value is not a valid SWIFT Code",
   'SupplierValidatejs.invalid.uniqueIdentifier.message': "Either VAT number, D-U-N-S number, Global Location Number, or IBAN must be provided",
   'SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message': "Either VAT number, D-U-N-S number, or Global Location Number must be provided, or Bank Account must be added",
-  'SupplierValidatejs.duplicate.supplierName.message': "A company already exists with this name.",
+  'SupplierValidatejs.duplicate.name.message': "A company already exists with this name.",
   'SupplierValidatejs.duplicate.registerationNumber.message': "A company already exists with this registration number, city and country.",
   'SupplierValidatejs.duplicate.taxIdNumber.message': "A company already exists with this Tax Identification Number and country.",
   'SupplierValidatejs.duplicate.vatNumber.message': "A company already exists with this VAT number.",

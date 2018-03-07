@@ -20,14 +20,14 @@ export default class SupplierAutocomplete extends Component {
     return (
       <ReferenceAutocomplete
         autocompleteAction={(input) => {
-          const search = input ? { supplierName: input } : {}
+          const search = input ? { name: input } : {}
           return this.supplierApi.getSuppliers(search).then(suppliers => {
             return new Promise((resolve) => resolve({ options: suppliers, complete: false }));
           });
         }}
         value={this.props.value}
-        labelProperty='supplierName'
-        valueProperty='supplierId'
+        labelProperty='name'
+        valueProperty='id'
         onChange={this.props.onChange}
         onBlur={this.props.onBlur}
       />

@@ -4,7 +4,7 @@ const SupplierRegistrationEditor = {
   'SupplierRegistrationEditor.ButtonLabel.request': 'Anfordern',
   'SupplierRegistrationEditor.ButtonLabel.access': 'Zugreifen',
   'SupplierRegistrationEditor.Label.supplier': 'Lieferant',
-  'SupplierRegistrationEditor.Label.supplierName': 'Name des Unternehmens',
+  'SupplierRegistrationEditor.Label.name': 'Name des Unternehmens',
   'SupplierRegistrationEditor.Label.commercialRegisterNo': 'Handelsregisternummer',
   'SupplierRegistrationEditor.Label.cityOfRegistration': 'Ort der Registrierung',
   'SupplierRegistrationEditor.Label.countryOfRegistration': 'Land der Registrierung',

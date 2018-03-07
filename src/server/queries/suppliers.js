@@ -4,10 +4,10 @@ const SqlString = require('sequelize/lib/sql-string');
 
 module.exports.init = function(db, config)
 {
-  db.models.Supplier.hasMany(db.models.SupplierContact, { foreignKey: 'supplierId', sourceKey: 'supplierId' });
-  db.models.Supplier.hasMany(db.models.SupplierAddress, { foreignKey: 'supplierId', sourceKey: 'supplierId' });
-  db.models.Supplier.hasMany(db.models.SupplierBankAccount, { foreignKey: 'supplierId', sourceKey: 'supplierId' });
-  db.models.Supplier.hasMany(db.models.Capability, { foreignKey: 'supplierId', sourceKey: 'supplierId' });
+  db.models.Supplier.hasMany(db.models.SupplierContact, { foreignKey: 'supplierId', sourceKey: 'id' });
+  db.models.Supplier.hasMany(db.models.SupplierAddress, { foreignKey: 'supplierId', sourceKey: 'id' });
+  db.models.Supplier.hasMany(db.models.SupplierBankAccount, { foreignKey: 'supplierId', sourceKey: 'id' });
+  db.models.Supplier.hasMany(db.models.Capability, { foreignKey: 'supplierId', sourceKey: 'id' });
 
   this.db = db;
   return Promise.resolve(this);
@@ -16,8 +16,8 @@ module.exports.init = function(db, config)
 module.exports.all = function(query, includes)
 {
   let queryObj = {};
-  if (query.supplierId) queryObj.supplierId = { $in: query.supplierId.split(',') };
-  if (query.supplierName) queryObj.supplierName = { $like: `%${query.supplierName}%` };
+  if (query.id) queryObj.id = { $in: query.id.split(',') };
+  if (query.name) queryObj.name = { $like: `%${query.name}%` };
 
   const includeModels = associationsFromIncludes(this.db.models, includes);
 
@@ -30,17 +30,18 @@ module.exports.find = function(supplierId, includes)
 {
   const includeModels = associationsFromIncludes(this.db.models, includes);
 
-  return this.db.models.Supplier.findOne({where: { supplierId: supplierId }, include: includeModels}).then(supplier => {
+  return this.db.models.Supplier.findOne({where: { id: supplierId }, include: includeModels}).then(supplier => {
     return supplierWithAssociations(supplier);
   });
 };
 
 module.exports.create = function(supplier)
 {
+  if (!supplier.name) supplier.name = supplier.supplierName;
   normalize(supplier);
 
   const self = this;
-  let supplierId = supplier.supplierName.replace(/[^0-9a-z_\-]/gi, '').slice(0, 27);
+  let supplierId = supplier.name.replace(/[^0-9a-z_\-]/gi, '').slice(0, 27);
 
   function generateSupplierId(id) {
     return self.exists(id).then(exists => {
@@ -53,7 +54,7 @@ module.exports.create = function(supplier)
   }
 
   return generateSupplierId(supplierId).then(id => {
-    supplier.supplierId = id;
+    supplier.id = id;
     supplier.role = 'selling';
     return this.db.models.Supplier.create(supplier);
   });
@@ -61,19 +62,20 @@ module.exports.create = function(supplier)
 
 module.exports.update = function(supplierId, supplier)
 {
-  [ 'supplierId', 'createdBy', 'createdOn', 'updatedOn' ].forEach(key => delete supplier[key]);
+  [ 'id', 'createdBy', 'createdOn', 'updatedOn' ].forEach(key => delete supplier[key]);
 
+  if (supplier.supplierName && !supplier.name) supplier.name = supplier.customerName;
   normalize(supplier);
 
   let self = this;
-  return this.db.models.Supplier.update(supplier, { where: { supplierId: supplierId } }).then(() => {
+  return this.db.models.Supplier.update(supplier, { where: { id: supplierId } }).then(() => {
     return self.find(supplierId, []);
   });
 };
 
 module.exports.delete = function(supplierId)
 {
-  return this.db.models.Supplier.destroy({ where: { supplierId: supplierId } }).then(() => null);
+  return this.db.models.Supplier.destroy({ where: { id: supplierId } }).then(() => null);
 };
 
 module.exports.exists = function(supplierId)
@@ -86,7 +88,7 @@ module.exports.searchAll = function(searchValue, capabilities)
   const model = this.db.models.Supplier;
   const search = searchValue.replace(/\W+/g, '* ') + '*';
   const searchFields = [
-    'SupplierName',
+    'Name',
     'CityOfRegistration',
     'TaxIdentificationNo',
     'VatIdentificationNo',
@@ -96,13 +98,13 @@ module.exports.searchAll = function(searchValue, capabilities)
   ].join(',');
 
   const select = `SELECT ${attributes(model)}, Capability.capabilityId FROM Supplier `;
-  const leftJoin = 'LEFT JOIN Capability ON Supplier.SupplierID = Capability.supplierId ';
+  const leftJoin = 'LEFT JOIN Capability ON Supplier.ID = Capability.supplierId ';
   const matchQuery = `WHERE MATCH (${searchFields}) AGAINST ('${search}' IN BOOLEAN MODE)`;
   let query = select + leftJoin + (searchValue ? matchQuery : '');
 
   if (capabilities.length < 1) return this.db.query(query, { model: model }).then(suppliers => aggregateSeach(suppliers));
 
-  const innerJoin = 'INNER JOIN Capability ON Supplier.SupplierID = Capability.supplierId ';
+  const innerJoin = 'INNER JOIN Capability ON Supplier.ID = Capability.supplierId ';
   const capabilityQuery = capabilities.map(capability => `Capability.capabilityId = ${SqlString.escape(capability)}`).join(' OR ');
 
   query = select + innerJoin + (searchValue ? `${matchQuery} AND ${capabilityQuery}` : `WHERE ${capabilityQuery}`);
@@ -115,7 +117,7 @@ module.exports.searchRecord = function(query)
 
   let rawQueryArray = [];
 
-  if (query.supplierName) rawQueryArray.push(equalSQL('SupplierName', query.supplierName));
+  if (query.name) rawQueryArray.push(equalSQL('Name', query.name));
   if (query.vatIdentificationNo) rawQueryArray.push(equalSQL('VatIdentificationNo', query.vatIdentificationNo));
   if (query.dunsNo) rawQueryArray.push(equalSQL('DUNSNo', query.dunsNo));
   if (query.globalLocationNo) rawQueryArray.push(equalSQL('GlobalLocationNo', query.globalLocationNo));
@@ -140,22 +142,24 @@ module.exports.searchRecord = function(query)
 
   let rawQuery = rawQueryArray.length > 1 ? '(' + rawQueryArray.join(' OR ') + ')' : rawQueryArray[0];
 
-  if (query.supplierId) rawQuery = rawQuery + ` AND Supplier.SupplierID != '${query.supplierId}'`;
+  if (query.id) rawQuery = rawQuery + ` AND Supplier.ID != '${query.id}'`;
 
   const model = this.db.models.Supplier;
   const select = `SELECT ${attributes(model)} FROM Supplier`;
-  const leftJoin = 'LEFT JOIN SupplierBankAccount ON Supplier.SupplierID = SupplierBankAccount.SupplierID';
-  return this.db.query(`${select} ${leftJoin} WHERE ${rawQuery} LIMIT 1`, { model:  model }).then(suppliers => suppliers[0]);
+  const leftJoin = 'LEFT JOIN SupplierBankAccount ON Supplier.ID = SupplierBankAccount.SupplierID';
+  return this.db.query(`${select} ${leftJoin} WHERE ${rawQuery} LIMIT 1`, { model:  model }).then(suppliers => {
+    let supplier = suppliers[0];
+    if (supplier) {
+      supplier.get('supplierId');
+      supplier.get('supplierName');
+    }
+    return supplier;
+  });
 };
 
 module.exports.recordExists = function(supplier)
 {
   return this.searchRecord(supplier).then(supplier => Boolean(supplier));
-};
-
-module.exports.isAuthorized = function(supplierId, changedBy)
-{
-  return this.db.models.Supplier.findById(supplierId).then(supplier => supplier && supplier.changedBy === changedBy);
 };
 
 let randomNumber = function()
@@ -185,6 +189,9 @@ let supplierWithAssociations = function(supplier)
 {
   if (!supplier) return supplier;
 
+  supplier.get('supplierId');
+  supplier.get('supplierName');
+
   supplier.dataValues.contacts = supplier.SupplierContacts;
   supplier.dataValues.addresses = supplier.SupplierAddresses;
   supplier.dataValues.bankAccounts = supplier.SupplierBankAccounts;
@@ -203,7 +210,7 @@ let normalize = function(supplier)
   for (const fieldName of ['vatIdentificationNo', 'dunsNo', 'iban']) {
     if (supplier[fieldName]) supplier[fieldName] = supplier[fieldName].replace(/\s+/g, '');
   }
-  for (const fieldName of ['supplierName', 'commercialRegisterNo', 'cityOfRegistration', 'taxIdentificationNo']) {
+  for (const fieldName of ['name', 'commercialRegisterNo', 'cityOfRegistration', 'taxIdentificationNo']) {
     if (supplier[fieldName]) supplier[fieldName] = supplier[fieldName].trim();
   }
 }
@@ -228,7 +235,9 @@ let equalSQL = function(fieldName, value)
 
 let attributes = function(model)
 {
-  const rawAttributes = model.rawAttributes;
+  let rawAttributes = model.rawAttributes;
+  delete rawAttributes.supplierId;
+  delete rawAttributes.supplierName;
   return Object.keys(rawAttributes).map(fieldName => `Supplier.${rawAttributes[fieldName].field} AS ${fieldName}`).join(', ');
 }
 
@@ -236,13 +245,13 @@ let aggregateSeach = function(suppliers)
 {
   const suppliersById = suppliers.reduce((accumulator, supplier) => {
     const object = supplier.dataValues;
-    if (!accumulator[object.supplierId]) {
-      accumulator[object.supplierId] = JSON.parse(JSON.stringify(object));
-      accumulator[object.supplierId].capabilities = [];
-      delete accumulator[object.supplierId].capabilityId;
+    if (!accumulator[object.id]) {
+      accumulator[object.id] = JSON.parse(JSON.stringify(object));
+      accumulator[object.id].capabilities = [];
+      delete accumulator[object.id].capabilityId;
     }
 
-    if (object.capabilityId) accumulator[object.supplierId].capabilities.push(object.capabilityId);
+    if (object.capabilityId) accumulator[object.id].capabilities.push(object.capabilityId);
     return accumulator;
   }, {});
 

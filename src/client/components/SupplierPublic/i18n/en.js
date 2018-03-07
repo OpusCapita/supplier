@@ -12,7 +12,7 @@ const SupplierPublic = {
   'SupplierPublic.Label.address.country': 'Country',
   'SupplierPublic.Label.address.phoneNumber': 'Phone Number',
   'SupplierPublic.Label.address.email': 'Email',
-  'SupplierPublic.Label.supplier.supplierName': 'Company Name',
+  'SupplierPublic.Label.supplier.name': 'Company Name',
   'SupplierPublic.Label.supplier.cityOfRegistration': 'City Of Registration',
   'SupplierPublic.Label.supplier.homePage': 'Home Page',
   'SupplierPublic.Label.supplier.legalForm': 'Legal form',
