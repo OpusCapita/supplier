@@ -65,7 +65,7 @@ class SupplierAccessRequestForm extends Component {
 
     const { accessReason, supplier } = this.state;
 
-    const supplierAccess = { accessReason: accessReason, supplierId: supplier.supplierId };
+    const supplierAccess = { accessReason: accessReason, supplierId: supplier.id };
     const errors = validator(supplierAccess, this.constraints, { fullMessages: false });
     this.setFieldErrorsState(errors);
 
@@ -93,7 +93,7 @@ class SupplierAccessRequestForm extends Component {
   render() {
     const { accessReason, supplier } = this.state;
 
-    if (!supplier.supplierId) {
+    if (!supplier.id) {
       return null;
     }
 
@@ -103,7 +103,7 @@ class SupplierAccessRequestForm extends Component {
           <form className="form-horizontal">
             <div className="row">
               <div className="col-md-12">
-                { this.renderField({ fieldName: 'supplierName', component: <p>{supplier.supplierName}</p>}) }
+                { this.renderField({ fieldName: 'name', component: <p>{supplier.name}</p>}) }
                 { this.renderField({
                   fieldName: 'accessReason',
                   isRequired: true,
@@ -131,7 +131,7 @@ class SupplierAccessRequestForm extends Component {
           </form>
         </div>
         <div className="col-md-4">
-          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation1', { name: supplier.supplierName })}</p>
+          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation1', { name: supplier.name })}</p>
           <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation2')}</p>
           <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation3')}</p>
           <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation4')}</p>

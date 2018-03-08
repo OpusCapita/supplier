@@ -15,10 +15,7 @@ import SupplierList from '../src/client/components/SupplierList';
 const username = 'john.doe@ncc.com';
 const userRoles = ['supplier-admin', 'user'];
 
-const supplier = {
-  supplierId: "hard001",
-  supplierName: "Hardware AG",
-};
+const supplierId = "hard001";
 
 const onboardingSupplier = {
   supplierName: "E-Farm AG",
@@ -40,7 +37,7 @@ const onboardingUser = {
 let editor = (
   <SupplierEditor
     key='company'
-    supplierId={supplier.supplierId}
+    supplierId={supplierId}
     username={username}
     userRoles={userRoles}
   />
@@ -57,7 +54,7 @@ let registrationEditor = (
 let addressEditor = (
   <SupplierAddressEditor
     key='address'
-    supplierId={supplier.supplierId}
+    supplierId={supplierId}
     username={username}
     userRoles={userRoles}
   />
@@ -66,32 +63,32 @@ let addressEditor = (
 let contactEditor = (
   <SupplierContactEditor
     key='contact'
-    supplierId={supplier.supplierId}
+    supplierId={supplierId}
     username={username}
     userRoles={userRoles}
   />
 );
 
 let searchEditor = (
-  <SupplierSearch supplierId={supplier.supplierId} />
+  <SupplierSearch supplierId={supplierId} />
 );
 
 let supplierApproval = (
-  <SupplierApproval supplierId={supplier.supplierId} />
+  <SupplierApproval supplierId={supplierId} />
 );
 
 let bankEditor = (
   <SupplierBankEditor
     key='contact'
     readOnly={false}
-    supplierId={supplier.supplierId}
+    supplierId={supplierId}
     username={username}
     userRoles={userRoles}
   />
 );
 
 let supplierProfileStrenth = (
-  <SupplierProfileStrength supplierId={supplier.supplierId} />
+  <SupplierProfileStrength supplierId={supplierId} />
 );
 
 let supplierAutocomplete = <SupplierAutocomplete />;

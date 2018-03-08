@@ -12,8 +12,8 @@ module.exports = function(app, db, config) {
     app.get('/api/suppliers/exists', (req, res) => existsSuppliers(req, res));
     app.get('/api/suppliers/search', (req, res) => querySupplier(req, res));
     app.post('/api/suppliers', (req, res) => createSuppliers(req, res));
-    app.get('/api/suppliers/:supplierId', (req, res) => sendSupplier(req, res));
-    app.put('/api/suppliers/:supplierId', (req, res) => updateSupplier(req, res));
+    app.get('/api/suppliers/:id', (req, res) => sendSupplier(req, res));
+    app.put('/api/suppliers/:id', (req, res) => updateSupplier(req, res));
   });
 };
 
@@ -21,7 +21,7 @@ let sendSupplier = function(req, res)
 {
   const includes = req.query.include ? req.query.include.split(',') : [];
 
-  Supplier.find(req.params.supplierId, includes).then(supplier =>
+  Supplier.find(req.params.id, includes).then(supplier =>
   {
     if (supplier) {
       res.json(supplier);
@@ -78,7 +78,7 @@ let createSuppliers = function(req, res)
       return Supplier.create(newSupplier)
         .then(supplier => this.events.emit(supplier, 'supplier').then(() => supplier))
         .then(supplier => {
-          const supplierId = supplier.supplierId;
+          const supplierId = supplier.id;
           const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
 
           return userService.update(req.opuscapita.serviceClient, supplier.createdBy, user).then(() => {
@@ -110,21 +110,13 @@ let createSuppliers = function(req, res)
 
 let updateSupplier = function(req, res)
 {
-  let supplierId = req.params.supplierId;
+  let supplierId = req.params.id;
 
-  if (supplierId !== req.body.supplierId) {
+  if (supplierId !== req.body.id) {
     const message = 'Inconsistent data';
     req.opuscapita.logger.error('Error when updating Supplier: %s', message);
     return res.status('422').json({ message: message });
   }
-
-  Supplier.isAuthorized(supplierId, req.body.changedBy).then(authorized => {
-    if (!authorized) {
-      const message = 'Operation is not authorized';
-      req.opuscapita.logger.error('Error when updating Supplier: %s', message);
-      return res.status('403').json({ message: message });
-    }
-  });
 
   Supplier.exists(supplierId).then(exists =>
   {
@@ -151,7 +143,7 @@ let createBankAccount = function(iban, supplier)
 
   const bankAccount = {
     accountNumber: iban,
-    supplierId: supplier.supplierId,
+    supplierId: supplier.id,
     createdBy: supplier.createdBy,
     changedBy: supplier.createdBy
   };

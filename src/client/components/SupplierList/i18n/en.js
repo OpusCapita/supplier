@@ -1,7 +1,7 @@
 let SupplierList = {
   'SupplierList.heading': 'Supplier List',
-  'SupplierList.label.supplierName': 'Company Name',
-  'SupplierList.label.supplierId': 'Company ID',
+  'SupplierList.label.name': 'Company Name',
+  'SupplierList.label.id': 'Company ID',
   'SupplierList.button.edit': 'Edit',
   'SupplierList.button.createUser': 'Create User'
 };

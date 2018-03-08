@@ -5,9 +5,9 @@ const bankAccountApi = new BankAccount();
 
 module.exports.supplierNameExists = function(validate) {
   return validate.validators.supplierNameExists = function(value, options, key, attributes) {
-    let queryParams = { supplierName: value };
+    let queryParams = { name: value };
 
-    return recordExists(value, validate, queryParams, options.message, attributes.supplierId);
+    return recordExists(value, validate, queryParams, options.message, attributes.id);
   };
 };
 
@@ -15,7 +15,7 @@ module.exports.vatNumberExists = function(validate) {
   return validate.validators.vatNumberExists = function(value, options, key, attributes) {
     let queryParams = { vatIdentificationNo: value };
 
-    return recordExists(value, validate, queryParams, options.message, attributes.supplierId);
+    return recordExists(value, validate, queryParams, options.message, attributes.id);
   };
 };
 
@@ -23,7 +23,7 @@ module.exports.dunsNumberExists = function(validate) {
   return validate.validators.dunsNumberExists = function(value, options, key, attributes) {
     let queryParams = { dunsNo: value };
 
-    return recordExists(value, validate, queryParams, options.message, attributes.supplierId);
+    return recordExists(value, validate, queryParams, options.message, attributes.id);
   };
 };
 
@@ -31,7 +31,7 @@ module.exports.globalLocationNumberExists = function(validate) {
   return validate.validators.globalLocationNumberExists = function(value, options, key, attributes) {
     let queryParams = { globalLocationNo: value }
 
-    return recordExists(value, validate, queryParams, options.message, attributes.supplierId);
+    return recordExists(value, validate, queryParams, options.message, attributes.id);
   };
 };
 
@@ -50,7 +50,7 @@ module.exports.taxIdNumberExists = function(validate) {
       cityOfRegistration: attributes.cityOfRegistration
     };
 
-    return recordExists(attributes.taxIdentificationNo, validate, queryParams, options.message, attributes.supplierId);
+    return recordExists(attributes.taxIdentificationNo, validate, queryParams, options.message, attributes.id);
   };
 };
 
@@ -62,7 +62,7 @@ module.exports.registerationNumberExists = function(validate) {
       countryOfRegistration: attributes.countryOfRegistration
     };
 
-    return recordExists(attributes.commercialRegisterNo, validate, queryParams, options.message, attributes.supplierId);
+    return recordExists(attributes.commercialRegisterNo, validate, queryParams, options.message, attributes.id);
   };
 };
 
@@ -73,9 +73,9 @@ module.exports.uniqueIdentifierWithBankAccount = function(validate) {
       const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo];
       if (uniqueIdentifier.isValid(fields)) { resolve(); return; }
 
-      if (!attributes.supplierId) { resolve(); return; }
+      if (!attributes.id) { resolve(); return; }
 
-      bankAccountApi.getBankAccounts(attributes.supplierId).then(accounts => {
+      bankAccountApi.getBankAccounts(attributes.id).then(accounts => {
         if (accounts.length > 0) {
           resolve();
         } else {
@@ -90,7 +90,7 @@ let recordExists = function(value, validate, queryParams, errorMessage, supplier
   return new validate.Promise((resolve, reject) => {
     if (!value) { resolve(); return; }
 
-    if (supplierId) queryParams.supplierId = supplierId;
+    if (supplierId) queryParams.id = supplierId;
 
     supplierApi.supplierExists(queryParams).then(supplier => {
       if (supplier) {

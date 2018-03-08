@@ -17,8 +17,8 @@ let Select = {};
 Select.country = 'Select country...';
 
 let Label = {
-  supplierName: {},
-  supplierId: {},
+  name: {},
+  id: {},
   homePage: {},
   role: {},
   buying: {},
@@ -35,8 +35,8 @@ let Label = {
   isNewSupplier: {},
   supplier: {}
 };
-Label.supplierName.label = 'Company Name';
-Label.supplierId.label = 'Company ID';
+Label.name.label = 'Company Name';
+Label.id.label = 'Company ID';
 Label.homePage.label = 'Home Page';
 Label.role.label = 'Role';
 Label.buying.label = 'Buying';

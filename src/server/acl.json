@@ -44,7 +44,7 @@
           "resourceId": "/api/suppliers[/]?$",
           "actions": ["view"],
           "responseFields": {
-            "allow": ["supplierId", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
+            "allow": ["id", "supplierId", "name", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
                      "vatIdentificationNo", "globalLocationNo", "dunsNo", "homePage", "status", "noVatReason", "addresses", "capabilities"]
           }
       },
@@ -53,7 +53,7 @@
           "resourceId": "/api/suppliers/[^/]+$",
           "actions": ["view"],
           "responseFields": {
-            "allow": ["supplierId", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
+            "allow": ["id", "supplierId", "name", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
                      "vatIdentificationNo", "globalLocationNo", "dunsNo", "homePage", "status", "noVatReason", "addresses", "capabilities"]
           }
       },

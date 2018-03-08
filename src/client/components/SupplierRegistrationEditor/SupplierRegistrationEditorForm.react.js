@@ -190,7 +190,7 @@ class SupplierRegistrationEditorForm extends Component {
           <form className="form-horizontal">
             <div className="row">
               <div className="col-md-12">
-                { this.renderField({ fieldName: 'supplierName' }) }
+                { this.renderField({ fieldName: 'name' }) }
                 { this.renderField({ fieldName: 'commercialRegisterNo' }) }
                 { this.renderField({ fieldName: 'cityOfRegistration' }) }
                 { this.renderField({

@@ -107,12 +107,8 @@ class SupplierEditor extends Component {
       if(this.context.showNotification)
         this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.saved'), 'info')
 
-      if (this.props.onUpdate && this.props.supplierId !== supplier.supplierId) {
-        // Informing wrapper app (BNP/SIM) about supplier change.
-        this.props.onUpdate({
-          supplierId: supplier.supplierId,
-          supplierName: supplier.supplierName
-        });
+      if (this.props.onUpdate && this.props.supplierId !== supplier.id) {
+        this.props.onUpdate({ id: supplier.id, name: supplier.name });
       }
 
       if (this.props.onChange) {
