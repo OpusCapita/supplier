@@ -24,6 +24,7 @@ let sendSupplier = function(req, res)
   Supplier.find(req.params.id, includes).then(supplier =>
   {
     if (supplier) {
+      res.opuscapita.setNoCache();
       res.json(supplier);
     } else {
       res.status('404').json(supplier);
