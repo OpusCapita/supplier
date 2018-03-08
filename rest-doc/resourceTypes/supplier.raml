@@ -3,16 +3,16 @@ description: Work with `Supplier` objects.
 get:
     description: List of `Supplier` objects.
     queryParameters:
-        supplierName:
+        name:
             type: string
             required: false
-            description: Limit the output to the suppliers with name contained passed supplierName.
-            example: supplierName=hardware
-        supplierId:
+            description: Limit the output to the suppliers with name contained in passed name.
+            example: name=hardware
+        id:
             type: string
             required: false
-            description: Limits the output to the passed supplierIds.
-            example: supplierId=admin,foo,bar
+            description: Limits the output to the passed supplier ids.
+            example: id=admin,foo,bar
         include:
             type: string
             required: false
@@ -35,10 +35,10 @@ post:
                     type: Supplier
         409:
             description:
-                A supplier with the same supplierId but different set of properties already exists.
-/{supplierId}:
+                A supplier with the same id but different set of properties already exists.
+/{id}:
     uriParameters:
-        supplierId:
+        id:
             type: string
             description: Identifier of a supplier.
     get:
