@@ -2,10 +2,14 @@ type: object
 displayName: Supplier
 description: Object representing a single supplier item.
 properties:
-    supplierName:
+    name:
         type: string
         description: The official name of the company as registered, e.g. OpusCapita Software GmbH
         required: true
+    supplierName:
+        type: string
+        description: Deprecated
+        required: false
     foundedOn:
         type: string
     legalForm:
