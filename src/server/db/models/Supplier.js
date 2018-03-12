@@ -2,12 +2,12 @@
 const Sequelize = require('sequelize');
 const { VAT, DUNS, GLN } = require('@opuscapita/field-validators');
 
-module.exports = function(sequelize) {
+module.exports.init = function(db) {
   /**
    * Supplier - organization that provides Products to buyers.
    * @class Supplier
    */
-  let Supplier = sequelize.define('Supplier',
+  let Supplier = db.define('Supplier',
   /** @lends Supplier */
   {
     /** Unique identifier */
@@ -177,5 +177,5 @@ module.exports = function(sequelize) {
     tableName: 'Supplier' // needs to be just supplier in future
   });
 
-  return Supplier;
+  return Promise.resolve();
 };

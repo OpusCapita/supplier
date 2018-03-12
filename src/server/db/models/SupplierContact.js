@@ -1,8 +1,8 @@
 'use strict';
 const Sequelize = require('sequelize');
 
-module.exports = function(sequelize) {
-  let SupplierContact = sequelize.define('SupplierContact', {
+module.exports.init = function(db) {
+  let SupplierContact = db.define('SupplierContact', {
     id: {
       type: Sequelize.STRING(50),
       primaryKey: true,
@@ -84,5 +84,5 @@ module.exports = function(sequelize) {
     tableName: 'SupplierContact'
   });
 
-  return SupplierContact;
+  return Promise.resolve();
 };

@@ -2,12 +2,12 @@
 const Sequelize = require('sequelize');
 const { IBAN, BIC } = require('@opuscapita/field-validators');
 
-module.exports = function (sequelize, config) {
+module.exports.init = function (db, config) {
   /**
    * Supplier bank account.
    * @class SupplierBankAccount
    */
-  return sequelize.define('SupplierBankAccount',
+  let SupplierBankAccount = db.define('SupplierBankAccount',
     /** @lends SupplierBankAccount */
     {
       id: {
@@ -98,4 +98,6 @@ module.exports = function (sequelize, config) {
       freezeTableName: true,
       tableName: 'SupplierBankAccount'
     });
+
+  return Promise.resolve();
 };

@@ -1,13 +1,13 @@
 'use strict';
 const Sequelize = require('sequelize');
 
-module.exports = function(sequelize) {
+module.exports.init = function(db) {
   /**
    * <p>Address of {@link com.jcatalog.businesspartner.BusinessPartner}. Business
    * partners can have different types of addresses that are associated using
    * <tt>XXX2Address</tt> tables.</p>
    */
-  let SupplierAddress = sequelize.define('SupplierAddress', {
+  let SupplierAddress = db.define('SupplierAddress', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -140,5 +140,5 @@ module.exports = function(sequelize) {
     tableName: 'SupplierAddress'
   });
 
-  return SupplierAddress;
+  return Promise.resolve();
 };
