@@ -77,7 +77,10 @@ let createSuppliers = function(req, res)
       newSupplier.status = 'new';
 
       return Supplier.create(newSupplier)
-        .then(supplier => this.events.emit(supplier, 'supplier').then(() => supplier))
+        .then(supplier => Promise.all([
+          req.opuscapita.eventClient.emit('supplier.supplier', supplier),
+          this.events.emit(supplier, 'supplier')])
+        .then(() => supplier))
         .then(supplier => {
           const supplierId = supplier.id;
           const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
@@ -86,7 +89,10 @@ let createSuppliers = function(req, res)
               supplier.status = 'assigned';
               const supp = supplier.dataValues;
               Promise.all([Supplier.update(supplierId, supp), createBankAccount(iban, supp)]).spread((supplier, account) => {
-                return this.events.emit(supplier, 'supplier').then(() => res.status('200').json(supplier));
+                return Promise.all([
+                  req.opuscapita.eventClient.emit('supplier.supplier', supplier),
+                  this.events.emit(supplier, 'supplier')
+                ]).then(() => res.status('200').json(supplier));
               });
             })
             .catch(error => {
@@ -124,7 +130,10 @@ let updateSupplier = function(req, res)
     if(exists) {
       req.body.status = 'updated';
       return Supplier.update(supplierId, req.body).then(supplier => {
-        return this.events.emit(supplier, 'supplier').then(() => res.status('200').json(supplier));
+        return Promise.all([
+          req.opuscapita.eventClient.emit('supplier.supplier', supplier),
+          this.events.emit(supplier, 'supplier')
+        ]).then(() => res.status('200').json(supplier));
       });
     } else {
       const message = 'A supplier with ID ' + supplierId + ' does not exist.';

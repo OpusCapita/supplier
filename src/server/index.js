@@ -9,7 +9,8 @@ const serverConfig = (db) => ({
   server: {
     staticFilePath: __dirname + '/static',
     port : process.env.PORT || 3001,
-    enableBouncer: true
+    enableBouncer: true,
+    enableEventClient : true
   },
   routes: { dbInstance: db },
   serviceClient : {
