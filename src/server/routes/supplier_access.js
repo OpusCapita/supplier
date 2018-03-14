@@ -1,11 +1,10 @@
 const Supplier2Users = require('../queries/supplier2users');
 const Suppliers = require('../queries/suppliers');
-const notifier = require('../services/notifier');
+const notification = require('../services/notification');
 const userService = require('../services/user');
 
 module.exports = function(app, db, config) {
-Promise.all([Supplier2Users.init(db, config), Suppliers.init(db, config)]).then(() =>
-  {
+  Promise.all([Supplier2Users.init(db, config), Suppliers.init(db, config)]).then(() => {
     app.post('/api/supplier_access', (req, res) => createSupplierAccess(req, res));
     app.get('/api/supplier_access', (req, res) => sendSupplierAccesses(req, res));
     app.put('/api/supplier_access/:id', (req, res) => updateSupplierAccess(req, res));
@@ -45,58 +44,62 @@ let sendSupplierAccess = function(req, res)
   });
 };
 
-let createSupplierAccess = function(req, res)
+let createSupplierAccess = async function(req, res)
 {
   const attributes = req.body;
-  return Supplier2Users.find(attributes.userId).then(supplier2user => {
-    if (supplier2user) return res.status('200').json(supplier2user);
+  const supp2user = await Supplier2Users.find(attributes.userId);
 
-    attributes.status = 'requested';
-    return Supplier2Users.create(attributes).
-      then(supplier2user => {
-        return userService.allForSupplierId(req.opuscapita.serviceClient, supplier2user.supplierId).then(users => {
-          const notifiersPromises = uses.reduce((arr, user) => {
-            if (user.roles.includes('supplier-admin')) arr.push(notifier.notifyUserAccessRequest(user.profile, req));
-            return arr;
-          }, []);
-          return Promise.all(notifiersPromises).then(() => res.status('201').json(supplier2user)).
-            catch(error => {
-              req.opuscapita.logger.warn('Error when sending email: %s', error.message);
-              supplier2user.warning = error.message;
-              return res.status('201').json(supplier2user);
-            });
+  if (supp2user) return res.status('200').json(supp2user);
+
+  attributes.status = 'requested';
+  return Supplier2Users.create(attributes).then(async supplier2user => {
+    const serviceClient = req.opuscapita.serviceClient;
+    const requestUser = await userService.getProfile(serviceClient, supplier2user.userId);
+
+    return userService.allForSupplierId(serviceClient, supplier2user.supplierId).then(users => {
+      const userIds = uses.reduce((arr, user) => {
+        if (user.roles.includes('supplier-admin')) arr.push(user.id);
+        return arr;
+      }, []);
+
+      return notification.accessRequest(serviceClient, requestUser, userIds, req).then(() => res.status('201').json(supplier2user)).
+        catch(error => {
+          req.opuscapita.logger.warn('Error when sending email: %s', error.message);
+          supplier2user.warning = error.message;
+          return res.status('201').json(supplier2user);
         });
-      }).
-      catch(error => {
-        req.opuscapita.logger.error('Error when creating Supplier2User: %s', error.message);
+    });
+  }).
+  catch(error => {
+    req.opuscapita.logger.error('Error when creating Supplier2User: %s', error.message);
 
-        return res.status('400').json({ message : error.message });
-      });
+    return res.status('400').json({ message : error.message });
   });
 }
 
-let updateSupplierAccess = function(req, res)
+let updateSupplierAccess = async function(req, res)
 {
   const supplier2userId = req.params.id;
 
   return Supplier2Users.exists(supplier2userId).then(exists => {
     if (exists) {
       const access = req.body;
-      return Supplier2Users.update(supplier2userId, access).then(supplier2user => {
-        if (access.status === 'requested') return res.json(supplier2user);
+      return Supplier2Users.update(supplier2userId, access).then(async supplier2user => {
+        if (supplier2user.status === 'requested') return res.json(supplier2user);
 
-        return userService.getProfile(req.opuscapita.serviceClient, access.userId).then(userProfile => {
-          let notifierPromise;
-          if (access.status === 'approved') notifierPromise = notifier.notifyUserAccessApproval(userProfile, req);
-          if (access.status === 'rejected') notifierPromise = notifier.notifyUserAccessRejection(userProfile, req);
+        const serviceClient = req.opuscapita.serviceClient;
+        const userId = supplier2user.userId;
+        const supplier = await Suppliers.find(supplier2user.supplierId);
+        let notificationPromise;
+        if (supplier2user.status === 'approved') notificationPromise = notification.accessApproval(serviceClient, supplier, [userId], req);
+        if (supplier2user.status === 'rejected') notificationPromise = notification.accessRejection(serviceClient, supplier, [userId], req);
 
-          return notifierPromise.then(() => res.json(supplier2user)).
-            catch(error => {
-              req.opuscapita.logger.warn('Error when sending email: %s', error.message);
-              supplier2user.warning = error.message;
-              return res.json(supplier2user);
-            });
-        });
+        return notificationPromise.then(() => res.json(supplier2user)).
+          catch(error => {
+            req.opuscapita.logger.warn('Error when sending email: %s', error.message);
+            supplier2user.warning = error.message;
+            return res.json(supplier2user);
+          });
       });
     } else {
       const message = 'No supplier_access with Id ' + supplier2userId + ' exists.'
