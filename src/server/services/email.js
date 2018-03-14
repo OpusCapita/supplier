@@ -15,7 +15,8 @@ module.exports.sendAccessRequest = function(userProfile, req) {
     i18n: accessi18n
   });
 
-  return sendEmail(userProfile.email, accessi18n.subject, html);
+  req.opuscapita.logger.info("AccessRequest email requested: ", userProfile);
+  // return sendEmail(userProfile.email, accessi18n.subject, html);
 };
 
 module.exports.sendAccessApproval = function(userProfile, req) {
