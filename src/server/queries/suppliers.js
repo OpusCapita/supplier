@@ -28,7 +28,7 @@ module.exports.all = function(query, includes)
 
 module.exports.find = function(supplierId, includes)
 {
-  const includeModels = associationsFromIncludes(this.db.models, includes);
+  const includeModels = associationsFromIncludes(this.db.models, includes || []);
 
   return this.db.models.Supplier.findOne({where: { id: supplierId }, include: includeModels}).then(supplier => {
     return supplierWithAssociations(supplier);

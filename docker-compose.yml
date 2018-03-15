@@ -11,6 +11,7 @@ services:
       - acl
       - auth
       - api-registry
+      - rabbitmq
     labels:
       SERVICE_NAME: 'supplier'  # Service name used by Registrator for adding to Consul's service discovery registry.
       SERVICE_TAGS: 'kong'
@@ -141,6 +142,28 @@ services:
     depends_on:
       - kong
       - consul
+    command: 'npm run dev'
+
+  notification:
+    image: opuscapita/notification:dev
+    depends_on:
+      - mysql
+      - consul
+      - rabbitmq
+      - registrator
+    labels:
+      SERVICE_NAME: 'notification'
+      SERVICE_TAGS: 'external,kong'
+    environment:
+      SERVICE_3011_CHECK_HTTP: /api/health/check
+      SERVICE_3011_CHECK_INTERVAL: 15s
+      SERVICE_3011_CHECK_TIMEOUT: 3s
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      RABBITMQ_PASS: ${RABBITMQ_PASS}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+    ports:
+      - '3011:3011'
     command: 'npm run dev'
 
   kong:
