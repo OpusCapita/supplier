@@ -58,7 +58,7 @@ let createSupplierAccess = async function(req, res)
     const supplier = await Suppliers.find(supplier2user.supplierId);
 
     return userService.allForSupplierId(serviceClient, supplier2user.supplierId).then(users => {
-      const userIds = uses.reduce((arr, user) => {
+      const userIds = users.reduce((arr, user) => {
         if (user.roles.includes('supplier-admin')) arr.push(user.id);
         return arr;
       }, []);
