@@ -55,6 +55,7 @@ let createSupplierAccess = async function(req, res)
   return Supplier2Users.create(attributes).then(async supplier2user => {
     const serviceClient = req.opuscapita.serviceClient;
     const requestUser = await userService.getProfile(serviceClient, supplier2user.userId);
+    const supplier = await Suppliers.find(supplier2user.supplierId);
 
     return userService.allForSupplierId(serviceClient, supplier2user.supplierId).then(users => {
       const userIds = uses.reduce((arr, user) => {
@@ -62,7 +63,7 @@ let createSupplierAccess = async function(req, res)
         return arr;
       }, []);
 
-      return notification.accessRequest(serviceClient, requestUser, userIds, req).then(() => res.status('201').json(supplier2user)).
+      return notification.accessRequest({ serviceClient, supplier, requestUser, userIds, req }).then(() => res.status('201').json(supplier2user)).
         catch(error => {
           req.opuscapita.logger.warn('Error when sending email: %s', error.message);
           supplier2user.warning = error.message;
@@ -88,11 +89,11 @@ let updateSupplierAccess = async function(req, res)
         if (supplier2user.status === 'requested') return res.json(supplier2user);
 
         const serviceClient = req.opuscapita.serviceClient;
-        const userId = supplier2user.userId;
+        const userIds = [supplier2user.userId];
         const supplier = await Suppliers.find(supplier2user.supplierId);
         let notificationPromise;
-        if (supplier2user.status === 'approved') notificationPromise = notification.accessApproval(serviceClient, supplier, [userId], req);
-        if (supplier2user.status === 'rejected') notificationPromise = notification.accessRejection(serviceClient, supplier, [userId], req);
+        if (supplier2user.status === 'approved') notificationPromise = notification.accessApproval({ serviceClient, supplier, userIds, req });
+        if (supplier2user.status === 'rejected') notificationPromise = notification.accessRejection({ serviceClient, supplier, userIds, req });
 
         return notificationPromise.then(() => res.json(supplier2user)).
           catch(error => {

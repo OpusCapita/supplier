@@ -1,16 +1,16 @@
 const { en, de } = require('../i18n');
 
-module.exports.accessRequest = function(serviceClient, requestUser, userIds, req) {
+module.exports.accessRequest = function({ serviceClient, supplier, requestUser, userIds, req }) {
   const link = getHostUrl(req) + '/bnp/supplierInformation?tab=accessApproval';
   const translations = {
-    en: { ...en.notification.accessRequest(requestUser, link), isDefault: true },
-    de: { ...de.notification.accessRequest(requestUser, link) }
+    en: { ...en.notification.accessRequest(supplier.supplierName, requestUser, link), isDefault: true },
+    de: { ...de.notification.accessRequest(supplier.supplierName, requestUser, link) }
   }
 
   return sendNotification(serviceClient, link, translations, userIds);
 };
 
-module.exports.accessApproval = function(serviceClient, supplier, userIds, req) {
+module.exports.accessApproval = function({  serviceClient, supplier, userIds, req }) {
   const link = getHostUrl(req) + '/bnp/supplierRegistration';
   const translations = {
     en: { ...en.notification.accessApproval(supplier.supplierName, link), isDefault: true },
@@ -20,7 +20,7 @@ module.exports.accessApproval = function(serviceClient, supplier, userIds, req) 
   return sendNotification(serviceClient, link, translations, userIds);
 };
 
-module.exports.accessRejection = function(serviceClient, supplier, userIds, req) {
+module.exports.accessRejection = function({ serviceClient, supplier, userIds, req }) {
   const link = getHostUrl(req) + '/bnp/supplierRegistration';
   const translations = {
     en: { ...en.notification.accessRejection(supplier.name), isDefault: true },
