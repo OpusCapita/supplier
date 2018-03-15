@@ -6,7 +6,7 @@ module.exports = {
         description: `
           The user <strong>${user.firstName} ${user.lastName} (${user.email})</strong> has requested access to your company account <strong>${supplierName}</strong>.<br />
           <br />
-          Please click this <a href="${link}">link</a> to approve or reject the request.
+          Please click this <a href="${link}">link</a> to view details of the request.
         `
       }
     },
