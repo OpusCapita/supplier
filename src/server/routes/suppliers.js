@@ -78,7 +78,7 @@ let createSuppliers = function(req, res)
 
       return Supplier.create(newSupplier)
         .then(supplier => Promise.all([
-          req.opuscapita.eventClient.emit('supplier.supplier', supplier),
+          req.opuscapita.eventClient.emit('supplier.supplier.create', supplier),
           this.events.emit(supplier, 'supplier')])
         .then(() => supplier))
         .then(supplier => {
@@ -90,7 +90,7 @@ let createSuppliers = function(req, res)
               const supp = supplier.dataValues;
               Promise.all([Supplier.update(supplierId, supp), createBankAccount(iban, supp)]).spread((supplier, account) => {
                 return Promise.all([
-                  req.opuscapita.eventClient.emit('supplier.supplier', supplier),
+                  req.opuscapita.eventClient.emit('supplier.supplier.update', supplier),
                   this.events.emit(supplier, 'supplier')
                 ]).then(() => res.status('200').json(supplier));
               });
@@ -131,7 +131,7 @@ let updateSupplier = function(req, res)
       req.body.status = 'updated';
       return Supplier.update(supplierId, req.body).then(supplier => {
         return Promise.all([
-          req.opuscapita.eventClient.emit('supplier.supplier', supplier),
+          req.opuscapita.eventClient.emit('supplier.supplier.update', supplier),
           this.events.emit(supplier, 'supplier')
         ]).then(() => res.status('200').json(supplier));
       });
