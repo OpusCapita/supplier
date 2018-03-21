@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import validationMessages from '../../utils/validatejs/i18n';
-import i18nMessages from './i18n';
+import i18nMessages from '../../i18n';
 import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
 import DisplayField from '../../components/DisplayTable/DisplayField.react';
 import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
@@ -51,7 +51,7 @@ class SupplierAddressEditor extends Component {
 
   componentWillMount(){
     this.context.i18n.register('SupplierValidatejs', validationMessages);
-    this.context.i18n.register('SupplierAddressEditor', i18nMessages);
+    this.context.i18n.register('Supplier', i18nMessages);
   }
 
   componentDidMount() {
@@ -230,17 +230,17 @@ class SupplierAddressEditor extends Component {
       result = (
         <div className='table-responsive'>
           <DisplayTable headers={[
-              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.type')},
-              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.street')},
-              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.zipCode')},
-              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.city')},
-              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.countryId')},
-              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.phoneNo')},
-              {label: this.context.i18n.getMessage('SupplierAddressEditor.Label.faxNo')}
+              {label: this.context.i18n.getMessage('Supplier.Address.Label.type')},
+              {label: this.context.i18n.getMessage('Supplier.Address.Label.street1')},
+              {label: this.context.i18n.getMessage('Supplier.Address.Label.zipCode')},
+              {label: this.context.i18n.getMessage('Supplier.Address.Label.city')},
+              {label: this.context.i18n.getMessage('Supplier.Address.Label.countryId')},
+              {label: this.context.i18n.getMessage('Supplier.Address.Label.phoneNo')},
+              {label: this.context.i18n.getMessage('Supplier.Address.Label.faxNo')}
           ]}>
             { supplierAddresses.map((address, index) =>
               (<DisplayRow key={index}>
-                <DisplayField>{this.context.i18n.getMessage(`SupplierAddressEditor.AddressType.${address.type}`)}</DisplayField>
+                <DisplayField>{this.context.i18n.getMessage(`Supplier.Address.Type.${address.type}`)}</DisplayField>
                 <DisplayField>{address.street1}</DisplayField>
                 <DisplayField>{address.zipCode}</DisplayField>
                 <DisplayField>{address.city}</DisplayField>
@@ -260,7 +260,7 @@ class SupplierAddressEditor extends Component {
     return (
       <div>
         <div>
-          <h4 className='tab-description'>{this.context.i18n.getMessage('SupplierAddressEditor.Title')}</h4>
+          <h4 className='tab-description'>{this.context.i18n.getMessage('Supplier.Heading.address')}</h4>
         </div>
 
         {result}

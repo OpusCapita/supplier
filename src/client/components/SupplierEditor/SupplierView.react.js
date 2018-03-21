@@ -20,7 +20,7 @@ export default class SupplierView extends Component {
     if (fieldName == 'foundedOn') value = dateHelper.format(value, this.context.i18n.locale);
 
     return (
-      <SupplierViewRow labelText={ this.context.i18n.getMessage(`SupplierEditor.Label.${fieldName}.label`) }>
+      <SupplierViewRow labelText={ this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }>
         <p style={ { marginTop: '7px' } }>{ attrs.component || value || '-' }</p>
       </SupplierViewRow>
     );
