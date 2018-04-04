@@ -2,14 +2,22 @@ type: object
 displayName: Supplier
 description: Object representing a single supplier item.
 properties:
-    supplierId:
+    id:
         type: string
         description: Internal identifier of tradingPartner (humanReadable, i.e. alphanumeric). Ideally we generate a proposal based on name field by stripping spaces and invalid special chars, if required append a number for uniqueness, e.g. OpusCapita Software GmbH -> opuscapitasoftwaregmbh
         required: true
-    supplierName:
+    supplierId:
+        type: string
+        description: Deprecated
+        required: false
+    name:
         type: string
         description: The official name of the company as registered, e.g. OpusCapita Software GmbH
         required: true
+    supplierName:
+        type: string
+        description: Deprecated
+        required: false
     foundedOn:
         type: string
     legalForm:

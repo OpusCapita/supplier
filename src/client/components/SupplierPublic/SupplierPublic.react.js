@@ -101,8 +101,8 @@ export default class SupplierPublic extends Component {
                 <span className='supplierPublic__label'>{ this.context.i18n.getMessage('SupplierPublic.Label.supplier.company') }</span>
                 <div className='supplierPublic__section'>
                   <div className='col-sm-8'>
-                    <h5 className='supplierPublic__fieldLabel col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.supplier.supplierName') }</h5>
-                    <span className='supplierPublic__value col-sm-4'>{ this.state.supplier.supplierName }</span>
+                    <h5 className='supplierPublic__fieldLabel col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.supplier.name') }</h5>
+                    <span className='supplierPublic__value col-sm-4'>{ this.state.supplier.name }</span>
                   </div>
                   <div className='col-sm-8'>
                     <h5 className='supplierPublic__fieldLabel col-sm-4'>{ this.context.i18n.getMessage('SupplierPublic.Label.supplier.cityOfRegistration') } </h5>

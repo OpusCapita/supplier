@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports.allForSupplierId = function(serviceClient, supplierId) {
   return serviceClient.get('user', `/api/users?supplierId=${supplierId}&include=profile`, true).spread(users => users);
 }

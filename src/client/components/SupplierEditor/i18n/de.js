@@ -18,8 +18,8 @@ let Description = {};
 Description.viewSupplierOrChooseAnother = 'Allgemeine Firmeninformationen.';
 
 let Label = {
-  supplierName: {},
-  supplierId: {},
+  name: {},
+  id: {},
   homePage: {},
   role: {},
   buying: {},
@@ -36,8 +36,8 @@ let Label = {
   isNewSupplier: {},
   supplier: {}
 };
-Label.supplierName.label = 'Name des Unternehmens';
-Label.supplierId.label = 'Firmen-ID';
+Label.name.label = 'Name des Unternehmens';
+Label.id.label = 'Firmen-ID';
 Label.homePage.label = 'Homepage';
 Label.role.label = 'Rolle';
 Label.buying.label = 'Kauf';

@@ -1,12 +1,12 @@
 'use strict';
 const Sequelize = require('sequelize');
 
-module.exports = function(sequelize) {
+module.exports.init = function(db) {
   /**
    * Capability.
    * @class Capability
    */
-  let Capability = sequelize.define('Capability',
+  let Capability = db.define('Capability',
   /** @lends Capability */
   {
     id: {
@@ -38,5 +38,5 @@ module.exports = function(sequelize) {
     tableName: 'Capability'
   });
 
-  return Capability;
+  return Promise.resolve();
 };

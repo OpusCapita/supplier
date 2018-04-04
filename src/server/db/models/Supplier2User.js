@@ -1,12 +1,12 @@
 'use strict';
 const Sequelize = require('sequelize');
 
-module.exports = function(sequelize) {
+module.exports.init = function(db) {
   /**
    * Supplier2User.
    * @class Supplier2User
    */
-  let Supplier2User = sequelize.define('Supplier2User',
+  let Supplier2User = db.define('Supplier2User',
   /** @lends Supplier2User */
   {
     /** Unique identifier */
@@ -50,5 +50,5 @@ module.exports = function(sequelize) {
     tableName: 'Supplier2User'
   });
 
-  return Supplier2User;
+  return Promise.resolve();
 };

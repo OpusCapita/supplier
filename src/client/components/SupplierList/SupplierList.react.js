@@ -62,15 +62,15 @@ export default class SupplierList extends Component  {
   renderTable(data) {
     const columns = [
       {
-        Header: this.context.i18n.getMessage('SupplierList.label.supplierName'),
-        accessor: 'supplierName',
+        Header: this.context.i18n.getMessage('SupplierList.label.name'),
+        accessor: 'name',
       },
       {
-        Header: this.context.i18n.getMessage('SupplierList.label.supplierId'),
-        accessor: 'supplierId'
+        Header: this.context.i18n.getMessage('SupplierList.label.id'),
+        accessor: 'id'
       }, {
         Header: '',
-        accessor: 'supplierId',
+        accessor: 'id',
         id: 'actions',
         Cell: row => this.renderActions(row.value)
       }];

@@ -2,16 +2,16 @@
 const Sequelize = require('sequelize');
 const { VAT, DUNS, GLN } = require('@opuscapita/field-validators');
 
-module.exports = function(sequelize) {
+module.exports.init = function(db) {
   /**
    * Supplier - organization that provides Products to buyers.
    * @class Supplier
    */
-  let Supplier = sequelize.define('Supplier',
+  let Supplier = db.define('Supplier',
   /** @lends Supplier */
   {
     /** Unique identifier */
-    supplierId: {
+    id: {
       type: Sequelize.STRING(30),
       primaryKey: true,
       allowNull: false,
@@ -19,14 +19,30 @@ module.exports = function(sequelize) {
         notEmpty: true,
         is: ["[a-zA-Z_\\-0-9]+"]
       },
-      field: "SupplierID"
+      field: "ID"
     },
-    supplierName: {
+    supplierId: {
+      type: Sequelize.VIRTUAL,
+      get: function() {
+        const id = this.getDataValue('id');
+        this.setDataValue('supplierId', id)
+        return id;
+      }
+    },
+    name: {
       allowNull: false,
       type: Sequelize.STRING(100),
-      field: "SupplierName",
+      field: "Name",
       validate: {
         notEmpty: true
+      }
+    },
+    supplierName: {
+      type: Sequelize.VIRTUAL,
+      get: function() {
+        const name = this.getDataValue('name');
+        this.setDataValue('supplierName', name)
+        return name;
       }
     },
     foundedOn: {
@@ -161,5 +177,5 @@ module.exports = function(sequelize) {
     tableName: 'Supplier' // needs to be just supplier in future
   });
 
-  return Supplier;
+  return Promise.resolve();
 };

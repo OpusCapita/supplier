@@ -82,9 +82,9 @@ export default class SupplierSearch extends Components.ContextComponent  {
 
     const columns = [
       {
-        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.supplierName'),
-        id: 'supplierName',
-        accessor: element => ({ name: element.supplierName, id: element.supplierId }),
+        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.name'),
+        id: 'name',
+        accessor: element => ({ name: element.name, id: element.id }),
         Cell: (row) => (<ActionButton style='link' label={row.value.name} onClick={this.handleShowSupplier.bind(this, row.value.id)} />)
       },
       {

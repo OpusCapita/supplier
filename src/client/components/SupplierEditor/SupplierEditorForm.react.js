@@ -93,7 +93,7 @@ class SupplierEditorForm extends Component {
       this.setFieldErrorsStates(errors);
     };
 
-    constraints.supplierId = {};
+    constraints.id = {};
 
     validator.forUpdate(this.context.i18n).
       async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
@@ -109,7 +109,7 @@ class SupplierEditorForm extends Component {
 
     const { onSupplierChange } = this.props;
     const supplier = this.state.supplier;
-    const constraints = { ...this.constraints.forUpdate(), supplierId: {} };
+    const constraints = { ...this.constraints.forUpdate(), id: {} };
 
     if (!supplier.vatIdentificationNo && this.state.hasVATId) {
       this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('SupplierEditor.Messages.clickCheckBox')] });
@@ -175,7 +175,7 @@ class SupplierEditorForm extends Component {
     return (
       <div>
         <form className="form-horizontal">
-          { this.renderField({ fieldName: 'supplierName' }) }
+          { this.renderField({ fieldName: 'name' }) }
           { this.renderField({ fieldName: 'homePage' }) }
           { this.renderField({
             fieldName: 'foundedOn',
