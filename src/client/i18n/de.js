@@ -84,6 +84,10 @@ const Supplier = {
   'Supplier.Address.Type.invoice': 'Rechnung',
   'Supplier.Address.Type.rma': 'Retour',
   'Supplier.Address.Type.plant': 'Werk',
+  'Supplier.Address.Confirmation.delete': 'Wollen Sie diese Adresse wirklich löschen?',
+  'Supplier.Address.Messages.deleted': 'Adresse erfolgreich gelöscht.',
+  'Supplier.Address.Messages.updated': 'Adresse erfolgreich aktualisiert.',
+  'Supplier.Address.Messages.saved': 'Adresse erfolgreich gespeichert.',
 }
 
 export default Supplier;

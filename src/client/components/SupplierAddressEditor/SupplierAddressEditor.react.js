@@ -81,7 +81,7 @@ class SupplierAddressEditor extends Component {
   componentWillReceiveProps(newProps, nextContext) {
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
-      nextContext.i18n.register('SupplierAddressEditor', i18nMessages);
+      nextContext.i18n.register('Supplier', i18nMessages);
     }
   }
 
@@ -94,7 +94,7 @@ class SupplierAddressEditor extends Component {
   };
 
   deleteOnClick = (supplierAddress) => {
-    if (!confirm(this.context.i18n.getMessage('SupplierAddressEditor.Confirmation.delete'))) {
+    if (!confirm(this.context.i18n.getMessage('Supplier.Address.Confirmation.delete'))) {
       return;
     }
     this.handleDelete(supplierAddress);
@@ -112,7 +112,7 @@ class SupplierAddressEditor extends Component {
 
       this.setState({ supplierAddresses: supplierAddresses, supplierAddress: null });
 
-      const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectDeleted');
+      const message = this.context.i18n.getMessage('Supplier.Address.Messages.deleted');
       if(this.context.showNotification) this.context.showNotification(message, 'info');
     }).catch(errors => {
       if (errors.status === 401) {
@@ -142,7 +142,7 @@ class SupplierAddressEditor extends Component {
 
       this.setState({ supplierAddresses: supplierAddresses, supplierAddress: null });
 
-      const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectUpdated');
+      const message = this.context.i18n.getMessage('Supplier.Address.Messages.updated');
       if(this.context.showNotification) this.context.showNotification(message, 'info');
     }).catch(errors => {
       if (errors.status === 401) {
@@ -166,7 +166,7 @@ class SupplierAddressEditor extends Component {
 
       this.setState({ supplierAddresses: supplierAddresses, supplierAddress: null });
 
-      const message = this.context.i18n.getMessage('SupplierAddressEditor.Message.objectSaved');
+      const message = this.context.i18n.getMessage('Supplier.Address.Messages.saved');
       if(this.context.showNotification) this.context.showNotification(message, 'info');
     }).catch(errors => {
       if (errors.status === 401) {
@@ -194,7 +194,7 @@ class SupplierAddressEditor extends Component {
       <ActionButton
         id='supplier-address-editor__add'
         onClick={this.addOnClick}
-        label={this.context.i18n.getMessage('SupplierAddressEditor.Button.add')}
+        label={this.context.i18n.getMessage('Supplier.Button.add')}
       />
     );
   }
@@ -206,7 +206,7 @@ class SupplierAddressEditor extends Component {
                 key={index}
                 action={action}
                 onClick={this[`${action}OnClick`].bind(this, address)}
-                label={this.context.i18n.getMessage(`SupplierAddressEditor.Button.${action}`)}
+                label={this.context.i18n.getMessage(`Supplier.Button.${action}`)}
                 isSmall={true}
                 showIcon={true}
               />

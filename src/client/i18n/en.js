@@ -36,6 +36,7 @@ const Supplier = {
   'Supplier.Heading.companyRegistration': 'Company Registration',
   'Supplier.Heading.companyInformation': 'General Company Information.',
   'Supplier.Heading.list': 'Supplier List',
+  'Supplier.Heading.address': 'Please add your company addresses here.',
   'Supplier.Confirmation.cancel': 'Do you really want to cancel?',
   'Supplier.Messages.loading': 'Loading...',
   'Supplier.Messages.unableToRender': 'Unable to render editor',
@@ -83,6 +84,11 @@ const Supplier = {
   'Supplier.Address.Type.invoice': 'Invoice',
   'Supplier.Address.Type.rma': 'RMA',
   'Supplier.Address.Type.plant': 'Factory',
+  'Supplier.Address.Confirmation.delete': 'Do you really want to delete this address?',
+  'Supplier.Address.Messages.deleted': 'Address successfully deleted.',
+  'Supplier.Address.Messages.updated': 'Address successfully updated.',
+  'Supplier.Address.Messages.saved': 'Address successfully saved.',
+
 }
 
 export default Supplier;
