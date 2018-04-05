@@ -81,7 +81,7 @@ class SupplierAccessRequestForm extends Component {
 
     return (
       <AttributeValueEditorRow
-        labelText={ this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}`) }
+        labelText={ this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }
         required={ isRequired || false }
         rowErrors={ rowErrors }
       >
@@ -119,10 +119,10 @@ class SupplierAccessRequestForm extends Component {
                 <div className='supplier-registration-form-submit'>
                   <div className='text-right form-submit'>
                     <button className="btn btn-link" onClick={this.handleCancel}>
-                      {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.cancel')}
+                      {this.context.i18n.getMessage('Supplier.Button.cancel')}
                     </button>
                     <button className="btn btn-primary" onClick={ this.handleCreate }>
-                      {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.request')}
+                      {this.context.i18n.getMessage('Supplier.Button.request')}
                     </button>
                   </div>
                 </div>
@@ -131,10 +131,10 @@ class SupplierAccessRequestForm extends Component {
           </form>
         </div>
         <div className="col-md-4">
-          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation1', { name: supplier.name })}</p>
-          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation2')}</p>
-          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation3')}</p>
-          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation4')}</p>
+          <p>{this.context.i18n.getMessage('Supplier.Messages.accessInformation1', { name: supplier.name })}</p>
+          <p>{this.context.i18n.getMessage('Supplier.Messages.accessInformation2')}</p>
+          <p>{this.context.i18n.getMessage('Supplier.Messages.accessInformation3')}</p>
+          <p>{this.context.i18n.getMessage('Supplier.Messages.accessInformation4')}</p>
         </div>
       </div>
     );

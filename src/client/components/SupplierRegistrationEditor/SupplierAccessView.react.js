@@ -19,7 +19,7 @@ class SupplierAccessView extends Component {
   renderAccessInformation() {
     if (this.props.supplierAccess.status !== 'requested') return null;
 
-    return <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.accessInformation4')}</p>
+    return <p>{this.context.i18n.getMessage('Supplier.Messages.accessInformation4')}</p>
   }
 
   renderAccessLink() {
@@ -28,21 +28,21 @@ class SupplierAccessView extends Component {
     return (
       <p>
         <button className="btn btn-default" onClick={this.handleOnClick.bind(this)}>
-          {this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.access')}
+          {this.context.i18n.getMessage('Supplier.Button.access')}
         </button>
       </p>
     );
   }
 
   render() {
-    const status = this.context.i18n.getMessage(`SupplierRegistrationEditor.Messages.supplierAccessRequestStatus.${this.props.supplierAccess.status}`);
+    const status = this.context.i18n.getMessage(`Supplier.AccessRequest.Status.${this.props.supplierAccess.status}`);
     return (
       <div className="alert alert-info">
-        <h5>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestHeader', { name: this.props.supplier.name })}</h5>
+        <h5>{this.context.i18n.getMessage('Supplier.AccessRequest.head', { name: this.props.supplier.name })}</h5>
         {this.renderAccessInformation()}
-        <p><strong>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestStatus.text')}: {status}</strong></p>
+        <p><strong>{this.context.i18n.getMessage('Supplier.AccessRequest.Status.text')}: {status}</strong></p>
         {this.renderAccessLink()}
-        <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.supplierAccessRequestText')}</p>
+        <p>{this.context.i18n.getMessage('Supplier.AccessRequest.text')}</p>
       </div>
     );
   }
