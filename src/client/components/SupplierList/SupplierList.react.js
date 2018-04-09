@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import locales from './i18n';
+import locales from '../../i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Supplier } from '../../api';
@@ -23,11 +23,11 @@ export default class SupplierList extends Component  {
   };
 
   componentWillMount(){
-    this.context.i18n.register('SupplierList', locales);
+    this.context.i18n.register('Supplier', locales);
   }
 
   componentWillReceiveProps(nextProps, nextContext){
-    if(nextContext.i18n) nextContext.i18n.register('SupplierList', locales);
+    if(nextContext.i18n) nextContext.i18n.register('Supplier', locales);
   }
 
   componentDidMount() {
@@ -50,7 +50,7 @@ export default class SupplierList extends Component  {
                     key={action}
                     action={action}
                     onClick={this[`${action}OnClick`].bind(this, supplierId)}
-                    label={this.context.i18n.getMessage(`SupplierList.button.${action}`)}
+                    label={this.context.i18n.getMessage(`Supplier.Button.${action}`)}
                     isSmall={true}
                     showIcon={true}
                   />
@@ -62,11 +62,11 @@ export default class SupplierList extends Component  {
   renderTable(data) {
     const columns = [
       {
-        Header: this.context.i18n.getMessage('SupplierList.label.name'),
+        Header: this.context.i18n.getMessage('Supplier.Label.name'),
         accessor: 'name',
       },
       {
-        Header: this.context.i18n.getMessage('SupplierList.label.id'),
+        Header: this.context.i18n.getMessage('Supplier.Label.id'),
         accessor: 'id'
       }, {
         Header: '',
@@ -81,7 +81,7 @@ export default class SupplierList extends Component  {
   render() {
     return (
       <div>
-        <h1 className="tab-description">{this.context.i18n.getMessage('SupplierList.heading')}</h1>
+        <h1 className="tab-description">{this.context.i18n.getMessage('Supplier.Heading.list')}</h1>
         <div className='table-responsive'>{this.renderTable(this.state.suppliers)}</div>
       </div>
     );

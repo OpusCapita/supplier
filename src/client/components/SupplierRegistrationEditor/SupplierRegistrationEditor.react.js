@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import validationMessages from '../../utils/validatejs/i18n';
-import i18nMessages from './i18n';
+import i18nMessages from '../../i18n';
 import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.react.js';
 import SupplierAccessRequestForm from './SupplierAccessRequestForm.react.js';
 import SupplierAccessView from './SupplierAccessView.react';
@@ -47,7 +47,7 @@ class SupplierRegistrationEditor extends Component {
 
   componentWillMount(){
     this.context.i18n.register('SupplierValidatejs', validationMessages);
-    this.context.i18n.register('SupplierRegistrationEditor', i18nMessages);
+    this.context.i18n.register('Supplier', i18nMessages);
   }
 
   componentDidMount() {
@@ -69,7 +69,7 @@ class SupplierRegistrationEditor extends Component {
   componentWillReceiveProps(nextProps, nextContext) {
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
-      nextContext.i18n.register('SupplierRegistrationEditor', i18nMessages);
+      nextContext.i18n.register('Supplier', i18nMessages);
     }
   }
 
@@ -131,7 +131,7 @@ class SupplierRegistrationEditor extends Component {
       this.setState({ supplier: createdSupplier });
 
       if(this.context.showNotification)
-        this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.saved'), 'info')
+        this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.createSuccess'), 'info')
 
       return this.postSupplierCreate();
     }).
@@ -141,7 +141,7 @@ class SupplierRegistrationEditor extends Component {
       switch (errors.status) {
         case 403: case 405:
           if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failedUserSupplier'), 'error');
+            this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.failedCreatingUserSupplier'), 'error');
           break;
         case 401:
           this.props.onUnauthorized();
@@ -151,7 +151,7 @@ class SupplierRegistrationEditor extends Component {
           break;
         default:
           if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'), 'error');
+            this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.createFailed'), 'error');
       }
 
       return Promise.resolve(null);
@@ -163,7 +163,7 @@ class SupplierRegistrationEditor extends Component {
 
     this.accessApi.grantAccess(body).then(() => this.postSupplierCreate()).catch(errors => {
       if(this.context.showNotification)
-        this.context.showNotification(this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.failed'), 'error');
+        this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.createFailed'), 'error');
     });
   }
 
@@ -217,14 +217,14 @@ class SupplierRegistrationEditor extends Component {
 
     if (hasErrors) {
       return (
-        <div>{ this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.unableToRender') }</div>
+        <div>{ this.context.i18n.getMessage('Supplier.Messages.unableToRender') }</div>
       );
     }
 
     return (
       <div className="container supplier-registration-container">
         <div className='box' id='supplier-registration'>
-          <h2>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.companyRegistration')}</h2>
+          <h2>{this.context.i18n.getMessage('Supplier.Heading.companyRegistration')}</h2>
           {this.toRender()}
         </div>
       </div>

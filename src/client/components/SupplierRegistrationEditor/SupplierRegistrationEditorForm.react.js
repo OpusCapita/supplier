@@ -60,7 +60,7 @@ class SupplierRegistrationEditorForm extends Component {
             fieldName: fieldName,
             attributes: error.attributes,
             hasLink: error.validator && error.validator.includes('Exists'),
-            linkMessage: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.requestSupplierAccess')
+            linkMessage: this.context.i18n.getMessage('Supplier.Button.requestAccess')
           };
         })
       }), this.state.fieldErrors)
@@ -120,7 +120,7 @@ class SupplierRegistrationEditorForm extends Component {
     const constraints = this.constraints.forRegistration();
 
     if (!supplier.vatIdentificationNo && this.state.hasVATId) {
-      this.setFieldErrorsStates({ noVatReason: [{ message: this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.clickCheckBox') }] });
+      this.setFieldErrorsStates({ noVatReason: [{ message: this.context.i18n.getMessage('Supplier.Messages.clickCheckBox') }] });
     } else {
       const success = () => {
         supplier.noVatReason = supplier.vatIdentificationNo ? null : 'No VAT Registration Number';
@@ -169,7 +169,7 @@ class SupplierRegistrationEditorForm extends Component {
 
     return (
       <AttributeValueEditorRow
-        labelText={ attrs.labelText || this.context.i18n.getMessage(`SupplierRegistrationEditor.Label.${fieldName}`) }
+        labelText={ attrs.labelText || this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }
         required={ isRequired }
         marked = { attrs.marked }
         rowErrors={ rowErrors }
@@ -215,7 +215,7 @@ class SupplierRegistrationEditorForm extends Component {
                   component: (
                     <p>
                       <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange}></input>
-                      {this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.noVatId')}
+                      {this.context.i18n.getMessage('Supplier.Messages.noVatId')}
                     </p>
                   )
                 }) }
@@ -229,13 +229,13 @@ class SupplierRegistrationEditorForm extends Component {
                       id='supplier-registration__cancel'
                       style='link'
                       onClick={this.handleCancel}
-                      label={this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.cancel')}
+                      label={this.context.i18n.getMessage('Supplier.Button.cancel')}
                     />
                     <ActionButton
                       id='supplier-registration__continue'
                       style='primary'
                       onClick={this.handleUpdate}
-                      label={this.context.i18n.getMessage('SupplierRegistrationEditor.ButtonLabel.continue')}
+                      label={this.context.i18n.getMessage('Supplier.Button.continue')}
                     />
                   </div>
                 </div>
@@ -244,9 +244,9 @@ class SupplierRegistrationEditorForm extends Component {
           </form>
         </div>
         <div className="col-md-4">
-          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.information1')}</p>
-          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.information2')}</p>
-          <p>{this.context.i18n.getMessage('SupplierRegistrationEditor.Messages.required')}</p>
+          <p>{this.context.i18n.getMessage('Supplier.Messages.information1')}</p>
+          <p>{this.context.i18n.getMessage('Supplier.Messages.information2')}</p>
+          <p>{this.context.i18n.getMessage('Supplier.Messages.required')}</p>
         </div>
       </div>
     );

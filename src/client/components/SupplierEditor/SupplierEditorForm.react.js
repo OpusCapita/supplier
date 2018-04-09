@@ -112,7 +112,7 @@ class SupplierEditorForm extends Component {
     const constraints = { ...this.constraints.forUpdate(), id: {} };
 
     if (!supplier.vatIdentificationNo && this.state.hasVATId) {
-      this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('SupplierEditor.Messages.clickCheckBox')] });
+      this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('Supplier.Messages.clickCheckBox')] });
     } else {
       const success = () => {
         supplier.noVatReason = supplier.vatIdentificationNo ? null : 'No VAT Registration Number';
@@ -156,7 +156,7 @@ class SupplierEditorForm extends Component {
 
     return (
       <SupplierEditorFormRow
-        labelText={ attrs.labelText || this.context.i18n.getMessage(`SupplierEditor.Label.${fieldName}.label`) }
+        labelText={ attrs.labelText || this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }
         required={ isRequired }
         marked = { attrs.marked }
         rowErrors={ rowErrors }
@@ -217,7 +217,7 @@ class SupplierEditorForm extends Component {
                   component: (
                     <p>
                       <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange} checked={!this.state.hasVATId}></input>
-                      {this.context.i18n.getMessage('SupplierEditor.Messages.noVatId')}
+                      {this.context.i18n.getMessage('Supplier.Messages.noVatId')}
                     </p>
                   )
                 }) }
@@ -227,12 +227,12 @@ class SupplierEditorForm extends Component {
           <div className='supplier-form-submit'>
             <div className='text-right form-submit'>
               <button id='supplier-editor__form-submit' className="btn btn-primary" onClick={ this.handleUpdate }>
-                { i18n.getMessage('SupplierEditor.ButtonLabel.save') }
+                { i18n.getMessage('Supplier.Button.save') }
               </button>
             </div>
           </div>
         </form>
-        <p>{this.context.i18n.getMessage('SupplierEditor.Messages.required')}</p>
+        <p>{this.context.i18n.getMessage('Supplier.Messages.identifierRequired')}</p>
       </div>
     );
   }
