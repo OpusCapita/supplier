@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import validationMessages from '../../utils/validatejs/i18n';
-import i18nMessages from './i18n';
+import i18nMessages from '../../i18n';
 import DisplayRow from '../../components/DisplayTable/DisplayRow.react';
 import DisplayField from '../../components/DisplayTable/DisplayField.react';
 import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
