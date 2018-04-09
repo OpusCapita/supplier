@@ -51,7 +51,7 @@ class SupplierContactEditor extends Component {
 
   componentWillMount(){
     this.context.i18n.register('SupplierValidatejs', validationMessages);
-    this.context.i18n.register('SupplierContactEditor', i18nMessages);
+    this.context.i18n.register('Supplier', i18nMessages);
   }
 
   componentDidMount() {
@@ -61,7 +61,7 @@ class SupplierContactEditor extends Component {
   componentWillReceiveProps(newProps, nextContext) {
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
-      nextContext.i18n.register('SupplierContactEditor', i18nMessages);
+      nextContext.i18n.register('Supplier', i18nMessages);
     }
   }
 
@@ -80,13 +80,13 @@ class SupplierContactEditor extends Component {
       contacts.splice(index, 1);
       this.setState({ contacts: contacts, contact: null });
 
-      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.objectDeleted'), 'info');
+      this.notify(this.context.i18n.getMessage('Supplier.Contact.Message.deleted'), 'info');
     }).catch((response) => {
       if (response.status === 401) {
         this.props.onUnauthorized();
       } else {
         console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.deleteFailed'), 'error');
+        this.notify(this.context.i18n.getMessage('Supplier.Contact.Message.deleteFailed'), 'error');
       }
     });
   };
@@ -105,13 +105,13 @@ class SupplierContactEditor extends Component {
 
       this.props.onChange({ isDirty: false });
 
-      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.objectUpdated'), 'info');
+      this.notify(this.context.i18n.getMessage('Supplier.Contact.Message.updated'), 'info');
     }).catch(response => {
       if (response.status === 401) {
         this.props.onUnauthorized();
       } else {
         console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.updateFailed'), 'error');
+        this.notify(this.context.i18n.getMessage('Supplier.Contact.Message.updateFailed'), 'error');
       }
     });
   };
@@ -130,13 +130,13 @@ class SupplierContactEditor extends Component {
 
       this.props.onChange({ isDirty: false });
 
-      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.objectSaved'), 'info');
+      this.notify(this.context.i18n.getMessage('Supplier.Contact.Message.saved'), 'info');
     }).catch((response) => {
       if (response.status === 401) {
         this.props.onUnauthorized();
       } else {
         console.log(`Bad request by SupplierID=${supplierId} and id=${contact.id}`);
-        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.saveFailed'), 'error');
+        this.notify(this.context.i18n.getMessage('Supplier.Contact.Message.saveFailed'), 'error');
       }
     });
   };
@@ -151,8 +151,8 @@ class SupplierContactEditor extends Component {
   };
 
   deleteOnClick = (contact) => {
-    let message = this.context.i18n.getMessage('SupplierContactEditor.Confirmation.delete');
-    if (contact.isLinkedToUser) message = `${message} ${this.context.i18n.getMessage('SupplierContactEditor.Confirmation.linkedToUser')}`;
+    let message = this.context.i18n.getMessage('Supplier.Contact.Confirmation.delete');
+    if (contact.isLinkedToUser) message = `${message} ${this.context.i18n.getMessage('Supplier.Contact.Confirmation.linkedToUser')}`;
 
     if (!confirm(message)) return;
 
@@ -168,17 +168,17 @@ class SupplierContactEditor extends Component {
   };
 
   createUserOnClick = (contact) => {
-    if (!confirm(this.context.i18n.getMessage('SupplierContactEditor.Confirmation.createUser'))) return;
+    if (!confirm(this.context.i18n.getMessage('Supplier.Contact.Confirmation.createUser'))) return;
 
     this.contactApi.createUser(contact.supplierId, contact).then(resContact => {
       this.updateContacts(contact, resContact);
 
-      this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.userCreated'), 'info');
+      this.notify(this.context.i18n.getMessage('Supplier.Contact.Message.userCreated'), 'info');
     }).catch(error => {
       if (error.status == '409') {
-        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Error.userExists'), 'error');
+        this.notify(this.context.i18n.getMessage('Supplier.Contact.Error.userExists'), 'error');
       } else {
-        this.notify(this.context.i18n.getMessage('SupplierContactEditor.Message.userCreateFailed'), 'error');
+        this.notify(this.context.i18n.getMessage('Supplier.Contact.Message.userCreateFailed'), 'error');
       }
     });
   };
@@ -233,7 +233,7 @@ class SupplierContactEditor extends Component {
       <ActionButton
         onClick={this.addOnClick}
         id='supplier-contact-editor__add'
-        label={this.context.i18n.getMessage('SupplierContactEditor.Button.add')}
+        label={this.context.i18n.getMessage('Supplier.Button.add')}
       />
     );
   }
@@ -245,7 +245,7 @@ class SupplierContactEditor extends Component {
                 key={index}
                 action={action}
                 onClick={this[`${action}OnClick`].bind(this, contact)}
-                label={this.context.i18n.getMessage(`SupplierContactEditor.Button.${action}`)}
+                label={this.context.i18n.getMessage(`Supplier.Button.${action}`)}
                 isSmall={true}
                 showIcon={true}
               />
@@ -268,18 +268,18 @@ class SupplierContactEditor extends Component {
       result = (
         <div className="table-responsive">
           <DisplayTable headers={[
-            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.contactType')},
-            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.department')},
-            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.firstName')},
-            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.lastName')},
-            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.phone')},
-            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.mobile')},
-            {label: this.context.i18n.getMessage('SupplierContactEditor.Label.email')}
+            {label: this.context.i18n.getMessage('Supplier.Contact.Label.contactType')},
+            {label: this.context.i18n.getMessage('Supplier.Contact.Label.department')},
+            {label: this.context.i18n.getMessage('Supplier.Contact.Label.firstName')},
+            {label: this.context.i18n.getMessage('Supplier.Contact.Label.lastName')},
+            {label: this.context.i18n.getMessage('Supplier.Contact.Label.phone')},
+            {label: this.context.i18n.getMessage('Supplier.Contact.Label.mobile')},
+            {label: this.context.i18n.getMessage('Supplier.Contact.Label.email')}
           ]}>
             { contacts.map((contact, index) =>
               (<DisplayRow key={index}>
-                <DisplayField>{ this.context.i18n.getMessage(`SupplierContactEditor.ContactType.${contact.contactType}`)}</DisplayField>
-                <DisplayField>{ contact.department ? this.context.i18n.getMessage(`SupplierContactEditor.Department.${contact.department}`) : '-' }</DisplayField>
+                <DisplayField>{ this.context.i18n.getMessage(`Supplier.Contact.Type.${contact.contactType}`)}</DisplayField>
+                <DisplayField>{ contact.department ? this.context.i18n.getMessage(`Supplier.Contact.Department.${contact.department}`) : '-' }</DisplayField>
                 <DisplayField>{ contact.firstName }</DisplayField>
                 <DisplayField>{ contact.lastName }</DisplayField>
                 <DisplayField>{ contact.phone || '-'}</DisplayField>
@@ -297,7 +297,7 @@ class SupplierContactEditor extends Component {
 
     return (
       <div>
-        <h4 className="tab-description">{this.context.i18n.getMessage('SupplierContactEditor.Title')}</h4>
+        <h4 className="tab-description">{this.context.i18n.getMessage('Supplier.Heading.contact')}</h4>
 
         {result}
 

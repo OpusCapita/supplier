@@ -16,7 +16,7 @@ export default class SupplierBankAccountView extends Component {
   renderField = (attrs) => {
     const { account } = this.props;
     const fieldName = attrs.fieldName;
-    const labelText = this.context.i18n.getMessage(`SupplierBankAccountEditor.Label.${fieldName}`);
+    const labelText = this.context.i18n.getMessage(`Supplier.BankAccount.Label.${fieldName}`);
     const component = attrs.component || account[fieldName] || '-';
     return (
       <SupplierBankAccountViewRow labelText={ labelText }>
@@ -41,7 +41,7 @@ export default class SupplierBankAccountView extends Component {
         <ActionButton
           id='supplier-bank-editor__close'
           onClick={this.props.onClose}
-          label={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.close')}
+          label={this.context.i18n.getMessage('Supplier.Button.close')}
         />
       </div>
     );

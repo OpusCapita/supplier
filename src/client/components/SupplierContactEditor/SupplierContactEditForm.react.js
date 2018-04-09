@@ -113,12 +113,12 @@ class SupplierContactEditForm extends Component {
     const fieldNameCapitalized = stringHelper.capitalize(fieldName);
     const message = this.context.i18n.getMessage;
 
-    options.push({ value: '', label: message(`SupplierContactEditor.Select.${fieldName}`), disabled: true });
+    options.push({ value: '', label: message(`Supplier.Select.${fieldName}`), disabled: true });
 
     for (const option of fieldOptions) {
       options.push({
         value: option,
-        label: message(`SupplierContactEditor.${fieldNameCapitalized}.${option}`),
+        label: message(`Supplier.${fieldNameCapitalized}.${option}`),
         disabled: false
       })
     }
@@ -150,7 +150,7 @@ class SupplierContactEditForm extends Component {
 
     return (
       <SupplierContactEditFormRow
-        labelText={ this.context.i18n.getMessage(`SupplierContactEditor.Label.${fieldName}`) }
+        labelText={ this.context.i18n.getMessage(`Supplier.Contact.Label.${fieldName}`) }
         required={ isRequired }
         rowErrors={ rowErrors }
       >
@@ -172,7 +172,7 @@ class SupplierContactEditForm extends Component {
                 onChange={this.handleChange.bind(this, 'contactType')}
                 onBlur={this.handleBlur.bind(this, 'contactType')}
               >
-                {this.selectOptions('contactType', CONTACT_TYPES).map((item, index) => {
+                {this.selectOptions('type', CONTACT_TYPES).map((item, index) => {
                   return (<option key={index} disabled={item.disabled} value={item.value}>{item.label}</option>);
                 })}
               </select>
@@ -203,12 +203,12 @@ class SupplierContactEditForm extends Component {
           <ActionButton
             style='link'
             onClick={this.handleCancel}
-            label={this.context.i18n.getMessage('SupplierContactEditor.Button.cancel')}
+            label={this.context.i18n.getMessage('Supplier.Button.cancel')}
           />
           <ActionButton
             style='primary'
             type='submit'
-            label={this.context.i18n.getMessage('SupplierContactEditor.Button.save')}
+            label={this.context.i18n.getMessage('Supplier.Button.save')}
           />
         </div>
       </form>
