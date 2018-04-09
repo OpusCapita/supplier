@@ -118,7 +118,7 @@ class SupplierContactEditForm extends Component {
     for (const option of fieldOptions) {
       options.push({
         value: option,
-        label: message(`Supplier.${fieldNameCapitalized}.${option}`),
+        label: message(`Supplier.Contact.${fieldNameCapitalized}.${option}`),
         disabled: false
       })
     }
