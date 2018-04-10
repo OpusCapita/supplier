@@ -46,7 +46,7 @@ const Supplier = {
   'Supplier.Heading.address': 'Bitte hinterlegen Sie hier die Firmenanschrift.',
   'Supplier.Heading.accessApproval': 'Bitte genehmigen oder lehnen Sie die Benutzerzugriffsanfrage ab.',
   'Supplier.Heading.BankAccount': 'Bitte hinterlegen Sie Ihre Bankverbindung.',
-  'Supplier.Heading.contact': 'Bitte hinterlegen Sie hier die Ansprechpartner aus den Bereichen Geschäftsleitung, Vertrieb, Buchhaltung und Logistik.\nGerne können Sie auch noch weitere Ansprechpartner benennen.',
+  'Supplier.Heading.contact': 'Bitte fügen Sie hier Ihre Firma Ansprechpartnern.',
   'Supplier.Confirmation.cancel': 'Wollen Sie den Vorgang wirklich abbrechen?',
   'Supplier.Messages.loading': 'Laden...',
   'Supplier.Messages.unableToRender': 'Der Editor kann nicht geöffnet werden',
