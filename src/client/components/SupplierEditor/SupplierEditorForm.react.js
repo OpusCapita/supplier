@@ -29,8 +29,9 @@ class SupplierEditorForm extends Component {
   componentWillMount() {
     let serviceRegistry = (service) => ({ url: `/isodata` });
     const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
+    const CurrencyField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-currencies', jsFileName: 'currencies-bundle' });
 
-    this.externalComponents = { CountryField };
+    this.externalComponents = { CountryField, CurrencyField };
 
     this.constraints = new SupplierConstraints(this.context.i18n);
   }
@@ -169,7 +170,7 @@ class SupplierEditorForm extends Component {
   render() {
     const i18n = this.context.i18n;
     const { supplier } = this.state;
-    const { CountryField } = this.externalComponents;
+    const { CountryField, CurrencyField } = this.externalComponents;
     const foundedOn = supplier['foundedOn'] ? new Date(supplier['foundedOn']) : '';
 
     return (
@@ -195,7 +196,6 @@ class SupplierEditorForm extends Component {
           { this.renderField({ fieldName: 'legalForm' }) }
           { this.renderField({ fieldName: 'commercialRegisterNo' }) }
           { this.renderField({ fieldName: 'cityOfRegistration' }) }
-
           { this.renderField({
             fieldName: 'countryOfRegistration',
             component: (
@@ -208,7 +208,19 @@ class SupplierEditorForm extends Component {
               />
             )
           })}
-
+          { this.renderField({
+            fieldName: 'currencyId',
+            component: (
+              <CurrencyField
+                actionUrl=''
+                optional={true}
+                value={this.state.supplier['currencyId']}
+                onChange={this.handleChange.bind(this, 'currencyId')}
+                onBlur={this.handleBlur.bind(this, 'currencyId')}
+                locale={i18n.locale}
+              />
+            )
+          })}
           { this.renderField({ fieldName: 'taxIdentificationNo' }) }
           { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
           { this.renderField({
