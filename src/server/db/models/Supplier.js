@@ -78,6 +78,12 @@ module.exports.init = function(db) {
         notEmpty: true
       }
     },
+    /** A supplier's default currency as in ISO 4217 ID of currency */
+    currencyId: {
+      allowNull: true,
+      type: Sequelize.STRING(3),
+      field: "CurrencyId"
+    },
     /** A Tax Identification Number or TIN */
     taxIdentificationNo: {
       allowNull: true,

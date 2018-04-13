@@ -4,6 +4,7 @@
     "supplierName": "Hardware AG",
     "cityOfRegistration": "Minsk",
     "countryOfRegistration": "DE",
+    "currencyId": "EUR",
     "role": "selling",
     "foundedOn": "2015-10-04 22:00:00",
     "globalLocationNo": "123",
