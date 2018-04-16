@@ -26,6 +26,7 @@ const Supplier = {
   'Supplier.Label.dunsNo': 'D-U-N-S-Nr.',
   'Supplier.Label.commercialRegisterNo': 'Handelsregisternummer',
   'Supplier.Label.countryOfRegistration': 'Land der Registrierung',
+  'Supplier.Label.currencyId': 'Standardwährung',
   'Supplier.Label.taxIdentificationNo': 'Steuernummer',
   'Supplier.Label.vatIdentificationNo': 'Umsatzsteuer-Ident-Nr.',
   'Supplier.Label.globalLocationNo': 'Global Location Number (GLN/ILN)',

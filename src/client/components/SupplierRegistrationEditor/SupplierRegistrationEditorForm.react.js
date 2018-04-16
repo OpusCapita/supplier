@@ -30,8 +30,9 @@ class SupplierRegistrationEditorForm extends Component {
   componentWillMount() {
     let serviceRegistry = (service) => ({ url: `/isodata` });
     const CountryField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-countries', jsFileName: 'countries-bundle' });
+    const CurrencyField = serviceComponent({ serviceRegistry, serviceName: 'isodata' , moduleName: 'isodata-currencies', jsFileName: 'currencies-bundle' });
 
-    this.externalComponents = { CountryField };
+    this.externalComponents = { CountryField, CurrencyField };
 
     this.constraints = new SupplierConstraints(this.context.i18n);
   }
@@ -182,7 +183,7 @@ class SupplierRegistrationEditorForm extends Component {
 
   render() {
     const { supplier } = this.state;
-    const { CountryField } = this.externalComponents;
+    const { CountryField, CurrencyField } = this.externalComponents;
 
     return (
       <div className="row">
@@ -201,6 +202,19 @@ class SupplierRegistrationEditorForm extends Component {
                       value={this.state.supplier['countryOfRegistration']}
                       onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                       onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
+                      optional={true}
+                      locale={this.context.i18n.locale}
+                    />
+                  )
+                }) }
+                { this.renderField({
+                  fieldName: 'currencyId',
+                  component: (
+                    <CurrencyField
+                      actionUrl=''
+                      value={this.state.supplier['currencyId']}
+                      onChange={this.handleChange.bind(this, 'currencyId')}
+                      onBlur={this.handleBlur.bind(this, 'currencyId')}
                       optional={true}
                       locale={this.context.i18n.locale}
                     />
