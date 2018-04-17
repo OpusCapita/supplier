@@ -29,6 +29,16 @@ module.exports.init = function(db) {
         return id;
       }
     },
+    parentId: {
+      allowNull: true,
+      type: Sequelize.STRING(30),
+      field: "ParentId"
+    },
+    hierarchyId: {
+      allowNull: true,
+      type: Sequelize.STRING(900),
+      field: "HierarchyId"
+    },
     name: {
       allowNull: false,
       type: Sequelize.STRING(100),
