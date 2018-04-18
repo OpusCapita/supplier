@@ -1,6 +1,8 @@
 {
   "id": "hard001",
   "name": "jCatalog",
+  "parentId": "hwi",
+  "hierarchyId": "car001|hwi",
   "foundedOn": "2015-10-04T22:00:00.000Z",
   "legalForm": "KG",
   "commercialRegisterNo": "MI651355",
