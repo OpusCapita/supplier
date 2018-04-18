@@ -17,6 +17,7 @@ const Supplier = {
   'Supplier.Button.reject': 'Reject',
   'Supplier.Button.search': 'Search',
   'Supplier.Label.id': 'Company ID',
+  'Supplier.Label.parentId': 'Parent Company',
   'Supplier.Label.name': 'Company Name',
   'Supplier.Label.cityOfRegistration': 'City Of Registration',
   'Supplier.Label.homePage': 'Home Page',
