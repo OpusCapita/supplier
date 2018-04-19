@@ -11,6 +11,7 @@ import SupplierSearch from '../src/client/components/SupplierSearch';
 import SupplierApproval from '../src/client/components/SupplierApproval';
 import SupplierAutocomplete from '../src/client/components/SupplierAutocomplete';
 import SupplierList from '../src/client/components/SupplierList';
+import SupplierOrganization from '../src/client/components/SupplierOrganization';
 
 const username = 'john.doe@ncc.com';
 const userRoles = ['supplier-admin', 'user'];
@@ -95,6 +96,8 @@ let supplierAutocomplete = <SupplierAutocomplete />;
 
 let list = <SupplierList onEdit={(id) => console.log(id)} onCreateUser={(id) => console.log(id)} />;
 
+let organization = <SupplierOrganization supplierId={supplierId} />
+
 var tabData = [
   { name: 'Registration', isActive: true },
   { name: 'Editor', isActive: false },
@@ -105,7 +108,8 @@ var tabData = [
   { name: 'Search', isActive: false },
   { name: 'Profile Strength', isActive: false },
   { name: 'Autocomplete', isActive: false },
-  { name: 'List', isActive: false }
+  { name: 'List', isActive: false },
+  { name: 'Organization', isActive: false }
 ];
 
 class Tabs extends React.Component
@@ -149,6 +153,7 @@ class Content extends React.Component
         {this.props.activeTab.name === 'Profile Strength' ? supplierProfileStrenth :null}
         {this.props.activeTab.name === 'Autocomplete' ? supplierAutocomplete :null}
         {this.props.activeTab.name === 'List' ? list : null}
+        {this.props.activeTab.name === 'Organization' ? organization : null}
       </div>
     );
   }

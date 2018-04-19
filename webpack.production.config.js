@@ -12,7 +12,8 @@ module.exports = {
     directory: './src/client/components/SupplierSearch/index.js',
     access_approval: './src/client/components/SupplierApproval/index.js',
     autocomplete: './src/client/components/SupplierAutocomplete/index.js',
-    list: './src/client/components/SupplierList/index.js'
+    list: './src/client/components/SupplierList/index.js',
+    organization: './src/client/components/SupplierOrganization/index.js'
   },
   output: {
     path: path.resolve(__dirname, './src/server/static'),

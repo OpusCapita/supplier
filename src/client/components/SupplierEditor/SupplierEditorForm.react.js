@@ -3,6 +3,7 @@ import SupplierEditorFormRow from '../AttributeValueEditorRow.react.js';
 import './SupplierEditor.css';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import DateInput from '@opuscapita/react-dates/lib/DateInput';
+import { Supplier } from '../../api';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import validator from '../../utils/validatejs/supplierValidator.js';
 
@@ -18,13 +19,17 @@ class SupplierEditorForm extends Component {
     i18n: React.PropTypes.object.isRequired
   };
 
-  state = {
-    supplier: {
-      ...this.props.supplier
-    },
-    fieldErrors: {},
-    hasVATId: Boolean(this.props.supplier.vatIdentificationNo)
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      supplier: this.props.supplier,
+      suppliers: [],
+      fieldErrors: {},
+      hasVATId: Boolean(this.props.supplier.vatIdentificationNo)
+    };
+    this.supplierApi = new Supplier();
+  }
 
   componentWillMount() {
     let serviceRegistry = (service) => ({ url: `/isodata` });
@@ -39,9 +44,7 @@ class SupplierEditorForm extends Component {
   componentWillReceiveProps(nextProps, nextContext) {
     if (JSON.stringify(this.props.supplier) !== JSON.stringify(nextProps.supplier)) {
       this.setState({
-        supplier: {
-          ...nextProps.supplier
-        },
+        supplier: nextProps.supplier,
         fieldErrors: {},
         hasVATId: Boolean(nextProps.supplier.vatIdentificationNo)
       });
@@ -49,6 +52,19 @@ class SupplierEditorForm extends Component {
 
     this.constraints = new SupplierConstraints(nextContext.i18n);
   }
+
+  componentDidMount() {
+    this.supplierApi.getSuppliers().then(suppliers => {
+      this.setState({ suppliers: this.transformSuppliers(suppliers) });
+    });
+  }
+
+  transformSuppliers = suppliers => {
+    const supplierId = this.state.supplier.id;
+    let filteredSuppliers = suppliers.filter(supplier => supplier.id !== supplierId);
+    filteredSuppliers.unshift('');
+    return filteredSuppliers;
+  };
 
   setFieldErrorsStates = (errors) => {
     this.setState({
@@ -176,6 +192,21 @@ class SupplierEditorForm extends Component {
     return (
       <div>
         <form className="form-horizontal">
+          {this.renderField({
+            fieldName: 'parentId',
+            component: (
+              <select
+                className="form-control"
+                value={supplier.parentId}
+                onChange={this.handleChange.bind(this, 'parentId')}
+                onBlur={() => null}
+                disabled={!this.props.userRoles.includes('admin')}>
+                  {this.state.suppliers.map((sup, index) => {
+                    return <option key={index} value={sup.id}>{sup.name}</option>;
+                  })}
+              </select>
+            )
+          })}
           { this.renderField({ fieldName: 'name' }) }
           { this.renderField({ fieldName: 'homePage' }) }
           { this.renderField({
