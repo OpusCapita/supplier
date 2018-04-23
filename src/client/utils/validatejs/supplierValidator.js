@@ -7,6 +7,10 @@ module.exports.forRegistration = function() {
   return validator(validatejs);
 };
 
+module.exports.forCreate = function(i18n) {
+  return this.forUpdate(i18n);
+}
+
 module.exports.forUpdate = function(i18n) {
   validatejs.extend(validatejs.validators.datetime, {
     parse: function(value) {
