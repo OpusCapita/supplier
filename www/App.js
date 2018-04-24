@@ -12,6 +12,7 @@ import SupplierApproval from '../src/client/components/SupplierApproval';
 import SupplierAutocomplete from '../src/client/components/SupplierAutocomplete';
 import SupplierList from '../src/client/components/SupplierList';
 import SupplierOrganization from '../src/client/components/SupplierOrganization';
+import SupplierCreator from '../src/client/components/SupplierCreator';
 
 const username = 'john.doe@ncc.com';
 const userRoles = ['supplier-admin', 'user'];
@@ -34,6 +35,13 @@ const onboardingUser = {
   email: 'john.doe@ncc.com',
 };
 
+let creator = (
+  <SupplierCreator
+    key='company'
+    user={onboardingUser}
+    userRoles={userRoles}
+  />
+);
 
 let editor = (
   <SupplierEditor
@@ -100,6 +108,7 @@ let organization = <SupplierOrganization supplierId={supplierId} />
 
 var tabData = [
   { name: 'Registration', isActive: true },
+  { name: 'Create', isActive: true },
   { name: 'Editor', isActive: false },
   { name: 'Approval', isActive: false },
   { name: 'Address', isActive: false },
@@ -144,6 +153,7 @@ class Content extends React.Component
     return (
       <div>
         {this.props.activeTab.name === 'Registration' ? registrationEditor :null}
+        {this.props.activeTab.name === 'Create' ? creator :null}
         {this.props.activeTab.name === 'Editor' ? editor :null}
         {this.props.activeTab.name === 'Approval' ? supplierApproval :null}
         {this.props.activeTab.name === 'Address' ? addressEditor :null}

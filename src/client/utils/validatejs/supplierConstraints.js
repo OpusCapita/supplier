@@ -3,6 +3,19 @@ class SupplierConstraints {
     this.constraints = allConstraints(i18n);
   }
 
+  forCreate() {
+    let constraints = this.constraints;
+    delete constraints.iban;
+    delete constraints.vatIdentificationNo.uniqueIdentifier;
+    delete constraints.globalLocationNo.uniqueIdentifier;
+    delete constraints.dunsNo.uniqueIdentifier;
+    delete constraints.vatIdentificationNo.uniqueIdentifierWithBankAccount;
+    delete constraints.globalLocationNo.uniqueIdentifierWithBankAccount;
+    delete constraints.dunsNo.uniqueIdentifierWithBankAccount;
+
+    return constraints;
+  }
+
   forUpdate() {
     let constraints = this.constraints;
     delete constraints.iban;

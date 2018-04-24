@@ -13,7 +13,8 @@ module.exports = {
     access_approval: './src/client/components/SupplierApproval/index.js',
     autocomplete: './src/client/components/SupplierAutocomplete/index.js',
     list: './src/client/components/SupplierList/index.js',
-    organization: './src/client/components/SupplierOrganization/index.js'
+    organization: './src/client/components/SupplierOrganization/index.js',
+    creation: './src/client/components/SupplierCreator/index.js',
   },
   output: {
     path: path.resolve(__dirname, './src/server/static'),

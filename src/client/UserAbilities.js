@@ -11,6 +11,10 @@ class UserAbilities {
     }
   }
 
+  canCreateSupplier() {
+    return this.abilitiesForRole['supplier']['actions'].includes('create');
+  }
+
   canEditSupplier() {
     return this.abilitiesForRole['supplier']['actions'].includes('edit');
   }
