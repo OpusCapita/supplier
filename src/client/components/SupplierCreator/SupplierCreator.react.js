@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from '../../i18n';
 import SupplierCreatorForm from './SupplierCreatorForm.react.js';
-import { Supplier, Auth, Contact } from '../../api';
+import { Supplier } from '../../api';
 import UserAbilities from '../../UserAbilities';
 
 /**
@@ -14,7 +14,7 @@ class SupplierCreator extends Component {
     user: PropTypes.object.isRequired,
     supplier: PropTypes.object,
     onChange: React.PropTypes.func,
-    onUpdate: React.PropTypes.func,
+    onCreate: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func,
     onLogout: React.PropTypes.func
   };
@@ -27,14 +27,8 @@ class SupplierCreator extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      hasErrors: false,
-      supplier: {}
-    }
-
+    this.state = { hasErrors: false, supplier: {} };
     this.supplierApi = new Supplier();
-    this.authApi = new Auth();
-    this.contactApi = new Contact();
     this.userAbilities = new UserAbilities(props.userRoles);
   }
 
@@ -50,55 +44,14 @@ class SupplierCreator extends Component {
     }
   }
 
-  postSupplierCreate = () => {
-    return this.authApi.refreshIdToken().then(() => {
-      console.log("id token refreshed");
-
-      const supplier = this.state.supplier;
-      const user = this.props.user;
-      const contact = {
-        contactType: "Default",
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        supplierId: supplier.id,
-        createdBy: user.id,
-        changedBy: user.id,
-        isLinkedToUser: true
-      }
-
-      return this.contactApi.createContact(supplier.id, contact).then(() => {
-        console.log('contact created');
-
-        if (this.props.onUpdate) {
-          this.props.onUpdate({ id: supplier.id, name: supplier.name });
-        }
-
-        if (this.props.onChange) {
-          this.props.onChange({ isDirty: false });
-        }
-
-        return Promise.resolve(null);
-      }).catch(err => {
-        console.error('error creating contact: ' + err);
-        throw err;
-      })
-    }).catch(err => {
-      console.err('error refreshing idToken: ' + err);
-      throw err;
-    });
-  }
-
   handleChange = () => {
-    if (this.props.onChange) {
-      this.props.onChange({ isDirty: true });
-    }
+    if (this.props.onChange) this.props.onChange({ isDirty: true });
   }
 
   handleUpdate = newSupplier => {
     if (!newSupplier) return;
 
-    newSupplier = {  // eslint-disable-line no-param-reassign
+    newSupplier = {
       ...newSupplier,
       createdBy: this.props.user.id,
       changedBy: this.props.user.id
@@ -110,21 +63,12 @@ class SupplierCreator extends Component {
       if(this.context.showNotification)
         this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.createSuccess'), 'info')
 
-      return this.postSupplierCreate();
+      if (this.props.onCreate) this.props.onCreate(createdSupplier.id);
     }).
     catch(errors => {
-      this.setState({ supplier: newSupplier });
-
       switch (errors.status) {
-        case 403: case 405:
-          if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.failedCreatingUserSupplier'), 'error');
-          break;
         case 401:
           this.props.onUnauthorized();
-          break;
-        case 409:
-          this.setState({ supplierExist: true });
           break;
         default:
           if(this.context.showNotification)
