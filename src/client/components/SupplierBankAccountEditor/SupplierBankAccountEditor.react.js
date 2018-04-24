@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import validationMessages from '../../utils/validatejs/i18n';
-import i18nMessages from "./i18n";
+import i18nMessages from "../../i18n";
 import SupplierBankAccountEditForm from "./SupplierBankAccountEditForm.react.js";
 import SupplierBankAccountView from "./SupplierBankAccountView.react.js";
 import DisplayTable from "../DisplayTable/DisplayTable.react.js";
@@ -52,7 +52,7 @@ class SupplierBankAccountEditor extends Component {
 
   componentWillMount() {
     this.context.i18n.register('SupplierValidatejs', validationMessages);
-    this.context.i18n.register('SupplierBankAccountEditor', i18nMessages);
+    this.context.i18n.register('Supplier', i18nMessages);
   }
 
   componentDidMount() {
@@ -62,7 +62,7 @@ class SupplierBankAccountEditor extends Component {
   componentWillReceiveProps(nextProps, nextContext) {
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
-      nextContext.i18n.register('SupplierBankAccountEditor', i18nMessages);
+      nextContext.i18n.register('Supplier', i18nMessages);
     }
   }
 
@@ -80,7 +80,7 @@ class SupplierBankAccountEditor extends Component {
 
       this.setState({ accounts: accounts, account: null });
 
-      const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.objectDeleted');
+      const message = this.context.i18n.getMessage('Supplier.BankAccount.Message.deleted');
       if(this.context.showNotification) this.context.showNotification(message, 'info');
     }).catch((response) => {
       if (response.status === 401) {
@@ -88,7 +88,7 @@ class SupplierBankAccountEditor extends Component {
       } else {
         console.log(`Bad request by SupplierID=${supplierId} and ContactID=${account.id}`);
 
-        const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.deleteFailed');
+        const message = this.context.i18n.getMessage('Supplier.BankAccount.Message.deleteFailed');
         if(this.context.showNotification) this.context.showNotification(message, 'error');
       }
     });
@@ -115,7 +115,7 @@ class SupplierBankAccountEditor extends Component {
         this.props.onChange({ isDirty: false });
         this.setState({ accounts: accounts, account: null });
 
-        const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.objectUpdated');
+        const message = this.context.i18n.getMessage('Supplier.BankAccount.Message.updated');
         if(this.context.showNotification) this.context.showNotification(message, 'info');
       }).catch((response) => {
         if (response.status === 401) {
@@ -123,7 +123,7 @@ class SupplierBankAccountEditor extends Component {
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${account.id}`);
 
-          const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.updateFailed');
+          const message = this.context.i18n.getMessage('Supplier.BankAccount.Message.updateFailed');
           if(this.context.showNotification) this.context.showNotification(message, 'error');
         }
       });
@@ -143,7 +143,7 @@ class SupplierBankAccountEditor extends Component {
         this.props.onChange({ isDirty: false });
         this.setState({ accounts: accounts, account: null });
 
-        const message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.objectSaved');
+        const message = this.context.i18n.getMessage('Supplier.BankAccount.Message.saved');
         if(this.context.showNotification) this.context.showNotification(message, 'info');
       }).catch((response) => {
         if (response.status === 401) {
@@ -151,7 +151,7 @@ class SupplierBankAccountEditor extends Component {
         } else {
           console.log(`Bad request by SupplierID=${supplierId} and ContactID=${account.id}`);
 
-          let message = this.context.i18n.getMessage('SupplierBankAccountEditor.Message.saveFailed');
+          let message = this.context.i18n.getMessage('Supplier.BankAccount.Message.saveFailed');
           if(this.context.showNotification) this.context.showNotification(message, 'error');
         }
       });
@@ -177,7 +177,7 @@ class SupplierBankAccountEditor extends Component {
 
   deleteOnClick = (account) => {
     console.log(account);
-    if (!confirm(this.context.i18n.getMessage('SupplierBankAccountEditor.Confirmation.delete'))) {
+    if (!confirm(this.context.i18n.getMessage('Supplier.BankAccount.Confirmation.delete'))) {
       return;
     }
     this.handleDelete(account);
@@ -224,7 +224,7 @@ class SupplierBankAccountEditor extends Component {
       <ActionButton
         id='supplier-bank-editor__add'
         onClick={this.addOnClick}
-        label={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.add')}
+        label={this.context.i18n.getMessage('Supplier.Button.add')}
       />
     );
   }
@@ -236,7 +236,7 @@ class SupplierBankAccountEditor extends Component {
                 id={`supplier-bank-editor__${action}`}
                 action={action}
                 onClick={this[`${action}OnClick`].bind(this, account)}
-                label={this.context.i18n.getMessage(`SupplierBankAccountEditor.Button.${action}`)}
+                label={this.context.i18n.getMessage(`Supplier.Button.${action}`)}
                 isSmall={true}
                 showIcon={true}
               />
@@ -260,13 +260,13 @@ class SupplierBankAccountEditor extends Component {
         <div className='table-responsive'>
           <DisplayTable
             headers={[
-              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.accountNumber') },
-              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankName') },
-              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankIdentificationCode') },
-              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankCountryKey') },
-              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.bankCode') },
-              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.extBankControlKey') },
-              { label: this.context.i18n.getMessage('SupplierBankAccountEditor.Label.swiftCode') }
+              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.accountNumber') },
+              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankName') },
+              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankIdentificationCode') },
+              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankCountryKey') },
+              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankCode') },
+              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.extBankControlKey') },
+              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.swiftCode') }
             ]}
           >
             { accounts.map((account, index) =>
@@ -290,7 +290,7 @@ class SupplierBankAccountEditor extends Component {
 
     return (
       <div>
-        <h4 className="tab-description">{this.context.i18n.getMessage('SupplierBankAccountEditor.Title')}</h4>
+        <h4 className="tab-description">{this.context.i18n.getMessage('Supplier.Heading.BankAccount')}</h4>
 
         {result}
 

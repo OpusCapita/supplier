@@ -13,13 +13,13 @@ export default class SupplierContactView extends Component {
   };
 
   translatedFieldValue = (name, value) => {
-    return value ? this.context.i18n.getMessage(`SupplierContactEditor.${name}.${value}`) : '-';
+    return value ? this.context.i18n.getMessage(`Supplier.Contact.${name}.${value}`) : '-';
   };
 
   renderField = (attrs) => {
     const { contact } = this.props;
     const fieldName = attrs.fieldName;
-    const labelText = this.context.i18n.getMessage(`SupplierContactEditor.Label.${fieldName}`);
+    const labelText = this.context.i18n.getMessage(`Supplier.Contact.Label.${fieldName}`);
     const component = attrs.component || contact[fieldName] || '-'
     return (
       <SupplierContactViewRow labelText={ labelText }>
@@ -35,7 +35,7 @@ export default class SupplierContactView extends Component {
       <div className="form-horizontal">
         { this.renderField({
           fieldName: 'contactType',
-          component:  this.translatedFieldValue('ContactType', contact.contactType) }) }
+          component:  this.translatedFieldValue('Type', contact.contactType) }) }
         { this.renderField({
           fieldName: 'department',
           component:  this.translatedFieldValue('Department', contact.department) }) }
@@ -49,7 +49,7 @@ export default class SupplierContactView extends Component {
         <ActionButton
           id='supplier-contact-editor__close'
           onClick={this.props.onClose}
-          label={this.context.i18n.getMessage('SupplierContactEditor.Button.close')}
+          label={this.context.i18n.getMessage('Supplier.Button.close')}
         />
       </div>
     );

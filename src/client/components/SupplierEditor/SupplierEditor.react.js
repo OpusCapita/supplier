@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import request from 'superagent-bluebird-promise';
 import validationMessages from '../../utils/validatejs/i18n';
-import i18nMessages from './i18n';
+import i18nMessages from '../../i18n';
 import SupplierEditorForm from './SupplierEditorForm.react.js';
 import SupplierView from './SupplierView.react.js';
 import { Supplier } from '../../api';
@@ -42,7 +42,7 @@ class SupplierEditor extends Component {
 
   componentWillMount() {
     this.context.i18n.register('SupplierValidatejs', validationMessages);
-    this.context.i18n.register('SupplierEditor', i18nMessages);
+    this.context.i18n.register('Supplier', i18nMessages);
   }
 
   componentDidMount() {
@@ -75,7 +75,7 @@ class SupplierEditor extends Component {
 
     if(nextContext.i18n){
       nextContext.i18n.register('SupplierValidatejs', validationMessages);
-      nextContext.i18n.register('SupplierEditor', i18nMessages);
+      nextContext.i18n.register('Supplier', i18nMessages);
     }
   }
 
@@ -105,7 +105,7 @@ class SupplierEditor extends Component {
       this.setState({ supplier: supplier });
 
       if(this.context.showNotification)
-        this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.saved'), 'info')
+        this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.updateSaved'), 'info')
 
       if (this.props.onUpdate && this.props.supplierId !== supplier.id) {
         this.props.onUpdate({ id: supplier.id, name: supplier.name });
@@ -120,17 +120,13 @@ class SupplierEditor extends Component {
         case 401:
           this.props.onUnauthorized();
           break;
-        case 403:
-          if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failedModifyingNotAuthoredSupplier'), 'error')
-          break;
         case 409:
           if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failedCreatingExistingSupplier'), 'error')
+            this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.failedCreatingExistingSupplier'), 'error')
           break;
         default:
           if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('SupplierEditor.Messages.failed'), 'error')
+            this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.updateFailed'), 'error')
       }
     });
   }
@@ -154,13 +150,13 @@ class SupplierEditor extends Component {
 
     if (!isLoaded) {
       return (
-        <div>{ this.context.i18n.getMessage('SupplierEditor.Messages.loading') }</div>
+        <div>{ this.context.i18n.getMessage('Supplier.Messages.loading') }</div>
       );
     }
 
     if (hasErrors) {
       return (
-        <div>{ this.context.i18n.getMessage('SupplierEditor.Messages.unableToRender')  } <a className="btn btn-link" href="/bnp/supplierRegistration">{this.context.i18n.getMessage('SupplierEditor.Messages.register')}</a> </div>
+        <div>{ this.context.i18n.getMessage('Supplier.Messages.unableToRender')  } <a className="btn btn-link" href="/bnp/supplierRegistration">{this.context.i18n.getMessage('SupplierEditor.Messages.register')}</a> </div>
       );
     }
 
@@ -168,7 +164,7 @@ class SupplierEditor extends Component {
       <div className="row">
         <div className="col-sm-6">
           <h4 className="tab-description">
-            { this.context.i18n.getMessage(`SupplierEditor.Description.viewSupplierOrChooseAnother`) }
+            { this.context.i18n.getMessage(`Supplier.Heading.companyInformation`) }
           </h4>
           {this.renderAction()}
         </div>

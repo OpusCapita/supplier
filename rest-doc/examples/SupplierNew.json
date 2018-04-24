@@ -1,5 +1,6 @@
 {
   "name": "jCatalog",
+  "parentId": "hwi",
   "foundedOn": "2015-10-04T22:00:00.000Z",
   "legalForm": "KG",
   "commercialRegisterNo": "MI651355",
@@ -10,6 +11,7 @@
   "globalLocationNo": "1233457895432",
   "homePage": "http://jcatalog.com/",
   "dunsNo": null,
+  "currencyId": "EUR",
   "changedBy": "jcadmin",
   "createdBy": "jcadmin",
   "iban": "DE89370400440532000000"

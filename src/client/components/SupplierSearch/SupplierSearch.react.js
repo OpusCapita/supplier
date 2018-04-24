@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import locales from './i18n';
+import locales from '../../i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Supplier } from '../../api';
@@ -25,11 +25,11 @@ export default class SupplierSearch extends Components.ContextComponent  {
   };
 
   componentWillMount(){
-    this.context.i18n.register('SupplierSearch', locales);
+    this.context.i18n.register('Supplier', locales);
   }
 
   componentWillReceiveProps(nextProps, nextContext){
-    if(nextContext.i18n) nextContext.i18n.register('SupplierSearch', locales);
+    if(nextContext.i18n) nextContext.i18n.register('Supplier', locales);
   }
 
   searchSupplier() {
@@ -47,14 +47,14 @@ export default class SupplierSearch extends Components.ContextComponent  {
 
   handleShowSupplier(supplierId) {
     this.setState({ supplierId: supplierId });
-    this.supplierPublicModal.show(this.context.i18n.getMessage('SupplierSearch.modalHeader.title'), undefined, null, {});
+    this.supplierPublicModal.show(this.context.i18n.getMessage('Supplier.Heading.companyInformation'), undefined, null, {});
   }
 
   renderSearchBox() {
     return (<div className="form-group search-box">
       <div className='row'>
-        <label className="control-label col-xs-10">{this.context.i18n.getMessage('SupplierSearch.searchInput.label')}</label>
-        <label className="control-label col-xs-2">{this.context.i18n.getMessage('SupplierSearch.capability.label')}</label>
+        <label className="control-label col-xs-10">{this.context.i18n.getMessage('Supplier.Label.searchInput')}</label>
+        <label className="control-label col-xs-2">{this.context.i18n.getMessage('Supplier.Label.capability')}</label>
       </div>
       <div className='row'>
         <div className='col-xs-10'>
@@ -63,7 +63,7 @@ export default class SupplierSearch extends Components.ContextComponent  {
         <div className='col-xs-2'>
           <select value={this.state.capability} onChange={this.handleChange.bind(this)} className="form-control" >
             <option key='1' value={null}></option>
-            <option key='2' value='eInvoice-send'>{this.context.i18n.getMessage('SupplierSearch.capability.eInvoice-send')}</option>
+            <option key='2' value='eInvoice-send'>{this.context.i18n.getMessage('Supplier.Capabilities.Type.eInvoice-send')}</option>
           </select>
         </div>
       </div>
@@ -72,7 +72,7 @@ export default class SupplierSearch extends Components.ContextComponent  {
           id="supplier-editor__search"
           style='primary'
           onClick={this.searchSupplier.bind(this)}
-          label={this.context.i18n.getMessage('SupplierSearch.buttonLabel.search')}
+          label={this.context.i18n.getMessage('Supplier.Button.search')}
         />
       </div>
     </div>)
@@ -82,31 +82,31 @@ export default class SupplierSearch extends Components.ContextComponent  {
 
     const columns = [
       {
-        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.name'),
+        Header: this.context.i18n.getMessage('Supplier.Label.name'),
         id: 'name',
         accessor: element => ({ name: element.name, id: element.id }),
         Cell: (row) => (<ActionButton style='link' label={row.value.name} onClick={this.handleShowSupplier.bind(this, row.value.id)} />)
       },
       {
-        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.cityOfRegistration'),
+        Header: this.context.i18n.getMessage('Supplier.Label.cityOfRegistration'),
         accessor: 'cityOfRegistration'
       },
       {
-        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.countryOfRegistration'),
+        Header: this.context.i18n.getMessage('Supplier.Label.countryOfRegistration'),
         accessor: 'countryOfRegistration',
         Cell: (row) => (<DisplayField><CountryView countryId={row.value}/></DisplayField>)
       },
       {
-        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.commercialRegisterNo'),
+        Header: this.context.i18n.getMessage('Supplier.Label.commercialRegisterNo'),
         accessor: 'commercialRegisterNo'
       },
       {
-        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.taxIdentificationNo'),
+        Header: this.context.i18n.getMessage('Supplier.Label.taxIdentificationNo'),
         accessor: 'taxIdentificationNo'
       },
       {
-        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.supplierIdentifiers'),
-        accessor: element => ({ vatId: element.vatIdentificationNo, gln: element.globalLocationNo, duns: element.dunsNo }),
+        Header: this.context.i18n.getMessage('Supplier.Title.companyIdentifiers'),
+        accessor: element => ({ vatIdentificationNo: element.vatIdentificationNo, globalLocationNo: element.globalLocationNo, dunsNo: element.dunsNo }),
         id: 'supplierIdentifiers',
         Cell: row => {
           const keys = Object.keys(row.value);
@@ -116,7 +116,7 @@ export default class SupplierSearch extends Components.ContextComponent  {
                 if (!identifier) return null;
 
                 return <div key={index}>
-                  <div><strong>{this.context.i18n.getMessage(`SupplierSearch.identifier.${keys[index]}`)}</strong></div>
+                  <div><strong>{this.context.i18n.getMessage(`Supplier.Label.${keys[index]}`)}</strong></div>
                   <div>{identifier}</div>
                 </div>
               })}
@@ -125,11 +125,11 @@ export default class SupplierSearch extends Components.ContextComponent  {
         }
       },
       {
-        Header: this.context.i18n.getMessage('SupplierSearch.tableHeader.capabilities'),
+        Header: this.context.i18n.getMessage('Supplier.Capabilities.name'),
         accessor: element => {
           if (!element.capabilities) return null;
 
-          return element.capabilities.map(cap => this.context.i18n.getMessage(`SupplierSearch.capability.${cap}`)).join(', ');
+          return element.capabilities.map(cap => this.context.i18n.getMessage(`Supplier.Capabilities.Type.${cap}`)).join(', ');
         },
         id: 'capabilities'
       }];

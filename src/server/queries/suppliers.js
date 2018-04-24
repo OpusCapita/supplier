@@ -18,8 +18,9 @@ module.exports.all = function(query, includes)
   let queryObj = {};
   if (query.id) queryObj.id = { $in: query.id.split(',') };
   if (query.name) queryObj.name = { $like: `%${query.name}%` };
+  if (query.hierarchyId) queryObj.hierarchyId = { $like: `%${query.hierarchyId}%` };
 
-  const includeModels = associationsFromIncludes(this.db.models, includes);
+  const includeModels = associationsFromIncludes(this.db.models, includes || []);
 
   return this.db.models.Supplier.findAll({ where: queryObj, include: includeModels }).map(supplier => {
     return supplierWithAssociations(supplier);
@@ -35,10 +36,15 @@ module.exports.find = function(supplierId, includes)
   });
 };
 
-module.exports.create = function(supplier)
+module.exports.create = async function(supplier)
 {
   if (!supplier.name) supplier.name = supplier.supplierName;
   normalize(supplier);
+
+  if (supplier.parentId) {
+    const parent = await this.db.models.Supplier.findOne({where: { id: supplier.parentId }});
+    supplier.hierarchyId = determineHierarchyIdFromParent(supplier.parentId, parent.hierarchyId);
+  }
 
   const self = this;
   let supplierId = supplier.name.replace(/[^0-9a-z_\-]/gi, '').slice(0, 27);
@@ -60,16 +66,30 @@ module.exports.create = function(supplier)
   });
 };
 
-module.exports.update = function(supplierId, supplier)
+module.exports.update = async function(supplierId, supplier)
 {
   [ 'id', 'createdBy', 'createdOn', 'updatedOn' ].forEach(key => delete supplier[key]);
 
-  if (supplier.supplierName && !supplier.name) supplier.name = supplier.customerName;
+  if (supplier.supplierName && !supplier.name) supplier.name = supplier.supplierName;
   normalize(supplier);
+
+  if (supplier.parentId) {
+    const parent = await this.db.models.Supplier.findOne({where: { id: supplier.parentId }});
+    supplier.hierarchyId = determineHierarchyIdFromParent(supplier.parentId, parent.hierarchyId);
+  } else {
+    supplier.hierarchyId = null;
+  }
+
+  let children = await this.all({ hierarchyId: supplierId });
 
   let self = this;
   return this.db.models.Supplier.update(supplier, { where: { id: supplierId } }).then(() => {
-    return self.find(supplierId, []);
+    return Promise.all(children.map(child => {
+      const hierarchyId = determineHierarchyIdForChild(supplierId, supplier.hierarchyId, child.hierarchyId);
+      return this.db.models.Supplier.update({ hierarchyId: hierarchyId }, { where: { id : child.id } });
+    })).then(() => {
+      return self.find(supplierId, []);
+    });
   });
 };
 
@@ -256,4 +276,21 @@ let aggregateSeach = function(suppliers)
   }, {});
 
   return Object.values(suppliersById);
+}
+
+let determineHierarchyIdFromParent = function(parentId, parentHierarchyId)
+{
+  if (!parentHierarchyId) return parentId;
+
+  return [parentHierarchyId, parentId].join('|');
+}
+
+let determineHierarchyIdForChild = function(supplierId, hierarchyId, childHierarchyId)
+{
+  let hierarchyIds = childHierarchyId.split('|');
+  let slicedChildHierarchyId = hierarchyIds.slice(hierarchyIds.indexOf(supplierId)).join('|');
+
+  if (!hierarchyId) return slicedChildHierarchyId;
+
+  return [hierarchyId, slicedChildHierarchyId].join('|');
 }

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import locales from './i18n';
+import locales from '../../i18n';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Access } from '../../api';
@@ -24,11 +24,11 @@ export default class SupplierApproval extends Component {
   };
 
   componentWillMount() {
-    this.context.i18n.register('SupplierApproval', locales);
+    this.context.i18n.register('Supplier', locales);
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
-    if(nextContext.i18n) nextContext.i18n.register('SupplierApproval', locales);
+    if(nextContext.i18n) nextContext.i18n.register('Supplier', locales);
   }
 
   componentDidMount() {
@@ -48,31 +48,31 @@ export default class SupplierApproval extends Component {
   };
 
   approveOnClick = (access) => {
-    const message = this.context.i18n.getMessage('SupplierApproval.Message.confirmApproval');
+    const message = this.context.i18n.getMessage('Supplier.AccessApproval.Confirmation.approve');
     if (!confirm(message)) return;
 
     this.accessApi.approveAccess(access.id, access.userId).then(supplierAccess => {
       this.updateAccessRequests(supplierAccess);
 
-      const info = this.context.i18n.getMessage('SupplierApproval.Notification.success.approved');
+      const info = this.context.i18n.getMessage('Supplier.AccessApproval.Messages.approved');
       if(this.context.showNotification) this.context.showNotification(info, 'info');
     });
   };
 
   rejectOnClick = (access) => {
-    const message = this.context.i18n.getMessage('SupplierApproval.Message.rejectApproval');
+    const message = this.context.i18n.getMessage('Supplier.AccessApproval.Confirmation.reject');
     if (!confirm(message)) return;
 
     this.accessApi.rejectAccess(access.id, access.userId).then(supplierAccess => {
       this.updateAccessRequests(supplierAccess);
 
-      const info = this.context.i18n.getMessage('SupplierApproval.Notification.success.rejected');
+      const info = this.context.i18n.getMessage('Supplier.AccessApproval.Messages.rejected');
       if(this.context.showNotification) this.context.showNotification(info, 'info');
     });
   };
 
   renderActions(access) {
-    if (access.status !== 'requested') return this.context.i18n.getMessage(`SupplierApproval.Status.${access.status}`);
+    if (access.status !== 'requested') return this.context.i18n.getMessage(`Supplier.AccessApproval.Status.${access.status}`);
 
     return (
       <div className='text-right'>
@@ -81,7 +81,7 @@ export default class SupplierApproval extends Component {
                     key={status}
                     action={status}
                     onClick={this[`${status}OnClick`].bind(this, access)}
-                    label={this.context.i18n.getMessage(`SupplierApproval.Button.${status}`)}
+                    label={this.context.i18n.getMessage(`Supplier.Button.${status}`)}
                     isSmall={true}
                     showIcon={true}
                   />
@@ -94,25 +94,25 @@ export default class SupplierApproval extends Component {
 
     const columns = [
       {
-        Header: this.context.i18n.getMessage('SupplierApproval.Label.firstName'),
+        Header: this.context.i18n.getMessage('Supplier.AccessApproval.Label.firstName'),
         accessor: 'firstName',
       },
       {
-        Header: this.context.i18n.getMessage('SupplierApproval.Label.lastName'),
+        Header: this.context.i18n.getMessage('Supplier.AccessApproval.Label.lastName'),
         accessor: 'lastName'
       },
       {
-        Header: this.context.i18n.getMessage('SupplierApproval.Label.email'),
+        Header: this.context.i18n.getMessage('Supplier.AccessApproval.Label.email'),
         accessor: 'email'
       }, {
-        Header: this.context.i18n.getMessage('SupplierApproval.Label.date'),
+        Header: this.context.i18n.getMessage('Supplier.AccessApproval.Label.date'),
         id: 'date',
         accessor: element => dateHelper.format(element.date, this.context.i18n.locale)
       }, {
-        Header: this.context.i18n.getMessage('SupplierApproval.Label.comment'),
+        Header: this.context.i18n.getMessage('Supplier.AccessApproval.Label.comment'),
         accessor: 'comment'
       }, {
-        Header: this.context.i18n.getMessage('SupplierApproval.Label.status'),
+        Header: this.context.i18n.getMessage('Supplier.AccessApproval.Label.status'),
         accessor: element => ({ id: element.id, userId: element.userId, status: element.status }),
         id: 'actions',
         Cell: row => this.renderActions(row.value)
@@ -124,7 +124,7 @@ export default class SupplierApproval extends Component {
   render() {
     return (
       <div>
-        <h4 className="tab-description">{this.context.i18n.getMessage('SupplierApproval.Message.heading')}</h4>
+        <h4 className="tab-description">{this.context.i18n.getMessage('Supplier.Heading.accessApproval')}</h4>
         <div className='table-responsive'>{this.renderTable(this.state.accessRequests)}</div>
       </div>
     );

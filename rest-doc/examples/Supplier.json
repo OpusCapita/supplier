@@ -1,6 +1,8 @@
 {
   "id": "hard001",
   "name": "jCatalog",
+  "parentId": "hwi",
+  "hierarchyId": "car001|hwi",
   "foundedOn": "2015-10-04T22:00:00.000Z",
   "legalForm": "KG",
   "commercialRegisterNo": "MI651355",
@@ -11,6 +13,7 @@
   "globalLocationNo": "123456789123",
   "homePage": "http://jcatalog.com/",
   "dunsNo": null,
+  "currencyId": "EUR",
   "createdOn": "2016-02-19T10:45:26.000Z",
   "changedOn": "2016-02-19T10:45:26.000Z",
   "changedBy": "jcadmin",

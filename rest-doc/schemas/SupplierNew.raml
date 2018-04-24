@@ -2,6 +2,10 @@ type: object
 displayName: Supplier
 description: Object representing a single supplier item.
 properties:
+    parentId:
+        type: string
+        required: false
+        description: Parent supplier id of supplier.
     name:
         type: string
         description: The official name of the company as registered, e.g. OpusCapita Software GmbH
@@ -40,6 +44,10 @@ properties:
         type: string
         required: false
         description: Duns stands for 'Data Universal Numbering System'. It is a nine-digit number issued by D&B (Dun & Bradstreet) and assigned to each business location in the D&B database having a unique, separate, and distinct operation to businesses for the purpose of identifying them.
+    currencyId:
+        type: string
+        required: false
+        description: A supplier's default currency as in ISO 4217 ID of currency.
     changedBy:
         type: string
     createdBy:

@@ -29,6 +29,16 @@ module.exports.init = function(db) {
         return id;
       }
     },
+    parentId: {
+      allowNull: true,
+      type: Sequelize.STRING(30),
+      field: "ParentId"
+    },
+    hierarchyId: {
+      allowNull: true,
+      type: Sequelize.STRING(900),
+      field: "HierarchyId"
+    },
     name: {
       allowNull: false,
       type: Sequelize.STRING(100),
@@ -77,6 +87,12 @@ module.exports.init = function(db) {
       validate: {
         notEmpty: true
       }
+    },
+    /** A supplier's default currency as in ISO 4217 ID of currency */
+    currencyId: {
+      allowNull: true,
+      type: Sequelize.STRING(3),
+      field: "CurrencyId"
     },
     /** A Tax Identification Number or TIN */
     taxIdentificationNo: {

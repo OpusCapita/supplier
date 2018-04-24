@@ -98,23 +98,8 @@
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/contacts",
+        "resourceId": "/api/suppliers/${_current_supplier_id}",
         "actions": ["create", "view", "edit", "delete"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/addresses",
-        "actions": ["create", "view", "edit", "delete"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/bank_accounts",
-        "actions": ["create", "view", "edit", "delete"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/profile_strength$",
-        "actions": ["view"]
       },
       {
         "type": "rest",
@@ -144,28 +129,13 @@
       },
       {
         "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}$",
+        "resourceId": "/api/suppliers/${_current_supplier_id}",
         "actions": ["view"]
       },
       {
         "type": "rest",
         "resourceId": "/api/suppliers/${_current_supplier_id}/contacts",
-        "actions": ["create", "view"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/addresses",
-        "actions": ["view"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/bank_accounts",
-        "actions": ["view"]
-      },
-      {
-        "type": "rest",
-        "resourceId": "/api/suppliers/${_current_supplier_id}/profile_strength$",
-        "actions": ["view"]
+        "actions": ["create"]
       },
       {
         "type": "rest",

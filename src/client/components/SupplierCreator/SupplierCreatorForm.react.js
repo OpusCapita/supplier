@@ -1,13 +1,12 @@
 import React, { PropTypes, Component } from 'react';
-import SupplierEditorFormRow from '../AttributeValueEditorRow.react.js';
-import './SupplierEditor.css';
+import SupplierCreatorFormRow from '../AttributeValueEditorRow.react.js';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import DateInput from '@opuscapita/react-dates/lib/DateInput';
 import { Supplier } from '../../api';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import validator from '../../utils/validatejs/supplierValidator.js';
 
-class SupplierEditorForm extends Component {
+class SupplierCreatorForm extends Component {
   static propTypes = {
     supplier: PropTypes.object,
     onSupplierChange: PropTypes.func.isRequired,
@@ -110,9 +109,7 @@ class SupplierEditorForm extends Component {
       this.setFieldErrorsStates(errors);
     };
 
-    constraints.id = {};
-
-    validator.forUpdate(this.context.i18n).
+    validator.forCreate(this.context.i18n).
       async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
   };
 
@@ -126,7 +123,6 @@ class SupplierEditorForm extends Component {
 
     const { onSupplierChange } = this.props;
     const supplier = this.state.supplier;
-    const constraints = { ...this.constraints.forUpdate(), id: {} };
 
     if (!supplier.vatIdentificationNo && this.state.hasVATId) {
       this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('Supplier.Messages.clickCheckBox')] });
@@ -141,8 +137,8 @@ class SupplierEditorForm extends Component {
         onSupplierChange(null);
       };
 
-      validator.forUpdate(this.context.i18n).
-        async(supplier, constraints, { fullMessages: false }).then(success, error);
+      validator.forCreate(this.context.i18n).
+        async(supplier, this.constraints.forCreate(), { fullMessages: false }).then(success, error);
     }
   };
 
@@ -155,7 +151,7 @@ class SupplierEditorForm extends Component {
     const { supplier, fieldErrors } = this.state;
     const { fieldName } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
-    const constraints = this.constraints.forUpdate();
+    const constraints = this.constraints.forCreate();
 
     let component = attrs.component ||
       <input className="form-control"
@@ -172,14 +168,14 @@ class SupplierEditorForm extends Component {
     let rowErrors = fieldNames.reduce((rez, name) => rez.concat(fieldErrors[name] || []), []);
 
     return (
-      <SupplierEditorFormRow
+      <SupplierCreatorFormRow
         labelText={ attrs.labelText || this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }
         required={ isRequired }
         marked = { attrs.marked }
         rowErrors={ rowErrors }
       >
         { component }
-      </SupplierEditorFormRow>
+      </SupplierCreatorFormRow>
     );
   };
 
@@ -281,4 +277,4 @@ class SupplierEditorForm extends Component {
   }
 }
 
-export default SupplierEditorForm;
+export default SupplierCreatorForm;

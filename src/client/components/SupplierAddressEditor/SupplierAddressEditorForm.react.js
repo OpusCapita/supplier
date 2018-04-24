@@ -150,7 +150,7 @@ class SupplierAddressEditorForm extends Component {
 
     return (
       <SupplierAddressEditorFormRow
-        labelText={ this.context.i18n.getMessage(`SupplierAddressEditor.Label.${fieldName}`) }
+        labelText={ this.context.i18n.getMessage(`Supplier.Address.Label.${fieldName}`) }
         required={ isRequired }
         rowErrors={ rowErrors }
       >
@@ -167,14 +167,14 @@ class SupplierAddressEditorForm extends Component {
 
     typeOptions.push({
       value: '',
-      label: this.context.i18n.getMessage('SupplierAddressEditor.Select.type'),
+      label: this.context.i18n.getMessage('Supplier.Select.type'),
       disabled: true
     });
 
     for (const addressType of ADDRESS_TYPES) {
       typeOptions.push({
         value: addressType,
-        label: this.context.i18n.getMessage(`SupplierAddressEditor.AddressType.${addressType}`),
+        label: this.context.i18n.getMessage(`Supplier.Address.Type.${addressType}`),
         disabled: false
       });
     }
@@ -230,13 +230,13 @@ class SupplierAddressEditorForm extends Component {
             id='supplier-address__cancel'
             style='link'
             onClick={this.handleCancel}
-            label={this.context.i18n.getMessage('SupplierAddressEditor.Button.cancel')}
+            label={this.context.i18n.getMessage('Supplier.Button.cancel')}
           />
           <ActionButton
             id='supplier-address__save'
             style='primary'
             type='submit'
-            label={this.context.i18n.getMessage('SupplierAddressEditor.Button.save')}
+            label={this.context.i18n.getMessage('Supplier.Button.save')}
           />
         </div>
       </form>

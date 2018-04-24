@@ -149,7 +149,7 @@ class SupplierBankAccountEditForm extends Component {
 
     return (
       <SupplierBankAccountEditFormRow
-        labelText={ this.context.i18n.getMessage(`SupplierBankAccountEditor.Label.${fieldName}`) }
+        labelText={ this.context.i18n.getMessage(`Supplier.BankAccount.Label.${fieldName}`) }
         required={ isRequired }
         rowErrors={ rowErrors }
       >
@@ -189,12 +189,12 @@ class SupplierBankAccountEditForm extends Component {
           <ActionButton
             style='link'
             onClick={this.handleCancel}
-            label={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.cancel')}
+            label={this.context.i18n.getMessage('Supplier.Button.cancel')}
           />
           <ActionButton
             style='primary'
             type='submit'
-            label={this.context.i18n.getMessage('SupplierBankAccountEditor.Button.save')}
+            label={this.context.i18n.getMessage('Supplier.Button.save')}
           />
         </div>
       </form>
