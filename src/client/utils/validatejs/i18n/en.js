@@ -11,6 +11,7 @@ const SupplierValidatejs = {
   'SupplierValidatejs.invalid.minOrEqual.message': "Value must be greater than or equal to min value '{limit}'",
   'SupplierValidatejs.invalid.maxSize.message': "Value exceeds the maximum size of '{limit}'",
   'SupplierValidatejs.invalid.minSize.message': "Value is less than the minimum size of '{limit}'",
+  'SupplierValidatejs.invalid.validator.message': "Value is invalid",
   'SupplierValidatejs.not.inlist.message': "Value is not in the list '{limit}'",
   'SupplierValidatejs.blank.message': "Field cannot be blank",
   'SupplierValidatejs.not.equal.message': "Value cannot equal '{limit}'",
