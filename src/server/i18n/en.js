@@ -2,7 +2,7 @@ module.exports = {
   'notification.accessRequest.title': 'OpusCapita - User Access Request',
   'notification.accessRequest.description': `
     The user <strong>{firstName} {lastName} ({email})</strong> has requested access to your company account <strong>{supplierName}</strong>.<br />
-    <br />Please click this <a href="{link}">link</a> to view details of the request.`
+    <br />Please click this <a href="{link}">link</a> to view details of the request.`,
   'notification.accessApproval.title': 'OpusCapita - User Access Approved',
   'notification.accessApproval.description': `
     Your access request to company <strong>{supplierName}</strong> has been approved.<br />
