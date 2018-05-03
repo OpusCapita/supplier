@@ -2,32 +2,29 @@ const { en, de } = require('../i18n');
 
 module.exports.accessRequest = function({ serviceClient, supplier, requestUser, userIds, req }) {
   const link = getHostUrl(req) + '/bnp/supplierInformation?tab=accessApproval';
-  const translations = {
-    en: { ...en.notification.accessRequest(supplier.supplierName, requestUser, link), isDefault: true },
-    de: { ...de.notification.accessRequest(supplier.supplierName, requestUser, link) }
+  const description = {
+    firstName: requestUser.firstName,
+    lastName: requestUser.lastName,
+    email: requestUser.email,
+    supplierName: supplier.name,
+    link: link
   }
 
-  return sendNotification(serviceClient, link, translations, userIds);
+  return sendNotification(serviceClient, link, getTranslations('accessRequest', description), userIds);
 };
 
 module.exports.accessApproval = function({  serviceClient, supplier, userIds, req }) {
   const link = getHostUrl(req) + '/bnp/supplierRegistration';
-  const translations = {
-    en: { ...en.notification.accessApproval(supplier.supplierName, link), isDefault: true },
-    de: { ...de.notification.accessApproval(supplier.supplierName, link) }
-  }
+  const description = { supplierName: supplier.name, link: link }
 
-  return sendNotification(serviceClient, link, translations, userIds);
+  return sendNotification(serviceClient, link, getTranslations('accessApproval', description), userIds);
 };
 
 module.exports.accessRejection = function({ serviceClient, supplier, userIds, req }) {
   const link = getHostUrl(req) + '/bnp/supplierRegistration';
-  const translations = {
-    en: { ...en.notification.accessRejection(supplier.name), isDefault: true },
-    de: { ...de.notification.accessRejection(supplier.name) }
-  }
+  const description = { supplierName: supplier.name }
 
-  return sendNotification(serviceClient, link, translations, userIds);
+  return sendNotification(serviceClient, link, getTranslations('accessRejection', description), userIds);
 };
 
 let sendNotification = function(serviceClient, link, translations, users) {
@@ -49,3 +46,22 @@ let getHostUrl = function(req) {
 
   return req.protocol + '://' + externalHost;
 };
+
+let getTranslations = function(type, description) {
+  return {
+    en: {
+      title: en[`notification.${type}.title`],
+      description: replaceText(en[`notification.${type}.description`], description),
+      isDefault: true
+    },
+    de: {
+      title: de[`notification.${type}.title`],
+      description: replaceText(de[`notification.${type}.description`], description),
+    }
+  };
+};
+
+let replaceText = function(text, replaceObj)
+{
+  return Object.keys(replaceObj).reduce((txt, key) => txt.replace(`{${key}}`, replaceObj[key]), text);
+}
