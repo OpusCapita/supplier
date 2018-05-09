@@ -1,4 +1,3 @@
-const request = require('superagent-bluebird-promise');
 const { Supplier, BankAccount } = require('../../api');
 const supplierApi = new Supplier();
 const bankAccountApi = new BankAccount();
