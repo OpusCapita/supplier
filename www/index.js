@@ -1,6 +1,6 @@
 'use strict';
 
-const db = require('ocbesbn-db-init');
+const db = require('@opuscapita/db-init');
 const server = require('@opuscapita/web-init');
 
 db.init({ consul : { host : 'consul' } })

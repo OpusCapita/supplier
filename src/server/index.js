@@ -1,6 +1,6 @@
 const Logger = require('ocbesbn-logger'); // Logger
 const server = require('@opuscapita/web-init'); // Web server
-const db = require('ocbesbn-db-init'); // Database
+const db = require('@opuscapita/db-init'); // Database
 
 const logger = new Logger();
 logger.redirectConsoleOut(); // Force anyone using console outputs into Logger format.
