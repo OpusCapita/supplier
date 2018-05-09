@@ -72,14 +72,14 @@ module.exports = {
         type: Sequelize.DATE(),
         field: "CreatedOn",
         allowNull: false,
-        defaultValue: Sequelize.fn('NOW')
+        defaultValue: Sequelize.NOW
       },
 
       changedOn: {
         type: Sequelize.DATE(),
         field: "ChangedOn",
         allowNull: false,
-        defaultValue: Sequelize.fn('NOW')
+        defaultValue: Sequelize.NOW
       },
 
       extBankControlKey: {

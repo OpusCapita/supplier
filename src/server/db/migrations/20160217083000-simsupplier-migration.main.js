@@ -96,13 +96,13 @@ module.exports = {
           type: Sequelize.DATE(),
           field: "CreatedOn",
           allowNull: false,
-          defaultValue: Sequelize.fn('NOW')
+          defaultValue: Sequelize.NOW
         },
         changedOn: {
           type: Sequelize.DATE(),
           field: "ChangedOn",
           allowNull: false,
-          defaultValue: Sequelize.fn('NOW')
+          defaultValue: Sequelize.NOW
         }
       }).then(() => queryInterface.createTable('CatalogUser2Supplier', {
         loginName: {
@@ -234,13 +234,13 @@ module.exports = {
               type: Sequelize.DATE(),
               field: "CreatedOn",
               allowNull: false,
-              defaultValue: Sequelize.fn('NOW')
+              defaultValue: Sequelize.NOW
             },
             changedOn: {
               type: Sequelize.DATE(),
               field: "ChangedOn",
               allowNull: false,
-              defaultValue: Sequelize.fn('NOW')
+              defaultValue: Sequelize.NOW
             }
           }),
           queryInterface.createTable('SIMSupplierContact', {
@@ -306,13 +306,13 @@ module.exports = {
               type: Sequelize.DATE(),
               field: "CreatedOn",
               allowNull: false,
-              defaultValue: Sequelize.fn('NOW')
+              defaultValue: Sequelize.NOW
             },
             changedOn: {
               type: Sequelize.DATE(),
               field: "ChangedOn",
               allowNull: false,
-              defaultValue: Sequelize.fn('NOW')
+              defaultValue: Sequelize.NOW
             }
           })
         ]);
