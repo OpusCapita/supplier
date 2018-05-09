@@ -69,14 +69,14 @@ module.exports = {
       },
 
       createdOn: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATE(),
         field: "CreatedOn",
         allowNull: false,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
 
       changedOn: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATE(),
         field: "ChangedOn",
         allowNull: false,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')

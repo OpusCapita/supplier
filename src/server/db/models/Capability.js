@@ -23,11 +23,11 @@ module.exports.init = function(db) {
       allowNull: false
     },
     createdOn: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATE(),
       allowNull: false
     },
     changedOn: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATE(),
       allowNull: false
     }
   }, {

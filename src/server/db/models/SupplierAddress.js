@@ -125,11 +125,11 @@ module.exports.init = function(db) {
       field: "CreatedBy"
     },
     createdOn: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATE(),
       field: "CreatedOn"
     },
     changedOn: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATE(),
       field: "ChangedOn"
     }
   }, {

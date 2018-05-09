@@ -24,13 +24,13 @@ module.exports = {
       },
 
       createdOn: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATE(),
         allowNull: false,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
 
       changedOn: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATE(),
         allowNull: false,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
