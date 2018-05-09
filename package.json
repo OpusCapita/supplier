@@ -29,6 +29,7 @@
   "license": "jCatalog",
   "readme": "README.md",
   "dependencies": {
+    "@opuscapita/db-init": "^2.0.10",
     "@opuscapita/field-validators": "^0.0.3",
     "@opuscapita/i18n": "^1.2.4",
     "@opuscapita/react-dates": "^0.2.16",
@@ -49,7 +50,6 @@
     "less-loader": "^4.1.0",
     "lodash": "^4.17.5",
     "ocbesbn-config": "^2.3.3",
-    "ocbesbn-db-init": "^1.1.11",
     "ocbesbn-logger": "^1.0.5",
     "ocbesbn-redis-events": "^1.0.6",
     "react": "^15.4.2",
