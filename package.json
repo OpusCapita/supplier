@@ -59,7 +59,7 @@
     "react-select": "^1.2.1",
     "react-svg-gauge": "^1.0.8",
     "react-table": "^6.7.6",
-    "sequelize": "3.32.1",
+    "sequelize": "3.30.4",
     "style-loader": "^0.17.0",
     "superagent": "^3.8.2",
     "superagent-bluebird-promise": "^4.2.0",

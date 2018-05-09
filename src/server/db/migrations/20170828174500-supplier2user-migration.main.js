@@ -33,13 +33,13 @@ module.exports = {
       createdOn: {
         type: Sequelize.DATE(),
         allowNull: false,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.fn('NOW')
       },
 
       changedOn: {
         type: Sequelize.DATE(),
         allowNull: false,
-        defaultValue: Sequelize.NOW
+        defaultValue: Sequelize.fn('NOW')
       }
     });
   },
