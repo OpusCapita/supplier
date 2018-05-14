@@ -68,12 +68,13 @@ class SupplierConstraints {
         countryOfRegistration: this.constraints['countryOfRegistration']
       };
 
-    if (['vatIdentificationNo', 'dunsNo', 'globalLocationNo', 'iban'].indexOf(fieldName) > -1)
+    if (['vatIdentificationNo', 'dunsNo', 'globalLocationNo', 'iban', 'ovtNo'].indexOf(fieldName) > -1)
       return {
         vatIdentificationNo: this.constraints['vatIdentificationNo'],
         dunsNo: this.constraints['dunsNo'],
         globalLocationNo: this.constraints['globalLocationNo'],
         iban: this.constraints['iban'],
+        ovtNo: this.constraints['ovtNo'],
       };
 
     return { [fieldName]: this.constraints[fieldName] };
@@ -202,6 +203,20 @@ let allConstraints = function(i18n) {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
       },
       uniqueIdentifierWithBankAccount: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message')
+      }
+    },
+    ovtNo: {
+      presence: false,
+      ovtNumber: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.ovtNumber.message')
+      },
+      ovtNumberExists: {
+        message: i18n.getMessage('SupplierValidatejs.supplierExists', {
+          message: i18n.getMessage('SupplierValidatejs.duplicate.ovtNumber.message')
+        })
+      },
+       uniqueIdentifierWithBankAccount: {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message')
       }
     },

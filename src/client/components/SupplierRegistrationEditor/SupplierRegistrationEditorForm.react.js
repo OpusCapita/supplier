@@ -235,6 +235,7 @@ class SupplierRegistrationEditorForm extends Component {
                 }) }
                 { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
                 { this.renderField({ fieldName: 'dunsNo', marked: true }) }
+                { this.renderField({ fieldName: 'ovtNo', marked: true }) }
                 { this.renderField({ fieldName: 'iban', marked: true }) }
 
                 <div className='supplier-registration-form-submit'>

@@ -143,6 +143,7 @@ module.exports.searchRecord = function(query)
   if (query.name) rawQueryArray.push(equalSQL('Name', query.name));
   if (query.vatIdentificationNo) rawQueryArray.push(equalSQL('VatIdentificationNo', query.vatIdentificationNo));
   if (query.dunsNo) rawQueryArray.push(equalSQL('DUNSNo', query.dunsNo));
+  if (query.ovtNo) rawQueryArray.push(equalSQL('OVTNo', query.ovtNo));
   if (query.globalLocationNo) rawQueryArray.push(equalSQL('GlobalLocationNo', query.globalLocationNo));
   if (query.iban) rawQueryArray.push(equalSQL('SupplierBankAccount.AccountNumber', query.iban));
 

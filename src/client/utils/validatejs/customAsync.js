@@ -26,6 +26,14 @@ module.exports.dunsNumberExists = function(validate) {
   };
 };
 
+module.exports.ovtNumberExists = function(validate) {
+  return validate.validators.ovtNumberExists = function(value, options, key, attributes) {
+    let queryParams = { ovtNo: value };
+
+    return recordExists(value, validate, queryParams, options.message, attributes.id);
+  };
+};
+
 module.exports.globalLocationNumberExists = function(validate) {
   return validate.validators.globalLocationNumberExists = function(value, options, key, attributes) {
     let queryParams = { globalLocationNo: value }
@@ -69,7 +77,7 @@ module.exports.uniqueIdentifierWithBankAccount = function(validate) {
   return validate.validators.uniqueIdentifierWithBankAccount = function(value, options, key, attributes) {
     return new validate.Promise((resolve, reject) => {
       const uniqueIdentifier = require('../../../server/utils/validators/uniqueIdentifier.js');
-      const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo];
+      const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo, attributes.ovtNo];
       if (uniqueIdentifier.isValid(fields)) { resolve(); return; }
 
       if (!attributes.id) { resolve(); return; }

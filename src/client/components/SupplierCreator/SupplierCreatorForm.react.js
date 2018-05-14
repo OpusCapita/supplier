@@ -262,6 +262,7 @@ class SupplierCreatorForm extends Component {
                 }) }
           { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
           { this.renderField({ fieldName: 'dunsNo', marked: true }) }
+          { this.renderField({ fieldName: 'ovtNo', marked: true }) }
 
           <div className='supplier-form-submit'>
             <div className='text-right form-submit'>
