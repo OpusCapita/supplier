@@ -19,6 +19,9 @@ module.exports.all = function(query, includes)
   if (query.id) queryObj.id = { $in: query.id.split(',') };
   if (query.name) queryObj.name = { $like: `%${query.name}%` };
   if (query.hierarchyId) queryObj.hierarchyId = { $like: `%${query.hierarchyId}%` };
+  if (query.vatIdentificationNo) queryObj.vatIdentificationNo = query.vatIdentificationNo;
+  if (query.globalLocationNo) queryObj.globalLocationNo = query.globalLocationNo;
+  if (query.ovtNo) queryObj.ovtNo = query.ovtNo;
 
   const includeModels = associationsFromIncludes(this.db.models, includes || []);
 
