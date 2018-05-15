@@ -33,6 +33,7 @@ const SupplierValidatejs = {
   'SupplierValidatejs.duplicate.dunsNumber.message': "A company already exists with this D-U-N-S number.",
   'SupplierValidatejs.duplicate.ovtNumber.message': "A company already exists with this OVT number.",
   'SupplierValidatejs.duplicate.globalLocationNumber.message': "A company already exists with this Global Location Number.",
+  'SupplierValidatejs.duplicate.subEntityCode.message': "A compnany in your organization already has this code",
   'SupplierValidatejs.duplicate.iban.message': "A company already exists with this IBAN.",
   'SupplierValidatejs.typeMismatch.util.Date': "Value must be a valid Date",
   'SupplierValidatejs.supplierExists': "{message}\nPlease reach out to our support at +49 231 3967 350 or customerservice.de@opuscapita.com in order to initiate an access request to the registered company."

@@ -32,6 +32,7 @@ const Supplier = {
   'Supplier.Label.taxIdentificationNo': 'Tax Identification Number',
   'Supplier.Label.vatIdentificationNo': 'VAT Identification Number',
   'Supplier.Label.globalLocationNo': 'Global Location Number',
+  'Supplier.Label.subEntityCode': 'Sub Entity Code',
   'Supplier.Label.iban': 'IBAN',
   'Supplier.Label.accessReason': 'Access Reason',
   'Supplier.Label.searchInput': 'Search by name, city, VAT id, Tax id, registration number, DUNS number, or Global Location Number',

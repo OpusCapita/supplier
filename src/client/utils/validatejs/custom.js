@@ -66,7 +66,7 @@ module.exports.uniqueIdentifier = function(validate) {
 
     const uniqueIdentifier = require('../../../server/utils/validators/uniqueIdentifier.js');
 
-    const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo, attributes.iban];
+    const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo, attributes.ovtNo, attributes.iban];
 
     if (uniqueIdentifier.isValid(fields)) return null;
 

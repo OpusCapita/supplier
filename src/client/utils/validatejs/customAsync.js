@@ -12,7 +12,7 @@ module.exports.supplierNameExists = function(validate) {
 
 module.exports.vatNumberExists = function(validate) {
   return validate.validators.vatNumberExists = function(value, options, key, attributes) {
-    let queryParams = { vatIdentificationNo: value };
+    let queryParams = { vatIdentificationNo: value, parentId: attributes.parentId || attributes.id, notEqual: true };
 
     return recordExists(value, validate, queryParams, options.message, attributes.id);
   };
@@ -70,6 +70,18 @@ module.exports.registerationNumberExists = function(validate) {
     };
 
     return recordExists(attributes.commercialRegisterNo, validate, queryParams, options.message, attributes.id);
+  };
+};
+
+module.exports.subEntityCodeExists = function(validate) {
+  return validate.validators.subEntityCodeExists = function(value, options, key, attributes) {
+    let queryParams = {
+      subEntityCode: attributes.subEntityCode,
+      parentId: attributes.parentId,
+      vatIdentificationNo: attributes.vatIdentificationNo
+    };
+
+    return recordExists(attributes.subEntityCode, validate, queryParams, options.message, attributes.id);
   };
 };
 

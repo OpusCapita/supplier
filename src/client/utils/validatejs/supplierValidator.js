@@ -46,6 +46,7 @@ let validator = function(validatejs) {
   customAsync.vatNumberExists(validatejs);
   customAsync.dunsNumberExists(validatejs);
   customAsync.ovtNumberExists(validatejs);
+  customAsync.subEntityCodeExists(validatejs);
   customAsync.globalLocationNumberExists(validatejs);
   customAsync.ibanExists(validatejs);
   customAsync.uniqueIdentifierWithBankAccount(validatejs);

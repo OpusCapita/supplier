@@ -9,9 +9,11 @@ class SupplierConstraints {
     delete constraints.vatIdentificationNo.uniqueIdentifier;
     delete constraints.globalLocationNo.uniqueIdentifier;
     delete constraints.dunsNo.uniqueIdentifier;
+    delete constraints.ovtNo.uniqueIdentifier;
     delete constraints.vatIdentificationNo.uniqueIdentifierWithBankAccount;
     delete constraints.globalLocationNo.uniqueIdentifierWithBankAccount;
     delete constraints.dunsNo.uniqueIdentifierWithBankAccount;
+    delete constraints.ovtNo.uniqueIdentifierWithBankAccount;
 
     return constraints;
   }
@@ -22,6 +24,7 @@ class SupplierConstraints {
     delete constraints.vatIdentificationNo.uniqueIdentifier;
     delete constraints.globalLocationNo.uniqueIdentifier;
     delete constraints.dunsNo.uniqueIdentifier;
+    delete constraints.ovtNo.uniqueIdentifier;
 
     return constraints;
   }
@@ -35,6 +38,7 @@ class SupplierConstraints {
     delete constraints.vatIdentificationNo.uniqueIdentifierWithBankAccount;
     delete constraints.globalLocationNo.uniqueIdentifierWithBankAccount;
     delete constraints.dunsNo.uniqueIdentifierWithBankAccount;
+    delete constraints.ovtNo.uniqueIdentifierWithBankAccount;
 
     return constraints;
   }
@@ -66,6 +70,12 @@ class SupplierConstraints {
         commercialRegisterNo: this.constraints['commercialRegisterNo'],
         cityOfRegistration: this.constraints['cityOfRegistration'],
         countryOfRegistration: this.constraints['countryOfRegistration']
+      };
+
+    if (fieldName === 'subEntityCode')
+      return {
+        subEntityCode: this.constraints['subEntityCode'],
+        vatIdentificationNo: this.constraints['vatIdentificationNo']
       };
 
     if (['vatIdentificationNo', 'dunsNo', 'globalLocationNo', 'iban', 'ovtNo'].indexOf(fieldName) > -1)
@@ -216,6 +226,9 @@ let allConstraints = function(i18n) {
           message: i18n.getMessage('SupplierValidatejs.duplicate.ovtNumber.message')
         })
       },
+      uniqueIdentifier: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
+      },
        uniqueIdentifierWithBankAccount: {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message')
       }
@@ -232,6 +245,12 @@ let allConstraints = function(i18n) {
       },
       uniqueIdentifier: {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
+      }
+    },
+    subEntityCode: {
+      presence: false,
+      subEntityCodeExists: {
+        message: i18n.getMessage('SupplierValidatejs.duplicate.subEntityCode.message')
       }
     }
   };

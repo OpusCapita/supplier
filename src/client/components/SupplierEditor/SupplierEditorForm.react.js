@@ -97,7 +97,7 @@ class SupplierEditorForm extends Component {
   };
 
   handleBlur = (fieldName) => {
-    const constraints = this.constraints.forField(fieldName);
+    let constraints = this.constraints.forField(fieldName);
 
     this.setState({
       fieldErrors: Object.keys(constraints).reduce((rez, fieldName) => ({
@@ -111,6 +111,7 @@ class SupplierEditorForm extends Component {
     };
 
     constraints.id = {};
+    constraints.parentId = {};
 
     validator.forUpdate(this.context.i18n).
       async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
@@ -126,13 +127,14 @@ class SupplierEditorForm extends Component {
 
     const { onSupplierChange } = this.props;
     const supplier = this.state.supplier;
-    const constraints = { ...this.constraints.forUpdate(), id: {} };
+    const constraints = { ...this.constraints.forUpdate(), id: {}, parentId: {} };
 
     if (!supplier.vatIdentificationNo && this.state.hasVATId) {
       this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('Supplier.Messages.clickCheckBox')] });
     } else {
       const success = () => {
         supplier.noVatReason = supplier.vatIdentificationNo ? null : 'No VAT Registration Number';
+        if (!supplier.parentId) supplier.subEntityCode = null;
         onSupplierChange(supplier);
       };
 
@@ -183,6 +185,12 @@ class SupplierEditorForm extends Component {
     );
   };
 
+  renderSubEntityField = () => {
+    if (!this.state.supplier.parentId) return null;
+
+    return this.renderField({ fieldName: 'subEntityCode' });
+  };
+
   render() {
     const i18n = this.context.i18n;
     const { supplier } = this.state;
@@ -207,6 +215,7 @@ class SupplierEditorForm extends Component {
               </select>
             )
           })}
+          { this.renderSubEntityField() }
           { this.renderField({ fieldName: 'name' }) }
           { this.renderField({ fieldName: 'homePage' }) }
           { this.renderField({

@@ -32,6 +32,7 @@ const Supplier = {
   'Supplier.Label.taxIdentificationNo': 'Steuernummer',
   'Supplier.Label.vatIdentificationNo': 'Umsatzsteuer-Ident-Nr.',
   'Supplier.Label.globalLocationNo': 'Global Location Number (GLN/ILN)',
+  'Supplier.Label.subEntityCode': 'Sub-Entitätscode',
   'Supplier.Label.iban': 'IBAN',
   'Supplier.Label.accessReason': 'Zugang Grund',
   'Supplier.Label.searchInput': 'Suche nach Name, Stadt, Umsatzsteuer-ID, Steuernummer, Registrierungsnummer, DUNS-Nummer oder Global Location Number',
