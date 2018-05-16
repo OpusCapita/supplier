@@ -35,11 +35,11 @@ module.exports.init = function(db) {
       type: Sequelize.STRING(1000)
     },
     createdOn: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATE(),
       allowNull: false
     },
     changedOn: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATE(),
       allowNull: false
     }
   }, {

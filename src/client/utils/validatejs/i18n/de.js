@@ -19,6 +19,7 @@ const SupplierValidatejs = {
   'SupplierValidatejs.not.unique.message': "Der Wert muss eindeutig sein",
   'SupplierValidatejs.invalid.vatNumber.message': "Der Wert ist keine gültige EU-Umsatzsteuer-Identifikationsnummer",
   'SupplierValidatejs.invalid.dunsNumber.message': "Der Wert ist keine gültige D-U-N-S Nummer",
+  'SupplierValidatejs.invalid.ovtNumber.message': "Der Wert ist keine gültige OVT Nummer",
   'SupplierValidatejs.invalid.globalLocationNumber.message': "Der Wert ist keine gültige Global Location Number",
   'SupplierValidatejs.invalid.iban.message': "Der Wert ist kein gültiger IBAN",
   'SupplierValidatejs.invalid.bic.message': "Der Wert ist kein gültiger BIC",
@@ -30,7 +31,9 @@ const SupplierValidatejs = {
   'SupplierValidatejs.duplicate.taxIdNumber.message': "Ein Unternehmen existiert bereits mit dieser Steueridentifikationsnummer und dem Land.",
   'SupplierValidatejs.duplicate.vatNumber.message': "Ein Unternehmen existiert bereits mit dieser Umsatzsteuer-Identifikationsnummer.",
   'SupplierValidatejs.duplicate.dunsNumber.message': "Ein Unternehmen existiert bereits mit dieser D-U-N-S-Nummer.",
+  'SupplierValidatejs.duplicate.ovtNumber.message': "Ein Unternehmen existiert bereits mit dieser OVT Nummer.",
   'SupplierValidatejs.duplicate.globalLocationNumber.message': "Ein Unternehmen existiert bereits mit dieser Global Location Number.",
+  'SupplierValidatejs.duplicate.subEntityCode.message': "Ein Firma in Ihrer Organisation besitzt diesen Code",
   'SupplierValidatejs.duplicate.iban.message': "Ein Unternehmen existiert bereits mit dieser IBAN.",
   'SupplierValidatejs.typeMismatch.util.Date': "Die Wert muss ein g\u00fcltiges Datum sein",
   'SupplierValidatejs.supplierExists': "{message}\nBitte kontaktieren Sie unseren Support via +49 231 3967 350 oder customerservice.de@opuscapita.com, um einen Zugang zu diesem Unternehmen anzufordern."

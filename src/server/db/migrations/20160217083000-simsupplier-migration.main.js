@@ -93,16 +93,16 @@ module.exports = {
           allowNull: false
         },
         createdOn: {
-          type: Sequelize.DATE,
+          type: Sequelize.DATE(),
           field: "CreatedOn",
           allowNull: false,
-          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+          defaultValue: Sequelize.fn('NOW')
         },
         changedOn: {
-          type: Sequelize.DATE,
+          type: Sequelize.DATE(),
           field: "ChangedOn",
           allowNull: false,
-          defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+          defaultValue: Sequelize.fn('NOW')
         }
       }).then(() => queryInterface.createTable('CatalogUser2Supplier', {
         loginName: {
@@ -231,16 +231,16 @@ module.exports = {
               allowNull: false
             },
             createdOn: {
-              type: Sequelize.DATE,
+              type: Sequelize.DATE(),
               field: "CreatedOn",
               allowNull: false,
-              defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+              defaultValue: Sequelize.fn('NOW')
             },
             changedOn: {
-              type: Sequelize.DATE,
+              type: Sequelize.DATE(),
               field: "ChangedOn",
               allowNull: false,
-              defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+              defaultValue: Sequelize.fn('NOW')
             }
           }),
           queryInterface.createTable('SIMSupplierContact', {
@@ -303,16 +303,16 @@ module.exports = {
               allowNull: false
             },
             createdOn: {
-              type: Sequelize.DATE,
+              type: Sequelize.DATE(),
               field: "CreatedOn",
               allowNull: false,
-              defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+              defaultValue: Sequelize.fn('NOW')
             },
             changedOn: {
-              type: Sequelize.DATE,
+              type: Sequelize.DATE(),
               field: "ChangedOn",
               allowNull: false,
-              defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+              defaultValue: Sequelize.fn('NOW')
             }
           })
         ]);

@@ -19,6 +19,9 @@ module.exports.all = function(query, includes)
   if (query.id) queryObj.id = { $in: query.id.split(',') };
   if (query.name) queryObj.name = { $like: `%${query.name}%` };
   if (query.hierarchyId) queryObj.hierarchyId = { $like: `%${query.hierarchyId}%` };
+  if (query.vatIdentificationNo) queryObj.vatIdentificationNo = query.vatIdentificationNo;
+  if (query.globalLocationNo) queryObj.globalLocationNo = query.globalLocationNo;
+  if (query.ovtNo) queryObj.ovtNo = query.ovtNo;
 
   const includeModels = associationsFromIncludes(this.db.models, includes || []);
 
@@ -35,6 +38,15 @@ module.exports.find = function(supplierId, includes)
     return supplierWithAssociations(supplier);
   });
 };
+
+module.exports.getMotherSupplier = async function(supplierId)
+{
+  const supplier = await this.find(supplierId);
+  if (!supplier) return Promise.resolve(null);
+
+  const motherSupplierId = supplier.hierarchyId ? supplier.hierarchyId.split('|')[0] : supplier.id;
+  return this.find(motherSupplierId);
+}
 
 module.exports.create = async function(supplier)
 {
@@ -131,7 +143,7 @@ module.exports.searchAll = function(searchValue, capabilities)
   return this.db.query(query, { model: model }).then(suppliers => aggregateSeach(suppliers));
 };
 
-module.exports.searchRecord = function(query)
+module.exports.searchRecord = async function(query)
 {
   normalize(query);
 
@@ -140,8 +152,10 @@ module.exports.searchRecord = function(query)
   if (query.name) rawQueryArray.push(equalSQL('Name', query.name));
   if (query.vatIdentificationNo) rawQueryArray.push(equalSQL('VatIdentificationNo', query.vatIdentificationNo));
   if (query.dunsNo) rawQueryArray.push(equalSQL('DUNSNo', query.dunsNo));
+  if (query.ovtNo) rawQueryArray.push(equalSQL('OVTNo', query.ovtNo));
   if (query.globalLocationNo) rawQueryArray.push(equalSQL('GlobalLocationNo', query.globalLocationNo));
   if (query.iban) rawQueryArray.push(equalSQL('SupplierBankAccount.AccountNumber', query.iban));
+  if (query.subEntityCode) rawQueryArray.push(equalSQL('SubEntityCode', query.subEntityCode));
 
   if (query.commercialRegisterNo) {
     const commercialRegisterNoQuery = [
@@ -162,7 +176,15 @@ module.exports.searchRecord = function(query)
 
   let rawQuery = rawQueryArray.length > 1 ? '(' + rawQueryArray.join(' OR ') + ')' : rawQueryArray[0];
 
-  if (query.id) rawQuery = rawQuery + ` AND Supplier.ID != '${query.id}'`;
+  if (query.id || query.parentId) rawQuery = rawQuery + ` AND Supplier.ID != '${query.id || query.parentId}'`;
+  if (query.parentId) {
+    const motherCustomer = await this.getMotherSupplier(query.parentId);
+    if (query.notEqual) {
+      rawQuery = rawQuery + ` AND ${notLikeSQL('HierarchyId', motherCustomer.id)}`;
+    } else {
+      rawQuery = rawQuery + ` AND ${likeSQL('HierarchyId', motherCustomer.id)}`;
+    }
+  }
 
   const model = this.db.models.Supplier;
   const select = `SELECT ${attributes(model)} FROM Supplier`;
@@ -251,6 +273,16 @@ let matchSQL = function(fieldName, value)
 let equalSQL = function(fieldName, value)
 {
   return `${fieldName} = ${SqlString.escape(value)}`;
+}
+
+let likeSQL = function(fieldName, value)
+{
+  return `${fieldName} LIKE '%${value}%'`;
+}
+
+let notLikeSQL = function(fieldName, value)
+{
+  return `(${fieldName} IS NULL OR ${fieldName} NOT LIKE '%${value}%')`;
 }
 
 let attributes = function(model)

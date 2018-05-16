@@ -1,4 +1,3 @@
-const request = require('superagent-bluebird-promise');
 const { Supplier, BankAccount } = require('../../api');
 const supplierApi = new Supplier();
 const bankAccountApi = new BankAccount();
@@ -13,7 +12,7 @@ module.exports.supplierNameExists = function(validate) {
 
 module.exports.vatNumberExists = function(validate) {
   return validate.validators.vatNumberExists = function(value, options, key, attributes) {
-    let queryParams = { vatIdentificationNo: value };
+    let queryParams = { vatIdentificationNo: value, parentId: attributes.parentId || attributes.id, notEqual: true };
 
     return recordExists(value, validate, queryParams, options.message, attributes.id);
   };
@@ -22,6 +21,14 @@ module.exports.vatNumberExists = function(validate) {
 module.exports.dunsNumberExists = function(validate) {
   return validate.validators.dunsNumberExists = function(value, options, key, attributes) {
     let queryParams = { dunsNo: value };
+
+    return recordExists(value, validate, queryParams, options.message, attributes.id);
+  };
+};
+
+module.exports.ovtNumberExists = function(validate) {
+  return validate.validators.ovtNumberExists = function(value, options, key, attributes) {
+    let queryParams = { ovtNo: value };
 
     return recordExists(value, validate, queryParams, options.message, attributes.id);
   };
@@ -66,11 +73,23 @@ module.exports.registerationNumberExists = function(validate) {
   };
 };
 
+module.exports.subEntityCodeExists = function(validate) {
+  return validate.validators.subEntityCodeExists = function(value, options, key, attributes) {
+    let queryParams = {
+      subEntityCode: attributes.subEntityCode,
+      parentId: attributes.parentId,
+      vatIdentificationNo: attributes.vatIdentificationNo
+    };
+
+    return recordExists(attributes.subEntityCode, validate, queryParams, options.message, attributes.id);
+  };
+};
+
 module.exports.uniqueIdentifierWithBankAccount = function(validate) {
   return validate.validators.uniqueIdentifierWithBankAccount = function(value, options, key, attributes) {
     return new validate.Promise((resolve, reject) => {
       const uniqueIdentifier = require('../../../server/utils/validators/uniqueIdentifier.js');
-      const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo];
+      const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo, attributes.ovtNo];
       if (uniqueIdentifier.isValid(fields)) { resolve(); return; }
 
       if (!attributes.id) { resolve(); return; }

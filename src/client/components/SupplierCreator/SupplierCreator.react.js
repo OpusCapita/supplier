@@ -84,7 +84,7 @@ class SupplierCreator extends Component {
       return (<SupplierCreatorForm
                 {...this.props}
                 supplier={ this.state.supplier }
-                onSupplierChange={ this.handleUpdate }
+                onSupplierCreate={ this.handleUpdate }
                 onChange={ this.handleChange }
                 onCancel={ this.props.onLogout }
               />);

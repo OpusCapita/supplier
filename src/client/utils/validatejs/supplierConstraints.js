@@ -9,9 +9,11 @@ class SupplierConstraints {
     delete constraints.vatIdentificationNo.uniqueIdentifier;
     delete constraints.globalLocationNo.uniqueIdentifier;
     delete constraints.dunsNo.uniqueIdentifier;
+    delete constraints.ovtNo.uniqueIdentifier;
     delete constraints.vatIdentificationNo.uniqueIdentifierWithBankAccount;
     delete constraints.globalLocationNo.uniqueIdentifierWithBankAccount;
     delete constraints.dunsNo.uniqueIdentifierWithBankAccount;
+    delete constraints.ovtNo.uniqueIdentifierWithBankAccount;
 
     return constraints;
   }
@@ -22,6 +24,7 @@ class SupplierConstraints {
     delete constraints.vatIdentificationNo.uniqueIdentifier;
     delete constraints.globalLocationNo.uniqueIdentifier;
     delete constraints.dunsNo.uniqueIdentifier;
+    delete constraints.ovtNo.uniqueIdentifier;
 
     return constraints;
   }
@@ -35,6 +38,7 @@ class SupplierConstraints {
     delete constraints.vatIdentificationNo.uniqueIdentifierWithBankAccount;
     delete constraints.globalLocationNo.uniqueIdentifierWithBankAccount;
     delete constraints.dunsNo.uniqueIdentifierWithBankAccount;
+    delete constraints.ovtNo.uniqueIdentifierWithBankAccount;
 
     return constraints;
   }
@@ -68,12 +72,19 @@ class SupplierConstraints {
         countryOfRegistration: this.constraints['countryOfRegistration']
       };
 
-    if (['vatIdentificationNo', 'dunsNo', 'globalLocationNo', 'iban'].indexOf(fieldName) > -1)
+    if (fieldName === 'subEntityCode')
+      return {
+        subEntityCode: this.constraints['subEntityCode'],
+        vatIdentificationNo: this.constraints['vatIdentificationNo']
+      };
+
+    if (['vatIdentificationNo', 'dunsNo', 'globalLocationNo', 'iban', 'ovtNo'].indexOf(fieldName) > -1)
       return {
         vatIdentificationNo: this.constraints['vatIdentificationNo'],
         dunsNo: this.constraints['dunsNo'],
         globalLocationNo: this.constraints['globalLocationNo'],
         iban: this.constraints['iban'],
+        ovtNo: this.constraints['ovtNo'],
       };
 
     return { [fieldName]: this.constraints[fieldName] };
@@ -205,6 +216,23 @@ let allConstraints = function(i18n) {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message')
       }
     },
+    ovtNo: {
+      presence: false,
+      ovtNumber: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.ovtNumber.message')
+      },
+      ovtNumberExists: {
+        message: i18n.getMessage('SupplierValidatejs.supplierExists', {
+          message: i18n.getMessage('SupplierValidatejs.duplicate.ovtNumber.message')
+        })
+      },
+      uniqueIdentifier: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
+      },
+       uniqueIdentifierWithBankAccount: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierWithBankAccount.message')
+      }
+    },
     iban: {
       presence: false,
       iban: {
@@ -217,6 +245,12 @@ let allConstraints = function(i18n) {
       },
       uniqueIdentifier: {
         message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifier.message')
+      }
+    },
+    subEntityCode: {
+      presence: false,
+      subEntityCodeExists: {
+        message: i18n.getMessage('SupplierValidatejs.duplicate.subEntityCode.message')
       }
     }
   };

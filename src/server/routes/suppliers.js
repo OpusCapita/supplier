@@ -35,6 +35,10 @@ let sendSupplier = function(req, res)
 
 let sendSuppliers = function(req, res)
 {
+  if (req.query.electronicAddress) {
+    return sendSuppliersForElectronicAddress(req.query.electronicAddress, res);
+  }
+
   if (req.query.search !== undefined) {
     const capabilities = req.query.capabilities ? req.query.capabilities.split(',') : [];
     Supplier.searchAll(req.query.search, capabilities).then(suppliers => res.json(suppliers));
@@ -159,3 +163,23 @@ let createBankAccount = function(iban, supplier)
   };
   return SupplierBank.create(bankAccount);
 }
+
+let sendSuppliersForElectronicAddress = async function(electronicAddress, res)
+{
+  try {
+    const electronicAddressDecoder = require('@opuscapita/electronic-address');
+    const data = electronicAddressDecoder.decode(electronicAddress);
+
+    if (!data.value) return res.status('400').json({ message: `Electronic address ${electronicAddress} could not be decoded` });
+
+    const suppliers = await Supplier.all({ [getIdentifier[data.type]]: data.value });
+
+    if (suppliers.length <= 1) return res.json(suppliers);
+
+    if (!data.ext) return res.json(suppliers.filter(customer => !Boolean(customer.parentId)));
+
+    return res.json(suppliers.filter(customer => customer.subEntityCode === data.ext));
+  } catch(err) { return res.status('400').json({ message : err.message }) };
+};
+
+let getIdentifier = { vat: 'vatIdentificationNo', gln: 'globalLocationNo', ovt: 'ovtNo' };

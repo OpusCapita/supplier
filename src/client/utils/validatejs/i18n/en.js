@@ -19,6 +19,7 @@ const SupplierValidatejs = {
   'SupplierValidatejs.not.unique.message': "Value must be unique",
   'SupplierValidatejs.invalid.vatNumber.message': "Value is not a valid EU VAT number",
   'SupplierValidatejs.invalid.dunsNumber.message': "Value is not a valid D-U-N-S number",
+  'SupplierValidatejs.invalid.ovtNumber.message': "Value is not a valid OVT number",
   'SupplierValidatejs.invalid.globalLocationNumber.message': "Value is not a valid Global Location Number",
   'SupplierValidatejs.invalid.iban.message': "Value is not a valid IBAN",
   'SupplierValidatejs.invalid.bic.message': "Value is not a valid BIC",
@@ -30,7 +31,9 @@ const SupplierValidatejs = {
   'SupplierValidatejs.duplicate.taxIdNumber.message': "A company already exists with this Tax Identification Number and country.",
   'SupplierValidatejs.duplicate.vatNumber.message': "A company already exists with this VAT number.",
   'SupplierValidatejs.duplicate.dunsNumber.message': "A company already exists with this D-U-N-S number.",
+  'SupplierValidatejs.duplicate.ovtNumber.message': "A company already exists with this OVT number.",
   'SupplierValidatejs.duplicate.globalLocationNumber.message': "A company already exists with this Global Location Number.",
+  'SupplierValidatejs.duplicate.subEntityCode.message': "A compnany in your organization already has this code",
   'SupplierValidatejs.duplicate.iban.message': "A company already exists with this IBAN.",
   'SupplierValidatejs.typeMismatch.util.Date': "Value must be a valid Date",
   'SupplierValidatejs.supplierExists': "{message}\nPlease reach out to our support at +49 231 3967 350 or customerservice.de@opuscapita.com in order to initiate an access request to the registered company."
