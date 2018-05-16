@@ -176,8 +176,9 @@ module.exports.searchRecord = async function(query)
 
   let rawQuery = rawQueryArray.length > 1 ? '(' + rawQueryArray.join(' OR ') + ')' : rawQueryArray[0];
 
-  if (query.id || query.parentId) rawQuery = rawQuery + ` AND Supplier.ID != '${query.id || query.parentId}'`;
+  if (query.id) rawQuery = rawQuery + ` AND Supplier.ID != '${query.id}'`;
   if (query.parentId) {
+    rawQuery = rawQuery + ` AND Supplier.ID != '${query.parentId}'`;
     const motherCustomer = await this.getMotherSupplier(query.parentId);
     if (query.notEqual) {
       rawQuery = rawQuery + ` AND ${notLikeSQL('HierarchyId', motherCustomer.id)}`;
