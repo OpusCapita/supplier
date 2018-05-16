@@ -13,12 +13,10 @@ module.exports = function(app, db, config)
 
 let sendSupplierOrganization = async function(req, res)
 {
-  const supplier = await Supplier.find(req.params.supplierId)
-  if (!supplier) return res.status('404').json({ message : 'Supplier does not exist!' });
+  const motherSupplier = await Supplier.getMotherSupplier(req.params.supplierId);
+  if (!motherSupplier) return res.status('404').json({ message : 'Supplier does not exist!' });
 
-  const motherSupplierId = supplier.hierarchyId ? supplier.hierarchyId.split('|')[0] : supplier.id;
-  const motherSupplier = await Supplier.find(motherSupplierId);
-  const supplierChildren = await Supplier.all({ hierarchyId: motherSupplierId });
+  const supplierChildren = await Supplier.all({ hierarchyId: motherSupplier.id });
   supplierChildren.unshift(motherSupplier);
   return res.json(supplierChildren);
 }
