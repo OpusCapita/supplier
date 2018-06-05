@@ -153,6 +153,10 @@ class SupplierEditorForm extends Component {
     this.setState({hasVATId: !this.state.hasVATId});
   };
 
+  userIsAdmin = () => {
+    return this.props.userRoles.includes('admin');
+  }
+
   renderField = (attrs) => {
     const { supplier, fieldErrors } = this.state;
     const { fieldName } = attrs;
@@ -165,6 +169,7 @@ class SupplierEditorForm extends Component {
         value={ typeof supplier[fieldName] === 'string' ? supplier[fieldName] : '' }
         onChange={ this.handleChange.bind(this, fieldName) }
         onBlur={ this.handleBlur.bind(this, fieldName) }
+        disabled={ attrs.disabled || false }
       />;
 
     let isRequired = fieldNames.some(name => {
@@ -208,7 +213,7 @@ class SupplierEditorForm extends Component {
                 value={supplier.parentId}
                 onChange={this.handleChange.bind(this, 'parentId')}
                 onBlur={() => null}
-                disabled={!this.props.userRoles.includes('admin')}>
+                disabled={!this.userIsAdmin()}>
                   {this.state.suppliers.map((sup, index) => {
                     return <option key={index} value={sup.id}>{sup.name}</option>;
                   })}
@@ -262,20 +267,20 @@ class SupplierEditorForm extends Component {
             )
           })}
           { this.renderField({ fieldName: 'taxIdentificationNo' }) }
-          { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
+          { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: !this.userIsAdmin() }) }
           { this.renderField({
                   fieldName: 'noVatReason',
                   labelText: ' ',
                   component: (
                     <p>
-                      <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange} checked={!this.state.hasVATId}></input>
+                      <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange} checked={!this.state.hasVATId} disabled={!this.userIsAdmin()}></input>
                       {this.context.i18n.getMessage('Supplier.Messages.noVatId')}
                     </p>
                   )
                 }) }
-          { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
-          { this.renderField({ fieldName: 'dunsNo', marked: true }) }
-          { this.renderField({ fieldName: 'ovtNo', marked: true }) }
+          { this.renderField({ fieldName: 'globalLocationNo', marked: true, disabled: !this.userIsAdmin() }) }
+          { this.renderField({ fieldName: 'dunsNo', marked: true, disabled: !this.userIsAdmin() }) }
+          { this.renderField({ fieldName: 'ovtNo', marked: true, disabled: !this.userIsAdmin() }) }
 
           <div className='supplier-form-submit'>
             <div className='text-right form-submit'>
