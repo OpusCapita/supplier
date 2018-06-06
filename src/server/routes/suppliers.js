@@ -86,6 +86,8 @@ let createSuppliers = function(req, res)
           this.events.emit(supplier, 'supplier')])
         .then(() => supplier))
         .then(supplier => {
+          if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
+
           const supplierId = supplier.id;
           const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
 
