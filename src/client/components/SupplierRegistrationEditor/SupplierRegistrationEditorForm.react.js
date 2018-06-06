@@ -160,6 +160,7 @@ class SupplierRegistrationEditorForm extends Component {
         value={ typeof supplier[fieldName] === 'string' ? supplier[fieldName] : '' }
         onChange={ this.handleChange.bind(this, fieldName) }
         onBlur={ this.handleBlur.bind(this, fieldName) }
+        disabled={ attrs.disabled || false }
       />;
 
     let isRequired = fieldNames.some(name => {
@@ -199,7 +200,7 @@ class SupplierRegistrationEditorForm extends Component {
                   component: (
                     <CountryField
                       actionUrl=''
-                      value={this.state.supplier['countryOfRegistration']}
+                      value={supplier.countryOfRegistration}
                       onChange={this.handleChange.bind(this, 'countryOfRegistration')}
                       onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
                       optional={true}
@@ -212,7 +213,7 @@ class SupplierRegistrationEditorForm extends Component {
                   component: (
                     <CurrencyField
                       actionUrl=''
-                      value={this.state.supplier['currencyId']}
+                      value={supplier.currencyId}
                       onChange={this.handleChange.bind(this, 'currencyId')}
                       onBlur={this.handleBlur.bind(this, 'currencyId')}
                       optional={true}
@@ -222,20 +223,20 @@ class SupplierRegistrationEditorForm extends Component {
                 }) }
 
                 { this.renderField({ fieldName: 'taxIdentificationNo' }) }
-                { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
+                { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: Boolean(supplier.vatIdentificationNo) }) }
                 { this.renderField({
                   fieldName: 'noVatReason',
                   labelText: ' ',
                   component: (
                     <p>
-                      <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange}></input>
+                      <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange} disabled={Boolean(supplier.vatIdentificationNo)}></input>
                       {this.context.i18n.getMessage('Supplier.Messages.noVatId')}
                     </p>
                   )
                 }) }
-                { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
-                { this.renderField({ fieldName: 'dunsNo', marked: true }) }
-                { this.renderField({ fieldName: 'ovtNo', marked: true }) }
+                { this.renderField({ fieldName: 'globalLocationNo', marked: true, disabled: Boolean(supplier.globalLocationNo) }) }
+                { this.renderField({ fieldName: 'dunsNo', marked: true, disabled: Boolean(supplier.dunsNo)}) }
+                { this.renderField({ fieldName: 'ovtNo', marked: true, disabled: Boolean(supplier.ovtNo)}) }
                 { this.renderField({ fieldName: 'iban', marked: true }) }
 
                 <div className='supplier-registration-form-submit'>
