@@ -16,6 +16,7 @@ const Supplier = {
   'Supplier.Button.approve': 'Approve',
   'Supplier.Button.reject': 'Reject',
   'Supplier.Button.search': 'Search',
+  'Supplier.Button.publicProfile': 'View public profile',
   'Supplier.Label.id': 'Company ID',
   'Supplier.Label.parentId': 'Parent Company',
   'Supplier.Label.name': 'Company Name',
@@ -52,6 +53,7 @@ const Supplier = {
   'Supplier.Heading.accessApproval': 'Please approve or reject user access request.',
   'Supplier.Heading.BankAccount': 'Please enter your bank account details.',
   'Supplier.Heading.contact': 'Please add your company contact persons here.',
+  'Supplier.Heading.visibility': 'Please set preferences for your public profile.',
   'Supplier.Confirmation.cancel': 'Do you really want to cancel?',
   'Supplier.Messages.loading': 'Loading...',
   'Supplier.Messages.unableToRender': 'Unable to render editor',
@@ -166,6 +168,7 @@ const Supplier = {
   'Supplier.Contact.Message.userCreated': 'User successfully created.',
   'Supplier.Contact.Message.userCreateFailed': 'User creation failed.',
   'Supplier.Contact.Error.userExists': 'User already exists.',
+  'Supplier.Visibility.Message.updateSaved': 'Changes successfully saved.'
 }
 
 export default Supplier;

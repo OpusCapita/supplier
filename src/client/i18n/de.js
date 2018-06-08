@@ -16,6 +16,7 @@ const Supplier = {
   'Supplier.Button.approve': 'Genehmigen',
   'Supplier.Button.reject': 'Ablehnen',
   'Supplier.Button.search': 'Suche',
+  'Supplier.Button.publicProfile': 'Öffentliches Profil ansehen',
   'Supplier.Label.id': 'Firmen-ID',
   'Supplier.Label.parentId': 'Muttergesellschaft',
   'Supplier.Label.name': 'Firmenname',
@@ -52,6 +53,7 @@ const Supplier = {
   'Supplier.Heading.accessApproval': 'Bitte genehmigen oder lehnen Sie die Benutzerzugriffsanfrage ab.',
   'Supplier.Heading.BankAccount': 'Bitte hinterlegen Sie Ihre Bankverbindung.',
   'Supplier.Heading.contact': 'Bitte fügen Sie hier Ihre Firma Ansprechpartnern.',
+  'Supplier.Heading.visibility': 'Bitte legen Sie die Einstellungen für Ihr öffentliches Profil.',
   'Supplier.Confirmation.cancel': 'Wollen Sie den Vorgang wirklich abbrechen?',
   'Supplier.Messages.loading': 'Laden...',
   'Supplier.Messages.unableToRender': 'Der Editor kann nicht geöffnet werden',
@@ -166,6 +168,7 @@ const Supplier = {
   'Supplier.Contact.Message.userCreated': 'Benutzer erfolgreich erstellt.',
   'Supplier.Contact.Message.userCreateFailed': 'Benutzererstellung fehlgeschlagen.',
   'Supplier.Contact.Error.userExists': 'Der Benutzer existiert bereits.',
+  'Supplier.Visibility.Message.updateSaved': 'Änderungen erfolgreich gespeichert.'
 }
 
 export default Supplier;
