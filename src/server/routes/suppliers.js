@@ -1,13 +1,11 @@
 const Supplier = require('../queries/suppliers');
 const SupplierBank = require('../queries/supplier_bank_accounts');
-const RedisEvents = require('ocbesbn-redis-events');
 const userService = require('../services/user');
 const Promise = require('bluebird');
 
 module.exports = function(app, db, config) {
   Promise.all([Supplier.init(db, config), SupplierBank.init(db, config)]).then(() =>
   {
-    this.events = new RedisEvents({ consul : { host : 'consul' } });
     app.get('/api/suppliers', (req, res) => sendSuppliers(req, res));
     app.get('/api/suppliers/exists', (req, res) => existsSuppliers(req, res));
     app.get('/api/suppliers/search', (req, res) => querySupplier(req, res));
@@ -81,10 +79,7 @@ let createSuppliers = function(req, res)
       newSupplier.status = 'new';
 
       return Supplier.create(newSupplier)
-        .then(supplier => Promise.all([
-          req.opuscapita.eventClient.emit('supplier.supplier.create', supplier),
-          this.events.emit(supplier, 'supplier')])
-        .then(() => supplier))
+        .then(supplier => req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).then(() => supplier))
         .then(supplier => {
           if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
 
@@ -95,10 +90,8 @@ let createSuppliers = function(req, res)
               supplier.status = 'assigned';
               const supp = supplier.dataValues;
               Promise.all([Supplier.update(supplierId, supp), createBankAccount(iban, supp)]).spread((supplier, account) => {
-                return Promise.all([
-                  req.opuscapita.eventClient.emit('supplier.supplier.update', supplier),
-                  this.events.emit(supplier, 'supplier')
-                ]).then(() => res.status('200').json(supplier));
+                return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
+                  .then(() => res.status('200').json(supplier));
               });
             })
             .catch(error => {
@@ -136,10 +129,8 @@ let updateSupplier = function(req, res)
     if(exists) {
       req.body.status = 'updated';
       return Supplier.update(supplierId, req.body).then(supplier => {
-        return Promise.all([
-          req.opuscapita.eventClient.emit('supplier.supplier.update', supplier),
-          this.events.emit(supplier, 'supplier')
-        ]).then(() => res.status('200').json(supplier));
+        return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
+          .then(() => res.status('200').json(supplier));
       });
     } else {
       const message = 'A supplier with ID ' + supplierId + ' does not exist.';
