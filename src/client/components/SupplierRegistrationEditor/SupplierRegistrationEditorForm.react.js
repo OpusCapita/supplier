@@ -223,20 +223,20 @@ class SupplierRegistrationEditorForm extends Component {
                 }) }
 
                 { this.renderField({ fieldName: 'taxIdentificationNo' }) }
-                { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: Boolean(supplier.vatIdentificationNo) }) }
+                { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: Boolean(this.props.supplier.vatIdentificationNo) }) }
                 { this.renderField({
                   fieldName: 'noVatReason',
                   labelText: ' ',
                   component: (
                     <p>
-                      <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange} disabled={Boolean(supplier.vatIdentificationNo)}></input>
+                      <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange} disabled={Boolean(this.props.supplier.vatIdentificationNo)}></input>
                       {this.context.i18n.getMessage('Supplier.Messages.noVatId')}
                     </p>
                   )
                 }) }
-                { this.renderField({ fieldName: 'globalLocationNo', marked: true, disabled: Boolean(supplier.globalLocationNo) }) }
-                { this.renderField({ fieldName: 'dunsNo', marked: true, disabled: Boolean(supplier.dunsNo)}) }
-                { this.renderField({ fieldName: 'ovtNo', marked: true, disabled: Boolean(supplier.ovtNo)}) }
+                { this.renderField({ fieldName: 'globalLocationNo', marked: true, disabled: Boolean(this.props.supplier.globalLocationNo) }) }
+                { this.renderField({ fieldName: 'dunsNo', marked: true, disabled: Boolean(this.props.supplier.dunsNo)}) }
+                { this.renderField({ fieldName: 'ovtNo', marked: true, disabled: Boolean(this.props.supplier.ovtNo)}) }
                 { this.renderField({ fieldName: 'iban', marked: true }) }
 
                 <div className='supplier-registration-form-submit'>
