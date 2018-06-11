@@ -9,7 +9,7 @@ import validator from '../../utils/validatejs/supplierValidator.js';
 class SupplierCreatorForm extends Component {
   static propTypes = {
     supplier: PropTypes.object,
-    onSupplierChange: PropTypes.func.isRequired,
+    onSupplierCreate: PropTypes.func.isRequired,
     onChange: React.PropTypes.func,
     onCancel: React.PropTypes.func
   };
@@ -96,7 +96,7 @@ class SupplierCreatorForm extends Component {
   };
 
   handleBlur = (fieldName) => {
-    const constraints = this.constraints.forField(fieldName);
+    let constraints = this.constraints.forField(fieldName);
 
     this.setState({
       fieldErrors: Object.keys(constraints).reduce((rez, fieldName) => ({
@@ -109,6 +109,8 @@ class SupplierCreatorForm extends Component {
       this.setFieldErrorsStates(errors);
     };
 
+    constraints.parentId = {};
+
     validator.forCreate(this.context.i18n).
       async(this.state.supplier, constraints, { fullMessages: false }).then(null, error);
   };
@@ -118,27 +120,29 @@ class SupplierCreatorForm extends Component {
     this.props.onCancel();
   };
 
-  handleUpdate = event => {
+  handleCreate = event => {
     event.preventDefault();
 
-    const { onSupplierChange } = this.props;
+    const { onSupplierCreate } = this.props;
     const supplier = this.state.supplier;
+    const constraints = { ...this.constraints.forCreate(), parentId: {} };
 
     if (!supplier.vatIdentificationNo && this.state.hasVATId) {
       this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('Supplier.Messages.clickCheckBox')] });
     } else {
       const success = () => {
         supplier.noVatReason = supplier.vatIdentificationNo ? null : 'No VAT Registration Number';
-        onSupplierChange(supplier);
+        if (!supplier.parentId) supplier.subEntityCode = null;
+        onSupplierCreate(supplier);
       };
 
       const error = (errors) => {
         this.setFieldErrorsStates(errors);
-        onSupplierChange(null);
+        onSupplierCreate(null);
       };
 
       validator.forCreate(this.context.i18n).
-        async(supplier, this.constraints.forCreate(), { fullMessages: false }).then(success, error);
+        async(supplier, constraints, { fullMessages: false }).then(success, error);
     }
   };
 
@@ -179,6 +183,12 @@ class SupplierCreatorForm extends Component {
     );
   };
 
+  renderSubEntityField = () => {
+    if (!this.state.supplier.parentId) return null;
+
+    return this.renderField({ fieldName: 'subEntityCode' });
+  };
+
   render() {
     const i18n = this.context.i18n;
     const { supplier } = this.state;
@@ -203,6 +213,7 @@ class SupplierCreatorForm extends Component {
               </select>
             )
           })}
+          { this.renderSubEntityField() }
           { this.renderField({ fieldName: 'name' }) }
           { this.renderField({ fieldName: 'homePage' }) }
           { this.renderField({
@@ -262,10 +273,11 @@ class SupplierCreatorForm extends Component {
                 }) }
           { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
           { this.renderField({ fieldName: 'dunsNo', marked: true }) }
+          { this.renderField({ fieldName: 'ovtNo', marked: true }) }
 
           <div className='supplier-form-submit'>
             <div className='text-right form-submit'>
-              <button id='supplier-editor__form-submit' className="btn btn-primary" onClick={ this.handleUpdate }>
+              <button id='supplier-editor__form-submit' className="btn btn-primary" onClick={ this.handleCreate }>
                 { i18n.getMessage('Supplier.Button.save') }
               </button>
             </div>

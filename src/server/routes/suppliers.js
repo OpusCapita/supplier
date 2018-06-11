@@ -1,13 +1,11 @@
 const Supplier = require('../queries/suppliers');
 const SupplierBank = require('../queries/supplier_bank_accounts');
-const RedisEvents = require('ocbesbn-redis-events');
 const userService = require('../services/user');
 const Promise = require('bluebird');
 
 module.exports = function(app, db, config) {
   Promise.all([Supplier.init(db, config), SupplierBank.init(db, config)]).then(() =>
   {
-    this.events = new RedisEvents({ consul : { host : 'consul' } });
     app.get('/api/suppliers', (req, res) => sendSuppliers(req, res));
     app.get('/api/suppliers/exists', (req, res) => existsSuppliers(req, res));
     app.get('/api/suppliers/search', (req, res) => querySupplier(req, res));
@@ -35,6 +33,10 @@ let sendSupplier = function(req, res)
 
 let sendSuppliers = function(req, res)
 {
+  if (req.query.electronicAddress) {
+    return sendSuppliersForElectronicAddress(req.query.electronicAddress, res);
+  }
+
   if (req.query.search !== undefined) {
     const capabilities = req.query.capabilities ? req.query.capabilities.split(',') : [];
     Supplier.searchAll(req.query.search, capabilities).then(suppliers => res.json(suppliers));
@@ -77,11 +79,10 @@ let createSuppliers = function(req, res)
       newSupplier.status = 'new';
 
       return Supplier.create(newSupplier)
-        .then(supplier => Promise.all([
-          req.opuscapita.eventClient.emit('supplier.supplier.create', supplier),
-          this.events.emit(supplier, 'supplier')])
-        .then(() => supplier))
+        .then(supplier => req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).then(() => supplier))
         .then(supplier => {
+          if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
+
           const supplierId = supplier.id;
           const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
 
@@ -89,10 +90,8 @@ let createSuppliers = function(req, res)
               supplier.status = 'assigned';
               const supp = supplier.dataValues;
               Promise.all([Supplier.update(supplierId, supp), createBankAccount(iban, supp)]).spread((supplier, account) => {
-                return Promise.all([
-                  req.opuscapita.eventClient.emit('supplier.supplier.update', supplier),
-                  this.events.emit(supplier, 'supplier')
-                ]).then(() => res.status('200').json(supplier));
+                return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
+                  .then(() => res.status('200').json(supplier));
               });
             })
             .catch(error => {
@@ -130,10 +129,8 @@ let updateSupplier = function(req, res)
     if(exists) {
       req.body.status = 'updated';
       return Supplier.update(supplierId, req.body).then(supplier => {
-        return Promise.all([
-          req.opuscapita.eventClient.emit('supplier.supplier.update', supplier),
-          this.events.emit(supplier, 'supplier')
-        ]).then(() => res.status('200').json(supplier));
+        return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
+          .then(() => res.status('200').json(supplier));
       });
     } else {
       const message = 'A supplier with ID ' + supplierId + ' does not exist.';
@@ -159,3 +156,23 @@ let createBankAccount = function(iban, supplier)
   };
   return SupplierBank.create(bankAccount);
 }
+
+let sendSuppliersForElectronicAddress = async function(electronicAddress, res)
+{
+  try {
+    const electronicAddressDecoder = require('@opuscapita/electronic-address');
+    const data = electronicAddressDecoder.decode(electronicAddress);
+
+    if (!data.value) return res.status('400').json({ message: `Electronic address ${electronicAddress} could not be decoded` });
+
+    const suppliers = await Supplier.all({ [getIdentifier[data.type]]: data.value });
+
+    if (suppliers.length <= 1) return res.json(suppliers);
+
+    if (!data.ext) return res.json(suppliers.filter(customer => !Boolean(customer.parentId)));
+
+    return res.json(suppliers.filter(customer => customer.subEntityCode === data.ext));
+  } catch(err) { return res.status('400').json({ message : err.message }) };
+};
+
+let getIdentifier = { vat: 'vatIdentificationNo', gln: 'globalLocationNo', ovt: 'ovtNo' };

@@ -39,11 +39,14 @@ let validator = function(validatejs) {
   custom.globalLocationNumber(validatejs);
   custom.iban(validatejs);
   custom.uniqueIdentifier(validatejs);
+  custom.ovtNumber(validatejs);
   customAsync.supplierNameExists(validatejs);
   customAsync.registerationNumberExists(validatejs);
   customAsync.taxIdNumberExists(validatejs);
   customAsync.vatNumberExists(validatejs);
   customAsync.dunsNumberExists(validatejs);
+  customAsync.ovtNumberExists(validatejs);
+  customAsync.subEntityCodeExists(validatejs);
   customAsync.globalLocationNumberExists(validatejs);
   customAsync.ibanExists(validatejs);
   customAsync.uniqueIdentifierWithBankAccount(validatejs);

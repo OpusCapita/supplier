@@ -1,6 +1,6 @@
 'use strict';
 const Sequelize = require('sequelize');
-const { VAT, DUNS, GLN } = require('@opuscapita/field-validators');
+const { VAT, DUNS, GLN, OVT } = require('@opuscapita/field-validators');
 
 module.exports.init = function(db) {
   /**
@@ -149,6 +149,18 @@ module.exports.init = function(db) {
         }
       }
     },
+    ovtNo: {
+      allowNull: true,
+      type: Sequelize.STRING(250),
+      field: 'OVTNo',
+      validate: {
+        isValid(value) {
+          if (value.length === 0) return;
+
+          if (OVT.isInvalid(value)) throw new Error('ovtNo value is invalid');
+        }
+      }
+    },
     status: {
       allowNull: true,
       type: Sequelize.STRING(100),
@@ -164,6 +176,11 @@ module.exports.init = function(db) {
       type: Sequelize.STRING(2000),
       field: "RejectionReason"
     },
+    subEntityCode: {
+      allowNull: true,
+      type: Sequelize.STRING(30),
+      field: 'SubEntityCode'
+    },
     changedBy: {
       type: Sequelize.STRING(60),
       field: "ChangedBy"
@@ -173,11 +190,11 @@ module.exports.init = function(db) {
       field: "CreatedBy"
     },
     createdOn: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATE(),
       field: "CreatedOn"
     },
     changedOn: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATE(),
       field: "ChangedOn"
     }
   }, {

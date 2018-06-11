@@ -69,7 +69,7 @@ module.exports.init = function (db, config) {
       },
       createdOn: {
         field: 'CreatedOn',
-        type: Sequelize.DATE,
+        type: Sequelize.DATE(),
         allowNull: false
       },
       createdBy: {
@@ -79,7 +79,7 @@ module.exports.init = function (db, config) {
       },
       changedOn: {
         field: 'ChangedOn',
-        type: Sequelize.DATE,
+        type: Sequelize.DATE(),
         allowNull: false
       },
       changedBy: {

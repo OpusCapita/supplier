@@ -84,7 +84,7 @@ module.exports = function(sequelize, config) {
     /** created on */
     createdOn: {
       field: 'CreatedOn',
-      type: Sequelize.DATE,
+      type: Sequelize.DATE(),
       allowNull: false
     },
     /** created by */
@@ -96,7 +96,7 @@ module.exports = function(sequelize, config) {
     /** changed on */
     changedOn: {
       field: 'ChangedOn',
-      type: Sequelize.DATE,
+      type: Sequelize.DATE(),
       allowNull: false
     },
     /** changed by */

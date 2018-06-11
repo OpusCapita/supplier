@@ -1,4 +1,4 @@
-const { VAT, IBAN, BIC, DUNS, GLN } = require('@opuscapita/field-validators');
+const { VAT, IBAN, BIC, DUNS, GLN, OVT } = require('@opuscapita/field-validators');
 
 module.exports.vatNumber = function(validate) {
   return validate.validators.vatNumber = function(value, options, key, attributes) {
@@ -50,13 +50,23 @@ module.exports.globalLocationNumber = function(validate) {
   };
 };
 
+module.exports.ovtNumber = function(validate) {
+  return validate.validators.ovtNumber = function(value, options, key, attributes) {
+    if (!value) return null;
+
+    if (OVT.isValid(value)) return null;
+
+    return options.message;
+  };
+};
+
 module.exports.uniqueIdentifier = function(validate) {
   return validate.validators.uniqueIdentifier = function(value, options, key, attributes) {
     if (value) return null;
 
     const uniqueIdentifier = require('../../../server/utils/validators/uniqueIdentifier.js');
 
-    const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo, attributes.iban];
+    const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo, attributes.ovtNo, attributes.iban];
 
     if (uniqueIdentifier.isValid(fields)) return null;
 
