@@ -125,7 +125,7 @@ class SupplierCreatorForm extends Component {
 
     const { onSupplierCreate } = this.props;
     const supplier = this.state.supplier;
-    const constraints = { ...this.constraints.all, parentId: {} };
+    const constraints = { ...this.constraints.forCreate(), parentId: {} };
 
     if (!supplier.vatIdentificationNo && this.state.hasVATId) {
       this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('Supplier.Messages.clickCheckBox')] });
@@ -142,7 +142,7 @@ class SupplierCreatorForm extends Component {
       };
 
       validator.forCreate(this.context.i18n).
-        async(supplier, constraints.forCreate(), { fullMessages: false }).then(success, error);
+        async(supplier, constraints, { fullMessages: false }).then(success, error);
     }
   };
 
