@@ -13,7 +13,7 @@ const AddressSection = ({ address, supplier, i18n }) => (
   <div className='supplierPublic__section supplierPublic__address' key={address.id}>
     <div className='col-sm-8'>
       <label className='supplierPublic__subheading col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.type') }</label>
-      <span className='supplierPublic__subheading col-sm-4'>{ i18n.getMessage(`Supplier.Address.Label.${address.type}`) }</span>
+      <span className='supplierPublic__subheading col-sm-4'>{ i18n.getMessage(`Supplier.Address.Type.${address.type}`) }</span>
     </div>
     <div className='col-sm-8'>
       <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.name') }</label>
@@ -50,7 +50,7 @@ const AddressSection = ({ address, supplier, i18n }) => (
       <span className='supplierPublic__value col-sm-4'>{ address.email }</span>
     </div>
     <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.phoneNumber') }</label>
+      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.phoneNo') }</label>
       <span className='supplierPublic__value col-sm-4'>{ address.phoneNo || '-' }</span>
     </div>
   </div>

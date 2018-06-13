@@ -1,13 +1,14 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import i18nMessages from '../../i18n';
 import SupplierVisibilityForm from './SupplierVisibilityForm.react.js';
+import { Components } from '@opuscapita/service-base-ui';
 import { Visibility } from '../../api';
+import SupplierPublic from '../SupplierPublic/SupplierPublic.react';
 
-class SupplierVisibilityPreference extends Component {
+class SupplierVisibilityPreference extends Components.ContextComponent {
   static propTypes = {
     supplierId: PropTypes.string.isRequired,
-    onChange: React.PropTypes.func,
-    onUpdate: React.PropTypes.func,
+    onChange: React.PropTypes.func
   };
 
   static contextTypes = {
@@ -21,6 +22,7 @@ class SupplierVisibilityPreference extends Component {
     this.state = { isLoaded: false, hasErrors: false, visibility: {} };
 
     this.visibilityApi = new Visibility();
+    this.supplierPublicModal = null;
   }
 
   componentWillMount() {
@@ -46,11 +48,15 @@ class SupplierVisibilityPreference extends Component {
     newVisibility.supplierId = supplierId;
 
     return this.visibilityApi.createOrUpdate(supplierId, newVisibility).then(visibility => {
-      this.setState({ supplier: supplier });
+      this.setState({ visibility: visibility });
 
       if(this.context.showNotification)
-        this.context.showNotification(this.context.i18n.getMessage('Supplier.Visibility.Messages.updateSaved'), 'info')
+        this.context.showNotification(this.context.i18n.getMessage('Supplier.Visibility.Message.updateSaved'), 'info')
     });
+  }
+
+  handleShowPublicProfile(supplierId) {
+    this.supplierPublicModal.show(this.context.i18n.getMessage('Supplier.Heading.companyInformation'), undefined, null, {});
   }
 
   render() {
@@ -64,7 +70,7 @@ class SupplierVisibilityPreference extends Component {
 
     return (
       <div>
-        <button className='btn btn-default pull-right' onClick={() => null} >
+        <button className='btn btn-default pull-right' onClick={this.handleShowPublicProfile.bind(this, this.props.supplierId)} >
           {this.context.i18n.getMessage('Supplier.Button.publicProfile')}
         </button>
         <h4 className="tab-description">
@@ -72,8 +78,15 @@ class SupplierVisibilityPreference extends Component {
         </h4>
         <div className="row">
           <div className="col-sm-6">
+            <SupplierVisibilityForm
+              visibility={ this.state.visibility }
+              onUpdate={ this.handleUpdate }
+            />
           </div>
         </div>
+        <Components.ModalDialog ref={node => this.supplierPublicModal = node} size='large'>
+          <SupplierPublic supplierId={this.props.supplierId}/>
+        </Components.ModalDialog>
       </div>
     );
   }

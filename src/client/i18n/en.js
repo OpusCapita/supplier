@@ -168,6 +168,11 @@ const Supplier = {
   'Supplier.Contact.Message.userCreated': 'User successfully created.',
   'Supplier.Contact.Message.userCreateFailed': 'User creation failed.',
   'Supplier.Contact.Error.userExists': 'User already exists.',
+  'Supplier.Visibility.Label.contacts': 'Contacts',
+  'Supplier.Visibility.Label.bankAccounts': 'Bank Accounts',
+  'Supplier.Visibility.Type.public': 'Public',
+  'Supplier.Visibility.Type.private': 'Private',
+  'Supplier.Visibility.Type.businessPartners': 'Business partner',
   'Supplier.Visibility.Message.updateSaved': 'Changes successfully saved.'
 }
 
