@@ -1,60 +1,12 @@
+const Promise = require('bluebird');
 import React, { Component, PropTypes } from 'react';
-import { Supplier } from '../../api';
+import { Supplier, Visibility } from '../../api';
 import CountryView from '../CountryView.react';
 import i18nMessages from '../../i18n';
+import AddressComponent from './AddressPublic.react';
+import ContactComponent from './ContactPublic.react';
+import BankAccountComponent from './BankAccountPublic.react';
 require('./SupplierPublic.css');
-
-const AddressComponent = ({ supplier, i18n }) => (<div className='supplierPublic__container col-sm-12'>
-    <span className='supplierPublic__label'>{ i18n.getMessage('Supplier.Title.addresses') }</span>
-    { supplier.addresses.map((address) => <AddressSection key={address.id} supplier={ supplier } address={ address } i18n={ i18n }/>)}
-</div>);
-
-const AddressSection = ({ address, supplier, i18n }) => (
-  <div className='supplierPublic__section supplierPublic__address' key={address.id}>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__subheading col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.type') }</label>
-      <span className='supplierPublic__subheading col-sm-4'>{ i18n.getMessage(`Supplier.Address.Type.${address.type}`) }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.name') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.name }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.street1') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.street1 || '-' }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.street2') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.street2 || '-' }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.street3') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.street3 || '-' }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.city') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.city }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.zipCode') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.zipCode || '-' }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.countryId') }</label>
-      <span className='supplierPublic__value col-sm-4'>
-        <CountryView countryId={ address.countryId} />
-      </span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.email') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.email }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.phoneNo') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.phoneNo || '-' }</span>
-    </div>
-  </div>
-);
 
 export default class SupplierPublic extends Component {
 
@@ -68,9 +20,10 @@ export default class SupplierPublic extends Component {
 
   constructor(props, context) {
     super(props);
-    this.state = { supplier : null };
+    this.state = { supplier : null, visibility: null };
 
     this.supplierApi = new Supplier();
+    this.visibilityApi = new Visibility();
   }
 
   componentWillMount(){
@@ -78,7 +31,7 @@ export default class SupplierPublic extends Component {
   }
 
   componentDidMount() {
-    this.loadSupplier(this.props.supplierId);
+    this.loadSupplierAndVisibility(this.props.supplierId);
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -86,18 +39,36 @@ export default class SupplierPublic extends Component {
       nextContext.i18n.register('Supplier', i18nMessages);
     }
 
-    this.loadSupplier(nextProps.supplierId);
+    this.loadSupplierAndVisibility(nextProps.supplierId);
   }
 
   renderDefault(argument, defaultValue) {
     return argument ? argument : defaultValue;
   }
 
-  loadSupplier(supplierId) {
-    const queryParam = { include: 'addresses,capabilities' };
+  loadSupplierAndVisibility(supplierId) {
     if (!supplierId) return;
 
+    const queryParam = { include: 'addresses,capabilities,contacts,bankAccounts' };
     this.supplierApi.getSupplier(supplierId, queryParam).then(supplier => this.setState({ supplier: supplier }));
+    this.visibilityApi.get(supplierId).then(visibility => this.setState({ visibility: visibility })).
+      catch(() => this.setState({ visibility: {} }));
+  }
+
+  renderContactComponent() {
+    if (!this.state.visibility) return null;
+
+    if (this.state.visibility.contacts === 'private') return null;
+
+    return <ContactComponent supplier={ this.state.supplier } i18n={ this.context.i18n } />;
+  }
+
+  renderBankAccountComponent() {
+    if (!this.state.visibility) return null;
+
+    if (this.state.visibility.bankAccounts === 'private') return null;
+
+    return <BankAccountComponent supplier={ this.state.supplier } i18n={ this.context.i18n } />;
   }
 
   render() {
@@ -156,6 +127,8 @@ export default class SupplierPublic extends Component {
               </div>
             </div>
             <AddressComponent supplier={ this.state.supplier } i18n={ this.context.i18n } />
+            { this.renderContactComponent() }
+            { this.renderBankAccountComponent() }
             { this.state.supplier.capabilities && this.state.supplier.capabilities.length > 0 &&
               <div className='col-sm-12'>
                 <span className='supplierPublic__label'>{ this.context.i18n.getMessage('Supplier.Capabilities.name') }</span>

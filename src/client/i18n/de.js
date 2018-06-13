@@ -41,6 +41,8 @@ const Supplier = {
   'Supplier.Title.company': 'Firma',
   'Supplier.Title.companyIdentifiers': 'Firmenkennungen',
   'Supplier.Title.addresses': 'Adressen',
+  'Supplier.Title.contacts': 'Kontakte',
+  'Supplier.Title.bankAccounts': 'Bankkonten',
   'Supplier.Title.type': 'Typ',
   'Supplier.Select.type': 'Typ auswählen...',
   'Supplier.Select.country': 'Land auswählen...',
