@@ -1,0 +1,126 @@
+{
+    "SupplierValidatejs": {
+        "doesnt": {
+            "match": {
+                "message": "Der Wert entspricht nicht dem vorgegebenen Muster '{limit}'"
+            }
+        },
+        "invalid": {
+            "url": {
+                "message": "Dies ist keine gültige URL"
+            },
+            "creditCard": {
+                "message": "Dies ist keine gültige Kreditkartennummer"
+            },
+            "email": {
+                "message": "Dies ist keine gültige E-Mail Adresse"
+            },
+            "range": {
+                "message": "Der Wert ist nicht im Wertebereich von ''{from}'' bis ''{to}''"
+            },
+            "size": {
+                "message": "Der Wert ist nicht im Größenbereich von ''{from}'' bis ''{to}''"
+            },
+            "max": {
+                "message": "Der Wert ist größer als der Höchstwert von '{limit}'"
+            },
+            "min": {
+                "message": "Der Wert ist kleiner als der Mindestwert von '{limit}'"
+            },
+            "maxOrEqual": {
+                "message": "Der Wert muss kleiner als oder gleich dem Maximalwert '{limit}' sein"
+            },
+            "minOrEqual": {
+                "message": "Der Wert muss größer als oder gleich dem Minimalwert '{limit}' sein"
+            },
+            "maxSize": {
+                "message": "Der Wert übersteigt den Höchstwert von '{limit}'"
+            },
+            "minSize": {
+                "message": "Der Wert unterschreitet den Mindestwert von '{limit}'"
+            },
+            "validator": {
+                "message": "Der Wert ist ungültig"
+            },
+            "vatNumber": {
+                "message": "Der Wert ist keine gültige EU-Umsatzsteuer-Identifikationsnummer"
+            },
+            "dunsNumber": {
+                "message": "Der Wert ist keine gültige D-U-N-S Nummer"
+            },
+            "ovtNumber": {
+                "message": "Der Wert ist keine gültige OVT Nummer"
+            },
+            "globalLocationNumber": {
+                "message": "Der Wert ist keine gültige Global Location Number"
+            },
+            "iban": {
+                "message": "Der Wert ist kein gültiger IBAN"
+            },
+            "bic": {
+                "message": "Der Wert ist kein gültiger BIC"
+            },
+            "swiftCode": {
+                "message": "Der Wert ist kein gültiger SWIFT-Code"
+            },
+            "uniqueIdentifier": {
+                "message": "Die Umsatzsteuer-Identifikationsnummer, die D-U-N-S-Nummer, die Global Location Number, oder die IBAN muss angegeben werden"
+            },
+            "uniqueIdentifierWithBankAccount": {
+                "message": "Die Umsatzsteuer-Identifikationsnummer, die D-U-N-S-Nummer, oder die Global Location Number, muss angegeben werden, oder eine Bankverbindung muss hinzugefügt werden"
+            }
+        },
+        "not": {
+            "inlist": {
+                "message": "Der Wert ist nicht in der Liste ''{limit}'' enthalten"
+            },
+            "equal": {
+                "message": "Der Wert darf nicht gleich ''{limit}'' sein"
+            },
+            "unique": {
+                "message": "Der Wert muss eindeutig sein"
+            }
+        },
+        "blank": {
+            "message": "Das Feld darf nicht leer sein"
+        },
+        "null": {
+            "message": "Die Eigenschaft darf nicht null sein"
+        },
+        "duplicate": {
+            "name": {
+                "message": "Ein Unternehmen existiert bereits mit dieser Name."
+            },
+            "registerationNumber": {
+                "message": "Ein Unternehmen existiert bereits mit dieser Handelsregisternummer, der Stadt und dem Land."
+            },
+            "taxIdNumber": {
+                "message": "Ein Unternehmen existiert bereits mit dieser Steueridentifikationsnummer und dem Land."
+            },
+            "vatNumber": {
+                "message": "Ein Unternehmen existiert bereits mit dieser Umsatzsteuer-Identifikationsnummer."
+            },
+            "dunsNumber": {
+                "message": "Ein Unternehmen existiert bereits mit dieser D-U-N-S-Nummer."
+            },
+            "ovtNumber": {
+                "message": "Ein Unternehmen existiert bereits mit dieser OVT Nummer."
+            },
+            "globalLocationNumber": {
+                "message": "Ein Unternehmen existiert bereits mit dieser Global Location Number."
+            },
+            "subEntityCode": {
+                "message": "Ein Firma in Ihrer Organisation besitzt diesen Code"
+            },
+            "iban": {
+                "message": "Ein Unternehmen existiert bereits mit dieser IBAN."
+            }
+        },
+        "typeMismatch": {
+            "util": {
+                "Date": "Die Wert muss ein gültiges Datum sein"
+            }
+        },
+        "supplierExists": "{message}\nBitte kontaktieren Sie unseren Support via +49 231 3967 350 oder customerservice.de@opuscapita.com, um einen Zugang zu diesem Unternehmen anzufordern."
+    }
+}
