@@ -1,0 +1,235 @@
+{
+    "Supplier": {
+        "Button": {
+            "add": "Lisää",
+            "edit": "Muokkaa",
+            "save": "tallenna",
+            "delete": "Poista",
+            "view": "Näkymä",
+            "cancel": "Peruuta",
+            "close": "Sulje",
+            "yes": "Kyllä",
+            "no": "Ei",
+            "createUser": "Luo käyttäjä",
+            "continue": "Jatka",
+            "request": "Pyyntö",
+            "access": "Käyttöoikeus",
+            "requestAccess": "Käyttöoikeuspyyntö",
+            "approve": "Hyväksy",
+            "reject": "Hylkää",
+            "search": "Etsi"
+        },
+        "Label": {
+            "id": "Yritys ID",
+            "parentId": "Emoyhtiö",
+            "name": "Toiminimi",
+            "cityOfRegistration": "Kotipaikka",
+            "homePage": "Kotisivu",
+            "legalForm": "Yritysmuoto",
+            "foundedOn": "Perustettu",
+            "taxIdNumber": "TAX ID ",
+            "dunsNo": "DUNS-numero",
+            "commercialRegisterNo": "Y-tunnus",
+            "countryOfRegistration": "Rekisteröintimaa",
+            "currencyId": "Oletusvaluutta",
+            "taxIdentificationNo": "TAX ID ",
+            "vatIdentificationNo": "ALV-tunnus",
+            "globalLocationNo": "Global Location Number",
+            "iban": "IBAN",
+            "accessReason": "Käyttösyy",
+            "searchInput": "Hakukriteerinä Nimi, Kaupunki, ALV-tunnus, Tax id, Y-tunnus, DUNS-numero tai Global Location Number",
+            "capability": "Kyky"
+        },
+        "Title": {
+            "company": "Yritys",
+            "companyIdentifiers": "Yritystunnisteet",
+            "addresses": "Osoitteet",
+            "type": "Tyyppi"
+        },
+        "Select": {
+            "type": "Valitse tyyppi...",
+            "country": "Valitse maa...",
+            "department": "Valitse osasto..."
+        },
+        "Heading": {
+            "createSupplier": "Luo toimittaja",
+            "companyRegistration": "Yrityksen rekisteröinti",
+            "companyInformation": "Yrityksen tiedot",
+            "list": "Toimittajaluettelo",
+            "address": "Lisää yrityksesi osoitteet tänne.",
+            "accessApproval": "Hyväksy tai hylkää käyttäjän käyttöoikeuspyyntö.",
+            "BankAccount": "Anna pankkitilisi tiedot.",
+            "contact": "Lisää yrityksesi yhteyshenkilöt."
+        },
+        "Confirmation": {
+            "cancel": "Haluatko todella peruuttaa?"
+        },
+        "Messages": {
+            "loading": "Ladataan...",
+            "unableToRender": "Unable to render editor",
+            "createSuccess": "Toimittajan luonti onnistui",
+            "createFailed": "Toimittajan luonti epäonnistui",
+            "updateSaved": "Tietojen päivitys onnistui",
+            "updateFailed": "Tietojen päivitys epäonnistui",
+            "failedCreatingExistingSupplier": "Tietojen tallennus epäonnistui: samanniminen yritys on jo olemassa",
+            "failedCreatingUserSupplier": "Toimittajan luominen epäonnistui: Toimittajan on jo kytketty.",
+            "identifierRequired": "** Anna ALV-tunnus. Jos sinulla ei ole sitä, anna sitten Global Position Number tai DUNS-numero.",
+            "required": "** Anna ALV-tunnus. Jos sinulla ei ole sitä, anna sitten Global Position Number, DUNS-numero tai IBAN.",
+            "noVatId": "Yritykselleni ei ole ALV-tunnusta.",
+            "clickCheckBox": "Ilmoita ALV-tunnuksesi.",
+            "accessInformation1": "Täällä voit pyytää käyttöoikeutta yritykseen {name}. Sinun tulisi pyytää käyttöoikeutta vain, jos olet tämän yrityksen työntekijä.",
+            "accessInformation2": "Anna kelvollinen perustelu käyttöoikeutta varten.",
+            "accessInformation3": "Pyyntösi välitetään yrityksen profiilin järjestelmänvalvojalle.",
+            "accessInformation4": "Kun järjestelmänvalvoja hyväksyy käyttöoikeuspyynnön, saat viestin rekisteröityyn sähköpostiosoitteeseen.",
+            "information1": "Anna meille tietoja, joiden avulla voimme yksilöllisesti tunnistaa yrityksesi ja lisätä sen hakemistoon.",
+            "information2": "Kun olet antanut nämä tiedot, voit kirjautua sisään."
+        },
+        "Error": {
+            "notUnique": "Arvon on oltava yksilöllinen",
+            "notAuthorized": "Sinulla ei ole oikeutta suorittaa tätä toimintoa."
+        },
+        "AccessRequest": {
+            "head": "Olet pyytänyt käyttöoikeutta yritykseen {name}.",
+            "text": "Ota yhteyttä tukeen +49 231 3967 350 tai customerervice.de@opuscapita.com saadaksesi lisätietoja.",
+            "Status": {
+                "text": "Nykyinen tila",
+                "requested": "pyydetty",
+                "rejected": "hylätty",
+                "approved": "hyväksytty"
+            }
+        },
+        "AccessApproval": {
+            "Label": {
+                "firstName": "Etunimi",
+                "lastName": "Sukunimi",
+                "email": "Sähköposti",
+                "date": "Pyynnön päivämäärä",
+                "comment": "Oikeutus",
+                "status": "Status"
+            },
+            "Status": {
+                "requested": "Pyydetty",
+                "approved": "Hyväksytty",
+                "rejected": "Hylätty"
+            },
+            "Messages": {
+                "approved": "Käyttäjä on hyväksytty.",
+                "rejected": "Käyttäjä on hylätty."
+            },
+            "Confirmation": {
+                "approve": "Haluatko varmasti hyväksyä käyttäjän?",
+                "reject": "Haluatko varmasti hylätä käyttäjän?"
+            }
+        },
+        "Capabilities": {
+            "name": "Valmiudet",
+            "Type": {
+                "eInvoice-send": "Lasku - lähetä"
+            }
+        },
+        "Address": {
+            "Label": {
+                "type": "Tyyppi",
+                "street": "Katu",
+                "zipCode": "Postinumero",
+                "city": "Kaupunki",
+                "countryId": "Maa",
+                "phoneNo": "Puhelin",
+                "faxNo": "Telefax",
+                "name": "Nimi",
+                "street1": "Katu",
+                "street2": "Katu 2",
+                "street3": "Katu 3",
+                "areaCode": "Aluekoodi",
+                "state": "Osavaltio",
+                "pobox": "Postilokero",
+                "poboxZipCode": "Postilokeron postinumero",
+                "email": "Sähköposti"
+            },
+            "Type": {
+                "default": "Oletusarvo",
+                "invoice": "Lasku",
+                "rma": "RMA",
+                "plant": "Tehdas"
+            },
+            "Confirmation": {
+                "delete": "Haluatko todella poistaa tämän osoitteen?"
+            },
+            "Messages": {
+                "deleted": "Osoite poistettiin onnistuneesti.",
+                "updated": "Osoite on päivitetty onnistuneesti.",
+                "saved": "Osoite on tallennettu onnistuneesti."
+            }
+        },
+        "BankAccount": {
+            "Confirmation": {
+                "delete": "Haluatko todella poistaa tämän pankkitilin?"
+            },
+            "Label": {
+                "accountNumber": "IBAN",
+                "bankIdentificationCode": "BIC",
+                "bankCountryKey": "Pankin maa",
+                "bankCode": "Pankkikoodi",
+                "bankName": "Pankin nimi",
+                "extBankControlKey": "External Bank Control",
+                "swiftCode": "Swift-koodi"
+            },
+            "Message": {
+                "deleted": "Pankkitili on poistettu.",
+                "updated": "Pankkitili on päivitetty.",
+                "saved": "Pankkitili on tallennettu.",
+                "deleteFailed": "Pankkitilien poistaminen epäonnistui, ehkä se on jo käytössä.",
+                "saveFailed": "Pankkitilin tallennus epäonnistui.",
+                "updateFailed": "Pankkitilin päivitys epäonnistui."
+            }
+        },
+        "Contact": {
+            "Confirmation": {
+                "delete": "Haluatko todella poistaa tämän yhteystiedon?",
+                "linkedToUser": "Vain yhteystieto poistetaan. Käyttäjää ei poisteta.",
+                "createUser": "Haluatko todella luoda käyttäjän?"
+            },
+            "Type": {
+                "Default": "Oletusarvo",
+                "Sales": "Myynti",
+                "Escalation": "Eskalaatio",
+                "Product": "Tuote",
+                "Technical": "Tekninen"
+            },
+            "Department": {
+                "Management": "Johto",
+                "Logistics": "Logistiikka",
+                "Sales": "Myynti",
+                "Accounting": "Kirjanpito",
+                "Support": "Tuki",
+                "IT": "IT",
+                "Others": "Muu"
+            },
+            "Label": {
+                "contactId": "Yhteyshenkilön tunnus",
+                "contactType": "Yhteystyyppi",
+                "firstName": "Etunimi",
+                "lastName": "Sukunimi",
+                "email": "Sähköposti",
+                "phone": "Puhelinnumero",
+                "mobile": "Matkapuhelin",
+                "department": "Osasto",
+                "title": "Puhuttelumuoto",
+                "fax": "Faksi"
+            },
+            "Message": {
+                "deleted": "Yhteystiedot poistettiin onnistuneesti.",
+                "updated": "Yhteystiedot päivitettiin onnistuneesti.",
+                "saved": "Yhteystiedot tallennettu.",
+                "deleteFailed": "Yhteyshenkilön poistaminen epäonnistui, ehkä se on jo käytössä.",
+                "saveFailed": "Yhteystiedon tallennus epäonnistui.",
+                "updateFailed": "Yhteystiedon päivitys epäonnistui.",
+                "userCreated": "Käyttäjä on luotu.",
+                "userCreateFailed": "Käyttäjän luominen epäonnistui."
+            },
+            "Error": {
+                "userExists": "Käyttäjä on jo olemassa."
+            }
+        }
+    }
+}
