@@ -1,0 +1,235 @@
+{
+    "Supplier": {
+        "Button": {
+            "add": "Lägg till",
+            "edit": "Redigera",
+            "save": "Spara",
+            "delete": "Radera",
+            "view": "Visa",
+            "cancel": "Avbryt",
+            "close": "Stäng",
+            "yes": "Ja",
+            "no": "Nej",
+            "createUser": "Skapa användare",
+            "continue": "Fortsätt",
+            "request": "Begär",
+            "access": "Tillgång",
+            "requestAccess": "Begär tillgång",
+            "approve": "Godkänd",
+            "reject": "Avvisa",
+            "search": "Sök"
+        },
+        "Label": {
+            "id": "Företags ID",
+            "parentId": "Moderbolag",
+            "name": "Företagsnamn",
+            "cityOfRegistration": "Säte",
+            "homePage": "Hemsida",
+            "legalForm": "Företagsform",
+            "foundedOn": "Grundades",
+            "taxIdNumber": "Momsregistreringsnummer",
+            "dunsNo": "D-U-N-S-Nr.",
+            "commercialRegisterNo": "Organisationsnummer",
+            "countryOfRegistration": "Land",
+            "currencyId": "Valuta",
+            "taxIdentificationNo": "Momsregistreringsnummer",
+            "vatIdentificationNo": "Momsregistreringsnummer",
+            "globalLocationNo": "Global Location Number",
+            "iban": "IBAN",
+            "accessReason": "Access Reason",
+            "searchInput": "Sök på namn, stad, momsregistreringsnummer, organisationsnummer, DUNS eller GLN",
+            "capability": "Förmåga"
+        },
+        "Title": {
+            "company": "Företag",
+            "companyIdentifiers": "Företagsidentifikation",
+            "addresses": "Adresser",
+            "type": "Typ"
+        },
+        "Select": {
+            "type": "Välj typ…",
+            "country": "Välj land…",
+            "department": "Välj avdelning…"
+        },
+        "Heading": {
+            "createSupplier": "Skapa en leverantör",
+            "companyRegistration": "Registrera",
+            "companyInformation": "Företagsinformation",
+            "list": "Leverantörslista",
+            "address": "Här anger du företagets adress.",
+            "accessApproval": "Vänligen godkänd eller neka förfrågan om access",
+            "BankAccount": "Här anger du företagets kontonummer.",
+            "contact": "Här anger du företagets kontaktperson."
+        },
+        "Confirmation": {
+            "cancel": "Vill du verkligen avbryta?"
+        },
+        "Messages": {
+            "loading": "Laddar…",
+            "unableToRender": "Skapandet av redigerar misslyckades",
+            "createSuccess": "Leverantör skapad",
+            "createFailed": "Registreringen av leverantör misslyckades",
+            "updateSaved": "Informationen uppdaterades",
+            "updateFailed": "Uppdateringen misslyckades",
+            "failedCreatingExistingSupplier": "Sparades ej: ett företag med samma namn existerar redan",
+            "failedCreatingUserSupplier": "Registrering av leverantör misslyckades: Du är redan associerad till en leverantör.",
+            "identifierRequired": "**Vänligen ange ditt momsregistreringsnummer. Om du inte har detta, vänligen ange ditt Global Location Number (GLN) eller DUNS nummer.",
+            "required": "**Vänligen ange ditt momsregistreringsnummer. Om du inte har detta, vänligen ange ditt Global Location Number (GLN) eller DUNS nummer.",
+            "noVatId": "Mitt företag har inget momsregistreringsnummer.",
+            "clickCheckBox": "Vänligen ange ditt momsregistreringsnummer.",
+            "accessInformation1": "Här begär du access till företaget {name}. Begär endast access om du är anställd vid företaget i fråga.",
+            "accessInformation2": "Vänligen ange ett giltigt skäl till sin förfrågan om access.",
+            "accessInformation3": "Din förfrågan vidarebefodras till administratören som hanterar företagets konto.",
+            "accessInformation4": "Du får ett epostmeddelande skickat till den angivna epostadressen när din förfrågan blivit godkänd.",
+            "information1": "Vänligen ange information som möjliggör att identifiera ditt företag och på så sätt möjliggör att vi kan lägga till er i vår företagsöversikt.",
+            "information2": "Du kan logga in efter det att du angivit informationen."
+        },
+        "Error": {
+            "notUnique": "Värdet måste vara unikt",
+            "notAuthorized": "Du har inte tillåtelse att utföra detta."
+        },
+        "AccessRequest": {
+            "head": "Du har begärt access till företaget {name}.",
+            "text": "För ytterligare information, vänligen kontakta vår support via customerservice.se@opuscapita.com eller på +46 8 475 28 90.",
+            "Status": {
+                "text": "Status",
+                "requested": "Begärda",
+                "rejected": "Nekade",
+                "approved": "Godkända"
+            }
+        },
+        "AccessApproval": {
+            "Label": {
+                "firstName": "Förnamn",
+                "lastName": "Efternamn",
+                "email": "Epost",
+                "date": "Datum för begäran",
+                "comment": "Motivering",
+                "status": "Status"
+            },
+            "Status": {
+                "requested": "Begärda",
+                "approved": "Godkända",
+                "rejected": "Nekade"
+            },
+            "Messages": {
+                "approved": "Användaren har blivit godkänd.",
+                "rejected": "Användaren har blivit nekande."
+            },
+            "Confirmation": {
+                "approve": "Är du säker på att du vill godkänna denna användare?",
+                "reject": "Är du säker på att du vill neka denna användare?"
+            }
+        },
+        "Capabilities": {
+            "name": "Förmågor",
+            "Type": {
+                "eInvoice-send": "Faktura - Skicka"
+            }
+        },
+        "Address": {
+            "Label": {
+                "type": "Typ",
+                "street": "Adress",
+                "zipCode": "Zip code",
+                "city": "Stad",
+                "countryId": "Land",
+                "phoneNo": "Telefon",
+                "faxNo": "Telefax",
+                "name": "Namn",
+                "street1": "Adress",
+                "street2": "Adress 2",
+                "street3": "Adress 3",
+                "areaCode": "Postnummer",
+                "state": "Stat",
+                "pobox": "Postbox",
+                "poboxZipCode": "PO Box Zip Code",
+                "email": "Epost"
+            },
+            "Type": {
+                "default": "Förvalt",
+                "invoice": "Faktura - Skicka",
+                "rma": "RMA",
+                "plant": "Fabrik"
+            },
+            "Confirmation": {
+                "delete": "Vill du verkligen radera adressen?"
+            },
+            "Messages": {
+                "deleted": "Adressen är raderad.",
+                "updated": "Adressen är uppdaterad.",
+                "saved": "Adressen är sparad."
+            }
+        },
+        "BankAccount": {
+            "Confirmation": {
+                "delete": "Vill du verkligen radera bankuppgifterna?"
+            },
+            "Label": {
+                "accountNumber": "IBAN",
+                "bankIdentificationCode": "BIC",
+                "bankCountryKey": "Bank Land",
+                "bankCode": "Bank konto",
+                "bankName": "Bank namn",
+                "extBankControlKey": "Extern bank kontroll",
+                "swiftCode": "Swift kod"
+            },
+            "Message": {
+                "deleted": "Bankkonto raderad.",
+                "updated": "Bankkonto uppdaterad.",
+                "saved": "Bankkonto sparad.",
+                "deleteFailed": "Bankontot raderades inte, det kanske är i användande redan?",
+                "saveFailed": "Bankkonto sparades inte.",
+                "updateFailed": "Bankkonto updaterades inte."
+            }
+        },
+        "Contact": {
+            "Confirmation": {
+                "delete": "Vill du verkligen radera denna kontakt.",
+                "linkedToUser": "Endast kontakten raderas. Använmdaren raderas inte.",
+                "createUser": "Vill du verkligen skapa en användare?"
+            },
+            "Type": {
+                "Default": "Förvalt",
+                "Sales": "Försäljning",
+                "Escalation": "Eskalering",
+                "Product": "Produkt",
+                "Technical": "Teknisk"
+            },
+            "Department": {
+                "Management": "Ledning",
+                "Logistics": "Logistik",
+                "Sales": "Försäljning",
+                "Accounting": "Ekonomi",
+                "Support": "Support",
+                "IT": "IT",
+                "Others": "Annan"
+            },
+            "Label": {
+                "contactId": "Kontakt ID",
+                "contactType": "Kontakt typ",
+                "firstName": "Förnamn",
+                "lastName": "Efternamn",
+                "email": "Epost",
+                "phone": "Telefonnummer",
+                "mobile": "Mobilnummer",
+                "department": "Avdelning",
+                "title": "Tilltal",
+                "fax": "Fax"
+            },
+            "Message": {
+                "deleted": "Kontakten raderades.",
+                "updated": "Kontakten uppdaterades.",
+                "saved": "Kontakten sparades.",
+                "deleteFailed": "Kontakted raderades inte, den kanske är i användande?",
+                "saveFailed": "Kontakten spades inte.",
+                "updateFailed": "Kontakten uppdaterades inte.",
+                "userCreated": "Användaren skapades.",
+                "userCreateFailed": "Användaren skapades inte."
+            },
+            "Error": {
+                "userExists": "Användaren existerar redan."
+            }
+        }
+    }
+}

@@ -1,0 +1,117 @@
+{
+    "SupplierValidatejs": {
+        "doesnt": {
+            "match": {
+                "message": "Arvo ei vastaa vaadittua mallia '{limit}'"
+            }
+        },
+        "invalid": {
+            "url": {
+                "message": "Ei kelvollinen URL-formaatti"
+            },
+            "creditCard": {
+                "message": "Ei kelvollinen luottokortin numeroformaatti"
+            },
+            "email": {
+                "message": "Ei kelvollinen sähköpostiosoitemuoto"
+            },
+            "range": {
+                "message": "Arvo ei ole kelvollisella alueella '{from}' ja '{to}'"
+            },
+            "size": {
+                "message": "Arvo ei ole kelvollisessa kokoalueessa '{from}' - '{to}'"
+            },
+            "max": {
+                "message": "Arvo ylittää enimmäisarvon '{limit}'"
+            },
+            "min": {
+                "message": "Arvo on pienempi kuin minimiarvo '{limit}'"
+            },
+            "maxOrEqual": {
+                "message": "Arvon on oltava pienempi tai yhtä suuri kuin maksimiarvo '{limit}'"
+            },
+            "minOrEqual": {
+                "message": "Arvo on oltava suurempi tai yhtä suuri kuin minimiarvo '{limit}'"
+            },
+            "maxSize": {
+                "message": "Arvo ylittää '{limit}' enimmäiskoon"
+            },
+            "minSize": {
+                "message": "Arvo on pienempi kuin minimikoko '{limit}'"
+            },
+            "validator": {
+                "message": "Arvo on virheellinen"
+            },
+            "vatNumber": {
+                "message": "Arvo ei ole kelvollinen EU ALV-tunnus"
+            },
+            "dunsNumber": {
+                "message": "Arvo ei ole kelvollinen DUNS-numero"
+            },
+            "globalLocationNumber": {
+                "message": "Arvo ei ole kelvollinen Global Location Number"
+            },
+            "iban": {
+                "message": "Arvo ei ole kelvollinen IBAN"
+            },
+            "bic": {
+                "message": "Arvo ei ole kelvollinen BIC"
+            },
+            "swiftCode": {
+                "message": "Arvo ei ole kelvollinen SWIFT-koodi"
+            },
+            "uniqueIdentifier": {
+                "message": "Joko ALV-tunnus, DUNS-numero, Global Location Number tai IBAN on annettava"
+            },
+            "uniqueIdentifierWithBankAccount": {
+                "message": "Joko ALV-tunnus, DUNS-numero tai Global Location Number on annettava, tai pankkitili on lisättävä"
+            }
+        },
+        "not": {
+            "inlist": {
+                "message": "Arvo ei ole luettelossa '{limit}'"
+            },
+            "equal": {
+                "message": "Arvo ei voi olla yhtä suuri '{limit}'"
+            },
+            "unique": {
+                "message": "Arvon on oltava yksilöllinen"
+            }
+        },
+        "blank": {
+            "message": "Kenttä ei voi olla tyhjä"
+        },
+        "null": {
+            "message": "Kohta ei voi olla tyhjä"
+        },
+        "duplicate": {
+            "name": {
+                "message": "Tämän niminen yhtiö on jo olemassa."
+            },
+            "registerationNumber": {
+                "message": "Yritys on jo olemassa jolla on sama rekisteröintinumero, kaupunki ja maa."
+            },
+            "taxIdNumber": {
+                "message": "Yritys on jo olemassa jolla on sama Tax ID ja maa."
+            },
+            "vatNumber": {
+                "message": "Yritys on jo olemassa jolla on sama ALV-tunnus."
+            },
+            "dunsNumber": {
+                "message": "Yritys on jo olemassa jolla on sama DUNS-numero."
+            },
+            "globalLocationNumber": {
+                "message": "Yritys on jo olemassa jolla on sama Global Location Number."
+            },
+            "iban": {
+                "message": "Yritys on jo olemassa jolla on sama IBAN."
+            }
+        },
+        "typeMismatch": {
+            "util": {
+                "Date": "Arvon on oltava kelvollinen päivämäärä"
+            }
+        },
+        "supplierExists": "{message}\r\nOta yhteyttä tukeen +49 231 3967 350 tai customerservice.de@opuscapita.com, jotta voit pyytää käyttöoikeutta rekisteröityyn yritykseen. "
+    }
+}
