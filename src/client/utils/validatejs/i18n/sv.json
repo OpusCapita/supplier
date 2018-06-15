@@ -1,0 +1,117 @@
+{
+    "SupplierValidatejs": {
+        "doesnt": {
+            "match": {
+                "message": "Värdet matchar inte det erforderliga mönstret '{limit}'"
+            }
+        },
+        "invalid": {
+            "url": {
+                "message": "Ogiltigt format för URL"
+            },
+            "creditCard": {
+                "message": "Ogiltigt kreditkortsnummer"
+            },
+            "email": {
+                "message": "Ogiltig epostadress"
+            },
+            "range": {
+                "message": "Värdet är inte inom det giltiga intervallet från '{from}' till '{to}'"
+            },
+            "size": {
+                "message": "Värdet är inte inom det giltiga storleksintervallet från '{from}' till '{to}'"
+            },
+            "max": {
+                "message": "Värdet överskrider maxvärdet '{limit}'"
+            },
+            "min": {
+                "message": "Värdet underskrider minimumvärdet '{limit}'"
+            },
+            "maxOrEqual": {
+                "message": "Värdet ska vara mindre än eller lika med '{limit}'"
+            },
+            "minOrEqual": {
+                "message": "Värdet ska vara större än eller lika med '{limit}'"
+            },
+            "maxSize": {
+                "message": "Värdet överskrider maximal storlek av '{limit}'"
+            },
+            "minSize": {
+                "message": "Värdet underskrider minimivärdet av '{limit}'"
+            },
+            "validator": {
+                "message": "Ogiltigt värde"
+            },
+            "vatNumber": {
+                "message": "Värdet är inte ett godkänt momsregistreringsnummer"
+            },
+            "dunsNumber": {
+                "message": "Värdet är inte ett godkänt DUNS nummer"
+            },
+            "globalLocationNumber": {
+                "message": "Värdet är inte ett godkänt GLN nummer"
+            },
+            "iban": {
+                "message": "Värdet är inte ett godkänt IBAN"
+            },
+            "bic": {
+                "message": "Värdet är inte ett godkänt BIC"
+            },
+            "swiftCode": {
+                "message": "Värdet är inte en godkänd SWIFT kod"
+            },
+            "uniqueIdentifier": {
+                "message": "Du behöver ange antingen ett momsregistreringsnummer, DUNS, GLN eller IBAN"
+            },
+            "uniqueIdentifierWithBankAccount": {
+                "message": "Du behöver ange antingen ett momsregistreringsnummer, DUNS, GLN, IBAN eller ett bankkonto"
+            }
+        },
+        "not": {
+            "inlist": {
+                "message": "Värdet finns inte i listan '{limit}'"
+            },
+            "equal": {
+                "message": "Värdet kan inte vara '{limit}'"
+            },
+            "unique": {
+                "message": "Värdet ska vara unikt"
+            }
+        },
+        "blank": {
+            "message": "Fältet kan inte vara tomt"
+        },
+        "null": {
+            "message": "Attributet kan inte varea noll"
+        },
+        "duplicate": {
+            "name": {
+                "message": "Ett företag med detta namn existerar redan"
+            },
+            "registerationNumber": {
+                "message": "Ett företag med detta organisationsnummer, stad och land existerar redan"
+            },
+            "taxIdNumber": {
+                "message": "Ett företag med detta momsregistreringsnummer och land existerar redan"
+            },
+            "vatNumber": {
+                "message": "Ett företag med detta momsregistreringsnummer existerar redan"
+            },
+            "dunsNumber": {
+                "message": "Ett företag med detta DUNS existerar redan"
+            },
+            "globalLocationNumber": {
+                "message": "Ett företag med detta GLN existerar redan"
+            },
+            "iban": {
+                "message": "Ett företag med detta IBAN existerar redan"
+            }
+        },
+        "typeMismatch": {
+            "util": {
+                "Date": "Värdet behöver vara ett godkänt datum"
+            }
+        },
+        "supplierExists": "{message}\r\nVänligen kontakta vår support på customerservice.se@opuscapita.com för att få access till det registrerade företaget."
+    }
+}

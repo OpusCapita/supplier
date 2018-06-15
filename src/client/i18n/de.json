@@ -1,0 +1,237 @@
+{
+    "Supplier": {
+        "Button": {
+            "add": "Hinzufügen",
+            "edit": "Bearbeiten",
+            "save": "Speichern",
+            "delete": "Löschen",
+            "view": "Ansehen",
+            "cancel": "Abbrechen",
+            "close": "Schliessen",
+            "yes": "Ja",
+            "no": "Nein",
+            "createUser": "Benutzer Erstellen",
+            "continue": "Weiter",
+            "request": "Anfordern",
+            "access": "Zugreifen",
+            "requestAccess": "Zugang anfordern",
+            "approve": "Genehmigen",
+            "reject": "Ablehnen",
+            "search": "Suche"
+        },
+        "Label": {
+            "id": "Firmen-ID",
+            "parentId": "Muttergesellschaft",
+            "name": "Firmenname",
+            "cityOfRegistration": "Ort der Registrierung",
+            "homePage": "Startseite",
+            "legalForm": "Rechtsform",
+            "foundedOn": "Datum der Firmengründung",
+            "taxIdNumber": "Tax identification number",
+            "dunsNo": "D-U-N-S-Nr.",
+            "ovtNo": "OVT Nummer",
+            "commercialRegisterNo": "Handelsregisternummer",
+            "countryOfRegistration": "Land der Registrierung",
+            "currencyId": "Standardwährung",
+            "taxIdentificationNo": "Steuernummer",
+            "vatIdentificationNo": "Umsatzsteuer-Ident-Nr.",
+            "globalLocationNo": "Global Location Number (GLN/ILN)",
+            "subEntityCode": "Sub-Entitätscode",
+            "iban": "IBAN",
+            "accessReason": "Zugang Grund",
+            "searchInput": "Suche nach Name, Stadt, Umsatzsteuer-ID, Steuernummer, Registrierungsnummer, DUNS-Nummer oder Global Location Number",
+            "capability": "Fähigkeit"
+        },
+        "Title": {
+            "company": "Firma",
+            "companyIdentifiers": "Firmenkennungen",
+            "addresses": "Adressen",
+            "type": "Typ"
+        },
+        "Select": {
+            "type": "Typ auswählen...",
+            "country": "Land auswählen...",
+            "department": "Abteilung auswählen ..."
+        },
+        "Heading": {
+            "createSupplier": "Lieferant erstellen",
+            "companyRegistration": "Firmenregistrierung",
+            "companyInformation": "Firmeninformationen",
+            "list": "Lieferantenliste",
+            "address": "Bitte hinterlegen Sie hier die Firmenanschrift.",
+            "accessApproval": "Bitte genehmigen oder lehnen Sie die Benutzerzugriffsanfrage ab.",
+            "BankAccount": "Bitte hinterlegen Sie Ihre Bankverbindung.",
+            "contact": "Bitte fügen Sie hier Ihre Firma Ansprechpartnern."
+        },
+        "Confirmation": {
+            "cancel": "Wollen Sie den Vorgang wirklich abbrechen?"
+        },
+        "Messages": {
+            "loading": "Laden...",
+            "unableToRender": "Der Editor kann nicht geöffnet werden",
+            "createSuccess": "Lieferantenerstellung erfolgreich.",
+            "createFailed": "Lieferantenerstellung fehlgeschlagen.",
+            "updateSaved": "Daten Aktualisierung erfolgreich.",
+            "updateFailed": "Daten Aktualisierung fehlgeschlagen.",
+            "failedCreatingExistingSupplier": "Speichern von Daten fehlgeschlagen: ein Unternehmen mit gleiche Firmenname existiert bereits",
+            "failedCreatingUserSupplier": "Lieferantenerstellung fehlgeschlagen: Sie sind bereits einem Lieferanten zugeordnet.",
+            "identifierRequired": "** Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer. Wenn Sie keine haben, dann hinterlegen Sie Ihre Global Location Number, Ihre D-U-N-S-Nummer oder Ihre OVT Nummer.",
+            "required": "** Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer. Wenn Sie keine haben, dann hinterlegen Sie Ihre Global Location Number, Ihre D-U-N-S-Nummer, Ihre OVT Nummer oder Ihre IBAN.",
+            "noVatId": "Meine Firma hat keine Umsatzsteuer-Ident-Nummer.",
+            "clickCheckBox": "Bitte hinterlegen Sie Ihre Umsatzsteuer-Identifikationsnummer.",
+            "accessInformation1": "Hier können Sie Zugang zur Firma {name} beantragen. Sie sollten Zugang nur anfordern, wenn Sie ein Angestellter der Unternehmens sind.",
+            "accessInformation2": "Bitte geben Sie eine gültige geschäftliche Rechtfertigung für Ihren Zugang.",
+            "accessInformation3": "Ihre Anfrage wird an den Administrator weitergeleitet, der das Profil des Unternehmens verwaltet.",
+            "accessInformation4": "Sobald der Administrator Ihre Zugriffsanforderung genehmigt hat, erhalten Sie eine E-Mail-Benachrichtigung an Ihre registrierte E-Mail-Adresse.",
+            "information1": "Bitte hinterlegen Sie hier Informationen zur eindeutigen Identifizierung Ihres Unternehmens.",
+            "information2": "Bitte füllen Sie alle mit Stern markierten Pflichtfelder aus, um mit der Registrierung fortfahren zu können."
+        },
+        "Error": {
+            "notUnique": "Der Wert darf nur einmal vorkommen",
+            "notAuthorized": "Sie sind nicht berechtigt, diese Aktion auszuführen."
+        },
+        "AccessRequest": {
+            "head": "Sie haben den Zugang zum Firma {name} beantragt.",
+            "text": "Bitte kontaktieren Sie unseren Support via +49 231 3967 350 oder customerservice.de@opuscapita.com für weitere Informationen.",
+            "Status": {
+                "text": "Aktuelle Status",
+                "requested": "angefordert",
+                "rejected": "abgelehnt",
+                "approved": "genehmigt"
+            }
+        },
+        "AccessApproval": {
+            "Label": {
+                "firstName": "Vorname",
+                "lastName": "Nachname",
+                "email": "E-Mail",
+                "date": "Anforderungsdatum",
+                "comment": "Begründung",
+                "status": "Status"
+            },
+            "Status": {
+                "requested": "Angefordert",
+                "approved": "Genehmigt",
+                "rejected": "Abgelehnt"
+            },
+            "Messages": {
+                "approved": "Benutzer wurde erfolgreich genehmigt.",
+                "rejected": "Benutzer wurde erfolgreich abgelehnt."
+            },
+            "Confirmation": {
+                "approve": "Möchten Sie den Benutzer wirklich genehmigen?",
+                "reject": "Möchten Sie den Benutzer wirklich ablehnen?"
+            }
+        },
+        "Capabilities": {
+            "name": "Fähigkeiten",
+            "Type": {
+                "eInvoice-send": "Rechnung - schicken"
+            }
+        },
+        "Address": {
+            "Label": {
+                "type": "Typ",
+                "street": "Straße",
+                "zipCode": "Postleitzahl",
+                "city": "Stadt",
+                "countryId": "Land",
+                "phoneNo": "Telefon",
+                "faxNo": "Fax",
+                "name": "Name",
+                "street1": "Straße",
+                "street2": "Straße 2",
+                "street3": "Straße 3",
+                "areaCode": "Postleitzahlbereich",
+                "state": "Bundesland",
+                "pobox": "Postfach",
+                "poboxZipCode": "PLZ des Postfachs",
+                "email": "Email"
+            },
+            "Type": {
+                "default": "Standard",
+                "invoice": "Rechnung",
+                "rma": "Retour",
+                "plant": "Werk"
+            },
+            "Confirmation": {
+                "delete": "Wollen Sie diese Adresse wirklich löschen?"
+            },
+            "Messages": {
+                "deleted": "Adresse erfolgreich gelöscht.",
+                "updated": "Adresse erfolgreich aktualisiert.",
+                "saved": "Adresse erfolgreich gespeichert."
+            }
+        },
+        "BankAccount": {
+            "Confirmation": {
+                "delete": "Wollen Sie dieses Bankkonto wirklich löschen?"
+            },
+            "Label": {
+                "accountNumber": "IBAN",
+                "bankIdentificationCode": "BIC",
+                "bankCountryKey": "Bank Land",
+                "bankCode": "Bankleitzahl",
+                "bankName": "Bank Name",
+                "extBankControlKey": "External Bank Control Key",
+                "swiftCode": "SWIFT-Code"
+            },
+            "Message": {
+                "deleted": "Bankkonto erfolgreich gelöscht.",
+                "updated": "Bankkonto erfolgreich aktualisiert.",
+                "saved": "Bankkonto erfolgreich gespeichert.",
+                "deleteFailed": "Das Bankkonto kann nicht gelöscht werden, vielleicht ist es bereits im Einsatz.",
+                "saveFailed": "Bankkontospeicherung fehlgeschlagen.",
+                "updateFailed": "Bankkontoaktualisierung fehlgeschlagen."
+            }
+        },
+        "Contact": {
+            "Confirmation": {
+                "delete": "Wollen Sie diesen Kontakt wirklich löschen?",
+                "linkedToUser": "Nur der Kontakt wird gelöscht. Der Benutzer wird nicht gelöscht.",
+                "createUser": "Wollen Sie wirklich einen Benutzer erstellen?"
+            },
+            "Type": {
+                "Default": "Default",
+                "Sales": "Verkauf",
+                "Escalation": "Eskalation",
+                "Product": "Produkt",
+                "Technical": "Technisch"
+            },
+            "Department": {
+                "Management": "Geschäftsführung",
+                "Logistics": "Logistik",
+                "Sales": "Vertrieb",
+                "Accounting": "Buchhaltung",
+                "Support": "Kundenbetreuung",
+                "IT": "Datenmanagement",
+                "Others": "Sonstiges"
+            },
+            "Label": {
+                "contactId": "Kontakt ID",
+                "contactType": "Ansprechpartner-Typ",
+                "firstName": "Vorname",
+                "lastName": "Nachname",
+                "email": "E-Mail",
+                "phone": "Telefon",
+                "mobile": "Mobiltelefon",
+                "department": "Abteilung",
+                "title": "Anrede",
+                "fax": "Fax"
+            },
+            "Message": {
+                "deleted": "Kontakt erfolgreich gelöscht.",
+                "updated": "Kontakt erfolgreich aktualisiert.",
+                "saved": "Kontakt erfolgreich gespeichert.",
+                "deleteFailed": "Der Kontakt kann nicht gelöscht werden, vielleicht ist es bereits im Einsatz.",
+                "saveFailed": "Kontakt Speichern fehlgeschlagen.",
+                "updateFailed": "Kontakt Aktualisierung fehlgeschlagen.",
+                "userCreated": "Benutzer erfolgreich erstellt.",
+                "userCreateFailed": "Benutzererstellung fehlgeschlagen."
+            },
+            "Error": {
+                "userExists": "Der Benutzer existiert bereits."
+            }
+        }
+    }
+}

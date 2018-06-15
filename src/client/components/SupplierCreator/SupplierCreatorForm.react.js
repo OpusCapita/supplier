@@ -221,7 +221,7 @@ class SupplierCreatorForm extends Component {
             component: (
               <DateInput
                 className="form-control"
-                locale={i18n.locale}
+                locale={['en', 'de'].includes(i18n.locale) ? i18n.locale : 'en'}
                 dateFormat={i18n.dateFormat}
                 value={foundedOn}
                 onChange={this.handleChange.bind(this, 'foundedOn')}

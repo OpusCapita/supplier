@@ -1,0 +1,237 @@
+{
+    "Supplier": {
+        "Button": {
+            "add": "Add",
+            "edit": "Edit",
+            "save": "save",
+            "delete": "Delete",
+            "view": "View",
+            "cancel": "Cancel",
+            "close": "Close",
+            "yes": "Yes",
+            "no": "No",
+            "createUser": "Create User",
+            "continue": "Continue",
+            "request": "Request",
+            "access": "Access",
+            "requestAccess": "Request Access",
+            "approve": "Approve",
+            "reject": "Reject",
+            "search": "Search"
+        },
+        "Label": {
+            "id": "Company ID",
+            "parentId": "Parent Company",
+            "name": "Company Name",
+            "cityOfRegistration": "City Of Registration",
+            "homePage": "Homepage",
+            "legalForm": "Legal form",
+            "foundedOn": "Founded/​Established On",
+            "taxIdNumber": "Tax identification number",
+            "dunsNo": "D-U-N-S-Nr.",
+            "ovtNo": "OVT Number",
+            "commercialRegisterNo": "Company Registration Number",
+            "countryOfRegistration": "Country Of Registration",
+            "currencyId": "Default Currency",
+            "taxIdentificationNo": "Tax Identification Number",
+            "vatIdentificationNo": "VAT Identification Number",
+            "globalLocationNo": "Global Location Number",
+            "subEntityCode": "Sub Entity Code",
+            "iban": "IBAN",
+            "accessReason": "Access Reason",
+            "searchInput": "Search by name, city, VAT id, Tax id, registration number, DUNS number, or Global Location Number",
+            "capability": "Capability"
+        },
+        "Title": {
+            "company": "Company",
+            "companyIdentifiers": "Company Identifiers",
+            "addresses": "Adresses",
+            "type": "Type"
+        },
+        "Select": {
+            "type": "Select type...",
+            "country": "Select country...",
+            "department": "Select department..."
+        },
+        "Heading": {
+            "createSupplier": "Create Supplier",
+            "companyRegistration": "Company Registration",
+            "companyInformation": "Company Information",
+            "list": "Supplier List",
+            "address": "Please add your company addresses here.",
+            "accessApproval": "Please approve or reject user access request.",
+            "BankAccount": "Please enter your bank account details.",
+            "contact": "Please add your company contact persons here."
+        },
+        "Confirmation": {
+            "cancel": "Do you really want to cancel?"
+        },
+        "Messages": {
+            "loading": "Loading...",
+            "unableToRender": "Unable to render editor",
+            "createSuccess": "Supplier successfully created",
+            "createFailed": "Supplier creation failed",
+            "updateSaved": "Data successfully updated",
+            "updateFailed": "Data update failed",
+            "failedCreatingExistingSupplier": "Data saving failed: a company with the same Company Name already exists",
+            "failedCreatingUserSupplier": "Supplier creation failed: you are already associated to a supplier.",
+            "identifierRequired": "** Please provide your VAT Registration Number. If you do not have one, then provide your Global Location Number, D-U-N-S number or OVT number.",
+            "required": "** Please provide your VAT Registration Number. If you do not have one, then provide your Global Location Number, D-U-N-S number, OVT number or IBAN.",
+            "noVatId": "My Company does not have a VAT Registration Number.",
+            "clickCheckBox": "Please provide your VAT Registration Number.",
+            "accessInformation1": "Here you can request access to company {name}. You should request access only if you are an employee of this company.",
+            "accessInformation2": "Please provide a valid business justification for your access.",
+            "accessInformation3": "Your request will be forwarded to the administrator managing the company's profile.",
+            "accessInformation4": "Once the administrator approves your access request, you will receive an email notification to your registered email address.",
+            "information1": "Please provide information that helps us to uniquely identify your company and allows us to add it to our trading partner directory.",
+            "information2": "After providing this information you are ready to login."
+        },
+        "Error": {
+            "notUnique": "Value must be unique",
+            "notAuthorized": "You are not authorized to perform this action."
+        },
+        "AccessRequest": {
+            "head": "You have requested access to the company {name}.",
+            "text": "Please reach out to our support at +49 231 3967 350 or customerservice.de@opuscapita.com for further information.",
+            "Status": {
+                "text": "Current status",
+                "requested": "requested",
+                "rejected": "rejected",
+                "approved": "approved"
+            }
+        },
+        "AccessApproval": {
+            "Label": {
+                "firstName": "First Name",
+                "lastName": "Last Name",
+                "email": "Email",
+                "date": "Request Date",
+                "comment": "Justification",
+                "status": "Status"
+            },
+            "Status": {
+                "requested": "Requested",
+                "approved": "Approved",
+                "rejected": "Rejected"
+            },
+            "Messages": {
+                "approved": "User has been successfully approved.",
+                "rejected": "User has been successfully rejected."
+            },
+            "Confirmation": {
+                "approve": "Are you sure you want to approve user?",
+                "reject": "Are you sure you want to reject user?"
+            }
+        },
+        "Capabilities": {
+            "name": "Capabilities",
+            "Type": {
+                "eInvoice-send": "Invoice - send"
+            }
+        },
+        "Address": {
+            "Label": {
+                "type": "Type",
+                "street": "Street",
+                "zipCode": "Zip code",
+                "city": "City",
+                "countryId": "Country",
+                "phoneNo": "Telephone",
+                "faxNo": "Fax",
+                "name": "Name",
+                "street1": "Street",
+                "street2": "Street 2",
+                "street3": "Street 3",
+                "areaCode": "Area Code",
+                "state": "State",
+                "pobox": "PO Box",
+                "poboxZipCode": "PO Box Zip Code",
+                "email": "Email"
+            },
+            "Type": {
+                "default": "Default",
+                "invoice": "Invoice",
+                "rma": "RMA",
+                "plant": "Factory"
+            },
+            "Confirmation": {
+                "delete": "Do you really want to delete this address?"
+            },
+            "Messages": {
+                "deleted": "Address successfully deleted.",
+                "updated": "Address successfully updated.",
+                "saved": "Address successfully saved."
+            }
+        },
+        "BankAccount": {
+            "Confirmation": {
+                "delete": "Do you really want to delete this bank account?"
+            },
+            "Label": {
+                "accountNumber": "IBAN",
+                "bankIdentificationCode": "BIC",
+                "bankCountryKey": "Bank Country",
+                "bankCode": "Bank Code",
+                "bankName": "Bank Name",
+                "extBankControlKey": "External Bank Control",
+                "swiftCode": "Swift Code"
+            },
+            "Message": {
+                "deleted": "Bank account successfully deleted.",
+                "updated": "Bank account successfully updated.",
+                "saved": "Bank account successfully saved.",
+                "deleteFailed": "Failed to delete bank account, perhaps it is already in use.",
+                "saveFailed": "Bank account save failed.",
+                "updateFailed": "Bank account update failed."
+            }
+        },
+        "Contact": {
+            "Confirmation": {
+                "delete": "Do you really want to delete this contact?",
+                "linkedToUser": "Only the contact will be deleted. User will not be deleted.",
+                "createUser": "Do you really want to create user?"
+            },
+            "Type": {
+                "Default": "Default",
+                "Sales": "Sales",
+                "Escalation": "Escalation",
+                "Product": "Product",
+                "Technical": "Technical"
+            },
+            "Department": {
+                "Management": "Management",
+                "Logistics": "Logistics",
+                "Sales": "Sales",
+                "Accounting": "Accounting",
+                "Support": "Support",
+                "IT": "IT",
+                "Others": "Others"
+            },
+            "Label": {
+                "contactId": "Contact ID",
+                "contactType": "Contact Type",
+                "firstName": "First Name",
+                "lastName": "Last Name",
+                "email": "Email",
+                "phone": "Phone",
+                "mobile": "Mobile",
+                "department": "Department",
+                "title": "Salutation",
+                "fax": "Fax"
+            },
+            "Message": {
+                "deleted": "Contact successfully deleted.",
+                "updated": "Contact successfully updated.",
+                "saved": "Contact successfully saved.",
+                "deleteFailed": "Failed to delete contact, perhaps it is already in use.",
+                "saveFailed": "Contact save failed.",
+                "updateFailed": "Contact update failed.",
+                "userCreated": "User successfully created.",
+                "userCreateFailed": "User creation failed."
+            },
+            "Error": {
+                "userExists": "User already exists."
+            }
+        }
+    }
+}
