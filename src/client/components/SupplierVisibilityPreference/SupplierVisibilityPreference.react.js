@@ -85,7 +85,7 @@ class SupplierVisibilityPreference extends Components.ContextComponent {
           </div>
         </div>
         <Components.ModalDialog ref={node => this.supplierPublicModal = node} size='large'>
-          <SupplierPublic supplierId={this.props.supplierId}/>
+          <SupplierPublic supplierId={this.props.supplierId} public={true}/>
         </Components.ModalDialog>
       </div>
     );

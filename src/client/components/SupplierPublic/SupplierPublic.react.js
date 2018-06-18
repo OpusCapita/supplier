@@ -1,6 +1,6 @@
 const Promise = require('bluebird');
 import React, { Component, PropTypes } from 'react';
-import { Supplier, Visibility } from '../../api';
+import { Supplier } from '../../api';
 import CountryView from '../CountryView.react';
 import i18nMessages from '../../i18n';
 import AddressComponent from './AddressPublic.react';
@@ -11,7 +11,8 @@ require('./SupplierPublic.css');
 export default class SupplierPublic extends Component {
 
   static propTypes = {
-    supplierId: PropTypes.string.isRequired
+    supplierId: PropTypes.string.isRequired,
+    public: PropTypes.bool
   };
 
   static contextTypes = {
@@ -20,10 +21,9 @@ export default class SupplierPublic extends Component {
 
   constructor(props, context) {
     super(props);
-    this.state = { supplier : null, visibility: null };
+    this.state = { supplier : null };
 
     this.supplierApi = new Supplier();
-    this.visibilityApi = new Visibility();
   }
 
   componentWillMount(){
@@ -31,7 +31,7 @@ export default class SupplierPublic extends Component {
   }
 
   componentDidMount() {
-    this.loadSupplierAndVisibility(this.props.supplierId);
+    this.loadSupplier(this.props.supplierId);
   }
 
   componentWillReceiveProps(nextProps, nextContext) {
@@ -39,34 +39,29 @@ export default class SupplierPublic extends Component {
       nextContext.i18n.register('Supplier', i18nMessages);
     }
 
-    this.loadSupplierAndVisibility(nextProps.supplierId);
+    this.loadSupplier(nextProps.supplierId);
   }
 
   renderDefault(argument, defaultValue) {
     return argument ? argument : defaultValue;
   }
 
-  loadSupplierAndVisibility(supplierId) {
+  loadSupplier(supplierId) {
     if (!supplierId) return;
 
     const queryParam = { include: 'addresses,capabilities,contacts,bankAccounts' };
+    if (this.props.public) queryParam.public = true;
     this.supplierApi.getSupplier(supplierId, queryParam).then(supplier => this.setState({ supplier: supplier }));
-    this.visibilityApi.get(supplierId).then(visibility => this.setState({ visibility: visibility })).
-      catch(() => this.setState({ visibility: {} }));
   }
 
   renderContactComponent() {
-    if (!this.state.visibility) return null;
-
-    if (this.state.visibility.contacts === 'private') return null;
+    if (!this.state.supplier.contacts) return null;
 
     return <ContactComponent supplier={ this.state.supplier } i18n={ this.context.i18n } />;
   }
 
   renderBankAccountComponent() {
-    if (!this.state.visibility) return null;
-
-    if (this.state.visibility.bankAccounts === 'private') return null;
+    if (!this.state.supplier.bankAccounts) return null;
 
     return <BankAccountComponent supplier={ this.state.supplier } i18n={ this.context.i18n } />;
   }
