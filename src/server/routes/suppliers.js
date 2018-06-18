@@ -2,6 +2,7 @@ const Supplier = require('../queries/suppliers');
 const SupplierBank = require('../queries/supplier_bank_accounts');
 const SupplierVisibility = require('../queries/supplier_visibility');
 const userService = require('../services/user');
+const businessLinkService = require('../services/businessLink');
 const Promise = require('bluebird');
 
 module.exports = function(app, db, config) {
@@ -190,6 +191,15 @@ let restrictVisibility = async function(supplier, req)
   const visibility = await SupplierVisibility.find(supplier.id);
 
   ['contacts', 'bankAccounts'].forEach(field => { if (visibility[field] === 'private') delete supplier[field] });
+
+  if (visibility.contacts !== 'businessPartners' && visibility.bankAccounts !== 'businessPartners') return supplier;
+
+  const customerId = req.opuscapita.userData('customerId');
+  const businessLinks = await businessLinkService.allForSupplierId(req.opuscapita.serviceClient, supplier.id);
+
+  if (businessLinks.every(link => !customerId || link.customerId !== customerId)) {
+    ['contacts', 'bankAccounts'].forEach(field => { if (visibility[field] === 'businessPartners') delete supplier[field] });
+  }
 
   return supplier;
 }

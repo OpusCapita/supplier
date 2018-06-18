@@ -12,6 +12,7 @@
     "test": "",
     "clean": "rimraf esdoc testdb.sqlite .nyc_output coverage test-results.xml",
     "setup-consul": "sh ./setup-consul.sh",
+    "setup-rabbitmq": "sh ./setup-rabbitmq.sh",
     "lint": "eslint src",
     "esdoc": "rimraf esdoc && esdoc -c esdoc.json",
     "domain-doc": "mkdir -p wiki/domain-doc ; sq2md --path-bl=index.js -o file-per-src -p wiki/domain-doc --field-bl=createdAt,updatedAt --output-ext=.model.md src/server/db/models",
