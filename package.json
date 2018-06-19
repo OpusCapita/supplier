@@ -30,7 +30,7 @@
   "license": "jCatalog",
   "readme": "README.md",
   "dependencies": {
-    "@opuscapita/db-init": "^2.0.10",
+    "@opuscapita/db-init": "^2.0.16",
     "@opuscapita/electronic-address": "^0.0.2",
     "@opuscapita/field-validators": "^0.0.3",
     "@opuscapita/i18n": "^1.2.4",
@@ -38,7 +38,7 @@
     "@opuscapita/react-loaders": "^0.1.9",
     "@opuscapita/react-reference-select": "^1.0.4",
     "@opuscapita/service-base-ui": "^1.1.25",
-    "@opuscapita/web-init": "^3.0.39",
+    "@opuscapita/web-init": "^3.0.41",
     "babel-loader": "^7.1.4",
     "babel-runtime": "^6.26.0",
     "bluebird": "^3.5.1",
