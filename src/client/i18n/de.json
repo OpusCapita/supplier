@@ -17,7 +17,8 @@
             "requestAccess": "Zugang anfordern",
             "approve": "Genehmigen",
             "reject": "Ablehnen",
-            "search": "Suche"
+            "search": "Suche",
+            "publicProfile": "Öffentliches Profil ansehen"
         },
         "Label": {
             "id": "Firmen-ID",
@@ -46,6 +47,8 @@
             "company": "Firma",
             "companyIdentifiers": "Firmenkennungen",
             "addresses": "Adressen",
+            "contacts": "Kontakte",
+            "bankAccounts": "Bankkonten",
             "type": "Typ"
         },
         "Select": {
@@ -61,7 +64,8 @@
             "address": "Bitte hinterlegen Sie hier die Firmenanschrift.",
             "accessApproval": "Bitte genehmigen oder lehnen Sie die Benutzerzugriffsanfrage ab.",
             "BankAccount": "Bitte hinterlegen Sie Ihre Bankverbindung.",
-            "contact": "Bitte fügen Sie hier Ihre Firma Ansprechpartnern."
+            "contact": "Bitte fügen Sie hier Ihre Firma Ansprechpartnern.",
+            "visibility": "Bitte legen Sie die Einstellungen für Ihr öffentliches Profil."
         },
         "Confirmation": {
             "cancel": "Wollen Sie den Vorgang wirklich abbrechen?"
@@ -231,6 +235,20 @@
             },
             "Error": {
                 "userExists": "Der Benutzer existiert bereits."
+            }
+        },
+        "Visibility": {
+            "Label": {
+                "contacts": "Kontakte",
+                "bankAccounts": "Bankkonten"
+            },
+            "Type": {
+                "public": "Öffentlich",
+                "private": "Privat",
+                "businessPartners": "Geschäftspartner"
+            },
+            "Message": {
+                "updateSaved": "Änderungen erfolgreich gespeichert."
             }
         }
     }

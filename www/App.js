@@ -13,6 +13,7 @@ import SupplierAutocomplete from '../src/client/components/SupplierAutocomplete'
 import SupplierList from '../src/client/components/SupplierList';
 import SupplierOrganization from '../src/client/components/SupplierOrganization';
 import SupplierCreator from '../src/client/components/SupplierCreator';
+import SupplierVisibilityPreference from '../src/client/components/SupplierVisibilityPreference';
 
 const username = 'john.doe@ncc.com';
 const userRoles = ['supplier-admin', 'user'];
@@ -106,6 +107,8 @@ let list = <SupplierList onEdit={(id) => console.log(id)} onCreateUser={(id) => 
 
 let organization = <SupplierOrganization supplierId={supplierId} />
 
+let visibility = <SupplierVisibilityPreference supplierId={supplierId} />
+
 var tabData = [
   { name: 'Registration', isActive: true },
   { name: 'Create', isActive: true },
@@ -118,7 +121,8 @@ var tabData = [
   { name: 'Profile Strength', isActive: false },
   { name: 'Autocomplete', isActive: false },
   { name: 'List', isActive: false },
-  { name: 'Organization', isActive: false }
+  { name: 'Organization', isActive: false },
+  { name: 'Visibility', isActive: false }
 ];
 
 class Tabs extends React.Component
@@ -164,6 +168,7 @@ class Content extends React.Component
         {this.props.activeTab.name === 'Autocomplete' ? supplierAutocomplete :null}
         {this.props.activeTab.name === 'List' ? list : null}
         {this.props.activeTab.name === 'Organization' ? organization : null}
+        {this.props.activeTab.name === 'Visibility' ? visibility : null}
       </div>
     );
   }

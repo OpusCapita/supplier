@@ -42,20 +42,12 @@
     "resources": [{
           "type": "rest",
           "resourceId": "/api/suppliers[/]?$",
-          "actions": ["view"],
-          "responseFields": {
-            "allow": ["id", "supplierId", "name", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
-                     "vatIdentificationNo", "globalLocationNo", "dunsNo", "homePage", "status", "noVatReason", "addresses", "capabilities"]
-          }
+          "actions": ["view"]
       },
       {
           "type": "rest",
           "resourceId": "/api/suppliers/[^/]+$",
-          "actions": ["view"],
-          "responseFields": {
-            "allow": ["id", "supplierId", "name", "supplierName", "foundedOn", "legalForm", "commercialRegisterNo", "cityOfRegistration", "countryOfRegistration", "taxIdentificationNo",
-                     "vatIdentificationNo", "globalLocationNo", "dunsNo", "homePage", "status", "noVatReason", "addresses", "capabilities"]
-          }
+          "actions": ["view"]
       },
       {
         "type": "rest",

@@ -1,6 +1,8 @@
 const Supplier = require('../queries/suppliers');
 const SupplierBank = require('../queries/supplier_bank_accounts');
+const SupplierVisibility = require('../queries/supplier_visibility');
 const userService = require('../services/user');
+const businessLinkService = require('../services/businessLink');
 const Promise = require('bluebird');
 
 module.exports = function(app, db, config) {
@@ -15,15 +17,16 @@ module.exports = function(app, db, config) {
   });
 };
 
-let sendSupplier = function(req, res)
+let sendSupplier = async function(req, res)
 {
   const includes = req.query.include ? req.query.include.split(',') : [];
 
-  Supplier.find(req.params.id, includes).then(supplier =>
+  Supplier.find(req.params.id, includes).then(async supplier =>
   {
     if (supplier) {
       res.opuscapita.setNoCache();
-      res.json(supplier);
+      const supplier2send = await restrictVisibility(supplier, req);
+      res.json(supplier2send);
     } else {
       res.status('404').json(supplier);
     }
@@ -31,7 +34,7 @@ let sendSupplier = function(req, res)
 };
 
 
-let sendSuppliers = function(req, res)
+let sendSuppliers = async function(req, res)
 {
   if (req.query.electronicAddress) {
     return sendSuppliersForElectronicAddress(req.query.electronicAddress, res);
@@ -43,6 +46,7 @@ let sendSuppliers = function(req, res)
   } else {
     const includes = req.query.include ? req.query.include.split(',') : [];
     delete req.query.include
+
     Supplier.all(req.query, includes).then(suppliers => res.json(suppliers));
   }
 };
@@ -176,3 +180,26 @@ let sendSuppliersForElectronicAddress = async function(electronicAddress, res)
 };
 
 let getIdentifier = { vat: 'vatIdentificationNo', gln: 'globalLocationNo', ovt: 'ovtNo' };
+
+let restrictVisibility = async function(supplier, req)
+{
+  const roles = req.opuscapita.userData('roles');
+  if (!req.query.public && (roles.includes('admin') || roles.includes('supplier-admin') || roles.includes('supplier'))) return supplier;
+
+  if (!supplier.contacts && !supplier.bankAccounts) return supplier;
+
+  const visibility = await SupplierVisibility.find(supplier.id);
+
+  ['contacts', 'bankAccounts'].forEach(field => { if (visibility[field] === 'private') delete supplier[field] });
+
+  if (visibility.contacts !== 'businessPartners' && visibility.bankAccounts !== 'businessPartners') return supplier;
+
+  const customerId = req.opuscapita.userData('customerId');
+  const businessLinks = await businessLinkService.allForSupplierId(req.opuscapita.serviceClient, supplier.id);
+
+  if (businessLinks.every(link => !customerId || link.customerId !== customerId)) {
+    ['contacts', 'bankAccounts'].forEach(field => { if (visibility[field] === 'businessPartners') delete supplier[field] });
+  }
+
+  return supplier;
+}

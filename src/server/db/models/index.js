@@ -9,6 +9,7 @@ module.exports.init = function(db, config)
     require('./SupplierContact').init(db),
     require('./SupplierBankAccount').init(db),
     require('./Supplier2User').init(db),
-    require('./Capability').init(db)
+    require('./Capability').init(db),
+    require('./SupplierVisibility').init(db)
   ]);
 };
