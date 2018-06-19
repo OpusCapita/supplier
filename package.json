@@ -30,7 +30,7 @@
   "license": "jCatalog",
   "readme": "README.md",
   "dependencies": {
-    "@opuscapita/db-init": "^2.0.16",
+    "@opuscapita/db-init": "^2.0.18",
     "@opuscapita/electronic-address": "^0.0.2",
     "@opuscapita/field-validators": "^0.0.3",
     "@opuscapita/i18n": "^1.2.4",
