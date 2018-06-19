@@ -190,7 +190,7 @@ let restrictVisibility = async function(supplier, req)
 
   const visibility = await SupplierVisibility.find(supplier.id);
 
-  ['contacts', 'bankAccounts'].forEach(field => { if (visibility[field] === 'private') delete supplier[field] });
+  ['contacts', 'bankAccounts'].forEach(field => { if (!visibility || (visibility && visibility[field] === 'private')) delete supplier[field] });
 
   if (visibility.contacts !== 'businessPartners' && visibility.bankAccounts !== 'businessPartners') return supplier;
 
