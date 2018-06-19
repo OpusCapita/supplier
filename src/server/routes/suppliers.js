@@ -192,6 +192,8 @@ let restrictVisibility = async function(supplier, req)
 
   ['contacts', 'bankAccounts'].forEach(field => { if (!visibility || (visibility && visibility[field] === 'private')) delete supplier[field] });
 
+  if (!visibility) return supplier;
+
   if (visibility.contacts !== 'businessPartners' && visibility.bankAccounts !== 'businessPartners') return supplier;
 
   const customerId = req.opuscapita.userData('customerId');
