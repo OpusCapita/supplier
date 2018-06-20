@@ -17,7 +17,8 @@
             "requestAccess": "Request Access",
             "approve": "Approve",
             "reject": "Reject",
-            "search": "Search"
+            "search": "Search",
+            "publicProfile": "View public profile"
         },
         "Label": {
             "id": "Company ID",
@@ -46,6 +47,8 @@
             "company": "Company",
             "companyIdentifiers": "Company Identifiers",
             "addresses": "Adresses",
+            "contacts": "Contacts",
+            "bankAccounts": "Bank Accounts",
             "type": "Type"
         },
         "Select": {
@@ -61,7 +64,8 @@
             "address": "Please add your company addresses here.",
             "accessApproval": "Please approve or reject user access request.",
             "BankAccount": "Please enter your bank account details.",
-            "contact": "Please add your company contact persons here."
+            "contact": "Please add your company contact persons here.",
+            "visibility": "Please set preferences for your public profile."
         },
         "Confirmation": {
             "cancel": "Do you really want to cancel?"
@@ -231,6 +235,20 @@
             },
             "Error": {
                 "userExists": "User already exists."
+            }
+        },
+        "Visibility": {
+            "Label": {
+                "contacts": "Contacts",
+                "bankAccounts": "Bank Accounts"
+            },
+            "Type": {
+                "public": "Public",
+                "private": "Private",
+                "businessPartners": "Business partner"
+            },
+            "Message": {
+                "updateSaved": "Changes successfully saved."
             }
         }
     }

@@ -15,6 +15,7 @@ module.exports = {
     list: './src/client/components/SupplierList/index.js',
     organization: './src/client/components/SupplierOrganization/index.js',
     creation: './src/client/components/SupplierCreator/index.js',
+    visibility: './src/client/components/SupplierVisibilityPreference/index.js',
   },
   output: {
     path: path.resolve(__dirname, './src/server/static'),

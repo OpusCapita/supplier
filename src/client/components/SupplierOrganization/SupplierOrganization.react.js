@@ -19,7 +19,7 @@ export default class SupplierOrganization extends Component {
   }
 
   static propTypes = {
-    supplierId: PropTypes.func.isRequired
+    supplierId: PropTypes.string.isRequired
   };
 
   componentDidMount() {

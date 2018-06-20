@@ -1,65 +1,18 @@
+const Promise = require('bluebird');
 import React, { Component, PropTypes } from 'react';
 import { Supplier } from '../../api';
 import CountryView from '../CountryView.react';
 import i18nMessages from '../../i18n';
+import AddressComponent from './AddressPublic.react';
+import ContactComponent from './ContactPublic.react';
+import BankAccountComponent from './BankAccountPublic.react';
 require('./SupplierPublic.css');
-
-const AddressComponent = ({ supplier, i18n }) => (<div className='supplierPublic__container col-sm-12'>
-    <span className='supplierPublic__label'>{ i18n.getMessage('Supplier.Title.addresses') }</span>
-    { supplier.addresses.map((address) => <AddressSection key={address.id} supplier={ supplier } address={ address } i18n={ i18n }/>)}
-</div>);
-
-const AddressSection = ({ address, supplier, i18n }) => (
-  <div className='supplierPublic__section supplierPublic__address' key={address.id}>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__subheading col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.type') }</label>
-      <span className='supplierPublic__subheading col-sm-4'>{ i18n.getMessage(`Supplier.Address.Label.${address.type}`) }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.name') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.name }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.street1') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.street1 || '-' }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.street2') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.street2 || '-' }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.street3') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.street3 || '-' }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.city') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.city }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.zipCode') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.zipCode || '-' }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.countryId') }</label>
-      <span className='supplierPublic__value col-sm-4'>
-        <CountryView countryId={ address.countryId} />
-      </span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.email') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.email }</span>
-    </div>
-    <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.Address.Label.phoneNumber') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ address.phoneNo || '-' }</span>
-    </div>
-  </div>
-);
 
 export default class SupplierPublic extends Component {
 
   static propTypes = {
-    supplierId: PropTypes.string.isRequired
+    supplierId: PropTypes.string.isRequired,
+    public: PropTypes.bool
   };
 
   static contextTypes = {
@@ -94,10 +47,23 @@ export default class SupplierPublic extends Component {
   }
 
   loadSupplier(supplierId) {
-    const queryParam = { include: 'addresses,capabilities' };
     if (!supplierId) return;
 
+    const queryParam = { include: 'addresses,capabilities,contacts,bankAccounts' };
+    if (this.props.public) queryParam.public = true;
     this.supplierApi.getSupplier(supplierId, queryParam).then(supplier => this.setState({ supplier: supplier }));
+  }
+
+  renderContactComponent() {
+    if (!this.state.supplier.contacts) return null;
+
+    return <ContactComponent supplier={ this.state.supplier } i18n={ this.context.i18n } />;
+  }
+
+  renderBankAccountComponent() {
+    if (!this.state.supplier.bankAccounts) return null;
+
+    return <BankAccountComponent supplier={ this.state.supplier } i18n={ this.context.i18n } />;
   }
 
   render() {
@@ -156,6 +122,8 @@ export default class SupplierPublic extends Component {
               </div>
             </div>
             <AddressComponent supplier={ this.state.supplier } i18n={ this.context.i18n } />
+            { this.renderContactComponent() }
+            { this.renderBankAccountComponent() }
             { this.state.supplier.capabilities && this.state.supplier.capabilities.length > 0 &&
               <div className='col-sm-12'>
                 <span className='supplierPublic__label'>{ this.context.i18n.getMessage('Supplier.Capabilities.name') }</span>
