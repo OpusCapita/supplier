@@ -192,7 +192,10 @@ let getIdentifier = { vat: 'vatIdentificationNo', gln: 'globalLocationNo', ovt: 
 let restrictVisibility = async function(supplier, req)
 {
   const roles = req.opuscapita.userData('roles');
-  if (!req.query.public && (roles.some(rol => rol === 'admin' || rol.match('supplier') || rol.match('svc_')) )) return supplier;
+  if (!req.query.public && (roles.some(rol => rol === 'admin' || rol.match('svc_')) )) return supplier;
+
+  const supplierId = req.opuscapita.userData('supplierId');
+  if (!req.query.public && roles.some(rol => rol.match('supplier')) && supplier.id === supplierId) return supplier;
 
   if (!supplier.contacts && !supplier.bankAccounts) return supplier;
 
