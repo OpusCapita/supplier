@@ -16,7 +16,10 @@ class SupplierVisibilityForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { visibility: props.visibility };
+    const visibility = props.visibility;
+    if (!visibility.contacts) visibility.contacts = 'private';
+    if (!visibility.bankAccounts) visibility.bankAccounts = 'private';
+    this.state = { visibility: visibility };
   }
 
   handleChange = (fieldName, event) => {
