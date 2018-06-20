@@ -37,17 +37,23 @@ let sendSupplier = async function(req, res)
 let sendSuppliers = async function(req, res)
 {
   if (req.query.electronicAddress) {
-    return sendSuppliersForElectronicAddress(req.query.electronicAddress, res);
+    return sendSuppliersForElectronicAddress(req, res);
   }
 
   if (req.query.search !== undefined) {
     const capabilities = req.query.capabilities ? req.query.capabilities.split(',') : [];
-    Supplier.searchAll(req.query.search, capabilities).then(suppliers => res.json(suppliers));
+    Supplier.searchAll(req.query.search, capabilities).then(async suppliers => {
+      const suppliers2send = await restrictVisibilities(suppliers, req);
+      return res.json(suppliers2send);
+    });
   } else {
     const includes = req.query.include ? req.query.include.split(',') : [];
     delete req.query.include
 
-    Supplier.all(req.query, includes).then(suppliers => res.json(suppliers));
+    return Supplier.all(req.query, includes).then(async suppliers => {
+      const suppliers2send = await restrictVisibilities(suppliers, req);
+      return res.json(suppliers2send);
+    });
   }
 };
 
@@ -161,21 +167,23 @@ let createBankAccount = function(iban, supplier)
   return SupplierBank.create(bankAccount);
 }
 
-let sendSuppliersForElectronicAddress = async function(electronicAddress, res)
+let sendSuppliersForElectronicAddress = async function(req, res)
 {
   try {
+    const electronicAddress = req.query.electronicAddress;
     const electronicAddressDecoder = require('@opuscapita/electronic-address');
     const data = electronicAddressDecoder.decode(electronicAddress);
 
     if (!data.value) return res.status('400').json({ message: `Electronic address ${electronicAddress} could not be decoded` });
 
     const suppliers = await Supplier.all({ [getIdentifier[data.type]]: data.value });
+    const suppliers2send = await restrictVisibilities(suppliers, req);
 
-    if (suppliers.length <= 1) return res.json(suppliers);
+    if (suppliers2send.length <= 1) return res.json(suppliers2send);
 
-    if (!data.ext) return res.json(suppliers.filter(customer => !Boolean(customer.parentId)));
+    if (!data.ext) return res.json(suppliers2send.filter(customer => !Boolean(customer.parentId)));
 
-    return res.json(suppliers.filter(customer => customer.subEntityCode === data.ext));
+    return res.json(suppliers2send.filter(customer => customer.subEntityCode === data.ext));
   } catch(err) { return res.status('400').json({ message : err.message }) };
 };
 
@@ -204,4 +212,9 @@ let restrictVisibility = async function(supplier, req)
   }
 
   return supplier;
+}
+
+let restrictVisibilities = function(suppliers, req)
+{
+  return Promise.all(suppliers.map(supplier => restrictVisibility(supplier, req)));
 }
