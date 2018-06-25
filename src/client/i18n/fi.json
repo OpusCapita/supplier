@@ -230,6 +230,11 @@
             "Error": {
                 "userExists": "Käyttäjä on jo olemassa."
             }
+        },
+        "Autocomplete": {
+            "placeholder": "Lisää arvoja napsauttamalla",
+            "loadingPlaceholder": "Odota hetki...",
+            "noResultsText": "Mitään ei löytynyt. Muuta hakuehtoja."
         }
     }
 }
