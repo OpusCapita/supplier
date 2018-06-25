@@ -250,6 +250,11 @@
             "Message": {
                 "updateSaved": "Änderungen erfolgreich gespeichert."
             }
+        },
+        "Autocomplete": {
+            "placeholder": "Werte hinzufügen",
+            "loadingPlaceholder": "Bitte warten...",
+            "noResultsText": "Kein Suchergebnis. Bitte ändern Sie die Suchkriterien und versuchen Sie es erneut."
         }
     }
 }

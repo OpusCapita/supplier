@@ -250,6 +250,11 @@
             "Message": {
                 "updateSaved": "Changes successfully saved."
             }
+        },
+        "Autocomplete": {
+            "placeholder": "Click to add values",
+            "loadingPlaceholder": "Please wait...",
+            "noResultsText": "Nothing found. Please modify your search criteria."
         }
     }
 }
