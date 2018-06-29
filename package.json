@@ -16,8 +16,7 @@
     "lint": "eslint src",
     "esdoc": "rimraf esdoc && esdoc -c esdoc.json",
     "domain-doc": "mkdir -p wiki/domain-doc ; sq2md --path-bl=index.js -o file-per-src -p wiki/domain-doc --field-bl=createdAt,updatedAt --output-ext=.model.md src/server/db/models",
-    "rest-doc": "mkdir -p wiki/rest-doc ;npx raml2md -o file-per-resource -p wiki/rest-doc --output-ext=.endpoint.md rest-doc/main.raml",
-    "doc": "npm run rest-doc ; npm run domain-doc"
+    "rest-doc": "mkdir -p wiki/rest-doc ;npx raml2md -o file-per-resource -p wiki/rest-doc --output-ext=.endpoint.md rest-doc/main.raml"
   },
   "repository": {
     "type": "git",
@@ -38,7 +37,7 @@
     "@opuscapita/react-loaders": "^0.1.9",
     "@opuscapita/react-select": "1.0.0-oc.2",
     "@opuscapita/service-base-ui": "^1.1.25",
-    "@opuscapita/web-init": "^3.0.41",
+    "@opuscapita/web-init": "^3.0.49",
     "babel-loader": "^7.1.4",
     "babel-runtime": "^6.26.0",
     "bluebird": "^3.5.1",
