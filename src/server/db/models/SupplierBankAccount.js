@@ -67,6 +67,14 @@ module.exports.init = function (db, config) {
         field: 'BankName',
         type: Sequelize.STRING(50)
       },
+      bankgiro: {
+        field: 'Bankgiro',
+        type: Sequelize.STRING(30)
+      },
+      plusgiro: {
+        field: 'Plusgiro',
+        type: Sequelize.STRING(30)
+      },
       createdOn: {
         field: 'CreatedOn',
         type: Sequelize.DATE(),

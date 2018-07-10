@@ -172,7 +172,9 @@
                 "bankCode": "Pankkikoodi",
                 "bankName": "Pankin nimi",
                 "extBankControlKey": "External Bank Control",
-                "swiftCode": "Swift-koodi"
+                "swiftCode": "Swift-koodi",
+                "bankgiro": "Bankgiro",
+                "plusgiro": "Plusgiro"
             },
             "Message": {
                 "deleted": "Pankkitili on poistettu.",

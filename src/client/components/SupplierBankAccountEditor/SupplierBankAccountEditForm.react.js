@@ -184,6 +184,8 @@ class SupplierBankAccountEditForm extends Component {
         })}
 
         { this.renderField({ fieldName: 'extBankControlKey' }) }
+        { this.renderField({ fieldName: 'bankgiro' }) }
+        { this.renderField({ fieldName: 'plusgiro' }) }
 
         <div className='col-sm-12 text-right address-form-submit'>
           <ActionButton

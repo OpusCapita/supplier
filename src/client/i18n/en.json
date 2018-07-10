@@ -178,7 +178,9 @@
                 "bankCode": "Bank Code",
                 "bankName": "Bank Name",
                 "extBankControlKey": "External Bank Control",
-                "swiftCode": "Swift Code"
+                "swiftCode": "Swift Code",
+                "bankgiro": "Bankgiro",
+                "plusgiro": "Plusgiro"
             },
             "Message": {
                 "deleted": "Bank account successfully deleted.",

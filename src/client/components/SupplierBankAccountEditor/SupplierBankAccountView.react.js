@@ -38,6 +38,8 @@ export default class SupplierBankAccountView extends Component {
           component: <CountryView countryId={this.props.account.bankCountryKey} />
         }) }
         { this.renderField({ fieldName: 'extBankControlKey' })}
+        { this.renderField({ fieldName: 'bankgiro' })}
+        { this.renderField({ fieldName: 'plusgiro' })}
         <ActionButton
           id='supplier-bank-editor__close'
           onClick={this.props.onClose}
