@@ -87,6 +87,22 @@ let allConstraints = function(i18n) {
           limit: 2
         })
       }
+    },
+    bankgiro: {
+      length: {
+        maximum: 100,
+        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
+          limit: 100
+        })
+      }
+    },
+    plusgiro: {
+      length: {
+        maximum: 100,
+        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
+          limit: 100
+        })
+      }
     }
   };
 };
