@@ -180,7 +180,8 @@
                 "extBankControlKey": "External Bank Control",
                 "swiftCode": "Swift Code",
                 "bankgiro": "Bankgiro",
-                "plusgiro": "Plusgiro"
+                "plusgiro": "Plusgiro",
+                "isrNumber": "ISR Number"
             },
             "Message": {
                 "deleted": "Bank account successfully deleted.",

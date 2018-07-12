@@ -40,6 +40,7 @@ export default class SupplierBankAccountView extends Component {
         { this.renderField({ fieldName: 'extBankControlKey' })}
         { this.renderField({ fieldName: 'bankgiro' })}
         { this.renderField({ fieldName: 'plusgiro' })}
+        { this.renderField({ fieldName: 'isrNumber' })}
         <ActionButton
           id='supplier-bank-editor__close'
           onClick={this.props.onClose}

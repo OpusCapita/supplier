@@ -174,7 +174,8 @@
                 "extBankControlKey": "Extern bank kontroll",
                 "swiftCode": "Swift kod",
                 "bankgiro": "Bankgiro",
-                "plusgiro": "Plusgiro"
+                "plusgiro": "Plusgiro",
+                "isrNumber": "ISR-nummer"
             },
             "Message": {
                 "deleted": "Bankkonto raderad.",
