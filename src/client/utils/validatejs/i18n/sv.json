@@ -65,6 +65,9 @@
             },
             "uniqueIdentifierWithBankAccount": {
                 "message": "Du behöver ange antingen ett momsregistreringsnummer, DUNS, GLN, IBAN eller ett bankkonto"
+            },
+            "isrNumber": {
+                "message": "Värdet är inte ett godkänt ISR nummer"
             }
         },
         "not": {

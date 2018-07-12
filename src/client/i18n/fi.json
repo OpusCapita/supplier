@@ -174,7 +174,8 @@
                 "extBankControlKey": "External Bank Control",
                 "swiftCode": "Swift-koodi",
                 "bankgiro": "Bankgiro",
-                "plusgiro": "Plusgiro"
+                "plusgiro": "Plusgiro",
+                "isrNumber": "ISR-numero"
             },
             "Message": {
                 "deleted": "Pankkitili on poistettu.",

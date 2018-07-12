@@ -103,6 +103,11 @@ let allConstraints = function(i18n) {
           limit: 100
         })
       }
+    },
+    isrNumber: {
+      isrNumber: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.isrNumber.message')
+      }
     }
   };
 };

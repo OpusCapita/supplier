@@ -31,7 +31,7 @@
   "dependencies": {
     "@opuscapita/db-init": "^2.0.18",
     "@opuscapita/electronic-address": "^0.0.2",
-    "@opuscapita/field-validators": "^0.0.3",
+    "@opuscapita/field-validators": "^0.0.4",
     "@opuscapita/i18n": "^1.2.4",
     "@opuscapita/react-dates": "^0.2.16",
     "@opuscapita/react-loaders": "^0.1.9",
