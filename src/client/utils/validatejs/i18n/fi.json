@@ -65,6 +65,9 @@
             },
             "uniqueIdentifierWithBankAccount": {
                 "message": "Joko ALV-tunnus, DUNS-numero tai Global Location Number on annettava, tai pankkitili on lisättävä"
+            },
+            "isrNumber": {
+                "message": "Arvo ei ole kelvollinen ISR-numero"
             }
         },
         "not": {

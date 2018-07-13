@@ -46,7 +46,7 @@ module.exports.bankExists = function(supplierId, bankAccountId)
 
 let normalize = function(bankAccount)
 {
-  for (const fieldName of ['accountNumber', 'bankIdentificationCode', 'bankCode']) {
+  for (const fieldName of ['accountNumber', 'bankIdentificationCode', 'bankCode', 'isrNumber']) {
     if (bankAccount[fieldName]) bankAccount[fieldName] = bankAccount[fieldName].replace(/\W+/g, '');
   }
 };

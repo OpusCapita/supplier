@@ -1,4 +1,4 @@
-const { VAT, IBAN, BIC, DUNS, GLN, OVT } = require('@opuscapita/field-validators');
+const { VAT, IBAN, BIC, DUNS, GLN, OVT, ISR } = require('@opuscapita/field-validators');
 
 module.exports.vatNumber = function(validate) {
   return validate.validators.vatNumber = function(value, options, key, attributes) {
@@ -55,6 +55,16 @@ module.exports.ovtNumber = function(validate) {
     if (!value) return null;
 
     if (OVT.isValid(value)) return null;
+
+    return options.message;
+  };
+};
+
+module.exports.isrNumber = function(validate) {
+  return validate.validators.isrNumber = function(value, options, key, attributes) {
+    if (!value) return null;
+
+    if (ISR.isValid(value)) return null;
 
     return options.message;
   };

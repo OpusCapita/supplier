@@ -1,6 +1,6 @@
 'use strict';
 const Sequelize = require('sequelize');
-const { IBAN, BIC } = require('@opuscapita/field-validators');
+const { IBAN, BIC, ISR } = require('@opuscapita/field-validators');
 
 module.exports.init = function (db, config) {
   /**
@@ -66,6 +66,24 @@ module.exports.init = function (db, config) {
       bankName: {
         field: 'BankName',
         type: Sequelize.STRING(50)
+      },
+      bankgiro: {
+        field: 'Bankgiro',
+        type: Sequelize.STRING(30)
+      },
+      plusgiro: {
+        field: 'Plusgiro',
+        type: Sequelize.STRING(30)
+      },
+      isrNumber: {
+        field: 'ISRNumber',
+        type: Sequelize.STRING(9),
+        validate: {
+          isValid(value) {
+            if (!value) return null;
+            if (ISR.isInvalid(value)) throw new Error('isrNumber value is invalid');
+          }
+        }
       },
       createdOn: {
         field: 'CreatedOn',
