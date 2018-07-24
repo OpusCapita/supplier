@@ -1,7 +1,7 @@
 'use strict';
 const Sequelize = require('sequelize');
 
-module.exports.init = function(db) {
+module.exports.init = function(db, config) {
   let SupplierContact = db.define('SupplierContact', {
     id: {
       type: Sequelize.STRING(50),
