@@ -2,7 +2,14 @@
 const Sequelize = require('sequelize');
 
 module.exports.init = function(db, config) {
-  let SupplierContact = db.define('SupplierContact', {
+  /**
+   * SupplierContact - Contact information for a supplier.
+   * @class SupplierContact
+   */
+  let SupplierContact = db.define('SupplierContact',
+  /** @lends SupplierContact */
+  {
+    /** Unique identifier */
     id: {
       type: Sequelize.STRING(50),
       primaryKey: true,
