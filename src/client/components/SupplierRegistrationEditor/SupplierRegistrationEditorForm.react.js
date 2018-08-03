@@ -52,7 +52,7 @@ class SupplierRegistrationEditorForm extends Component {
 
   setFieldErrorsStates = (errors) => {
     this.setState({
-      fieldErrors: Object.keys(errors).reduce((rez, fieldName) => ({
+      fieldErrors: Object.keys(errors || {}).reduce((rez, fieldName) => ({
         ...rez,
         [fieldName]: errors[fieldName].map(error => {
           return {
@@ -90,7 +90,7 @@ class SupplierRegistrationEditorForm extends Component {
   };
 
   handleBlur = (fieldName, event) => {
-    event.preventDefault();
+    event.preventDefault && event.preventDefault();
     const constraints = this.constraints.forField(fieldName);
 
     this.setState({
@@ -109,12 +109,12 @@ class SupplierRegistrationEditorForm extends Component {
   };
 
   handleCancel = event => {
-    event.preventDefault();
+    event.preventDefault && event.preventDefault();
     this.props.onCancel();
   };
 
   handleUpdate = event => {
-    event.preventDefault();
+    event.preventDefault && event.preventDefault();
 
     const { onSupplierChange } = this.props;
     const supplier = this.state.supplier;
