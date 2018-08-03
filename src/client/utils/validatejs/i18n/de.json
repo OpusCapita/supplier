@@ -68,6 +68,9 @@
             },
             "uniqueIdentifierWithBankAccount": {
                 "message": "Die Umsatzsteuer-Identifikationsnummer, die D-U-N-S-Nummer, oder die Global Location Number, muss angegeben werden, oder eine Bankverbindung muss hinzugefügt werden"
+            },
+            "isrNumber": {
+                "message": "Der Wert ist keine gültige ISR-Nummer"
             }
         },
         "not": {

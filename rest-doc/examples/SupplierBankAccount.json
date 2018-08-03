@@ -1,5 +1,5 @@
 {
-  "bankAccountId": "ba_hard001",
+  "id": 65,
   "bankIdentificationCode": "DEDSLTJXXXX",
   "accountNumber": "DE89370400440532013000",
   "swiftCode": "DEDSLTJXXXX",
@@ -8,7 +8,11 @@
   "extBankControlKey": "35",
   "bankCountryKey": "DE",
   "supplierId": "hard001",
+  "isrNumber": "890394876",
+  "bankgiro": "223298",
+  "plusgiro": "232344",
   "createdOn": "2017-06-16 08:10:42",
+  "changedOn": "2017-06-16 08:10:42",
   "createdBy": "john.doe@ncc.com",
   "changedBy": "john.doe@ncc.com"
 }

@@ -172,7 +172,10 @@
                 "bankCode": "Pankkikoodi",
                 "bankName": "Pankin nimi",
                 "extBankControlKey": "External Bank Control",
-                "swiftCode": "Swift-koodi"
+                "swiftCode": "Swift-koodi",
+                "bankgiro": "Bankgiro",
+                "plusgiro": "Plusgiro",
+                "isrNumber": "ISR-numero"
             },
             "Message": {
                 "deleted": "Pankkitili on poistettu.",
@@ -230,6 +233,11 @@
             "Error": {
                 "userExists": "Käyttäjä on jo olemassa."
             }
+        },
+        "Autocomplete": {
+            "placeholder": "Lisää arvoja napsauttamalla",
+            "loadingPlaceholder": "Odota hetki...",
+            "noResultsText": "Mitään ei löytynyt. Muuta hakuehtoja."
         }
     }
 }

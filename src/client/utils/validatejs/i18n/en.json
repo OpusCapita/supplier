@@ -68,6 +68,9 @@
             },
             "uniqueIdentifierWithBankAccount": {
                 "message": "Either VAT number, D-U-N-S number, or Global Location Number must be provided, or Bank Account must be added"
+            },
+            "isrNumber": {
+                "message": "Value is not a valid ISR party number"
             }
         },
         "not": {

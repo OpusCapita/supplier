@@ -101,7 +101,7 @@ let supplierProfileStrenth = (
   <SupplierProfileStrength supplierId={supplierId} />
 );
 
-let supplierAutocomplete = <SupplierAutocomplete />;
+let supplierAutocomplete = <SupplierAutocomplete onChange={supplier => console.log(supplier)} />;
 
 let list = <SupplierList onEdit={(id) => console.log(id)} onCreateUser={(id) => console.log(id)} />;
 

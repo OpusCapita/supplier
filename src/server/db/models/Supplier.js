@@ -2,7 +2,7 @@
 const Sequelize = require('sequelize');
 const { VAT, DUNS, GLN, OVT } = require('@opuscapita/field-validators');
 
-module.exports.init = function(db) {
+module.exports.init = function(db, config) {
   /**
    * Supplier - organization that provides Products to buyers.
    * @class Supplier
@@ -16,8 +16,11 @@ module.exports.init = function(db) {
       primaryKey: true,
       allowNull: false,
       validate: {
-        notEmpty: true,
-        is: ["[a-zA-Z_\\-0-9]+"]
+        isValid(value) {
+          if (value.match(/^[a-zA-Z]+[a-zA-Z0-9-]*[a-zA-Z0-9]+$/g)) return;
+
+          throw new Error('ID is invalid. Only characters, hyphens and numbers are allowed. may not start with number or hyphen.');
+        }
       },
       field: "ID"
     },

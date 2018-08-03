@@ -15,9 +15,9 @@
     "setup-rabbitmq": "sh ./setup-rabbitmq.sh",
     "lint": "eslint src",
     "esdoc": "rimraf esdoc && esdoc -c esdoc.json",
-    "domain-doc": "mkdir -p wiki/domain-doc ; sq2md --path-bl=index.js -o file-per-src -p wiki/domain-doc --field-bl=createdAt,updatedAt --output-ext=.model.md src/server/db/models",
+    "domain-doc": "mkdir -p wiki/domain-doc ; sq2md -o file-per-src -p wiki/domain-doc --init=init --field-bl=createdAt,updatedAt --output-ext=.model.md src/server/db/models",
     "rest-doc": "mkdir -p wiki/rest-doc ;npx raml2md -o file-per-resource -p wiki/rest-doc --output-ext=.endpoint.md rest-doc/main.raml",
-    "doc": "npm run rest-doc ; npm run domain-doc"
+    "doc": "npm run rest-doc ; npm run domain-doc "
   },
   "repository": {
     "type": "git",
@@ -32,13 +32,13 @@
   "dependencies": {
     "@opuscapita/db-init": "^2.0.18",
     "@opuscapita/electronic-address": "^0.0.2",
-    "@opuscapita/field-validators": "^0.0.3",
+    "@opuscapita/field-validators": "^0.0.4",
     "@opuscapita/i18n": "^1.2.4",
     "@opuscapita/react-dates": "^0.2.16",
     "@opuscapita/react-loaders": "^0.1.9",
-    "@opuscapita/react-reference-select": "^1.0.4",
+    "@opuscapita/react-select": "1.0.0-oc.2",
     "@opuscapita/service-base-ui": "^1.1.25",
-    "@opuscapita/web-init": "^3.0.41",
+    "@opuscapita/web-init": "^3.0.57",
     "babel-loader": "^7.1.4",
     "babel-runtime": "^6.26.0",
     "bluebird": "^3.5.1",

@@ -59,7 +59,7 @@ module.exports.create = async function(supplier)
   }
 
   const self = this;
-  let supplierId = supplier.name.replace(/[^0-9a-z_\-]/gi, '').slice(0, 27);
+  let supplierId = supplier.name.replace(/^[0-9\W]+|[^0-9a-z\-]/gi, '').slice(0, 27);
 
   function generateSupplierId(id) {
     return self.exists(id).then(exists => {
@@ -179,11 +179,14 @@ module.exports.searchRecord = async function(query)
   if (query.id) rawQuery = rawQuery + ` AND Supplier.ID != '${query.id}'`;
   if (query.parentId) {
     const motherCustomer = await this.getMotherSupplier(query.parentId);
-    if (query.notEqual) {
-      rawQuery = rawQuery + ` AND Supplier.ID != '${motherCustomer.id}'`;
-      rawQuery = rawQuery + ` AND ${notLikeSQL('HierarchyId', motherCustomer.id)}`;
-    } else {
-      rawQuery = rawQuery + ` AND ${likeSQL('HierarchyId', motherCustomer.id)}`;
+
+    if (motherCustomer) {
+      if (query.notEqual) {
+        rawQuery = rawQuery + ` AND Supplier.ID != '${motherCustomer.id}'`;
+        rawQuery = rawQuery + ` AND ${notLikeSQL('HierarchyId', motherCustomer.id)}`;
+      } else {
+        rawQuery = rawQuery + ` AND ${likeSQL('HierarchyId', motherCustomer.id)}`;
+      }
     }
   }
 

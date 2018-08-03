@@ -178,7 +178,10 @@
                 "bankCode": "Bank Code",
                 "bankName": "Bank Name",
                 "extBankControlKey": "External Bank Control",
-                "swiftCode": "Swift Code"
+                "swiftCode": "Swift Code",
+                "bankgiro": "Bankgiro",
+                "plusgiro": "Plusgiro",
+                "isrNumber": "ISR Number"
             },
             "Message": {
                 "deleted": "Bank account successfully deleted.",
@@ -250,6 +253,11 @@
             "Message": {
                 "updateSaved": "Changes successfully saved."
             }
+        },
+        "Autocomplete": {
+            "placeholder": "Click to add values",
+            "loadingPlaceholder": "Please wait...",
+            "noResultsText": "Nothing found. Please modify your search criteria."
         }
     }
 }

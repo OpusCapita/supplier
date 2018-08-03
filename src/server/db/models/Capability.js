@@ -1,7 +1,7 @@
 'use strict';
 const Sequelize = require('sequelize');
 
-module.exports.init = function(db) {
+module.exports.init = function(db, config) {
   /**
    * Capability.
    * @class Capability
@@ -9,6 +9,7 @@ module.exports.init = function(db) {
   let Capability = db.define('Capability',
   /** @lends Capability */
   {
+    /** Unique identifier */
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
