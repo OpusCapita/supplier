@@ -3,7 +3,7 @@ const server = require('@opuscapita/web-init'); // Web server
 const db = require('@opuscapita/db-init'); // Database
 
 const logger = new Logger();
-//logger.redirectConsoleOut(); // Force anyone using console outputs into Logger format.
+logger.redirectConsoleOut(); // Force anyone using console outputs into Logger format.
 
 const serverConfig = (db) => ({
   server: {

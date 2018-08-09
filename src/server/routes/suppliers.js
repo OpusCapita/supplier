@@ -99,9 +99,11 @@ let createSuppliers = async function(req, res)
 
           return userService.update(req.opuscapita.serviceClient, supplier.createdBy, user).then(() => {
               supplier.status = 'assigned';
-              const supp = supplier.dataValues;
-              console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< supp', supp)
-              Promise.all([Supplier.update(supplierId, supp), createBankAccount(iban, supp)]).spread((supplier, account) => {
+
+              const supp1 = Object.assign({ }, supplier.dataValues);
+              const supp2 = Object.assign({ }, supplier.dataValues); // Copy needed as Supplier.update() seems to modify supp which then destroys createBankAccount().
+
+              return Promise.all([Supplier.update(supplierId, supp1), createBankAccount(iban, supp2)]).spread((supplier, account) => {
                 return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
                   .then(() => res.status('200').json(supplier));
               });
@@ -159,13 +161,14 @@ let updateSupplier = function(req, res)
 let createBankAccount = function(iban, supplier)
 {
   if (!iban) return Promise.resolve();
-
+  console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<', supplier)
   const bankAccount = {
     accountNumber: iban,
     supplierId: supplier.id,
     createdBy: supplier.createdBy,
     changedBy: supplier.createdBy
   };
+
   return SupplierBank.create(bankAccount);
 }
 
