@@ -90,7 +90,9 @@ let createSuppliers = async function(req, res)
 
         newSupplier.status = 'new';
 
-        const supplier = (await Supplier.create(newSupplier)).dataValues;
+        const supp = await Supplier.create(newSupplier);
+        console.log(supp);
+        const supplier = supp.dataValues;
         await req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).catch(e => null);
 
         if(userObj.roles.includes('admin'))
@@ -197,7 +199,6 @@ let updateSupplier = function(req, res)
 
 let createBankAccount = function(iban, supplier)
 {
-    console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< supplier', supplier)
   if (!iban) return Promise.resolve();
 
   const bankAccount = {
