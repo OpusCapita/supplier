@@ -90,9 +90,7 @@ let createSuppliers = async function(req, res)
 
         newSupplier.status = 'new';
 
-        const supp = await Supplier.create(newSupplier);
-        console.log(supp);
-        const supplier = supp.dataValues;
+        const supplier = await Supplier.create(newSupplier);
         await req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).catch(e => null);
 
         if(userObj.roles.includes('admin'))
