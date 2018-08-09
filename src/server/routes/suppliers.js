@@ -73,57 +73,95 @@ let querySupplier = function(req, res)
   });
 };
 
-let createSuppliers = function(req, res)
+let createSuppliers = async function(req, res)
 {
-  const newSupplier = req.body;
-  Supplier.recordExists(newSupplier).then(exists =>
-  {
-    if (exists) return res.status('409').json({ message : 'A supplier already exists' });
+    try
+    {
+        const newSupplier = req.body;
+        const exists = await Supplier.recordExists(newSupplier);
 
-    return userService.get(req.opuscapita.serviceClient, newSupplier.createdBy).then(userObj => {
-      if (userObj.supplierId) return res.status('403').json({ message : 'User already has a supplier' });
+        if(exists)
+            return res.status('409').json({ message : 'A supplier already exists' });
 
-      const iban = newSupplier.iban;
-      delete newSupplier.iban;
+        const userObj = await userService.get(req.opuscapita.serviceClient, newSupplier.createdBy);
+        const iban = newSupplier.iban;
 
-      newSupplier.status = 'new';
+        delete newSupplier.iban;
 
-      return Supplier.create(newSupplier)
-        .then(supplier => {
-          req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).catch(e => null);
+        newSupplier.status = 'new';
 
-          if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
+        const supplier = (await Supplier.create(newSupplier)).dataValues;
+        await req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).catch(e => null);
 
-          const supplierId = supplier.id;
-          const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
+        if(userObj.roles.includes('admin'))
+            return res.status('200').json(supplier);
 
-          return userService.update(req.opuscapita.serviceClient, supplier.createdBy, user).then(() => {
-              supplier.status = 'assigned';
-              const supp = supplier.dataValues;
-              console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< supp', supp)
-              Promise.all([Supplier.update(supplierId, supp), createBankAccount(iban, supp)]).spread((supplier, account) => {
-                return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
-                  .then(() => res.status('200').json(supplier));
-              });
-            })
-            .catch(error => {
-              Supplier.delete(supplierId).then(() => null);
-              req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
+        const supplierId = supplier.id;
+        const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
 
-              return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
-            });
-        })
-        .catch(error => {
-          req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
+        await userService.update(req.opuscapita.serviceClient, supplier.createdBy, user);
 
-          return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
-        });
-    });
-  })
-  .catch(error => {
-    req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
-    return res.status('400').json({ message : error.message });
-  });
+        supplier.status = 'assigned';
+
+        await Supplier.update(supplierId, supplier);
+        await createBankAccount(iban, supplier);
+
+        await req.opuscapita.eventClient.emit('supplier.supplier.update', supplier).catch(e => null);
+    }
+    cacth(e)
+    {
+        console.log(e);
+        res.status(400).json(e);
+    }
+  // const newSupplier = req.body;
+  // Supplier.recordExists(newSupplier).then(exists =>
+  // {
+  //   if (exists) return res.status('409').json({ message : 'A supplier already exists' });
+  //
+  //   return userService.get(req.opuscapita.serviceClient, newSupplier.createdBy).then(userObj => {
+  //     if (userObj.supplierId) return res.status('403').json({ message : 'User already has a supplier' });
+  //
+  //     const iban = newSupplier.iban;
+  //     delete newSupplier.iban;
+  //
+  //     newSupplier.status = 'new';
+  //
+  //     return Supplier.create(newSupplier)
+  //       .then(supplier => {
+  //         req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).catch(e => null);
+  //
+  //         if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
+  //
+  //         const supplierId = supplier.id;
+  //         const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
+  //
+  //         return userService.update(req.opuscapita.serviceClient, supplier.createdBy, user).then(() => {
+  //             supplier.status = 'assigned';
+  //             const supp = supplier.dataValues;
+  //             console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< supp', supp)
+  //             Promise.all([Supplier.update(supplierId, supp), createBankAccount(iban, supp)]).spread((supplier, account) => {
+  //               return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
+  //                 .then(() => res.status('200').json(supplier));
+  //             });
+  //           })
+  //           .catch(error => {
+  //             Supplier.delete(supplierId).then(() => null);
+  //             req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
+  //
+  //             return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
+  //           });
+  //       })
+  //       .catch(error => {
+  //         req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
+  //
+  //         return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
+  //       });
+  //   });
+  // })
+  // .catch(error => {
+  //   req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
+  //   return res.status('400').json({ message : error.message });
+  // });
 }
 
 let updateSupplier = function(req, res)
