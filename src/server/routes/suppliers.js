@@ -93,13 +93,14 @@ let createSuppliers = function(req, res)
           req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).catch(e => null);
 
           if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
-console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', supplier)
+
           const supplierId = supplier.id;
           const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
 
           return userService.update(req.opuscapita.serviceClient, supplier.createdBy, user).then(() => {
               supplier.status = 'assigned';
               const supp = supplier.dataValues;
+              console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< supp', supp)
               Promise.all([Supplier.update(supplierId, supp), createBankAccount(iban, supp)]).spread((supplier, account) => {
                 return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
                   .then(() => res.status('200').json(supplier));
@@ -157,6 +158,7 @@ let updateSupplier = function(req, res)
 
 let createBankAccount = function(iban, supplier)
 {
+    console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< supplier', supplier)
   if (!iban) return Promise.resolve();
 
   const bankAccount = {
