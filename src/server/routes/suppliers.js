@@ -107,6 +107,7 @@ let createSuppliers = async function(req, res)
         await createBankAccount(iban, supplier);
 
         await req.opuscapita.eventClient.emit('supplier.supplier.update', supplier).catch(e => null);
+        res.status('200').json(supplier);
     }
     cacth(e)
     {
