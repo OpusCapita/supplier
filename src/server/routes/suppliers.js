@@ -91,7 +91,7 @@ let createSuppliers = async function(req, res)
         newSupplier.status = 'new';
 
         const supp = await Supplier.create(newSupplier);
-        console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', JSON.stringify(supp));
+        process.stdout.write(JSON.stringify(supp) + '\n');
         const supplier = supp.dataValues;
         await req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).catch(e => null);
 
