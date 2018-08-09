@@ -91,8 +91,9 @@ let createSuppliers = function(req, res)
       return Supplier.create(newSupplier)
         .then(supplier => {
           req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).catch(e => null);
-          if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
 
+          if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
+console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', supplier)
           const supplierId = supplier.id;
           const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
 
