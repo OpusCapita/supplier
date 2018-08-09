@@ -108,8 +108,7 @@ let createSuppliers = async function(req, res)
 
         await req.opuscapita.eventClient.emit('supplier.supplier.update', supplier).catch(e => null);
         res.status('200').json(supplier);
-    }
-    cacth(e)
+    catch(e)
     {
         console.log(e);
         res.status(400).json(e);
