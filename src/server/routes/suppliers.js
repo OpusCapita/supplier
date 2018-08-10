@@ -95,9 +95,13 @@ let createSuppliers = async function(req, res)
           if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
 
           const supplierId = supplier.id;
-          const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
+          const user = { supplierId: supplierId, status: 'registered', roles: ['user', 'supplier-admin'] };
 
-          return userService.update(req.opuscapita.serviceClient, supplier.createdBy, user).then(() => {
+          return Promise.all([
+              userService.update(req.opuscapita.serviceClient, supplier.createdBy, user),
+              userService.removeRoleFromUser(req.opuscapita.serviceClient, supplier.createdBy, 'registering_supplier')
+          ])
+            .then(() => {
               supplier.status = 'assigned';
 
               const supp1 = Object.assign({ }, supplier.dataValues);
@@ -161,7 +165,7 @@ let updateSupplier = function(req, res)
 let createBankAccount = function(iban, supplier)
 {
   if (!iban) return Promise.resolve();
-  console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<', supplier)
+
   const bankAccount = {
     accountNumber: iban,
     supplierId: supplier.id,
