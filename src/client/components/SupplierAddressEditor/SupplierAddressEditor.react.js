@@ -6,6 +6,7 @@ import DisplayField from '../../components/DisplayTable/DisplayField.react';
 import DisplayTable from '../../components/DisplayTable/DisplayTable.react';
 import SupplierAddressEditorForm from './SupplierAddressEditorForm.react.js';
 import ActionButton from '../../components/ActionButton.react';
+import SupplierAddressView from './SupplierAddressView.react';
 import CountryView from '../CountryView.react.js';
 import { Address } from '../../api';
 import UserAbilities from '../../UserAbilities';
@@ -85,12 +86,12 @@ class SupplierAddressEditor extends Component {
     }
   }
 
-  editOnClick = (supplierAddress) => {
-    this.setState({
-      supplierAddress: JSON.parse(JSON.stringify(supplierAddress)),
-      editMode: 'edit',
-      errors: null
-    });
+  viewOnClick = (address) => {
+    this.setState({ supplierAddress: JSON.parse(JSON.stringify(address)), editMode: 'view' });
+  };
+
+  editOnClick = (address) => {
+    this.setState({ supplierAddress: JSON.parse(JSON.stringify(address)), editMode: 'edit', errors: null });
   };
 
   deleteOnClick = (supplierAddress) => {
@@ -186,9 +187,27 @@ class SupplierAddressEditor extends Component {
     this.props.onChange({ isDirty: true });
   };
 
+  renderEditor() {
+    const { errors, editMode, supplierAddress } = this.state;
+    if (editMode === 'view') return <SupplierAddressView supplierAddress={supplierAddress} onClose={this.handleCancel}/>;
+
+    return (
+      <SupplierAddressEditorForm
+        onChange={this.handleChange}
+        supplierAddress={supplierAddress}
+        errors={errors}
+        editMode={editMode}
+        onSave={this.handleSave}
+        onUpdate={this.handleUpdate}
+        onCancel={this.handleCancel}
+      />
+    );
+  }
+
   addButton() {
     if (!this.state.isLoaded) return null;
     if (this.state.supplierAddress) return null;
+    if (!this.userAbilities.canCreateAddress()) return null;
 
     return (
       <ActionButton
@@ -268,15 +287,7 @@ class SupplierAddressEditor extends Component {
         {supplierAddress ? (
           <div className='row'>
             <div className='col-md-6'>
-              <SupplierAddressEditorForm
-                onChange={this.handleChange}
-                supplierAddress={supplierAddress}
-                errors={errors}
-                editMode={editMode}
-                onSave={this.handleSave}
-                onUpdate={this.handleUpdate}
-                onCancel={this.handleCancel}
-              />
+              {this.renderEditor()}
             </div>
           </div>
         ) : null}

@@ -23,6 +23,10 @@ class UserAbilities {
     return this.abilitiesForRole['bankAccount']['actions'].includes('add');
   }
 
+  canCreateAddress() {
+    return this.abilitiesForRole['address']['actions'].includes('add');
+  }
+
   actionGroupForContacts(isLinkedUser) {
     if (isLinkedUser) return this._removeAddAction(this.abilitiesForRole['contact']['linkedUser']['actions']);
 
