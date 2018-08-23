@@ -50,7 +50,7 @@
       }
     },
     "address": {
-      "actions": ["add", "edit", "delete"]
+      "actions": ["view"]
     },
     "bankAccount": {
       "actions": ["view"]
