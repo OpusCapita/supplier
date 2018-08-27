@@ -50,31 +50,6 @@ let allConstraints = function(i18n) {
         message: i18n.getMessage('SupplierValidatejs.invalid.bic.message')
       }
     },
-    bankCode: {
-      presence: {
-        message: i18n.getMessage('SupplierValidatejs.blank.message')
-      },
-      length: {
-        maximum: 12,
-        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 12
-        })
-      }
-    },
-    swiftCode: {
-      presence: {
-        message: i18n.getMessage('SupplierValidatejs.blank.message')
-      },
-      length: {
-        maximum: 11,
-        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 11
-        })
-      },
-      bic: {
-        message: i18n.getMessage('SupplierValidatejs.invalid.swiftCode.message')
-      }
-    },
     bankCountryKey: {
       presence: {
         message: i18n.getMessage('SupplierValidatejs.blank.message')

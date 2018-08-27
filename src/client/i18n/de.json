@@ -178,7 +178,6 @@
                 "bankCode": "Bankleitzahl",
                 "bankName": "Bank Name",
                 "extBankControlKey": "External Bank Control Key",
-                "swiftCode": "SWIFT-Code",
                 "bankgiro": "Bankgiro",
                 "plusgiro": "Plusgiro",
                 "isrNumber": "ISR-Nummer"

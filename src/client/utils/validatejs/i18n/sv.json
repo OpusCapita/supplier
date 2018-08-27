@@ -57,9 +57,6 @@
             "bic": {
                 "message": "Värdet är inte ett godkänt BIC"
             },
-            "swiftCode": {
-                "message": "Värdet är inte en godkänd SWIFT kod"
-            },
             "uniqueIdentifier": {
                 "message": "Du behöver ange antingen ett momsregistreringsnummer, DUNS, GLN eller IBAN"
             },

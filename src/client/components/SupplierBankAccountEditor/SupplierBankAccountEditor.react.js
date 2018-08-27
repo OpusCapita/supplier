@@ -265,8 +265,7 @@ class SupplierBankAccountEditor extends Component {
               { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankIdentificationCode') },
               { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankCountryKey') },
               { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankCode') },
-              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.extBankControlKey') },
-              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.swiftCode') }
+              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.extBankControlKey') }
             ]}
           >
             { accounts.map((account, index) =>
@@ -277,7 +276,6 @@ class SupplierBankAccountEditor extends Component {
                 <DisplayField><CountryView countryId={account.bankCountryKey}/></DisplayField>
                 <DisplayField>{ account.bankCode }</DisplayField>
                 <DisplayField>{ account.extBankControlKey || '-' }</DisplayField>
-                <DisplayField>{ account.swiftCode }</DisplayField>
                 <DisplayField classNames='text-right'>
                   {this.renderActionButtons(account)}
                 </DisplayField>

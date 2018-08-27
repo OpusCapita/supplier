@@ -60,9 +60,6 @@
             "bic": {
                 "message": "Der Wert ist kein gültiger BIC"
             },
-            "swiftCode": {
-                "message": "Der Wert ist kein gültiger SWIFT-Code"
-            },
             "uniqueIdentifier": {
                 "message": "Die Umsatzsteuer-Identifikationsnummer, die D-U-N-S-Nummer, die Global Location Number, oder die IBAN muss angegeben werden"
             },

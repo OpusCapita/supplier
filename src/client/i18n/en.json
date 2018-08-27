@@ -173,12 +173,11 @@
             },
             "Label": {
                 "accountNumber": "IBAN",
-                "bankIdentificationCode": "BIC",
+                "bankIdentificationCode": "BIC / SWIFT",
                 "bankCountryKey": "Bank Country",
                 "bankCode": "Bank Code",
                 "bankName": "Bank Name",
                 "extBankControlKey": "External Bank Control",
-                "swiftCode": "Swift Code",
                 "bankgiro": "Bankgiro",
                 "plusgiro": "Plusgiro",
                 "isrNumber": "ISR Number"

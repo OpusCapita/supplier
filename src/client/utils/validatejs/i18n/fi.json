@@ -57,9 +57,6 @@
             "bic": {
                 "message": "Arvo ei ole kelvollinen BIC"
             },
-            "swiftCode": {
-                "message": "Arvo ei ole kelvollinen SWIFT-koodi"
-            },
             "uniqueIdentifier": {
                 "message": "Joko ALV-tunnus, DUNS-numero, Global Location Number tai IBAN on annettava"
             },

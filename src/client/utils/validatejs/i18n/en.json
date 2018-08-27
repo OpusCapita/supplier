@@ -60,9 +60,6 @@
             "bic": {
                 "message": "Value is not a valid BIC"
             },
-            "swiftCode": {
-                "message": "Value is not a valid SWIFT Code"
-            },
             "uniqueIdentifier": {
                 "message": "Either VAT number, D-U-N-S number, Global Location Number, or IBAN must be provided"
             },

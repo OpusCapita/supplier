@@ -168,7 +168,6 @@ class SupplierBankAccountEditForm extends Component {
         { this.renderField({ fieldName: 'accountNumber' }) }
         { this.renderField({ fieldName: 'bankIdentificationCode' }) }
         { this.renderField({ fieldName: 'bankCode' }) }
-        { this.renderField({ fieldName: 'swiftCode' }) }
         { this.renderField({
           fieldName: 'bankCountryKey',
           component: (

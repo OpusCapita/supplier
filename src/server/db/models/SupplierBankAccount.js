@@ -49,11 +49,6 @@ module.exports.init = function (db, config) {
           }
         }
       },
-      /** Society for Worldwide Interbank Financial Telecommunication (SWIFT) Code. Same as BIC*/
-      swiftCode: {
-        field: 'SwiftCode',
-        type: Sequelize.STRING(11)
-      },
       /** The bank's country as in ISO 3166-1 alpha2 */
       bankCountryKey: {
         field: 'BankCountryKey',
