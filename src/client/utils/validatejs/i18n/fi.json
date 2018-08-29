@@ -60,6 +60,9 @@
             "uniqueIdentifier": {
                 "message": "Joko ALV-tunnus, DUNS-numero, Global Location Number tai IBAN on annettava"
             },
+            "uniqueIdentifierBankAccount": {
+                "message": "IBAN, Bankgiro, tai Plusgiro on annettava"
+            },
             "uniqueIdentifierWithBankAccount": {
                 "message": "Joko ALV-tunnus, DUNS-numero tai Global Location Number on annettava, tai pankkitili on lisättävä"
             },

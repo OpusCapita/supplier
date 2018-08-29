@@ -60,6 +60,9 @@
             "uniqueIdentifier": {
                 "message": "Du behöver ange antingen ett momsregistreringsnummer, DUNS, GLN eller IBAN"
             },
+            "uniqueIdentifierBankAccount": {
+                "message": "Du behöver ange antingen ett IBAN, Bankgiro, eller Plusgiro"
+            },
             "uniqueIdentifierWithBankAccount": {
                 "message": "Du behöver ange antingen ett momsregistreringsnummer, DUNS, GLN, IBAN eller ett bankkonto"
             },

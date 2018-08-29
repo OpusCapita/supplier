@@ -151,6 +151,7 @@ class SupplierBankAccountEditForm extends Component {
       <SupplierBankAccountEditFormRow
         labelText={ this.context.i18n.getMessage(`Supplier.BankAccount.Label.${fieldName}`) }
         required={ isRequired }
+        marked = { attrs.marked }
         rowErrors={ rowErrors }
       >
         { component }
@@ -163,43 +164,46 @@ class SupplierBankAccountEditForm extends Component {
     const { CountryField } = this.externalComponents;
 
     return (
-      <form className='form-horizontal' onSubmit={this.handleSaveOrUpdate}>
-        { this.renderField({ fieldName: 'bankName' }) }
-        { this.renderField({ fieldName: 'accountNumber' }) }
-        { this.renderField({ fieldName: 'bankIdentificationCode' }) }
-        { this.renderField({ fieldName: 'bankCode' }) }
-        { this.renderField({
-          fieldName: 'bankCountryKey',
-          component: (
-            <CountryField
-              actionUrl=''
-              value={account['bankCountryKey']}
-              onChange={this.handleCountryChange.bind(this, 'bankCountryKey')}
-              onBlur={this.handleBlur.bind(this, 'bankCountryKey')}
-              optional={true}
-              locale={this.context.i18n.locale}
+      <div>
+        <form className='form-horizontal' onSubmit={this.handleSaveOrUpdate}>
+          { this.renderField({ fieldName: 'bankName' }) }
+          { this.renderField({ fieldName: 'accountNumber', marked: true }) }
+          { this.renderField({ fieldName: 'bankIdentificationCode' }) }
+          { this.renderField({ fieldName: 'bankCode' }) }
+          { this.renderField({
+            fieldName: 'bankCountryKey',
+            component: (
+              <CountryField
+                actionUrl=''
+                value={account['bankCountryKey']}
+                onChange={this.handleCountryChange.bind(this, 'bankCountryKey')}
+                onBlur={this.handleBlur.bind(this, 'bankCountryKey')}
+                optional={true}
+                locale={this.context.i18n.locale}
+              />
+            )
+          })}
+
+          { this.renderField({ fieldName: 'extBankControlKey' }) }
+          { this.renderField({ fieldName: 'bankgiro', marked: true }) }
+          { this.renderField({ fieldName: 'plusgiro', marked: true }) }
+          { this.renderField({ fieldName: 'isrNumber' }) }
+
+          <div className='col-sm-12 text-right address-form-submit'>
+            <ActionButton
+              style='link'
+              onClick={this.handleCancel}
+              label={this.context.i18n.getMessage('Supplier.Button.cancel')}
             />
-          )
-        })}
-
-        { this.renderField({ fieldName: 'extBankControlKey' }) }
-        { this.renderField({ fieldName: 'bankgiro' }) }
-        { this.renderField({ fieldName: 'plusgiro' }) }
-        { this.renderField({ fieldName: 'isrNumber' }) }
-
-        <div className='col-sm-12 text-right address-form-submit'>
-          <ActionButton
-            style='link'
-            onClick={this.handleCancel}
-            label={this.context.i18n.getMessage('Supplier.Button.cancel')}
-          />
-          <ActionButton
-            style='primary'
-            type='submit'
-            label={this.context.i18n.getMessage('Supplier.Button.save')}
-          />
-        </div>
-      </form>
+            <ActionButton
+              style='primary'
+              type='submit'
+              label={this.context.i18n.getMessage('Supplier.Button.save')}
+            />
+          </div>
+        </form>
+        <p>{this.context.i18n.getMessage('Supplier.BankAccount.Message.identifierRequired')}</p>
+      </div>
     );
   }
 }

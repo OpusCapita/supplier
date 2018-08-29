@@ -182,7 +182,8 @@
                 "saved": "Pankkitili on tallennettu.",
                 "deleteFailed": "Pankkitilien poistaminen epäonnistui, ehkä se on jo käytössä.",
                 "saveFailed": "Pankkitilin tallennus epäonnistui.",
-                "updateFailed": "Pankkitilin päivitys epäonnistui."
+                "updateFailed": "Pankkitilin päivitys epäonnistui.",
+                "identifierRequired": "** Anna IBAN. Jos sinulla ei ole sitä ja yrityksesi on Ruotsissa, anna sitten Bankgiro tai Plusgiro."
             }
         },
         "Contact": {

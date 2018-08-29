@@ -63,6 +63,9 @@
             "uniqueIdentifier": {
                 "message": "Die Umsatzsteuer-Identifikationsnummer, die D-U-N-S-Nummer, die Global Location Number, oder die IBAN muss angegeben werden"
             },
+            "uniqueIdentifierBankAccount": {
+                "message": "Die IBAN, das Bankgiro, oder das Plusgiro muss angegeben werden"
+            },
             "uniqueIdentifierWithBankAccount": {
                 "message": "Die Umsatzsteuer-Identifikationsnummer, die D-U-N-S-Nummer, oder die Global Location Number, muss angegeben werden, oder eine Bankverbindung muss hinzugefügt werden"
             },

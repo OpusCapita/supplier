@@ -264,18 +264,18 @@ class SupplierBankAccountEditor extends Component {
               { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankName') },
               { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankIdentificationCode') },
               { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankCountryKey') },
-              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankCode') },
-              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.extBankControlKey') }
+              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.bankgiro') },
+              { label: this.context.i18n.getMessage('Supplier.BankAccount.Label.plusgiro') }
             ]}
           >
             { accounts.map((account, index) =>
               (<DisplayRow key={index}>
-                <DisplayField>{ account.accountNumber }</DisplayField>
+                <DisplayField>{ account.accountNumber || '-' }</DisplayField>
                 <DisplayField>{ account.bankName }</DisplayField>
                 <DisplayField>{ account.bankIdentificationCode }</DisplayField>
                 <DisplayField><CountryView countryId={account.bankCountryKey}/></DisplayField>
-                <DisplayField>{ account.bankCode }</DisplayField>
-                <DisplayField>{ account.extBankControlKey || '-' }</DisplayField>
+                <DisplayField>{ account.bankgiro || '-' }</DisplayField>
+                <DisplayField>{ account.plusgiro || '-' }</DisplayField>
                 <DisplayField classNames='text-right'>
                   {this.renderActionButtons(account)}
                 </DisplayField>

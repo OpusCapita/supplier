@@ -29,10 +29,9 @@ module.exports.init = function (db, config) {
       accountNumber: {
         field: 'AccountNumber',
         type: Sequelize.STRING(35),
-        allowNull: false,
         validate: {
-          notEmpty: true,
           isValid(value) {
+            if (!value) return null;
             if (IBAN.isInvalid(value)) throw new Error('accountNumber value is invalid');
           }
         }
@@ -42,7 +41,6 @@ module.exports.init = function (db, config) {
         field: 'BankIdentificationCode',
         type: Sequelize.STRING(15),
         validate: {
-          notEmpty: true,
           isValid(value) {
             if (!value) return null;
             if (BIC.isInvalid(value)) throw new Error('bankIdentificationCode value is invalid');
