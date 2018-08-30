@@ -7,6 +7,7 @@ module.exports.validate = function() {
   custom.bic(validatejs);
   custom.isrNumber(validatejs);
   custom.uniqueIdentifier(validatejs);
+  custom.bicRequired(validatejs);
   customAsync.ibanExists(validatejs);
 
   return validatejs;

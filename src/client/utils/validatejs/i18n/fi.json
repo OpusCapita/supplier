@@ -82,7 +82,10 @@
             }
         },
         "blank": {
-            "message": "Kenttä ei voi olla tyhjä"
+            "message": "Kenttä ei voi olla tyhjä",
+            "bic": {
+                "message": "Kenttä ei voi olla tyhjä, kun IBAN on käytettävissä"
+            }
         },
         "null": {
             "message": "Kohta ei voi olla tyhjä"

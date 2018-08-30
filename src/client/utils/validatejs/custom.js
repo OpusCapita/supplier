@@ -92,3 +92,13 @@ module.exports.uniqueIdentifier = function(validate) {
     return options.message;
   };
 };
+
+module.exports.bicRequired = function(validate) {
+  return validate.validators.bicRequired = function(value, options, key, attributes) {
+    if (!attributes.accountNumber) return null;
+
+    if (value && attributes.accountNumber) return null;
+
+    return options.message;
+  };
+};

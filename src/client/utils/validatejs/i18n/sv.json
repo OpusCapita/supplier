@@ -82,7 +82,10 @@
             }
         },
         "blank": {
-            "message": "Fältet kan inte vara tomt"
+            "message": "Fältet kan inte vara tomt",
+            "bic": {
+                "message": "Fältet kan inte vara tomt när IBAN är tillgängligt"
+            }
         },
         "null": {
             "message": "Attributet kan inte varea noll"

@@ -11,6 +11,12 @@ class SupplierBankAccountConstraints {
         plusgiro: this.constraints['plusgiro']
       };
 
+    if (fieldName === this.constraints['bankIdentificationCode'])
+      return {
+        accountNumber: this.constraints['accountNumber'],
+        bankIdentificationCode: this.constraints['bankIdentificationCode']
+      };
+
     return { [fieldName]: this.constraints[fieldName] };
   }
 
@@ -44,17 +50,11 @@ let allConstraints = function(i18n) {
       }
     },
     bankIdentificationCode: {
-      presence: {
-        message: i18n.getMessage('SupplierValidatejs.blank.message')
-      },
-      length: {
-        maximum: 15,
-        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 15
-        })
-      },
       bic: {
         message: i18n.getMessage('SupplierValidatejs.invalid.bic.message')
+      },
+      bicRequired: {
+        message: i18n.getMessage('SupplierValidatejs.blank.bic.message')
       }
     },
     bankCountryKey: {

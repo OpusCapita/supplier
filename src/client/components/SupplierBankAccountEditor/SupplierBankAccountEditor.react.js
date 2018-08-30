@@ -272,7 +272,7 @@ class SupplierBankAccountEditor extends Component {
               (<DisplayRow key={index}>
                 <DisplayField>{ account.accountNumber || '-' }</DisplayField>
                 <DisplayField>{ account.bankName }</DisplayField>
-                <DisplayField>{ account.bankIdentificationCode }</DisplayField>
+                <DisplayField>{ account.bankIdentificationCode || '-'}</DisplayField>
                 <DisplayField><CountryView countryId={account.bankCountryKey}/></DisplayField>
                 <DisplayField>{ account.bankgiro || '-' }</DisplayField>
                 <DisplayField>{ account.plusgiro || '-' }</DisplayField>

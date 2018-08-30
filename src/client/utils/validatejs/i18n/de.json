@@ -85,7 +85,10 @@
             }
         },
         "blank": {
-            "message": "Das Feld darf nicht leer sein"
+            "message": "Das Feld darf nicht leer sein",
+            "bic": {
+                "message": "Feld darf nicht leer sein, wenn IBAN vorhanden ist"
+            }
         },
         "null": {
             "message": "Die Eigenschaft darf nicht null sein"

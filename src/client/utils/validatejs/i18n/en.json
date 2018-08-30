@@ -85,7 +85,10 @@
             }
         },
         "blank": {
-            "message": "Field cannot be blank"
+            "message": "Field cannot be blank",
+            "bic": {
+                "message": "Field cannot be blank when IBAN is provided"
+            }
         },
         "null": {
             "message": "Property cannot be null"
