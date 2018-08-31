@@ -173,12 +173,11 @@
             },
             "Label": {
                 "accountNumber": "IBAN",
-                "bankIdentificationCode": "BIC",
+                "bankIdentificationCode": "BIC / SWIFT",
                 "bankCountryKey": "Bank Country",
                 "bankCode": "Bank Code",
                 "bankName": "Bank Name",
                 "extBankControlKey": "External Bank Control",
-                "swiftCode": "Swift Code",
                 "bankgiro": "Bankgiro",
                 "plusgiro": "Plusgiro",
                 "isrNumber": "ISR Number"
@@ -189,7 +188,8 @@
                 "saved": "Bank account successfully saved.",
                 "deleteFailed": "Failed to delete bank account, perhaps it is already in use.",
                 "saveFailed": "Bank account save failed.",
-                "updateFailed": "Bank account update failed."
+                "updateFailed": "Bank account update failed.",
+                "identifierRequired": "** Please provide your IBAN. If your company is in Sweden and you don't have one, then provide your bankgiro or plusgiro."
             }
         },
         "Contact": {

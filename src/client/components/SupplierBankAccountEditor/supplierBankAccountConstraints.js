@@ -4,6 +4,19 @@ class SupplierBankAccountConstraints {
   }
 
   forField(fieldName) {
+    if (['accountNumber', 'bankgiro', 'plusgiro'].indexOf(fieldName) > -1)
+      return {
+        accountNumber: this.constraints['accountNumber'],
+        bankgiro: this.constraints['bankgiro'],
+        plusgiro: this.constraints['plusgiro']
+      };
+
+    if (fieldName === this.constraints['bankIdentificationCode'])
+      return {
+        accountNumber: this.constraints['accountNumber'],
+        bankIdentificationCode: this.constraints['bankIdentificationCode']
+      };
+
     return { [fieldName]: this.constraints[fieldName] };
   }
 
@@ -26,53 +39,22 @@ let allConstraints = function(i18n) {
       }
     },
     accountNumber: {
-      presence: {
-        message: i18n.getMessage('SupplierValidatejs.blank.message')
-      },
       iban: {
         message: i18n.getMessage('SupplierValidatejs.invalid.iban.message')
       },
       ibanExists: {
         message: i18n.getMessage('SupplierValidatejs.duplicate.iban.message')
+      },
+      uniqueIdentifier: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierBankAccount.message')
       }
     },
     bankIdentificationCode: {
-      presence: {
-        message: i18n.getMessage('SupplierValidatejs.blank.message')
-      },
-      length: {
-        maximum: 15,
-        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 15
-        })
-      },
       bic: {
         message: i18n.getMessage('SupplierValidatejs.invalid.bic.message')
-      }
-    },
-    bankCode: {
-      presence: {
-        message: i18n.getMessage('SupplierValidatejs.blank.message')
       },
-      length: {
-        maximum: 12,
-        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 12
-        })
-      }
-    },
-    swiftCode: {
-      presence: {
-        message: i18n.getMessage('SupplierValidatejs.blank.message')
-      },
-      length: {
-        maximum: 11,
-        tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
-          limit: 11
-        })
-      },
-      bic: {
-        message: i18n.getMessage('SupplierValidatejs.invalid.swiftCode.message')
+      bicRequired: {
+        message: i18n.getMessage('SupplierValidatejs.blank.bic.message')
       }
     },
     bankCountryKey: {
@@ -94,6 +76,9 @@ let allConstraints = function(i18n) {
         tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
           limit: 100
         })
+      },
+      uniqueIdentifier: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierBankAccount.message')
       }
     },
     plusgiro: {
@@ -102,6 +87,9 @@ let allConstraints = function(i18n) {
         tooLong: i18n.getMessage('SupplierValidatejs.invalid.maxSize.message', {
           limit: 100
         })
+      },
+      uniqueIdentifier: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.uniqueIdentifierBankAccount.message')
       }
     },
     isrNumber: {
