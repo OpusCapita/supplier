@@ -1,8 +1,15 @@
 'use strict';
 const Sequelize = require('sequelize');
 
-module.exports.init = function(db) {
-  let SupplierContact = db.define('SupplierContact', {
+module.exports.init = function(db, config) {
+  /**
+   * SupplierContact - Contact information for a supplier.
+   * @class SupplierContact
+   */
+  let SupplierContact = db.define('SupplierContact',
+  /** @lends SupplierContact */
+  {
+    /** Unique identifier */
     id: {
       type: Sequelize.STRING(50),
       primaryKey: true,

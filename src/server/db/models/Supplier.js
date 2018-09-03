@@ -2,7 +2,7 @@
 const Sequelize = require('sequelize');
 const { VAT, DUNS, GLN, OVT } = require('@opuscapita/field-validators');
 
-module.exports.init = function(db) {
+module.exports.init = function(db, config) {
   /**
    * Supplier - organization that provides Products to buyers.
    * @class Supplier

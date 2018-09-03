@@ -67,14 +67,17 @@ module.exports.init = function (db, config) {
         field: 'BankName',
         type: Sequelize.STRING(50)
       },
+      /** Number which is part of Swedish bank account details */
       bankgiro: {
         field: 'Bankgiro',
         type: Sequelize.STRING(30)
       },
+      /** Number which is part of Swedish bank account details */
       plusgiro: {
         field: 'Plusgiro',
         type: Sequelize.STRING(30)
       },
+      /** A 9-digit ISR party number under Swiss IBAN */
       isrNumber: {
         field: 'ISRNumber',
         type: Sequelize.STRING(9),

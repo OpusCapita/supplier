@@ -1,13 +1,15 @@
 'use strict';
 const Sequelize = require('sequelize');
 
-module.exports.init = function(db) {
+module.exports.init = function(db, config) {
   /**
-   * <p>Address of {@link com.jcatalog.businesspartner.BusinessPartner}. Business
-   * partners can have different types of addresses that are associated using
-   * <tt>XXX2Address</tt> tables.</p>
+   * SupplierAddress - Address information for a supplier.
+   * @class SupplierAddress
    */
-  let SupplierAddress = db.define('SupplierAddress', {
+  let SupplierAddress = db.define('SupplierAddress',
+  /** @lends SupplierAddress */
+  {
+    /** Unique identifier */
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,

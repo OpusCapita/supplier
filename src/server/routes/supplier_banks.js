@@ -25,25 +25,32 @@ let sendSupplierBank = function (req, res) {
   });
 };
 
-let createSupplierBank = function (req, res) {
-  SupplierBank.create(req.body).then(bankAccount => res.status('200').json(bankAccount))
-    .catch(e => res.status('400').json({message: e.message}));
+let createSupplierBank = async function (req, res) {
+  SupplierBank.create(req.body).then(async bankAccount => {
+    await emitEvent(req, bankAccount, 'created');
+    return res.status('200').json(bankAccount);
+  }).catch(e => res.status('400').json({message: e.message}));
 };
 
-let updateSupplierBank = function (req, res) {
-  let bankAccountId = req.params.bankAccountId;
-  let supplierId = req.params.supplierId;
-  SupplierBank.bankExists(supplierId, bankAccountId).then(exists => {
-    if (exists) {
-      return SupplierBank.update(supplierId, bankAccountId, req.body).then(bankAccount => res.status('200').json(bankAccount));
-    } else {
-      return res.status('404').json({message: 'A supplier bankAccount with this ID does not exist.'});
-    }
-  })
-    .catch(e => res.status('400').json({message: e.message}));
+let updateSupplierBank = async function (req, res) {
+  const bankAccountId = req.params.bankAccountId;
+  const supplierId = req.params.supplierId;
+  const exists = await SupplierBank.bankExists(supplierId, bankAccountId);
+
+  if (!exists) return res.status('404').json({message: 'A supplier bankAccount with this ID does not exist.'});
+
+  return SupplierBank.update(supplierId, bankAccountId, req.body).then(async bankAccount => {
+    await emitEvent(req, bankAccount, 'updated');
+    return res.status('200').json(bankAccount);
+  }).catch(e => res.status('400').json({message: e.message}));
 };
 
 let deleteSupplierBank = function (req, res) {
   SupplierBank.delete(req.params.supplierId, req.params.bankAccountId).then(() => res.status('200').json(null))
     .catch(e => res.status('400').json({message: e.message}));
 };
+
+let emitEvent = function(req, payload, type)
+{
+  return req.opuscapita.eventClient.emit(`supplier.bank-account.${type}`, payload);
+}

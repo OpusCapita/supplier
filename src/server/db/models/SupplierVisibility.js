@@ -1,7 +1,7 @@
 'use strict';
 const Sequelize = require('sequelize');
 
-module.exports.init = function(db) {
+module.exports.init = function(db, config) {
   /**
    * SupplierVisibility.
    * @class SupplierVisibility

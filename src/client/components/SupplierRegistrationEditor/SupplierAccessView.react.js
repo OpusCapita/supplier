@@ -12,7 +12,7 @@ class SupplierAccessView extends Component {
   };
 
   handleOnClick(event) {
-    event.preventDefault();
+    event.preventDefault && event.preventDefault();
     this.props.onAccessConfirm();
   }
 

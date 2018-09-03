@@ -73,7 +73,7 @@ let querySupplier = function(req, res)
   });
 };
 
-let createSuppliers = function(req, res)
+let createSuppliers = async function(req, res)
 {
   const newSupplier = req.body;
   Supplier.recordExists(newSupplier).then(exists =>
@@ -89,17 +89,25 @@ let createSuppliers = function(req, res)
       newSupplier.status = 'new';
 
       return Supplier.create(newSupplier)
-        .then(supplier => req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).then(() => supplier))
         .then(supplier => {
+          req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).catch(e => null);
+
           if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
 
           const supplierId = supplier.id;
-          const user = { supplierId: supplierId, status: 'registered', roles: ['supplier-admin'] };
+          const user = { supplierId: supplierId, status: 'registered', roles: ['user', 'supplier-admin'] };
 
-          return userService.update(req.opuscapita.serviceClient, supplier.createdBy, user).then(() => {
+          return Promise.all([
+              userService.update(req.opuscapita.serviceClient, supplier.createdBy, user),
+              userService.removeRoleFromUser(req.opuscapita.serviceClient, supplier.createdBy, 'registering_supplier')
+          ])
+            .then(() => {
               supplier.status = 'assigned';
-              const supp = supplier.dataValues;
-              Promise.all([Supplier.update(supplierId, supp), createBankAccount(iban, supp)]).spread((supplier, account) => {
+
+              const supp1 = Object.assign({ }, supplier.dataValues);
+              const supp2 = Object.assign({ }, supplier.dataValues); // Copy needed as Supplier.update() seems to modify supp which then destroys createBankAccount().
+
+              return Promise.all([Supplier.update(supplierId, supp1), createBankAccount(iban, supp2)]).spread((supplier, account) => {
                 return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
                   .then(() => res.status('200').json(supplier));
               });
@@ -164,6 +172,7 @@ let createBankAccount = function(iban, supplier)
     createdBy: supplier.createdBy,
     changedBy: supplier.createdBy
   };
+
   return SupplierBank.create(bankAccount);
 }
 

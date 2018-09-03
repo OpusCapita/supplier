@@ -56,12 +56,12 @@ class SupplierAccessRequestForm extends Component {
   };
 
   handleCancel = (event) => {
-    event.preventDefault();
+    event.preventDefault && event.preventDefault();
     this.props.onCancel();
   };
 
   handleCreate = (event) => {
-    event.preventDefault();
+    event.preventDefault && event.preventDefault();
 
     const { accessReason, supplier } = this.state;
 

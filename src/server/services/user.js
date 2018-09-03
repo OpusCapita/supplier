@@ -19,3 +19,7 @@ module.exports.get = function(serviceClient, userId) {
 module.exports.update = function(serviceClient, userId, user) {
   return serviceClient.put('user', `/api/users/${userId}`, user, true);
 }
+
+module.exports.removeRoleFromUser = function(serviceClient, userId, roleId) {
+  return serviceClient.delete('user', `/api/users/${userId}/roles/${roleId}`, undefined, true);
+}
