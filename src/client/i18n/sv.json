@@ -124,7 +124,8 @@
         "Capabilities": {
             "name": "Förmågor",
             "Type": {
-                "eInvoice-send": "Faktura - Skicka"
+                "eInvoice-send": "Faktura - Skicka",
+                "po-receive": "Inköpsorder - motta"
             }
         },
         "Address": {

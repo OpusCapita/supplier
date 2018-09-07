@@ -124,7 +124,8 @@
         "Capabilities": {
             "name": "Valmiudet",
             "Type": {
-                "eInvoice-send": "Lasku - lähetä"
+                "eInvoice-send": "Lasku - lähetä",
+                "po-receive": "Ostotilaus - vastaanottaa"
             }
         },
         "Address": {

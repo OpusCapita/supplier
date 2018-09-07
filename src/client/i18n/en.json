@@ -130,7 +130,8 @@
         "Capabilities": {
             "name": "Capabilities",
             "Type": {
-                "eInvoice-send": "Invoice - send"
+                "eInvoice-send": "Invoice - send",
+                "po-receive": "Purchase order - receive"
             }
         },
         "Address": {

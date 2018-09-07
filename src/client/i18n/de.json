@@ -130,7 +130,8 @@
         "Capabilities": {
             "name": "Fähigkeiten",
             "Type": {
-                "eInvoice-send": "Rechnung - schicken"
+                "eInvoice-send": "Rechnung - schicken",
+                "po-receive": "Kaufauftrag - erhalten"
             }
         },
         "Address": {
