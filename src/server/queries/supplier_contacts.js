@@ -52,7 +52,9 @@ module.exports.update = function(supplierId, contactId, contact)
 
 module.exports.delete = function(supplierId, contactId)
 {
-  return this.db.models.SupplierContact.destroy({ where: { supplierId: supplierId, id: contactId } }).then(() => null);
+  let deleteQuery = { supplierId: supplierId };
+  if (contactId) deleteQuery.id = contactId;
+  return this.db.models.SupplierContact.destroy({ where: deleteQuery }).then(() => null);
 };
 
 module.exports.contactExists = function(supplierId, contactId)
