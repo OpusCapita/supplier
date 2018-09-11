@@ -181,7 +181,7 @@ let deleteSupplier = async function(req, res)
       SupplierContact.delete(supplierId), SupplierCapability.delete(supplierId), SupplierVisibility.delete(supplierId)
     ]);
 
-    await req.opuscapita.eventClient.emit('supplier.supplier.delete', { supplierId: supplierId });
+    await req.opuscapita.eventClient.emit('supplier.supplier.delete', { id: supplierId });
 
     return res.status('200').json({ message: `Supplier with id ${supplierId} deleted.` })
   } catch(error) {
