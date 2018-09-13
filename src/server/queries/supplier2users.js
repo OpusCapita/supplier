@@ -33,6 +33,11 @@ module.exports.update = function(id, supplier2user)
   });
 };
 
+module.exports.delete = function(supplierId)
+{
+  return this.db.models.Supplier2User.destroy({ where: { supplierId: supplierId } }).then(() => null);
+};
+
 module.exports.exists = function(id)
 {
   return this.db.models.Supplier2User.findOne({ where: { id: id }}).then(supplier2user => Boolean(supplier2user));

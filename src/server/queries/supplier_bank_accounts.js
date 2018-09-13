@@ -36,7 +36,9 @@ module.exports.update = function(supplierId, bankAccountId, bankAccount)
 
 module.exports.delete = function(supplierId, bankAccountId)
 {
-  return this.db.models.SupplierBankAccount.destroy({ where: { supplierId: supplierId, id: bankAccountId } }).then(() => null);
+  let deleteQuery = { supplierId: supplierId };
+  if (bankAccountId) deleteQuery.id = bankAccountId;
+  return this.db.models.SupplierBankAccount.destroy({ where: deleteQuery }).then(() => null);
 };
 
 module.exports.bankExists = function(supplierId, bankAccountId)

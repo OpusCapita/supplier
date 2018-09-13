@@ -64,6 +64,7 @@ export default class SupplierSearch extends Components.ContextComponent  {
           <select value={this.state.capability} onChange={this.handleChange.bind(this)} className="form-control" >
             <option key='1' value={null}></option>
             <option key='2' value='eInvoice-send'>{this.context.i18n.getMessage('Supplier.Capabilities.Type.eInvoice-send')}</option>
+            <option key='3' value='po-receive'>{this.context.i18n.getMessage('Supplier.Capabilities.Type.po-receive')}</option>
           </select>
         </div>
       </div>

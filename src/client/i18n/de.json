@@ -130,7 +130,8 @@
         "Capabilities": {
             "name": "Fähigkeiten",
             "Type": {
-                "eInvoice-send": "Rechnung - schicken"
+                "eInvoice-send": "Rechnung - schicken",
+                "po-receive": "Kaufauftrag - erhalten"
             }
         },
         "Address": {
@@ -178,7 +179,6 @@
                 "bankCode": "Bankleitzahl",
                 "bankName": "Bank Name",
                 "extBankControlKey": "External Bank Control Key",
-                "swiftCode": "SWIFT-Code",
                 "bankgiro": "Bankgiro",
                 "plusgiro": "Plusgiro",
                 "isrNumber": "ISR-Nummer"
@@ -189,7 +189,8 @@
                 "saved": "Bankkonto erfolgreich gespeichert.",
                 "deleteFailed": "Das Bankkonto kann nicht gelöscht werden, vielleicht ist es bereits im Einsatz.",
                 "saveFailed": "Bankkontospeicherung fehlgeschlagen.",
-                "updateFailed": "Bankkontoaktualisierung fehlgeschlagen."
+                "updateFailed": "Bankkontoaktualisierung fehlgeschlagen.",
+                "identifierRequired": "** Bitte hinterlegen Sie Ihre IBAN. Wenn Sie keine haben und Ihre Firma in Schweden ist, dann hinterlegen Sie Ihren Bankgiro oder Ihren Plusgiro."
             }
         },
         "Contact": {

@@ -37,7 +37,9 @@ module.exports.update = function(supplierId, addressId, address)
 
 module.exports.delete = function(supplierId, addressId)
 {
-  return this.db.models.SupplierAddress.destroy({ where: { supplierId: supplierId, id: addressId } }).then(() => null);
+  let deleteQuery = { supplierId: supplierId };
+  if (addressId) deleteQuery.id = addressId;
+  return this.db.models.SupplierAddress.destroy({ where: deleteQuery }).then(() => null);
 };
 
 module.exports.addressExists = function(supplierId, addressId)

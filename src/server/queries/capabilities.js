@@ -21,5 +21,7 @@ module.exports.delete = function(supplierId, capabilityId)
 
 let query = function(supplierId, capabilityId)
 {
-  return { where: { supplierId: supplierId, capabilityId: capabilityId } };
+  let deleteQuery = { supplierId: supplierId };
+  if (capabilityId) deleteQuery.capabilityId = capabilityId;
+  return { where: deleteQuery };
 }

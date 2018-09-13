@@ -1,12 +1,20 @@
 const Supplier = require('../queries/suppliers');
 const SupplierBank = require('../queries/supplier_bank_accounts');
 const SupplierVisibility = require('../queries/supplier_visibility');
+const SupplierAddress = require('../queries/supplier_addresses');
+const SupplierContact = require('../queries/supplier_contacts');
+const Supplier2User = require('../queries/supplier2users');
+const SupplierCapability = require('../queries/capabilities');
 const userService = require('../services/user');
 const businessLinkService = require('../services/businessLink');
 const Promise = require('bluebird');
 
 module.exports = function(app, db, config) {
-  Promise.all([Supplier.init(db, config), SupplierBank.init(db, config)]).then(() =>
+  Promise.all([
+    Supplier.init(db, config), SupplierBank.init(db, config), SupplierVisibility.init(db, config),
+    SupplierAddress.init(db, config), SupplierContact.init(db, config),
+    Supplier2User.init(db, config), SupplierCapability.init(db, config)
+  ]).then(() =>
   {
     app.get('/api/suppliers', (req, res) => sendSuppliers(req, res));
     app.get('/api/suppliers/exists', (req, res) => existsSuppliers(req, res));
@@ -14,6 +22,7 @@ module.exports = function(app, db, config) {
     app.post('/api/suppliers', (req, res) => createSuppliers(req, res));
     app.get('/api/suppliers/:id', (req, res) => sendSupplier(req, res));
     app.put('/api/suppliers/:id', (req, res) => updateSupplier(req, res));
+    app.delete('/api/suppliers/:id', (req, res) => deleteSupplier(req, res));
   });
 };
 
@@ -21,15 +30,13 @@ let sendSupplier = async function(req, res)
 {
   const includes = req.query.include ? req.query.include.split(',') : [];
 
-  Supplier.find(req.params.id, includes).then(async supplier =>
+  return Supplier.find(req.params.id, includes).then(async supplier =>
   {
-    if (supplier) {
-      res.opuscapita.setNoCache();
-      const supplier2send = await restrictVisibility(supplier, req);
-      res.json(supplier2send);
-    } else {
-      res.status('404').json(supplier);
-    }
+    if (!supplier) return handleSupplierNotExists(req.params.id, req, res);
+
+    res.opuscapita.setNoCache();
+    const supplier2send = await restrictVisibility(supplier, req);
+    return res.json(supplier2send);
   });
 };
 
@@ -42,7 +49,7 @@ let sendSuppliers = async function(req, res)
 
   if (req.query.search !== undefined) {
     const capabilities = req.query.capabilities ? req.query.capabilities.split(',') : [];
-    Supplier.searchAll(req.query.search, capabilities).then(async suppliers => {
+    return Supplier.searchAll(req.query.search, capabilities).then(async suppliers => {
       const suppliers2send = await restrictVisibilities(suppliers, req);
       return res.json(suppliers2send);
     });
@@ -59,7 +66,7 @@ let sendSuppliers = async function(req, res)
 
 let existsSuppliers = function(req, res)
 {
-  Supplier.recordExists(req.query).then(exists => res.json(exists));
+  return Supplier.recordExists(req.query).then(exists => res.json(exists));
 };
 
 let querySupplier = function(req, res)
@@ -144,22 +151,43 @@ let updateSupplier = function(req, res)
 
   Supplier.exists(supplierId).then(exists =>
   {
-    if(exists) {
-      req.body.status = 'updated';
-      return Supplier.update(supplierId, req.body).then(supplier => {
-        return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
-          .then(() => res.status('200').json(supplier));
-      });
-    } else {
-      const message = 'A supplier with ID ' + supplierId + ' does not exist.';
-      req.opuscapita.logger.error('Error when updating Supplier: %s', message);
-      return res.status('404').json({ message : message });
-    }
+    if (!exists) return handleSupplierNotExists(supplierId, req, res);
+
+    req.body.status = 'updated';
+    return Supplier.update(supplierId, req.body).then(supplier => {
+      return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
+        .then(() => res.status('200').json(supplier));
+    });
   })
   .catch(error => {
     req.opuscapita.logger.error('Error when updating Supplier: %s', error.message);
     return res.status('400').json({ message : error.message });
   });
+}
+
+let deleteSupplier = async function(req, res)
+{
+  const supplierId = req.params.id;
+
+  try {
+    const exists = await Supplier.exists(supplierId);
+
+    if (!exists) return handleSupplierNotExists(supplierId, req, res);
+
+    await Supplier.delete(supplierId);
+
+    await Promise.all([
+      SupplierBank.delete(supplierId), SupplierAddress.delete(supplierId), Supplier2User.delete(supplierId),
+      SupplierContact.delete(supplierId), SupplierCapability.delete(supplierId), SupplierVisibility.delete(supplierId)
+    ]);
+
+    await req.opuscapita.eventClient.emit('supplier.supplier.delete', { id: supplierId });
+
+    return res.status('200').json({ message: `Supplier with id ${supplierId} deleted.` })
+  } catch(error) {
+    req.opuscapita.logger.error('Error when deleting Supplier: %s', error.message);
+    return res.status('400').json({ message : error.message });
+  }
 }
 
 let createBankAccount = function(iban, supplier)
@@ -190,9 +218,9 @@ let sendSuppliersForElectronicAddress = async function(req, res)
 
     if (suppliers2send.length <= 1) return res.json(suppliers2send);
 
-    if (!data.ext) return res.json(suppliers2send.filter(customer => !Boolean(customer.parentId)));
+    if (!data.ext) return res.json(suppliers2send.filter(supplier => !Boolean(supplier.parentId)));
 
-    return res.json(suppliers2send.filter(customer => customer.subEntityCode === data.ext));
+    return res.json(suppliers2send.filter(supplier => supplier.subEntityCode === data.ext));
   } catch(err) { return res.status('400').json({ message : err.message }) };
 };
 
@@ -229,4 +257,11 @@ let restrictVisibility = async function(supplier, req)
 let restrictVisibilities = function(suppliers, req)
 {
   return Promise.all(suppliers.map(supplier => restrictVisibility(supplier, req)));
+}
+
+let handleSupplierNotExists = function(supplierId, req, res)
+{
+  const message = 'A supplier with ID ' + supplierId + ' does not exist.';
+  req.opuscapita.logger.error('Error when updating Supplier: %s', message);
+  return res.status('404').json({ message : message });
 }

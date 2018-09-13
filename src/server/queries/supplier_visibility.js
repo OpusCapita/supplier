@@ -24,3 +24,8 @@ module.exports.find = function(supplierId)
 {
   return this.db.models.SupplierVisibility.findOne({ where: { supplierId: supplierId }});
 };
+
+module.exports.delete = function(supplierId)
+{
+  return this.db.models.SupplierVisibility.destroy({ where: { supplierId: supplierId } }).then(() => null);
+};
