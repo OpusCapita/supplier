@@ -67,7 +67,7 @@
                 "message": "Du behöver ange antingen ett momsregistreringsnummer, DUNS, GLN, IBAN eller ett bankkonto"
             },
             "isrNumber": {
-                "message": "Värdet är inte ett godkänt ISR nummer"
+                "message": "Värdet är inte giltigt. Det måste vara högst 9 siffror med format xx-x{1..6}-x. T.ex. 02-162-8"
             }
         },
         "not": {

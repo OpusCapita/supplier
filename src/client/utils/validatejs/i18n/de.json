@@ -70,7 +70,7 @@
                 "message": "Die Umsatzsteuer-Identifikationsnummer, die D-U-N-S-Nummer, oder die Global Location Number, muss angegeben werden, oder eine Bankverbindung muss hinzugefügt werden"
             },
             "isrNumber": {
-                "message": "Der Wert ist keine gültige ISR-Nummer"
+                "message": "Der Wert ist nicht gültig. Es muss maximal 9 Ziffern im Format xx-x{1..6}-x enthalten. Z.B. 02-162-8"
             }
         },
         "not": {
