@@ -181,7 +181,7 @@
                 "extBankControlKey": "External Bank Control Key",
                 "bankgiro": "Bankgiro",
                 "plusgiro": "Plusgiro",
-                "isrNumber": "ISR-Nummer"
+                "isrNumber": "ESR-Nummer"
             },
             "Message": {
                 "deleted": "Bankkonto erfolgreich gelöscht.",

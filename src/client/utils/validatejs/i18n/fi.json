@@ -67,7 +67,7 @@
                 "message": "Joko ALV-tunnus, DUNS-numero tai Global Location Number on annettava, tai pankkitili on lisättävä"
             },
             "isrNumber": {
-                "message": "Arvo ei ole kelvollinen ISR-numero"
+                "message": "Arvo ei ole kelvollinen. Sen on oltava enintään 9 merkkiä xx-x{1..6}-x muodossa. Esim. 02-162-8"
             }
         },
         "not": {
