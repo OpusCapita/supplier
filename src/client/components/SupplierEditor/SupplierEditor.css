@@ -12,3 +12,10 @@
 .supplier-form-submit {
   padding-top: 20px;
 }
+
+.opuscapita_date-input {
+  display: flex !important;
+  padding: 0 !important;
+  border: none !important;
+  position: relative;
+}
