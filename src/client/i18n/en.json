@@ -131,7 +131,7 @@
             "name": "Capabilities",
             "Type": {
                 "eInvoice-send": "Invoice - send",
-                "po-receive": "Purchase order - receive"
+                "order": "Purchase order - receive"
             }
         },
         "Address": {

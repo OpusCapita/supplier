@@ -125,7 +125,7 @@
             "name": "Valmiudet",
             "Type": {
                 "eInvoice-send": "Lasku - lähetä",
-                "po-receive": "Ostotilaus - vastaanottaa"
+                "order": "Ostotilaus - vastaanottaa"
             }
         },
         "Address": {

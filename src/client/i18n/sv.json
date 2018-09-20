@@ -125,7 +125,7 @@
             "name": "Förmågor",
             "Type": {
                 "eInvoice-send": "Faktura - Skicka",
-                "po-receive": "Inköpsorder - motta"
+                "order": "Inköpsorder - motta"
             }
         },
         "Address": {
