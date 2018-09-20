@@ -131,7 +131,7 @@
             "name": "Fähigkeiten",
             "Type": {
                 "eInvoice-send": "Rechnung - schicken",
-                "po-receive": "Kaufauftrag - erhalten"
+                "order": "Kaufauftrag - erhalten"
             }
         },
         "Address": {
