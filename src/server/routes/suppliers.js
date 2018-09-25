@@ -86,7 +86,7 @@ let createSuppliers = function(req, res)
     if (exists) return res.status('409').json({ message : 'A supplier already exists' });
 
     return userService.get(req.opuscapita.serviceClient, newSupplier.createdBy).then(userObj => {
-      if (userObj.supplierId) return res.status('403').json({ message : 'User already has a supplier' });
+      if (userObj.supplierId && !userObj.roles.includes('admin')) return res.status('403').json({ message : 'User already has a supplier' });
 
       const iban = newSupplier.iban;
       delete newSupplier.iban;
