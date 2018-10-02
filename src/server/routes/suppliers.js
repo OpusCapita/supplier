@@ -69,18 +69,16 @@ let existsSuppliers = function(req, res)
   return Supplier.recordExists(req.query).then(exists => res.json(exists));
 };
 
-let querySupplier = function(req, res)
+let querySupplier = async function(req, res)
 {
-  Supplier.searchRecord(req.query).then(supplier => {
-    if (supplier) {
-      res.json(supplier);
-    } else {
-      res.status('404').json(supplier);
-    }
-  });
+  const supplier = await Supplier.searchRecord(req.query);
+
+  if (!supplier) return res.status('404').json(supplier);
+
+  return res.json(supplier);
 };
 
-let createSuppliers = async function(req, res)
+let createSuppliers = function(req, res)
 {
   const newSupplier = req.body;
   Supplier.recordExists(newSupplier).then(exists =>
@@ -88,7 +86,7 @@ let createSuppliers = async function(req, res)
     if (exists) return res.status('409').json({ message : 'A supplier already exists' });
 
     return userService.get(req.opuscapita.serviceClient, newSupplier.createdBy).then(userObj => {
-      if (userObj.supplierId) return res.status('403').json({ message : 'User already has a supplier' });
+      if (userObj.supplierId && !userObj.roles.includes('admin')) return res.status('403').json({ message : 'User already has a supplier' });
 
       const iban = newSupplier.iban;
       delete newSupplier.iban;
@@ -97,8 +95,6 @@ let createSuppliers = async function(req, res)
 
       return Supplier.create(newSupplier)
         .then(supplier => {
-          req.opuscapita.eventClient.emit('supplier.supplier.create', supplier).catch(e => null);
-
           if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
 
           const supplierId = supplier.id;
@@ -115,8 +111,7 @@ let createSuppliers = async function(req, res)
               const supp2 = Object.assign({ }, supplier.dataValues); // Copy needed as Supplier.update() seems to modify supp which then destroys createBankAccount().
 
               return Promise.all([Supplier.update(supplierId, supp1), createBankAccount(iban, supp2)]).spread((supplier, account) => {
-                return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
-                  .then(() => res.status('200').json(supplier));
+                return res.status('200').json(supplier);
               });
             })
             .catch(error => {
@@ -139,7 +134,7 @@ let createSuppliers = async function(req, res)
   });
 }
 
-let updateSupplier = function(req, res)
+let updateSupplier = async function(req, res)
 {
   let supplierId = req.params.id;
 
@@ -149,20 +144,20 @@ let updateSupplier = function(req, res)
     return res.status('422').json({ message: message });
   }
 
-  Supplier.exists(supplierId).then(exists =>
-  {
+  try {
+    const exists = await Supplier.exists(supplierId);
+
     if (!exists) return handleSupplierNotExists(supplierId, req, res);
 
     req.body.status = 'updated';
-    return Supplier.update(supplierId, req.body).then(supplier => {
-      return req.opuscapita.eventClient.emit('supplier.supplier.update', supplier)
-        .then(() => res.status('200').json(supplier));
-    });
-  })
-  .catch(error => {
+    const supplier = await Supplier.update(supplierId, req.body);
+    await Promise.all([req.opuscapita.eventClient.emit('supplier.supplier.update', supplier), req.opuscapita.eventClient.emit('supplier.supplier.updated', supplier)]);
+
+    return res.status('200').json(supplier);
+  } catch(error) {
     req.opuscapita.logger.error('Error when updating Supplier: %s', error.message);
     return res.status('400').json({ message : error.message });
-  });
+  }
 }
 
 let deleteSupplier = async function(req, res)
@@ -181,7 +176,7 @@ let deleteSupplier = async function(req, res)
       SupplierContact.delete(supplierId), SupplierCapability.delete(supplierId), SupplierVisibility.delete(supplierId)
     ]);
 
-    await req.opuscapita.eventClient.emit('supplier.supplier.delete', { id: supplierId });
+    await req.opuscapita.eventClient.emit('supplier.supplier.deleted', { id: supplierId });
 
     return res.status('200').json({ message: `Supplier with id ${supplierId} deleted.` })
   } catch(error) {
