@@ -1,0 +1,91 @@
+[
+  {
+    "ID": "aapl_us",
+    "Name": "Apple Inc.",
+    "CityOfRegistration": "San Francisco",
+    "CountryOfRegistration": "US",
+    "DUNSNo": "362185022",
+    "CurrencyId": "USD",
+    "TaxIdentificationNo": "15-5555555",
+    "CreatedBy": "lekealem.asong@opuscapita.com",
+    "ChangedBy": "lekealem.asong@opuscapita.com"
+  },
+  {
+    "ID": "acer_us",
+    "Name": "Acer USA Corp.",
+    "CityOfRegistration": "New York",
+    "CountryOfRegistration": "US",
+    "DUNSNo": "362212164",
+    "CurrencyId": "USD",
+    "TaxIdentificationNo": "24-5555555",
+    "CreatedBy": "lekealem.asong@opuscapita.com",
+    "ChangedBy": "lekealem.asong@opuscapita.com"
+  },
+  {
+    "ID": "dell_us",
+    "Name": "Dell USA LLC",
+    "CityOfRegistration": "St. Louis",
+    "CountryOfRegistration": "US",
+    "DUNSNo": "362217981",
+    "CurrencyId": "USD",
+    "TaxIdentificationNo": "53-5555555",
+    "CreatedBy": "lekealem.asong@opuscapita.com",
+    "ChangedBy": "lekealem.asong@opuscapita.com"
+  },
+  {
+    "ID": "hpqi_us",
+    "Name": "HP USA Inc.",
+    "CityOfRegistration": "Atlanta",
+    "CountryOfRegistration": "US",
+    "DUNSNo": "362221561",
+    "CurrencyId": "USD",
+    "TaxIdentificationNo": "02-5555555",
+    "CreatedBy": "lekealem.asong@opuscapita.com",
+    "ChangedBy": "lekealem.asong@opuscapita.com"
+  },
+  {
+    "ID": "leno_us",
+    "Name": "Lenovo USA Inc.",
+    "CityOfRegistration": "Houston",
+    "CountryOfRegistration": "US",
+    "DUNSNo": "362223542",
+    "CurrencyId": "USD",
+    "TaxIdentificationNo": "60-5555555",
+    "CreatedBy": "lekealem.asong@opuscapita.com",
+    "ChangedBy": "lekealem.asong@opuscapita.com"
+  },
+  {
+    "ID": "msft_us",
+    "Name": "Microsoft Inc.",
+    "CityOfRegistration": "Baltimore",
+    "CountryOfRegistration": "US",
+    "DUNSNo": "362229937",
+    "CurrencyId": "USD",
+    "TaxIdentificationNo": "03-5555555",
+    "CreatedBy": "lekealem.asong@opuscapita.com",
+    "ChangedBy": "lekealem.asong@opuscapita.com"
+  },
+  {
+    "ID": "stap_us",
+    "Name": "Staples USA Inc",
+    "CityOfRegistration": "Framingham",
+    "CountryOfRegistration": "US",
+    "DUNSNo": "362241676",
+    "CurrencyId": "USD",
+    "HomePage": "http://www.staples.com",
+    "TaxIdentificationNo": "01-5555555",
+    "CreatedBy": "lekealem.asong@opuscapita.com",
+    "ChangedBy": "lekealem.asong@opuscapita.com"
+  },
+  {
+    "ID": "ofdp_us",
+    "Name": "Office Depot USA",
+    "CityOfRegistration": "Boston",
+    "CountryOfRegistration": "US",
+    "DUNSNo": "362241718",
+    "CurrencyId": "USD",
+    "TaxIdentificationNo": "67-5555555",
+    "CreatedBy": "lekealem.asong@opuscapita.com",
+    "ChangedBy": "lekealem.asong@opuscapita.com"
+  }
+]
