@@ -6,6 +6,7 @@
     "CountryOfRegistration": "US",
     "DUNSNo": "362185022",
     "CurrencyId": "USD",
+    "Role": "selling",
     "TaxIdentificationNo": "15-5555555",
     "CreatedBy": "lekealem.asong@opuscapita.com",
     "ChangedBy": "lekealem.asong@opuscapita.com"
@@ -17,6 +18,7 @@
     "CountryOfRegistration": "US",
     "DUNSNo": "362212164",
     "CurrencyId": "USD",
+    "Role": "selling",
     "TaxIdentificationNo": "24-5555555",
     "CreatedBy": "lekealem.asong@opuscapita.com",
     "ChangedBy": "lekealem.asong@opuscapita.com"
@@ -28,6 +30,7 @@
     "CountryOfRegistration": "US",
     "DUNSNo": "362217981",
     "CurrencyId": "USD",
+    "Role": "selling",
     "TaxIdentificationNo": "53-5555555",
     "CreatedBy": "lekealem.asong@opuscapita.com",
     "ChangedBy": "lekealem.asong@opuscapita.com"
@@ -39,6 +42,7 @@
     "CountryOfRegistration": "US",
     "DUNSNo": "362221561",
     "CurrencyId": "USD",
+    "Role": "selling",
     "TaxIdentificationNo": "02-5555555",
     "CreatedBy": "lekealem.asong@opuscapita.com",
     "ChangedBy": "lekealem.asong@opuscapita.com"
@@ -50,6 +54,7 @@
     "CountryOfRegistration": "US",
     "DUNSNo": "362223542",
     "CurrencyId": "USD",
+    "Role": "selling",
     "TaxIdentificationNo": "60-5555555",
     "CreatedBy": "lekealem.asong@opuscapita.com",
     "ChangedBy": "lekealem.asong@opuscapita.com"
@@ -61,6 +66,7 @@
     "CountryOfRegistration": "US",
     "DUNSNo": "362229937",
     "CurrencyId": "USD",
+    "Role": "selling",
     "TaxIdentificationNo": "03-5555555",
     "CreatedBy": "lekealem.asong@opuscapita.com",
     "ChangedBy": "lekealem.asong@opuscapita.com"
@@ -72,6 +78,7 @@
     "CountryOfRegistration": "US",
     "DUNSNo": "362241676",
     "CurrencyId": "USD",
+    "Role": "selling",
     "HomePage": "http://www.staples.com",
     "TaxIdentificationNo": "01-5555555",
     "CreatedBy": "lekealem.asong@opuscapita.com",
@@ -84,6 +91,7 @@
     "CountryOfRegistration": "US",
     "DUNSNo": "362241718",
     "CurrencyId": "USD",
+    "Role": "selling",
     "TaxIdentificationNo": "67-5555555",
     "CreatedBy": "lekealem.asong@opuscapita.com",
     "ChangedBy": "lekealem.asong@opuscapita.com"
