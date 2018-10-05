@@ -116,6 +116,7 @@ module.exports.init = function(db, config) {
         }
       }
     },
+    /** A Global Location Number (GLN) is a unique number that is assigned to locations to enable them to be identified uniquely worldwide. See https://en.wikipedia.org/wiki/Global_Location_Number */
     globalLocationNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
@@ -152,6 +153,7 @@ module.exports.init = function(db, config) {
         }
       }
     },
+    /** The Finnish Party Identification number (OVT-number) is a 12-17 digit number and it is generated from Business ID. */
     ovtNo: {
       allowNull: true,
       type: Sequelize.STRING(250),

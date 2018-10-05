@@ -25,10 +25,6 @@ const BankAccountSection = ({ bankAccount, i18n }) => (
       <span className='supplierPublic__value col-sm-4'>{ bankAccount.bankCode || '-' }</span>
     </div>
     <div className='col-sm-8'>
-      <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.BankAccount.Label.swiftCode') }</label>
-      <span className='supplierPublic__value col-sm-4'>{ bankAccount.swiftCode || '-' }</span>
-    </div>
-    <div className='col-sm-8'>
       <label className='supplierPublic__fieldLabel col-sm-4'>{ i18n.getMessage('Supplier.BankAccount.Label.bankCountryKey') }</label>
       <span className='supplierPublic__value col-sm-4'>
         <CountryView countryId={ bankAccount.bankCountryKey} />

@@ -60,17 +60,17 @@
             "bic": {
                 "message": "Värdet är inte ett godkänt BIC"
             },
-            "swiftCode": {
-                "message": "Värdet är inte en godkänd SWIFT kod"
-            },
             "uniqueIdentifier": {
                 "message": "Du behöver ange antingen ett momsregistreringsnummer, DUNS, GLN eller IBAN"
+            },
+            "uniqueIdentifierBankAccount": {
+                "message": "Du behöver ange antingen ett IBAN, Bankgiro, eller Plusgiro"
             },
             "uniqueIdentifierWithBankAccount": {
                 "message": "Du behöver ange antingen ett momsregistreringsnummer, DUNS, GLN, IBAN eller ett bankkonto"
             },
             "isrNumber": {
-                "message": "Värdet är inte ett godkänt ISR nummer"
+                "message": "Värdet är inte giltigt. Det måste vara högst 9 siffror med format xx-x{1..6}-x. T.ex. 02-162-8"
             }
         },
         "not": {
@@ -85,7 +85,10 @@
             }
         },
         "blank": {
-            "message": "Fältet kan inte vara tomt"
+            "message": "Fältet kan inte vara tomt",
+            "bic": {
+                "message": "Fältet kan inte vara tomt när IBAN är tillgängligt"
+            }
         },
         "null": {
             "message": "Attributet kan inte varea noll"

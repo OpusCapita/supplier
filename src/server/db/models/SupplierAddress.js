@@ -29,7 +29,10 @@ module.exports.init = function(db, config) {
       type: Sequelize.STRING(10),
       allowNull: false,
       field: "Type",
-      defaultValue: "default"
+      defaultValue: "default",
+      validate: {
+        isIn: [['default', 'invoice', 'rma', 'plant']]
+      }
     },
     name: {
       type: Sequelize.STRING(100),

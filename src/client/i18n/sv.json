@@ -130,7 +130,8 @@
         "Capabilities": {
             "name": "Förmågor",
             "Type": {
-                "eInvoice-send": "Faktura - Skicka"
+                "eInvoice-send": "Faktura - Skicka",
+                "order": "Inköpsorder - motta"
             }
         },
         "Address": {
@@ -178,7 +179,6 @@
                 "bankCode": "Bank code",
                 "bankName": "Bank namn",
                 "extBankControlKey": "Extern bank kontroll",
-                "swiftCode": "Swift kod",
                 "bankgiro": "Bankgiro",
                 "plusgiro": "Plusgiro",
                 "isrNumber": "ISR Number"
@@ -189,7 +189,8 @@
                 "saved": "Bankkonto sparad.",
                 "deleteFailed": "Bankontot raderades inte, det kanske är i användande redan?",
                 "saveFailed": "Bankkonto sparades inte.",
-                "updateFailed": "Bankkonto updaterades inte."
+                "updateFailed": "Bankkonto updaterades inte.",
+                "identifierRequired": "**Vänligen ange ditt IBAN. Om du inte har detta och ditt företag är i Sverige, vänligen ange ditt Bankgiro eller Plusgiro."
             }
         },
         "Contact": {

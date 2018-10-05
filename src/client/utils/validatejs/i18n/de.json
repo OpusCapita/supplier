@@ -60,17 +60,17 @@
             "bic": {
                 "message": "Der Wert ist kein gültiger BIC"
             },
-            "swiftCode": {
-                "message": "Der Wert ist kein gültiger SWIFT-Code"
-            },
             "uniqueIdentifier": {
                 "message": "Die Umsatzsteuer-Identifikationsnummer, die D-U-N-S-Nummer, die Global Location Number, oder die IBAN muss angegeben werden"
+            },
+            "uniqueIdentifierBankAccount": {
+                "message": "Die IBAN, das Bankgiro, oder das Plusgiro muss angegeben werden"
             },
             "uniqueIdentifierWithBankAccount": {
                 "message": "Die Umsatzsteuer-Identifikationsnummer, die D-U-N-S-Nummer, oder die Global Location Number, muss angegeben werden, oder eine Bankverbindung muss hinzugefügt werden"
             },
             "isrNumber": {
-                "message": "Der Wert ist keine gültige ISR-Nummer"
+                "message": "Der Wert ist nicht gültig. Es muss maximal 9 Ziffern im Format xx-x{1..6}-x enthalten. Z.B. 02-162-8"
             }
         },
         "not": {
@@ -85,7 +85,10 @@
             }
         },
         "blank": {
-            "message": "Das Feld darf nicht leer sein"
+            "message": "Das Feld darf nicht leer sein",
+            "bic": {
+                "message": "Feld darf nicht leer sein, wenn IBAN vorhanden ist"
+            }
         },
         "null": {
             "message": "Die Eigenschaft darf nicht null sein"

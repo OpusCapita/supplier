@@ -1,0 +1,58 @@
+[
+  {
+    "SupplierID": "appl_us",
+    "AccountNumber": "NL84ABNA8999665062",
+    "BankIdentificationCode": "UMKCUS44XXX",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "SupplierID": "acer_us",
+    "AccountNumber": "NL84ABNA8999665062",
+    "BankIdentificationCode": "UMKCUS44XXX",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "SupplierID": "dell_us",
+    "AccountNumber": "NL84ABNA8999665062",
+    "BankIdentificationCode": "UMKCUS44XXX",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "SupplierID": "hpqi_us",
+    "AccountNumber": "NL84ABNA8999665062",
+    "BankIdentificationCode": "UMKCUS44XXX",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "SupplierID": "leno_us",
+    "AccountNumber": "NL84ABNA8999665062",
+    "BankIdentificationCode": "UMKCUS44XXX",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "SupplierID": "msft_us",
+    "AccountNumber": "NL84ABNA8999665062",
+    "BankIdentificationCode": "UMKCUS44XXX",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "SupplierID": "stap_us",
+    "AccountNumber": "NL84ABNA8999665062",
+    "BankIdentificationCode": "UMKCUS44XXX",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "SupplierID": "ofdp_us",
+    "AccountNumber": "NL84ABNA8999665062",
+    "BankIdentificationCode": "UMKCUS44XXX",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  }
+]

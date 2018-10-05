@@ -18,6 +18,21 @@ get:
             required: false
             description: Additional, comma separated supplier associations to include. Existing associations are `addresses`, `contacts`, and `bankAccounts`.
             example: include=addresses,contacts
+        vatIdentificationNo:
+            type: string
+            required: false
+            description: Limit output to given VAT ID.
+            example: vatIdentificationNo=DE136752020
+        globalLocationNo:
+            type: string
+            required: false
+            description: Limit output to given global location number.
+            example: globalLocationNo=1245678976543
+        electronicAddress:
+            type: string
+            required: false
+            description: Limit output to given electronic address according to ISO6523 codes. See https://www.galaxygw.com/iso6523/
+            example: electronicAddress=9930:DE136752020
     responses:
         200:
             body:

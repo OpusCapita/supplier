@@ -60,17 +60,17 @@
             "bic": {
                 "message": "Value is not a valid BIC"
             },
-            "swiftCode": {
-                "message": "Value is not a valid SWIFT Code"
-            },
             "uniqueIdentifier": {
                 "message": "Either VAT number, D-U-N-S number, Global Location Number, or IBAN must be provided"
+            },
+            "uniqueIdentifierBankAccount": {
+                "message": "Either IBAN, bankgiro, or plusgiro must be provided"
             },
             "uniqueIdentifierWithBankAccount": {
                 "message": "Either VAT number, D-U-N-S number, or Global Location Number must be provided, or Bank Account must be added"
             },
             "isrNumber": {
-                "message": "Value is not a valid ISR party number"
+                "message": "Value is not valid. It must be maximum 9 digits with format xx-x{1..6}-x. E.g. 02-162-8"
             }
         },
         "not": {
@@ -85,7 +85,10 @@
             }
         },
         "blank": {
-            "message": "Field cannot be blank"
+            "message": "Field cannot be blank",
+            "bic": {
+                "message": "Field cannot be blank when IBAN is provided"
+            }
         },
         "null": {
             "message": "Property cannot be null"

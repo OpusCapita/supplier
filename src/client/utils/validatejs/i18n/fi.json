@@ -60,17 +60,17 @@
             "bic": {
                 "message": "Arvo ei ole kelvollinen BIC"
             },
-            "swiftCode": {
-                "message": "Arvo ei ole kelvollinen SWIFT-koodi"
-            },
             "uniqueIdentifier": {
                 "message": "Joko ALV-tunnus, DUNS-numero, Global Location Number tai IBAN on annettava"
+            },
+            "uniqueIdentifierBankAccount": {
+                "message": "IBAN, Bankgiro, tai Plusgiro on annettava"
             },
             "uniqueIdentifierWithBankAccount": {
                 "message": "Joko ALV-tunnus, DUNS-numero tai Global Location Number on annettava, tai pankkitili on lisättävä"
             },
             "isrNumber": {
-                "message": "Arvo ei ole kelvollinen ISR-numero"
+                "message": "Arvo ei ole kelvollinen. Sen on oltava enintään 9 merkkiä xx-x{1..6}-x muodossa. Esim. 02-162-8"
             }
         },
         "not": {
@@ -85,7 +85,10 @@
             }
         },
         "blank": {
-            "message": "Kenttä ei voi olla tyhjä"
+            "message": "Kenttä ei voi olla tyhjä",
+            "bic": {
+                "message": "Kenttä ei voi olla tyhjä, kun IBAN on käytettävissä"
+            }
         },
         "null": {
             "message": "Kohta ei voi olla tyhjä"

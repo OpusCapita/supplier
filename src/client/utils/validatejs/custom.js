@@ -76,9 +76,28 @@ module.exports.uniqueIdentifier = function(validate) {
 
     const uniqueIdentifier = require('../../../server/utils/validators/uniqueIdentifier.js');
 
-    const fields = [attributes.vatIdentificationNo, attributes.dunsNo, attributes.globalLocationNo, attributes.ovtNo, attributes.iban];
+    const fields = [
+      attributes.vatIdentificationNo,
+      attributes.dunsNo,
+      attributes.globalLocationNo,
+      attributes.ovtNo,
+      attributes.iban,
+      attributes.accountNumber,
+      attributes.bankgiro,
+      attributes.plusgiro
+    ];
 
     if (uniqueIdentifier.isValid(fields)) return null;
+
+    return options.message;
+  };
+};
+
+module.exports.bicRequired = function(validate) {
+  return validate.validators.bicRequired = function(value, options, key, attributes) {
+    if (!attributes.accountNumber) return null;
+
+    if (value && attributes.accountNumber) return null;
 
     return options.message;
   };
