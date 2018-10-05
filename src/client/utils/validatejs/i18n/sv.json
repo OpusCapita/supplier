@@ -48,6 +48,9 @@
             "dunsNumber": {
                 "message": "Värdet är inte ett godkänt DUNS nummer"
             },
+            "ovtNumber": {
+                "message": "Värdet är inte ett giltigt OVT-nummer"
+            },
             "globalLocationNumber": {
                 "message": "Värdet är inte ett godkänt GLN nummer"
             },
@@ -103,8 +106,14 @@
             "dunsNumber": {
                 "message": "Ett företag med detta DUNS existerar redan"
             },
+            "ovtNumber": {
+                "message": "Ett företag finns redan med detta OVT-nummer."
+            },
             "globalLocationNumber": {
                 "message": "Ett företag med detta GLN existerar redan"
+            },
+            "subEntityCode": {
+                "message": "Ett företag i din organisation har redan den här koden"
             },
             "iban": {
                 "message": "Ett företag med detta IBAN existerar redan"
@@ -115,6 +124,6 @@
                 "Date": "Värdet behöver vara ett godkänt datum"
             }
         },
-        "supplierExists": "{message}\r\nVänligen kontakta vår support på customerservice.se@opuscapita.com för att få access till det registrerade företaget."
+        "supplierExists": "{message}\r\r\nVänligen kontakta vår support på customerservice.se@opuscapita.com för att få access till det registrerade företaget."
     }
 }

@@ -1,0 +1,147 @@
+{
+    "notification": {
+        "accessRequest": {
+            "title": "OpusCapita - Användaråtkomstförfrågan",
+            "description": "Användaren <strong> {firstName} {lastName} ({email}) </ strong> har begärt tillgång till ditt företagskonto <strong> {supplierName} </ strong>. <br />\r\r\n     <br /> Vänligen klicka på den här <a href=\"{link}\"> länken </a> för att visa detaljer om begäran. "
+        },
+        "accessApproval": {
+            "title": "OpusCapita - Användaråtkomst godkänd",
+            "description": "Din åtkomstförfrågan till företag <strong> {supplierName} </ strong> har godkänts. <br />\r\r\n     <br /> Klicka på den här <a href=\"{link}\"> länken </a> nedan för att slutföra åtkomsten. "
+        },
+        "accessRejection": {
+            "title": "OpusCapita - Användaråtkomst regifierad",
+            "description": "Tyvärr har din begäran om tillgång till företag <strong> {supplierName} </ strong> avvisats."
+        }
+    },
+    "loginPage": {
+        "title": "Inloggning",
+        "emailField": "Epost",
+        "emailPlaceholder": "Din Epostadress",
+        "password": "Lösenord",
+        "passwordPlaceholder": "Ange lösenord",
+        "signIn": "Logga in",
+        "facebook": "Logga in med facebook",
+        "forgotPassword": "Lösenord bortglömt",
+        "invalidInteraction": "Din session har upphört, vänligen logga in igen"
+    },
+    "registrationPage": {
+        "title": "Registrera en ny användare",
+        "header1": "Anslut till OpusCapita Business Network",
+        "header2": "Två steg återstår i din registrering. Vi skickar ett epostmeddelande för att bekräfta adressen och därefter kan du fortsätta.",
+        "emailField": "Epost",
+        "emailPlaceholder": "Din Epostadress",
+        "emailText": "Please enter a valid Epost address, you will be required to confirm an Epost sent to this address. Vänligen ange en giltig Epostadress, du behöver bekräfta ett meddelande skickat till denna adress.",
+        "passwordField": "Lösenord",
+        "passwordPlaceholder": "Välj ett lösenord",
+        "passwordText": "Ditt lösenord ska vara minst 8 tecken och innehålla minst en stor bokstav, en lite bokstav och ett special tecken.",
+        "confirmPassword": "Bekräfta lösenord",
+        "reEnter": "Skriv lösenordet igen",
+        "reEnterText": "Skriv ovannämda lösenord igen",
+        "registerBtn": "Registrera",
+        "alreadyRegisteredBtn": "Redan registrerad?",
+        "firstNameField": "Förnamn",
+        "firstNamePlaceHolder": "Skriv förnamn",
+        "firstNameText": "Vänligen skriv ditt förnamn",
+        "lastNameField": "Efternamn",
+        "lastNamePlaceHolder": "Skriv Efternamn",
+        "lastNameText": "Vänligen skriv ditt efternamn",
+        "termsAndConditionsLink": "/public/user/docs/PrivacyNotice_sv.pdf",
+        "termsAndConditionsField": "Jag bekräftar att jag läst och förstått användarvillkoren för tjänsten."
+    },
+    "passwordRequestPage": {
+        "title": "Begär lösenord",
+        "emailField": "Epost",
+        "emailPlaceholder": "Din epostadress",
+        "submit": "Skicka"
+    },
+    "passwordResetPage": {
+        "title": "Lösenord skickat",
+        "emailSent": "Ett nytt lösenord har skickats till din epostadress.",
+        "login": "Inloggning"
+    },
+    "newPasswordMail": {
+        "helpText": "Här är det temporära lösenordet.",
+        "notes": "Lösenordet blir ogiltigt inom 30 minuter.",
+        "greetings": "Hej",
+        "subject": "Dinn nya lösenord"
+    },
+    "verificationMail": {
+        "welcome": "Välkommen till",
+        "link": "Vänligen klicka <a href='{{externalScheme}}://{{externalHost}}:{{externalPort}}/auth/registration/register/verify/{{Epost}}?code={{code}}&lang={{lang}}'>Confirm</a> för att färdigställa din registrering.",
+        "alternativeText": "Om länken inte fungerar, vänligen utför följande steg:",
+        "step1": "Öppna <a href='{{externalScheme}}://{{externalHost}}:{{externalPort}}/auth/registration/register/verify/{{Epost}}?lang={{lang}}'>Verification</a> länk.",
+        "step2": "Kopiera verifikationskoden: <b>{{code}}</b>",
+        "step3": "Klistra in verifikationskoden i fältet på sidan för bekräftning.",
+        "step4": "Klicka slutgiltligen på \"Bekräfta\" och fortsätt med inloggningen.",
+        "thank": "Tack för ditt deltagande!",
+        "subject": "OpusCapita - verifikationskod"
+    },
+    "registrationMail": {
+        "welcome": "Välkommen till",
+        "step1": "Använd din epostadress <b>{{Epost}}</b> som användarnamn",
+        "step2": "Använd lösenordet <b>{{password}}</b> till att logga in i tjänsten",
+        "link": "Vänligen klicka på <a href='{{externalScheme}}://{{externalHost}}:{{externalPort}}/auth/registration/register/verify/{{Epost}}?code={{code}}&lang={{lang}}'>Confirmation</a> för att slutföra din registrering",
+        "alternativeText": "Om länken inte fungerar, vänligen utför följande steg:",
+        "step3": "Öppna <a href='{{externalScheme}}://{{externalHost}}:{{externalPort}}/auth/registration/register/verify/{{Epost}}?lang={{lang}}'>Verification</a> länken.",
+        "step4": "kopiera verifikationskoden: <b>{{code}}</b>",
+        "step5": "Klistra in verifikationskoden i fältet på sidan för bekräftning.",
+        "step6": "Klicka slutgiltligen på \"Bekräfta\" och fortsätt med inloggningen.",
+        "thank": "Tack för ditt deltagande!",
+        "subject": "OpusCapita - registration lösenord"
+    },
+    "changePasswordPage": {
+        "title": "Ändra ditt lösenord",
+        "passwordPlaceholder": "Lösenord",
+        "rePasswordPlaceholder": "Re Lösenord",
+        "submitBtn": "Skicka",
+        "rePassword": "Skriv lösenord igen",
+        "password": "Mnytt lösenord"
+    },
+    "validRegistration": {
+        "title": "Epostadress bekräftad",
+        "text": "Tack för din tillit.",
+        "text2": "Du kan nu använda ditt användarnamn och lösenord för att logga in.",
+        "login": "inloggning"
+    },
+    "confirmRegistration": {
+        "title": "Bekräftelse på att epostmeddelande har skickats",
+        "text": "Vänligen kontrollera din Inbox",
+        "text2": "Följ länken i epostmeddelandet för att aktivera ditt nya fina konto.",
+        "enterCode": "Ange kod",
+        "submit": "Bekräfta"
+    },
+    "invitationCode": {
+        "title": "Ange koden för inbjudan",
+        "invitationCodeLabel": "Kod för inbjudan",
+        "invitationCodePlaceHolder": "Ange kod för inbjudan",
+        "invalid": "Ogiltig kod",
+        "used": "Koden används redan",
+        "description": "Ange koden för inbjudan",
+        "submit": "Skicka"
+    },
+    "errorMsgs": {
+        "404": "! Kunde inte hittas",
+        "INVALID_CREDENTAILS": "Ogiltiga inloggningsuppgifter",
+        "INVITATION_NOT_FOUND": "Ingen matchning av inbjuden kunde göras, vänligen försök igen.",
+        "INVITATION_NEEDED": "Vi beklagar, du behöver en inbjudan för att kunna registrera dig.",
+        "EMAIL_NOT_SENT": "Epostmeddelande kunde inte skickas, vänligen kontakta din administratör.",
+        "MAIL_EXISTS": "Epost finns redan",
+        "ERROR": "Oopsideisi! Ett fel uppstod under autentisieringen!",
+        "USER_NOT_FOUND": "Ingen användare hittades",
+        "INVALID_EMAIL": "Ogiltig epostadress",
+        "INVALID_RETYPE_PASSWORD": "Ogiltig re-type lösenord",
+        "INSECURE_PASSWORD": "Angivet lösenord ska vara minst 8 tecken och innehålla minst en stor bokstav, en lite bokstav och ett special tecken.",
+        "EMAIL_REQUIRED": "Epostadress är obligatoriskt",
+        "PASSWORD_REQUIRED": "Lösenord är obligatoriskt",
+        "PASSWORD_EXPIRED": "Lösenordet har blivit ogiltigt",
+        "DESCRIPTION": "Felet har skickats till våra utvecklare.",
+        "404_DESCRIPTION": "Begärd URL hittas inte",
+        "ROBOT_VALIDATION_FAIL": "Automatisk validering misslyckades",
+        "USER_EXISTS": "Användaren existerar redan.",
+        "CONTACT_FIELDS_REQUIRED": "Följande information är obligatorisk: Förnamn, Efternamn",
+        "ACCEPT_CONDITIONS": "För att kunna gå vidare behöver du först godkänna användarvillkoren",
+        "IN_ACTIVE": "Din epostadress har inte blivit verifierad ännu eller så är ditt konto inte aktivt.",
+        "NO_CONDITIONS": "Sekretesspolicy dokumentet är inte tillgängligt, var vänlig försök igen senare.",
+        "VERIFICATIONCODE_MISMATCH": "Verifieringskoden du angav är felaktig."
+    }
+}
