@@ -17,7 +17,8 @@
             "requestAccess": "Begär tillgång",
             "approve": "Godkänd",
             "reject": "Avvisa",
-            "search": "Sök"
+            "search": "Sök",
+            "publicProfile": "Se din publika profil"
         },
         "Label": {
             "id": "Företags ID",
@@ -29,12 +30,14 @@
             "foundedOn": "Grundades",
             "taxIdNumber": "Momsregistreringsnummer",
             "dunsNo": "D-U-N-S-Nr.",
+            "ovtNo": "OVT-nummer",
             "commercialRegisterNo": "Organisationsnummer",
             "countryOfRegistration": "Land",
             "currencyId": "Valuta",
             "taxIdentificationNo": "Momsregistreringsnummer",
             "vatIdentificationNo": "Momsregistreringsnummer",
             "globalLocationNo": "Global Location Number",
+            "subEntityCode": "Underenhetskod",
             "iban": "IBAN",
             "accessReason": "Access Reason",
             "searchInput": "Sök på namn, stad, momsregistreringsnummer, organisationsnummer, DUNS eller GLN",
@@ -44,6 +47,8 @@
             "company": "Företag",
             "companyIdentifiers": "Företagsidentifikation",
             "addresses": "Adresser",
+            "contacts": "Kontakter",
+            "bankAccounts": "Bankkonton",
             "type": "Typ"
         },
         "Select": {
@@ -59,7 +64,8 @@
             "address": "Här anger du företagets adress.",
             "accessApproval": "Vänligen godkänd eller neka förfrågan om access",
             "BankAccount": "Här anger du företagets kontonummer.",
-            "contact": "Här anger du företagets kontaktperson."
+            "contact": "Här anger du företagets kontaktperson.",
+            "visibility": "Vänligen ange inställningar för din publika profil."
         },
         "Confirmation": {
             "cancel": "Vill du verkligen avbryta?"
@@ -132,7 +138,7 @@
             "Label": {
                 "type": "Typ",
                 "street": "Adress",
-                "zipCode": "Zip code",
+                "zipCode": "Postnummer",
                 "city": "Stad",
                 "countryId": "Land",
                 "phoneNo": "Telefon",
@@ -141,15 +147,15 @@
                 "street1": "Adress",
                 "street2": "Adress 2",
                 "street3": "Adress 3",
-                "areaCode": "Postnummer",
-                "state": "Stat",
+                "areaCode": "Area code",
+                "state": "Region",
                 "pobox": "Postbox",
                 "poboxZipCode": "PO Box Zip Code",
                 "email": "Epost"
             },
             "Type": {
                 "default": "Förvalt",
-                "invoice": "Faktura - Skicka",
+                "invoice": "Faktura",
                 "rma": "RMA",
                 "plant": "Fabrik"
             },
@@ -170,12 +176,12 @@
                 "accountNumber": "IBAN",
                 "bankIdentificationCode": "BIC",
                 "bankCountryKey": "Bank Land",
-                "bankCode": "Bank konto",
+                "bankCode": "Bank code",
                 "bankName": "Bank namn",
                 "extBankControlKey": "Extern bank kontroll",
                 "bankgiro": "Bankgiro",
                 "plusgiro": "Plusgiro",
-                "isrNumber": "ISR-nummer"
+                "isrNumber": "ISR Number"
             },
             "Message": {
                 "deleted": "Bankkonto raderad.",
@@ -233,6 +239,20 @@
             },
             "Error": {
                 "userExists": "Användaren existerar redan."
+            }
+        },
+        "Visibility": {
+            "Label": {
+                "contacts": "Kontakter",
+                "bankAccounts": "Bankkonton"
+            },
+            "Type": {
+                "public": "Offentlig",
+                "private": "Privat",
+                "businessPartners": "Affärspartner"
+            },
+            "Message": {
+                "updateSaved": "Ändringar sparades med framgång."
             }
         },
         "Autocomplete": {
