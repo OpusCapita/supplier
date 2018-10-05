@@ -10,8 +10,8 @@
     "ZipCode": "01702",
     "CountryID": "US",
     "EMail": "stap_us@acmemax.com",
-    "CreatedBy": "lekealem.asong@opuscapita.com",
-    "ChangedBy": "lekealem.asong@opuscapita.com"
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
   },
   {
     "ID": 912,
@@ -24,7 +24,7 @@
     "ZipCode": "01702",
     "CountryID": "US",
     "EMail": "stap_us@acmemax.com",
-    "CreatedBy": "lekealem.asong@opuscapita.com",
-    "ChangedBy": "lekealem.asong@opuscapita.com"
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
   }
 ]
