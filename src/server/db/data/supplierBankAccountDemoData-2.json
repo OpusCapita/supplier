@@ -1,0 +1,23 @@
+[
+  {
+    "SupplierID": "copl_us",
+    "AccountNumber": "NL84ABNA8999665062",
+    "BankIdentificationCode": "UMKCUS44XXX",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "SupplierID": "evpl_us",
+    "AccountNumber": "NL84ABNA8999665062",
+    "BankIdentificationCode": "UMKCUS44XXX",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "SupplierID": "meev_us",
+    "AccountNumber": "NL84ABNA8999665062",
+    "BankIdentificationCode": "UMKCUS44XXX",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  }
+]
