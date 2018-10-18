@@ -18,7 +18,7 @@ module.exports.all = function(query, includes)
   let queryObj = {};
   if (query.id) queryObj.id = { $in: query.id.split(',') };
   if (query.name) queryObj.name = { $like: `%${query.name}%` };
-  if (query.hierarchyId) queryObj.hierarchyId = { $like: `%${query.hierarchyId}%` };
+  if (query.hierarchyId) queryObj['$or'] = hierarchyQuery(query.hierarchyId);
   if (query.vatIdentificationNo) queryObj.vatIdentificationNo = query.vatIdentificationNo;
   if (query.globalLocationNo) queryObj.globalLocationNo = query.globalLocationNo;
   if (query.ovtNo) queryObj.ovtNo = query.ovtNo;
@@ -176,13 +176,13 @@ module.exports.searchRecord = async function(query)
 
   let rawQuery = rawQueryArray.length > 1 ? '(' + rawQueryArray.join(' OR ') + ')' : rawQueryArray[0];
 
-  if (query.id) rawQuery = rawQuery + ` AND Supplier.ID != '${query.id}'`;
+  if (query.id) rawQuery = rawQuery + ` AND Supplier.ID != '${SqlString.escape(query.id)}'`;
   if (query.parentId) {
     const motherCustomer = await this.getMotherSupplier(query.parentId);
 
     if (motherCustomer) {
       if (query.notEqual) {
-        rawQuery = rawQuery + ` AND Supplier.ID != '${motherCustomer.id}'`;
+        rawQuery = rawQuery + ` AND Supplier.ID != '${SqlString.escape(motherCustomer.id)}'`;
         rawQuery = rawQuery + ` AND ${notLikeSQL('HierarchyId', motherCustomer.id)}`;
       } else {
         rawQuery = rawQuery + ` AND ${likeSQL('HierarchyId', motherCustomer.id)}`;
@@ -281,12 +281,12 @@ let equalSQL = function(fieldName, value)
 
 let likeSQL = function(fieldName, value)
 {
-  return `${fieldName} LIKE '%${value}%'`;
+  return `${fieldName} LIKE '%${SqlString.escape(value)}%'`;
 }
 
 let notLikeSQL = function(fieldName, value)
 {
-  return `(${fieldName} IS NULL OR ${fieldName} NOT LIKE '%${value}%')`;
+  return `(${fieldName} IS NULL OR ${fieldName} NOT LIKE '%${SqlString.escape(value)}%')`;
 }
 
 let attributes = function(model)
@@ -329,4 +329,14 @@ let determineHierarchyIdForChild = function(supplierId, hierarchyId, childHierar
   if (!hierarchyId) return slicedChildHierarchyId;
 
   return [hierarchyId, slicedChildHierarchyId].join('|');
+}
+
+let hierarchyQuery = function(hierarchyId)
+{
+  return [
+    { hierarchyId: { $like: `%|${hierarchyId}` } },
+    { hierarchyId: { $like: `${hierarchyId}|%` } },
+    { hierarchyId: { $like: `%|${hierarchyId}|%` } },
+    { hierarchyId: { $eq: hierarchyId } }
+  ];
 }
