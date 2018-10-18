@@ -16,6 +16,7 @@ module.exports.init = function (db, config) {
         autoIncrement: true,
         field: 'ID'
       },
+      /** id of supplier having the bank account */
       supplierId: {
         type: Sequelize.STRING(50),
         allowNull: false,
@@ -56,6 +57,7 @@ module.exports.init = function (db, config) {
         field: 'BankCode',
         type: Sequelize.STRING(12),
       },
+      /** Name of bank */
       bankName: {
         field: 'BankName',
         type: Sequelize.STRING(50)

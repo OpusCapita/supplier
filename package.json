@@ -93,7 +93,7 @@
     "react-dom": "^15.4.2",
     "react-router": "^3.2.1",
     "rimraf": "2.6.1",
-    "sequelize-to-markdown": "1.1.13",
+    "sequelize-to-markdown": "1.2.5",
     "webpack": "2.5.1"
   }
 }

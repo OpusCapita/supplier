@@ -10,7 +10,8 @@ module.exports.init = function(db, config) {
   let Supplier = db.define('Supplier',
   /** @lends Supplier */
   {
-    /** Unique identifier */
+    /** Unique identifier. It is generated based on name field by stripping spaces and invalid special
+    chars and if required, a number is appended for uniqueness, e.g. OpusCapita Software GmbH -> OpuscapitaSoftwareGmbh */
     id: {
       type: Sequelize.STRING(30),
       primaryKey: true,
@@ -24,6 +25,7 @@ module.exports.init = function(db, config) {
       },
       field: "ID"
     },
+    /** Deprecated. Same as id. */
     supplierId: {
       type: Sequelize.VIRTUAL,
       get: function() {
@@ -32,16 +34,19 @@ module.exports.init = function(db, config) {
         return id;
       }
     },
+    /** supplier id of parent company */
     parentId: {
       allowNull: true,
       type: Sequelize.STRING(30),
       field: "ParentId"
     },
+    /** supplier ids of all parent companies in descending order, seperated by special character | */
     hierarchyId: {
       allowNull: true,
       type: Sequelize.STRING(900),
       field: "HierarchyId"
     },
+    /** Company name */
     name: {
       allowNull: false,
       type: Sequelize.STRING(100),
@@ -50,6 +55,7 @@ module.exports.init = function(db, config) {
         notEmpty: true
       }
     },
+    /** Deprecated. Same as name. */
     supplierName: {
       type: Sequelize.VIRTUAL,
       get: function() {
@@ -58,16 +64,21 @@ module.exports.init = function(db, config) {
         return name;
       }
     },
+    /** Date of establishment */
     foundedOn: {
       allowNull: true,
       type: Sequelize.DATE(),
       field: "FoundedOn"
     },
+    /** company legal form. E.g. Gmbh, AG for Germany*/
     legalForm: {
       allowNull: true,
       type: Sequelize.STRING(250),
       field: "LegalForm"
     },
+    /** Companies are usually registered officially into a commercial register or trading register.
+    The actual rules differ by country but generally allow to uniquely identify a company and
+    inspect some of the related information in a public register. */
     commercialRegisterNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
