@@ -40,7 +40,7 @@ module.exports.init = function(db, config) {
       type: Sequelize.STRING(30),
       field: "ParentId"
     },
-    /** supplier ids of all parent companies in descending order, seperated by special character | */
+    /** supplier ids of all parent companies in descending order, seperated by pipe special character */
     hierarchyId: {
       allowNull: true,
       type: Sequelize.STRING(900),
@@ -70,7 +70,7 @@ module.exports.init = function(db, config) {
       type: Sequelize.DATE(),
       field: "FoundedOn"
     },
-    /** company legal form. E.g. Gmbh, AG for Germany*/
+    /** company legal form. E.g. Gmbh, AG for Germany */
     legalForm: {
       allowNull: true,
       type: Sequelize.STRING(250),
@@ -182,6 +182,7 @@ module.exports.init = function(db, config) {
       type: Sequelize.STRING(100),
       field: "Status"
     },
+    /** Reason for not having a VATID */
     noVatReason: {
       allowNull: true,
       type: Sequelize.STRING(500),
@@ -192,6 +193,7 @@ module.exports.init = function(db, config) {
       type: Sequelize.STRING(2000),
       field: "RejectionReason"
     },
+    /** Code used to identify child companies. Should be used if the child companies have the same VATID */
     subEntityCode: {
       allowNull: true,
       type: Sequelize.STRING(30),
