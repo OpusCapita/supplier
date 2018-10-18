@@ -176,13 +176,13 @@ module.exports.searchRecord = async function(query)
 
   let rawQuery = rawQueryArray.length > 1 ? '(' + rawQueryArray.join(' OR ') + ')' : rawQueryArray[0];
 
-  if (query.id) rawQuery = rawQuery + ` AND Supplier.ID != '${SqlString.escape(query.id)}'`;
+  if (query.id) rawQuery = rawQuery + ` AND Supplier.ID != ${SqlString.escape(query.id)}`;
   if (query.parentId) {
     const motherCustomer = await this.getMotherSupplier(query.parentId);
 
     if (motherCustomer) {
       if (query.notEqual) {
-        rawQuery = rawQuery + ` AND Supplier.ID != '${SqlString.escape(motherCustomer.id)}'`;
+        rawQuery = rawQuery + ` AND Supplier.ID != ${SqlString.escape(motherCustomer.id)}`;
         rawQuery = rawQuery + ` AND ${notLikeSQL('HierarchyId', motherCustomer.id)}`;
       } else {
         rawQuery = rawQuery + ` AND ${likeSQL('HierarchyId', motherCustomer.id)}`;
@@ -281,12 +281,14 @@ let equalSQL = function(fieldName, value)
 
 let likeSQL = function(fieldName, value)
 {
-  return `${fieldName} LIKE '%${SqlString.escape(value)}%'`;
+  const string = `%${value}%`;
+  return `${fieldName} LIKE ${SqlString.escape(string)}`;
 }
 
 let notLikeSQL = function(fieldName, value)
 {
-  return `(${fieldName} IS NULL OR ${fieldName} NOT LIKE '%${SqlString.escape(value)}%')`;
+  const string = `%${value}%`;
+  return `(${fieldName} IS NULL OR ${fieldName} NOT LIKE ${SqlString.escape(string)})`;
 }
 
 let attributes = function(model)
