@@ -98,7 +98,7 @@
                 "message": "A company already exists with this name."
             },
             "registerationNumber": {
-                "message": "A company already exists with this registration number, city and country."
+                "message": "A company already exists with this registration number and country."
             },
             "taxIdNumber": {
                 "message": "A company already exists with this Tax Identification Number and country."

@@ -53,22 +53,18 @@ class SupplierConstraints {
     if (fieldName === 'commercialRegisterNo')
       return {
         commercialRegisterNo: this.constraints['commercialRegisterNo'],
-        cityOfRegistration: this.constraints['cityOfRegistration'],
         countryOfRegistration: this.constraints['countryOfRegistration']
       };
 
     if (fieldName === 'cityOfRegistration')
       return {
         taxIdentificationNo: this.constraints['taxIdentificationNo'],
-        commercialRegisterNo: this.constraints['commercialRegisterNo'],
-        cityOfRegistration: this.constraints['cityOfRegistration'],
-        countryOfRegistration: this.constraints['countryOfRegistration']
+        cityOfRegistration: this.constraints['cityOfRegistration']
       };
 
     if (fieldName === 'countryOfRegistration')
       return {
         commercialRegisterNo: this.constraints['commercialRegisterNo'],
-        cityOfRegistration: this.constraints['cityOfRegistration'],
         countryOfRegistration: this.constraints['countryOfRegistration']
       };
 

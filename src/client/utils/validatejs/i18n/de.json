@@ -98,7 +98,7 @@
                 "message": "Ein Unternehmen existiert bereits mit dieser Name."
             },
             "registerationNumber": {
-                "message": "Ein Unternehmen existiert bereits mit dieser Handelsregisternummer, der Stadt und dem Land."
+                "message": "Ein Unternehmen existiert bereits mit dieser Handelsregisternummer und dem Land."
             },
             "taxIdNumber": {
                 "message": "Ein Unternehmen existiert bereits mit dieser Steueridentifikationsnummer und dem Land."

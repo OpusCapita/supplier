@@ -65,7 +65,6 @@ module.exports.registerationNumberExists = function(validate) {
   return validate.validators.registerationNumberExists = function(value, options, key, attributes) {
     let queryParams = {
       commercialRegisterNo: attributes.commercialRegisterNo,
-      cityOfRegistration: attributes.cityOfRegistration,
       countryOfRegistration: attributes.countryOfRegistration
     };
 
