@@ -37,7 +37,8 @@ module.exports = {
   // devtool: 'source-map',
 
   plugins: [
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|de/)
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|de/),
+    new webpack.NoEmitOnErrorsPlugin()
   ],
 
   resolve: {
