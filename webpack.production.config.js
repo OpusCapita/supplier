@@ -70,7 +70,7 @@ module.exports = {
         ],
         options: {
           presets: [
-            ['env', {modules: false}],
+            ['env', {'targets': {'node': 8, 'uglify': true}, 'modules': false}],
             ['es2015', {modules: false}],
             'react',
             'stage-0'
