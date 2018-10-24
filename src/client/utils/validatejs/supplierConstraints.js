@@ -44,25 +44,13 @@ class SupplierConstraints {
   }
 
   forField(fieldName) {
-    if (fieldName === 'taxIdentificationNo')
+    if (['taxIdentificationNo', 'cityOfRegistration'].includes(fieldName))
       return {
         taxIdentificationNo: this.constraints['taxIdentificationNo'],
         cityOfRegistration: this.constraints['cityOfRegistration']
       };
 
-    if (fieldName === 'commercialRegisterNo')
-      return {
-        commercialRegisterNo: this.constraints['commercialRegisterNo'],
-        countryOfRegistration: this.constraints['countryOfRegistration']
-      };
-
-    if (fieldName === 'cityOfRegistration')
-      return {
-        taxIdentificationNo: this.constraints['taxIdentificationNo'],
-        cityOfRegistration: this.constraints['cityOfRegistration']
-      };
-
-    if (fieldName === 'countryOfRegistration')
+    if (['commercialRegisterNo', 'countryOfRegistration'].includes(fieldName))
       return {
         commercialRegisterNo: this.constraints['commercialRegisterNo'],
         countryOfRegistration: this.constraints['countryOfRegistration']
@@ -74,7 +62,7 @@ class SupplierConstraints {
         vatIdentificationNo: this.constraints['vatIdentificationNo']
       };
 
-    if (['vatIdentificationNo', 'dunsNo', 'globalLocationNo', 'iban', 'ovtNo'].indexOf(fieldName) > -1)
+    if (['vatIdentificationNo', 'dunsNo', 'globalLocationNo', 'iban', 'ovtNo'].includes(fieldName))
       return {
         vatIdentificationNo: this.constraints['vatIdentificationNo'],
         dunsNo: this.constraints['dunsNo'],
@@ -131,6 +119,9 @@ let allConstraints = function(i18n) {
     },
     commercialRegisterNo: {
       presence: false,
+      comRegNumber: {
+        message: i18n.getMessage('SupplierValidatejs.invalid.comRegNumber.message')
+      },
       registerationNumberExists: {
         message: i18n.getMessage('SupplierValidatejs.supplierExists', {
           message: i18n.getMessage('SupplierValidatejs.duplicate.registerationNumber.message')

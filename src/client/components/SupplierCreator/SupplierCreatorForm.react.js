@@ -232,7 +232,6 @@ class SupplierCreatorForm extends Component {
           }) }
 
           { this.renderField({ fieldName: 'legalForm' }) }
-          { this.renderField({ fieldName: 'commercialRegisterNo' }) }
           { this.renderField({ fieldName: 'cityOfRegistration' }) }
           { this.renderField({
             fieldName: 'countryOfRegistration',
@@ -259,6 +258,7 @@ class SupplierCreatorForm extends Component {
               />
             )
           })}
+          { this.renderField({ fieldName: 'commercialRegisterNo' }) }
           { this.renderField({ fieldName: 'taxIdentificationNo' }) }
           { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
           { this.renderField({

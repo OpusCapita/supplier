@@ -193,7 +193,6 @@ class SupplierRegistrationEditorForm extends Component {
             <div className="row">
               <div className="col-md-12">
                 { this.renderField({ fieldName: 'name' }) }
-                { this.renderField({ fieldName: 'commercialRegisterNo' }) }
                 { this.renderField({ fieldName: 'cityOfRegistration' }) }
                 { this.renderField({
                   fieldName: 'countryOfRegistration',
@@ -222,6 +221,7 @@ class SupplierRegistrationEditorForm extends Component {
                   )
                 }) }
 
+                { this.renderField({ fieldName: 'commercialRegisterNo' }) }
                 { this.renderField({ fieldName: 'taxIdentificationNo' }) }
                 { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: Boolean(this.props.supplier.vatIdentificationNo) }) }
                 { this.renderField({

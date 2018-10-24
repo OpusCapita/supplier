@@ -71,6 +71,9 @@
             },
             "isrNumber": {
                 "message": "Value is not valid. It must be maximum 9 digits with format xx-x{1..6}-x. E.g. 02-162-8"
+            },
+            "comRegNumber": {
+                "message": "Value is not a valid Company Register number. Please look at the description."
             }
         },
         "not": {

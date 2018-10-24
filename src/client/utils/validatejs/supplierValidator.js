@@ -40,6 +40,7 @@ let validator = function(validatejs) {
   custom.iban(validatejs);
   custom.uniqueIdentifier(validatejs);
   custom.ovtNumber(validatejs);
+  custom.comRegNumber(validatejs);
   customAsync.supplierNameExists(validatejs);
   customAsync.registerationNumberExists(validatejs);
   customAsync.taxIdNumberExists(validatejs);
