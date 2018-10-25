@@ -88,7 +88,15 @@
             "accessInformation3": "Your request will be forwarded to the administrator managing the company's profile.",
             "accessInformation4": "Once the administrator approves your access request, you will receive an email notification to your registered email address.",
             "information1": "Please provide information that helps us to uniquely identify your company and allows us to add it to our trading partner directory.",
-            "information2": "After providing this information you are ready to login."
+            "information2": "After providing this information you are ready to login.",
+            "companyRegisterNumber": {
+                "text": "*** Companies are usually registered officially into a commercial register or trading register. They differ by country:",
+                "de": "For Germany, it refers to the Commercial Register Number. E.g. Dortmund HRB 1234",
+                "fi": "For Finland, it refers to the Business ID. E.g. 1629284-5",
+                "se": "For Sweden, it refers to the Organization Number. E.g. 556691-8065",
+                "us": "For the US, it refers to the Employer Identification Number. E.g. 10-5434567",
+                "ch": "For Switzerland, it refers to the Enterprise Identification Number. E.g. CHE-105.806.117"
+            }
         },
         "Error": {
             "notUnique": "Value must be unique",

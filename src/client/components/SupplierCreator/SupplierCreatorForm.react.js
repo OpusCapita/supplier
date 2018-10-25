@@ -283,7 +283,6 @@ class SupplierCreatorForm extends Component {
             </div>
           </div>
         </form>
-        <p>{this.context.i18n.getMessage('Supplier.Messages.identifierRequired')}</p>
       </div>
     );
   }

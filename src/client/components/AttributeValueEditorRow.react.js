@@ -18,6 +18,7 @@ export default class AttributeValueEditorRow extends Component {
   static defaultProps = {
     required: false,
     marked: false,
+    marked3: false,
     rowErrors: [],
   };
 
@@ -27,6 +28,16 @@ export default class AttributeValueEditorRow extends Component {
       padding: '6px',
       border: '0px'
     }
+  }
+
+  labelTextString() {
+    const { marked, marked3, required, labelText } = this.props;
+
+    if (required) return labelText + '\u00a0*';
+    if (marked) return labelText + '\u00a0**';
+    if (marked3) return labelText + '\u00a0***';
+
+    return labelText;
   }
 
   handleOnClick(error, event) {
@@ -41,14 +52,7 @@ export default class AttributeValueEditorRow extends Component {
   }
 
   render() {
-    const { marked, required, rowErrors } = this.props;
-    let labelText = this.props.labelText;
-
-    if (required) {
-      labelText += '\u00a0*';
-    } else if (marked) {
-      labelText += '\u00a0**';
-    }
+    const { rowErrors } = this.props;
 
     return (
       <div
@@ -58,7 +62,7 @@ export default class AttributeValueEditorRow extends Component {
         })}
       >
         <label className={`col-sm-4 control-label`}>
-          {labelText}
+          {this.labelTextString()}
         </label>
 
         <div className={`col-sm-8`}>

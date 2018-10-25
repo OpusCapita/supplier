@@ -88,7 +88,15 @@
             "accessInformation3": "Ihre Anfrage wird an den Administrator weitergeleitet, der das Profil des Unternehmens verwaltet.",
             "accessInformation4": "Sobald der Administrator Ihre Zugriffsanforderung genehmigt hat, erhalten Sie eine E-Mail-Benachrichtigung an Ihre registrierte E-Mail-Adresse.",
             "information1": "Bitte hinterlegen Sie hier Informationen zur eindeutigen Identifizierung Ihres Unternehmens.",
-            "information2": "Bitte füllen Sie alle mit Stern markierten Pflichtfelder aus, um mit der Registrierung fortfahren zu können."
+            "information2": "Bitte füllen Sie alle mit Stern markierten Pflichtfelder aus, um mit der Registrierung fortfahren zu können.",
+            "companyRegisterNumber": {
+                "text": "*** Unternehmen werden normalerweise offiziell in ein Handelsregister eingetragen. Sie unterscheiden sich nach Land:",
+                "de": "Für Deutschland bezieht es sich auf die Handelsregisternummer. Z.B. Dortmund HRB 1234",
+                "fi": "Für Finnland bezieht es sich auf die Business ID. Z.B. 1629284-5",
+                "se": "Für Schweden bezieht es sich auf die Organisationsnummer. Z.B. 556691-8065",
+                "us": "In den USA bezieht sich dies auf die Arbeitgeber-Identifikationsnummer. Z.B. 10-5434567",
+                "ch": "Für die Schweiz bezieht es sich auf die Unternehmens-Identifikationsnummer. Z.B. CHE-105.806.117"
+            }
         },
         "Error": {
             "notUnique": "Der Wert darf nur einmal vorkommen",

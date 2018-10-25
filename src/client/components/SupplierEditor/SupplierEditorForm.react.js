@@ -182,7 +182,8 @@ class SupplierEditorForm extends Component {
       <SupplierEditorFormRow
         labelText={ attrs.labelText || this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }
         required={ isRequired }
-        marked = { attrs.marked }
+        marked={ attrs.marked }
+        marked3={ attrs.marked3 }
         rowErrors={ rowErrors }
       >
         { component }
@@ -265,7 +266,7 @@ class SupplierEditorForm extends Component {
               />
             )
           })}
-          { this.renderField({ fieldName: 'commercialRegisterNo' }) }
+          { this.renderField({ fieldName: 'commercialRegisterNo', marked3: true }) }
           { this.renderField({ fieldName: 'taxIdentificationNo' }) }
           { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: !this.userIsAdmin() }) }
           { this.renderField({
@@ -290,7 +291,6 @@ class SupplierEditorForm extends Component {
             </div>
           </div>
         </form>
-        <p>{this.context.i18n.getMessage('Supplier.Messages.identifierRequired')}</p>
       </div>
     );
   }
