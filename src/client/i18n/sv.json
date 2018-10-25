@@ -35,7 +35,7 @@
             "countryOfRegistration": "Land",
             "currencyId": "Valuta",
             "taxIdentificationNo": "Momsregistreringsnummer",
-            "vatIdentificationNo": "Momsregistreringsnummer",
+            "vatIdentificationNo": "Moms ID",
             "globalLocationNo": "Global Location Number",
             "subEntityCode": "Underenhetskod",
             "iban": "IBAN",
