@@ -70,9 +70,9 @@ module.exports = {
           path.join(__dirname, 'src')
         ],
         options: {
+          compact: true,
           presets: [
             ['env', {'targets': {'node': 8, 'uglify': true}, 'modules': false}],
-            ['es2015', {modules: false}],
             'react',
             'stage-0'
           ],
