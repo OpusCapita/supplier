@@ -189,7 +189,7 @@ class SupplierRegistrationEditorForm extends Component {
 
     return (
       <div className="row">
-        <div className="col-md-8">
+        <div className="col-md-7">
           <form className="form-horizontal">
             <div className="row">
               <div className="col-md-12">
@@ -260,7 +260,7 @@ class SupplierRegistrationEditorForm extends Component {
             </div>
           </form>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-5">
           <p>{this.context.i18n.getMessage('Supplier.Messages.information1')}</p>
           <p>{this.context.i18n.getMessage('Supplier.Messages.information2')}</p>
           <p>{this.context.i18n.getMessage('Supplier.Messages.required')}</p>
