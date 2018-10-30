@@ -12,7 +12,8 @@ export default class AttributeValueEditorRow extends Component {
     required: PropTypes.bool,
     rowErrors: PropTypes.array,
     onErrorLinkClick: PropTypes.func,
-    marked: PropTypes.bool
+    marked: PropTypes.bool,
+    marked3: PropTypes.bool
   };
 
   static defaultProps = {
