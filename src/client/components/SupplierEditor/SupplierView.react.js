@@ -33,12 +33,12 @@ export default class SupplierView extends Component {
         { this.renderField({ fieldName: 'homePage' }) }
         { this.renderField({ fieldName: 'foundedOn' }) }
         { this.renderField({ fieldName: 'legalForm' }) }
-        { this.renderField({ fieldName: 'commercialRegisterNo' }) }
         { this.renderField({ fieldName: 'cityOfRegistration' })}
         { this.renderField({
           fieldName: 'countryOfRegistration',
           component: <CountryView countryId={this.props.supplier.countryOfRegistration} />
         }) }
+        { this.renderField({ fieldName: 'commercialRegisterNo' }) }
         { this.renderField({ fieldName: 'taxIdentificationNo' }) }
         { this.renderField({ fieldName: 'vatIdentificationNo' }) }
         { this.renderField({ fieldName: 'globalLocationNo' }) }
