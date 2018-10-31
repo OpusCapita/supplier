@@ -71,6 +71,9 @@
             },
             "isrNumber": {
                 "message": "Der Wert ist nicht gültig. Es muss maximal 9 Ziffern im Format xx-x{1..6}-x enthalten. Z.B. 02-162-8"
+            },
+            "comRegNumber": {
+                "message": "Der Wert ist kein gültiger Handelsregisternummer. Bitte die Beschreibung ansehen."
             }
         },
         "not": {
@@ -98,7 +101,7 @@
                 "message": "Ein Unternehmen existiert bereits mit dieser Name."
             },
             "registerationNumber": {
-                "message": "Ein Unternehmen existiert bereits mit dieser Handelsregisternummer, der Stadt und dem Land."
+                "message": "Ein Unternehmen existiert bereits mit dieser Handelsregisternummer und dem Land."
             },
             "taxIdNumber": {
                 "message": "Ein Unternehmen existiert bereits mit dieser Steueridentifikationsnummer und dem Land."

@@ -174,6 +174,7 @@ class SupplierRegistrationEditorForm extends Component {
         labelText={ attrs.labelText || this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }
         required={ isRequired }
         marked = { attrs.marked }
+        marked3 = { attrs.marked3 }
         rowErrors={ rowErrors }
         onErrorLinkClick={ this.requestSupplierAccess }
       >
@@ -188,12 +189,11 @@ class SupplierRegistrationEditorForm extends Component {
 
     return (
       <div className="row">
-        <div className="col-md-8">
+        <div className="col-md-7">
           <form className="form-horizontal">
             <div className="row">
               <div className="col-md-12">
                 { this.renderField({ fieldName: 'name' }) }
-                { this.renderField({ fieldName: 'commercialRegisterNo' }) }
                 { this.renderField({ fieldName: 'cityOfRegistration' }) }
                 { this.renderField({
                   fieldName: 'countryOfRegistration',
@@ -222,6 +222,7 @@ class SupplierRegistrationEditorForm extends Component {
                   )
                 }) }
 
+                { this.renderField({ fieldName: 'commercialRegisterNo', marked3: true }) }
                 { this.renderField({ fieldName: 'taxIdentificationNo' }) }
                 { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: Boolean(this.props.supplier.vatIdentificationNo) }) }
                 { this.renderField({
@@ -259,10 +260,20 @@ class SupplierRegistrationEditorForm extends Component {
             </div>
           </form>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-5">
           <p>{this.context.i18n.getMessage('Supplier.Messages.information1')}</p>
           <p>{this.context.i18n.getMessage('Supplier.Messages.information2')}</p>
           <p>{this.context.i18n.getMessage('Supplier.Messages.required')}</p>
+          <p>
+            {this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.text')}
+            <ul>
+              <li>{this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.de')}</li>
+              <li>{this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.fi')}</li>
+              <li>{this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.se')}</li>
+              <li>{this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.ch')}</li>
+              <li>{this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.us')}</li>
+            </ul>
+          </p>
         </div>
       </div>
     );

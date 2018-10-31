@@ -176,6 +176,7 @@ class SupplierCreatorForm extends Component {
         labelText={ attrs.labelText || this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }
         required={ isRequired }
         marked = { attrs.marked }
+        marked3 = { attrs.marked3 }
         rowErrors={ rowErrors }
       >
         { component }
@@ -232,7 +233,6 @@ class SupplierCreatorForm extends Component {
           }) }
 
           { this.renderField({ fieldName: 'legalForm' }) }
-          { this.renderField({ fieldName: 'commercialRegisterNo' }) }
           { this.renderField({ fieldName: 'cityOfRegistration' }) }
           { this.renderField({
             fieldName: 'countryOfRegistration',
@@ -259,6 +259,7 @@ class SupplierCreatorForm extends Component {
               />
             )
           })}
+          { this.renderField({ fieldName: 'commercialRegisterNo', marked3: true }) }
           { this.renderField({ fieldName: 'taxIdentificationNo' }) }
           { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
           { this.renderField({
@@ -283,7 +284,6 @@ class SupplierCreatorForm extends Component {
             </div>
           </div>
         </form>
-        <p>{this.context.i18n.getMessage('Supplier.Messages.identifierRequired')}</p>
       </div>
     );
   }

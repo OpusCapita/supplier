@@ -1,4 +1,4 @@
-const { VAT, IBAN, BIC, DUNS, GLN, OVT, ISR } = require('@opuscapita/field-validators');
+const { VAT, IBAN, BIC, DUNS, GLN, OVT, ISR, REGNO } = require('@opuscapita/field-validators');
 
 module.exports.vatNumber = function(validate) {
   return validate.validators.vatNumber = function(value, options, key, attributes) {
@@ -70,6 +70,16 @@ module.exports.isrNumber = function(validate) {
   };
 };
 
+module.exports.comRegNumber = function(validate) {
+  return validate.validators.comRegNumber = function(value, options, key, attributes) {
+    if (!value || !attributes.countryOfRegistration) return null;
+
+    if (REGNO.isValid(value, attributes.countryOfRegistration)) return null;
+
+    return options.message;
+  };
+};
+
 module.exports.uniqueIdentifier = function(validate) {
   return validate.validators.uniqueIdentifier = function(value, options, key, attributes) {
     if (value) return null;
@@ -95,10 +105,14 @@ module.exports.uniqueIdentifier = function(validate) {
 
 module.exports.bicRequired = function(validate) {
   return validate.validators.bicRequired = function(value, options, key, attributes) {
-    if (!attributes.accountNumber) return null;
-
-    if (value && attributes.accountNumber) return null;
-
-    return options.message;
+    return requiredForField(value, attributes.accountNumber, options.message);
   };
+};
+
+let requiredForField = function(requiredField, field, message) {
+  if (!field) return null;
+
+  if (requiredField && field) return null;
+
+  return message;
 };

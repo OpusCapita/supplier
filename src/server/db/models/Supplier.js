@@ -1,6 +1,6 @@
 'use strict';
 const Sequelize = require('sequelize');
-const { VAT, DUNS, GLN, OVT } = require('@opuscapita/field-validators');
+const { VAT, DUNS, GLN, OVT, REGNO } = require('@opuscapita/field-validators');
 
 module.exports.init = function(db, config) {
   /**
@@ -213,6 +213,14 @@ module.exports.init = function(db, config) {
       field: "ChangedOn"
     }
   }, {
+    validate: {
+      validCommercialRegisterNo() {
+        if (!this.commercialRegisterNo || !this.countryOfRegistration) return;
+
+        if (REGNO.isInvalid(this.commercialRegisterNo, this.countryOfRegistration))
+          throw new Error('commercialRegisterNo value is invalid');
+      }
+    },
     getterMethods: {
       _objectLabel: function() {
         return this.supplierName ? this.supplierName + ' (' + this.supplierId + ')' : this.supplierId
