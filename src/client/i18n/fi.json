@@ -3,7 +3,7 @@
         "Button": {
             "add": "Lisää",
             "edit": "Muokkaa",
-            "save": "tallenna",
+            "save": "Tallenna",
             "delete": "Poista",
             "view": "Näkymä",
             "cancel": "Peruuta",
@@ -17,7 +17,8 @@
             "requestAccess": "Käyttöoikeuspyyntö",
             "approve": "Hyväksy",
             "reject": "Hylkää",
-            "search": "Etsi"
+            "search": "Etsi",
+            "publicProfile": "Näytä julkinen profiili"
         },
         "Label": {
             "id": "Yritys ID",
@@ -27,14 +28,16 @@
             "homePage": "Kotisivu",
             "legalForm": "Yritysmuoto",
             "foundedOn": "Perustettu",
-            "taxIdNumber": "TAX ID ",
+            "taxIdNumber": "TAX ID",
             "dunsNo": "DUNS-numero",
+            "ovtNo": "OVT Number",
             "commercialRegisterNo": "Y-tunnus",
             "countryOfRegistration": "Rekisteröintimaa",
             "currencyId": "Oletusvaluutta",
-            "taxIdentificationNo": "TAX ID ",
+            "taxIdentificationNo": "TAX ID",
             "vatIdentificationNo": "ALV-tunnus",
             "globalLocationNo": "Global Location Number",
+            "subEntityCode": "Sub Entity Code",
             "iban": "IBAN",
             "accessReason": "Käyttösyy",
             "searchInput": "Hakukriteerinä Nimi, Kaupunki, ALV-tunnus, Tax id, Y-tunnus, DUNS-numero tai Global Location Number",
@@ -44,6 +47,8 @@
             "company": "Yritys",
             "companyIdentifiers": "Yritystunnisteet",
             "addresses": "Osoitteet",
+            "contacts": "Yhteystiedot",
+            "bankAccounts": "Pankkitilit",
             "type": "Tyyppi"
         },
         "Select": {
@@ -59,7 +64,8 @@
             "address": "Lisää yrityksesi osoitteet tänne.",
             "accessApproval": "Hyväksy tai hylkää käyttäjän käyttöoikeuspyyntö.",
             "BankAccount": "Anna pankkitilisi tiedot.",
-            "contact": "Lisää yrityksesi yhteyshenkilöt."
+            "contact": "Lisää yrityksesi yhteyshenkilöt.",
+            "visibility": "Määritä julkisen profiilin asetukset."
         },
         "Confirmation": {
             "cancel": "Haluatko todella peruuttaa?"
@@ -233,6 +239,20 @@
             },
             "Error": {
                 "userExists": "Käyttäjä on jo olemassa."
+            }
+        },
+        "Visibility": {
+            "Label": {
+                "contacts": "Yhteystiedot",
+                "bankAccounts": "Pankkitilit"
+            },
+            "Type": {
+                "public": "Julkinen",
+                "private": "Yksityinen",
+                "businessPartners": "Liikekumppani"
+            },
+            "Message": {
+                "updateSaved": "Muutokset on tallennettu onnistuneesti."
             }
         },
         "Autocomplete": {

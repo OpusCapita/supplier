@@ -1,0 +1,30 @@
+[
+  {
+    "ID": 911,
+    "SupplierID": "stap_us",
+    "Type": "default",
+    "Name": "Staples US",
+    "Street1": "500 Staples Dr",
+    "City": "Framingham",
+    "State": "MA",
+    "ZipCode": "01702",
+    "CountryID": "US",
+    "EMail": "stap_us@acmemax.com",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "ID": 912,
+    "SupplierID": "stap_us",
+    "Type": "invoice",
+    "Name": "Staples US",
+    "Street1": "500 Staples Dr",
+    "City": "Framingham",
+    "State": "MA",
+    "ZipCode": "01702",
+    "CountryID": "US",
+    "EMail": "stap_us@acmemax.com",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  }
+]

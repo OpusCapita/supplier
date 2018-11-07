@@ -1,0 +1,41 @@
+[
+  {
+    "ID": "copl_us",
+    "Name": "Conference Planning Partners",
+    "CityOfRegistration": "Newport",
+    "CountryOfRegistration": "US",
+    "vatIdentificationNo": "DE123456788",
+    "DUNSNo": "362241676",
+    "CurrencyId": "USD",
+    "Role": "selling",
+    "TaxIdentificationNo": "01-5555555",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "ID": "evpl_us",
+    "Name": "Event Planners LLC",
+    "CityOfRegistration": "Harlan",
+    "CountryOfRegistration": "US",
+    "vatIdentificationNo": "DE123456796",
+    "DUNSNo": "362241676",
+    "CurrencyId": "USD",
+    "Role": "selling",
+    "TaxIdentificationNo": "01-5555555",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  },
+  {
+    "ID": "meev_us",
+    "Name": "Meeting and Events Inc.",
+    "CityOfRegistration": "Seattle",
+    "CountryOfRegistration": "US",
+    "vatIdentificationNo": "DE123456704",
+    "DUNSNo": "362241676",
+    "CurrencyId": "USD",
+    "Role": "selling",
+    "TaxIdentificationNo": "01-5555555",
+    "CreatedBy": "demodata",
+    "ChangedBy": "demodata"
+  }
+]

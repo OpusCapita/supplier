@@ -48,6 +48,9 @@
             "dunsNumber": {
                 "message": "Arvo ei ole kelvollinen DUNS-numero"
             },
+            "ovtNumber": {
+                "message": "Arvo ei ole kelvollinen OVT-numero"
+            },
             "globalLocationNumber": {
                 "message": "Arvo ei ole kelvollinen Global Location Number"
             },
@@ -92,7 +95,7 @@
         },
         "duplicate": {
             "name": {
-                "message": "Tämän niminen yhtiö on jo olemassa."
+                "message": "Tämän niminen yritys on jo olemassa."
             },
             "registerationNumber": {
                 "message": "Yritys on jo olemassa jolla on sama rekisteröintinumero, kaupunki ja maa."
@@ -106,8 +109,14 @@
             "dunsNumber": {
                 "message": "Yritys on jo olemassa jolla on sama DUNS-numero."
             },
+            "ovtNumber": {
+                "message": "Yritys on jo olemassa tällä OVT-numerolla."
+            },
             "globalLocationNumber": {
                 "message": "Yritys on jo olemassa jolla on sama Global Location Number."
+            },
+            "subEntityCode": {
+                "message": "Yrityksellä organisaatiossasi on jo tämä koodi"
             },
             "iban": {
                 "message": "Yritys on jo olemassa jolla on sama IBAN."
@@ -118,6 +127,6 @@
                 "Date": "Arvon on oltava kelvollinen päivämäärä"
             }
         },
-        "supplierExists": "{message}\r\nOta yhteyttä tukeen +49 231 3967 350 tai customerservice.de@opuscapita.com, jotta voit pyytää käyttöoikeutta rekisteröityyn yritykseen. "
+        "supplierExists": "{message}\r\r\nOta yhteyttä tukeen +49 231 3967 350 tai customerservice.de@opuscapita.com, jotta voit pyytää käyttöoikeutta rekisteröityyn yritykseen."
     }
 }
