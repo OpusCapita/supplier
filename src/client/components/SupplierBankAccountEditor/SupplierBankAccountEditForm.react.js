@@ -144,7 +144,7 @@ class SupplierBankAccountEditForm extends Component {
         onBlur={ this.handleBlur.bind(this, fieldName) }
       />;
 
-    let isRequired = fieldNames.some(name => constraints[name] && constraints[name].presence);
+    const isRequired = fieldNames.some(name => constraints[name] && constraints[name].presence);
     let rowErrors = fieldNames.reduce((rez, name) => rez.concat(errors[name] || []), []);
 
     return (

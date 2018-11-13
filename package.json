@@ -36,7 +36,7 @@
     "@opuscapita/i18n": "^1.2.4",
     "@opuscapita/react-dates": "^0.2.16",
     "@opuscapita/react-loaders": "^0.1.9",
-    "@opuscapita/react-select": "1.0.0-oc.2",
+    "@opuscapita/react-select": "2.0.8",
     "@opuscapita/web-init": "^3.0.63",
     "babel-loader": "^7.1.4",
     "babel-runtime": "^6.26.0",

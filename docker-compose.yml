@@ -201,6 +201,7 @@ services:
     depends_on:
       - kong
       - consul
+      - rabbitmq
     command: 'npm run dev'
 
   notification:
