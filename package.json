@@ -48,7 +48,6 @@
     "json-loader": "^0.5.7",
     "less": "^2.7.3",
     "less-loader": "^4.1.0",
-    "lodash": "^4.17.5",
     "ocbesbn-config": "^2.3.3",
     "ocbesbn-logger": "^1.0.5",
     "ocbesbn-redis-events": "^1.0.6",
