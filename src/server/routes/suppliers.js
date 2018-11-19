@@ -151,7 +151,7 @@ let updateSupplier = async function(req, res)
 
     req.body.status = 'updated';
     const supplier = await Supplier.update(supplierId, req.body);
-    await Promise.all([req.opuscapita.eventClient.emit('supplier.supplier.update', supplier), req.opuscapita.eventClient.emit('supplier.supplier.updated', supplier)]);
+    await req.opuscapita.eventClient.emit('supplier.supplier.updated', supplier);
 
     return res.status('200').json(supplier);
   } catch(error) {
