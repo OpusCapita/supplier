@@ -59,7 +59,7 @@ module.exports.create = async function(supplier)
   }
 
   const self = this;
-  let supplierId = supplier.name.replace(/^[0-9\W]+|[^0-9a-z\-]/gi, '').slice(0, 27);
+  let supplierId = supplier.name.replace(/^[0-9\W]+|[^0-9a-z-_]/gi, '').slice(0, 27);
 
   function generateSupplierId(id) {
     return self.exists(id).then(exists => {
