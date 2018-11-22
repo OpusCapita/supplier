@@ -13,13 +13,13 @@ export default class AttributeValueEditorRow extends Component {
     rowErrors: PropTypes.array,
     onErrorLinkClick: PropTypes.func,
     marked: PropTypes.bool,
-    marked3: PropTypes.bool
+    info: PropTypes.string
   };
 
   static defaultProps = {
     required: false,
     marked: false,
-    marked3: false,
+    info: null,
     rowErrors: [],
   };
 
@@ -31,12 +31,24 @@ export default class AttributeValueEditorRow extends Component {
     }
   }
 
+  renderInfo() {
+    return (
+      <a
+        href="#"
+        data-toggle="tooltip"
+        data-placement="auto"
+        data-html="true"
+        title={this.props.info}
+      ><i className="fa fa-info-circle fa-fw" /></a>
+    );
+  }
+
   labelTextString() {
-    const { marked, marked3, required, labelText } = this.props;
+    const { marked, info, required, labelText } = this.props;
 
     if (required) return labelText + '\u00a0*';
     if (marked) return labelText + '\u00a0**';
-    if (marked3) return labelText + '\u00a0***';
+    if (info) return <span>{labelText}{this.renderInfo()}</span>;
 
     return labelText;
   }

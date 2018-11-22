@@ -155,6 +155,19 @@ class SupplierEditorForm extends Component {
 
   userIsAdmin = () => {
     return this.props.userRoles.includes('admin');
+  };
+
+  comRegTooltiptext() {
+    return (
+      `${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.text')}
+      <ul>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.de')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.fi')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.se')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.ch')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.us')}</li>
+      </ul>`
+    );
   }
 
   renderField = (attrs) => {
@@ -183,7 +196,7 @@ class SupplierEditorForm extends Component {
         labelText={ attrs.labelText || this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }
         required={ isRequired }
         marked={ attrs.marked }
-        marked3={ attrs.marked3 }
+        info={ attrs.info }
         rowErrors={ rowErrors }
       >
         { component }
@@ -205,7 +218,7 @@ class SupplierEditorForm extends Component {
 
     return (
       <div>
-        <form className="form-horizontal">
+        <form className="form-horizontal supplier-form">
           {this.renderField({
             fieldName: 'parentId',
             component: (
@@ -266,7 +279,7 @@ class SupplierEditorForm extends Component {
               />
             )
           })}
-          { this.renderField({ fieldName: 'commercialRegisterNo', marked3: true }) }
+          { this.renderField({ fieldName: 'commercialRegisterNo', info: this.comRegTooltiptext() }) }
           { this.renderField({ fieldName: 'taxIdentificationNo' }) }
           { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: !this.userIsAdmin() }) }
           { this.renderField({

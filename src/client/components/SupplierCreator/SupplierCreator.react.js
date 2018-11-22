@@ -111,17 +111,6 @@ class SupplierCreator extends Component {
           <br />
           <br />
           <p>{this.context.i18n.getMessage('Supplier.Messages.identifierRequired')}</p>
-          <br />
-          <p>
-            {this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.text')}
-            <ul>
-              <li>{this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.de')}</li>
-              <li>{this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.fi')}</li>
-              <li>{this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.se')}</li>
-              <li>{this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.ch')}</li>
-              <li>{this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.us')}</li>
-            </ul>
-          </p>
         </div>
       </div>
     );
