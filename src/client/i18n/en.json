@@ -198,7 +198,7 @@
                 "deleteFailed": "Failed to delete bank account, perhaps it is already in use.",
                 "saveFailed": "Bank account save failed.",
                 "updateFailed": "Bank account update failed.",
-                "identifierRequired": "** Please provide your IBAN. If your company is in Sweden and you don't have one, then provide your bankgiro or plusgiro."
+                "identifierRequired": "Please provide your IBAN. If your company is in Sweden and you don't have one, then provide your bankgiro or plusgiro."
             }
         },
         "Contact": {

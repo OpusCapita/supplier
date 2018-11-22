@@ -45,12 +45,13 @@ export default class AttributeValueEditorRow extends Component {
 
   labelTextString() {
     const { marked, info, required, labelText } = this.props;
+    let text = labelText;
 
-    if (required) return labelText + '\u00a0*';
-    if (marked) return labelText + '\u00a0**';
-    if (info) return <span>{labelText}{this.renderInfo()}</span>;
+    if (required) { text = text + '\u00a0*'; }
+    if (marked) { text = text + '\u00a0**'; }
+    if (info) { text = <span>{text}{this.renderInfo()}</span>; }
 
-    return labelText;
+    return text;
   }
 
   handleOnClick(error, event) {
