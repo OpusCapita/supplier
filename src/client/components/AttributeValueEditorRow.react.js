@@ -38,7 +38,7 @@ export default class AttributeValueEditorRow extends Component {
         data-toggle="tooltip"
         data-placement="auto"
         data-html="true"
-        title={this.props.info}
+        data-title={this.props.info}
       ><i className="fa fa-info-circle fa-fw" /></a>
     );
   }
