@@ -219,6 +219,8 @@ class SupplierRegistrationEditorForm extends Component {
                 />
               )
             }) }
+            { this.renderField({ fieldName: 'commercialRegisterNo', info: this.comRegTooltiptext() }) }
+            { this.renderField({ fieldName: 'taxIdentificationNo' }) }
             { this.renderField({
               fieldName: 'currencyId',
               component: (
@@ -232,9 +234,6 @@ class SupplierRegistrationEditorForm extends Component {
                 />
               )
             }) }
-
-            { this.renderField({ fieldName: 'commercialRegisterNo', info: this.comRegTooltiptext() }) }
-            { this.renderField({ fieldName: 'taxIdentificationNo' }) }
           </div>
           <div className="col-md-6">
             { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: Boolean(this.props.supplier.vatIdentificationNo) }) }
