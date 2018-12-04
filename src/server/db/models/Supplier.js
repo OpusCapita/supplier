@@ -195,6 +195,12 @@ module.exports.init = function(db, config) {
       type: Sequelize.STRING(30),
       field: 'SubEntityCode'
     },
+    /** Boolean used to identify if a supplier account is managed by a user or not. */
+    managed: {
+      allowNull: true,
+      type: Sequelize.BOOLEAN,
+      defaultValue : true
+    },
     changedBy: {
       type: Sequelize.STRING(60),
       field: "ChangedBy"
