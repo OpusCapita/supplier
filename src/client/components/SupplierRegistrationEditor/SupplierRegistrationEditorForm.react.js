@@ -201,9 +201,9 @@ class SupplierRegistrationEditorForm extends Component {
     const { CountryField, CurrencyField } = this.externalComponents;
 
     return (
-      <div className="row">
-        <div className="col-md-7">
-          <form className="form-horizontal .supplier-form">
+      <form className="form-horizontal .supplier-form">
+        <div className="row">
+          <div className="col-md-6">
             { this.renderField({ fieldName: 'name' }) }
             { this.renderField({ fieldName: 'cityOfRegistration' }) }
             { this.renderField({
@@ -235,6 +235,8 @@ class SupplierRegistrationEditorForm extends Component {
 
             { this.renderField({ fieldName: 'commercialRegisterNo', info: this.comRegTooltiptext() }) }
             { this.renderField({ fieldName: 'taxIdentificationNo' }) }
+          </div>
+          <div className="col-md-6">
             { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: Boolean(this.props.supplier.vatIdentificationNo) }) }
             { this.renderField({
               fieldName: 'noVatReason',
@@ -250,31 +252,25 @@ class SupplierRegistrationEditorForm extends Component {
             { this.renderField({ fieldName: 'dunsNo', marked: true, disabled: Boolean(this.props.supplier.dunsNo)}) }
             { this.renderField({ fieldName: 'ovtNo', marked: true, disabled: Boolean(this.props.supplier.ovtNo)}) }
             { this.renderField({ fieldName: 'iban', marked: true }) }
-
-            <div className='supplier-registration-form-submit'>
-              <div className='text-right form-submit'>
-                <ActionButton
-                  id='supplier-registration__cancel'
-                  style='link'
-                  onClick={this.handleCancel}
-                  label={this.context.i18n.getMessage('Supplier.Button.cancel')}
-                />
-                <ActionButton
-                  id='supplier-registration__continue'
-                  style='primary'
-                  onClick={this.handleUpdate}
-                  label={this.context.i18n.getMessage('Supplier.Button.continue')}
-                />
-              </div>
-            </div>
-          </form>
+          </div>
         </div>
-        <div className="col-md-5">
-          <p>{this.context.i18n.getMessage('Supplier.Messages.information1')}</p>
-          <p>{this.context.i18n.getMessage('Supplier.Messages.information2')}</p>
-          <p>{this.context.i18n.getMessage('Supplier.Messages.required')}</p>
+        <div className='supplier-registration-form-submit'>
+          <div className='text-right form-submit'>
+            <ActionButton
+              id='supplier-registration__cancel'
+              style='link'
+              onClick={this.handleCancel}
+              label={this.context.i18n.getMessage('Supplier.Button.cancel')}
+            />
+            <ActionButton
+              id='supplier-registration__continue'
+              style='primary'
+              onClick={this.handleUpdate}
+              label={this.context.i18n.getMessage('Supplier.Button.continue')}
+            />
+          </div>
         </div>
-      </div>
+      </form>
     );
   }
 }
