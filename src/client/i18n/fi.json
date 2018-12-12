@@ -87,8 +87,16 @@
             "accessInformation2": "Anna kelvollinen perustelu käyttöoikeutta varten.",
             "accessInformation3": "Pyyntösi välitetään yrityksen profiilin järjestelmänvalvojalle.",
             "accessInformation4": "Kun järjestelmänvalvoja hyväksyy käyttöoikeuspyynnön, saat viestin rekisteröityyn sähköpostiosoitteeseen.",
-            "information1": "Anna meille tietoja, joiden avulla voimme yksilöllisesti tunnistaa yrityksesi ja lisätä sen hakemistoon.",
-            "information2": "Kun olet antanut nämä tiedot, voit kirjautua sisään."
+            "information1": "Syötä tiedot joiden avulla voimme yksilöllisesti tunnistaa yrityksesi ja lisätä sen hakemistoon.",
+            "information2": "Kun olet antanut nämä tiedot, voit kirjautua sisään.",
+            "companyRegisterNumber": {
+                "text": "*** Yritykset rekisteröidään virallisesti kaupparekisteriin. Ne eroavat maittain:",
+                "de": "Saksassa se on Commercial Register Number. Esim. Dortmund HRB 1234",
+                "fi": "Suomessa se on Y-tunnus. Esim. 1629284-5",
+                "se": "Ruotsissa se on Org.nummer. Esim. 556691-8065",
+                "us": "Yhdysvalloissa se on Employer Identification Number. Esim. 10-5434567",
+                "ch": "Sveitsissä se on Enterprise Identification Number. Esim CHE-105.806.117"
+            }
         },
         "Error": {
             "notUnique": "Arvon on oltava yksilöllinen",
