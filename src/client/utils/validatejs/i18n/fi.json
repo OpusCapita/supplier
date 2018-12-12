@@ -71,8 +71,7 @@
             },
             "isrNumber": {
                 "message": "Arvo ei ole kelvollinen. Sen on oltava enintään 9 merkkiä xx-x{1..6}-x muodossa. Esim. 02-162-8"
-            },
-            "comRegNumber": {}
+            }
         },
         "not": {
             "inlist": {
