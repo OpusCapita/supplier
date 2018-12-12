@@ -17,6 +17,7 @@
             "requestAccess": "Request Access",
             "approve": "Approve",
             "reject": "Reject",
+            "reset": "Reset",
             "search": "Search",
             "publicProfile": "View public profile"
         },
