@@ -71,7 +71,8 @@
             },
             "isrNumber": {
                 "message": "Arvo ei ole kelvollinen. Sen on oltava enintään 9 merkkiä xx-x{1..6}-x muodossa. Esim. 02-162-8"
-            }
+            },
+            "comRegNumber": {}
         },
         "not": {
             "inlist": {
@@ -127,6 +128,6 @@
                 "Date": "Arvon on oltava kelvollinen päivämäärä"
             }
         },
-        "supplierExists": "{message}\r\r\nOta yhteyttä tukeen +49 231 3967 350 tai customerservice.de@opuscapita.com, jotta voit pyytää käyttöoikeutta rekisteröityyn yritykseen."
+        "supplierExists": "{message}\r\r\r\nOta yhteyttä tukeen +49 231 3967 350 tai customerservice.de@opuscapita.com, jotta voit pyytää käyttöoikeutta rekisteröityyn yritykseen."
     }
 }
