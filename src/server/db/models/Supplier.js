@@ -1,6 +1,6 @@
 'use strict';
 const Sequelize = require('sequelize');
-const { VAT, DUNS, GLN, OVT, REGNO } = require('@opuscapita/field-validators');
+const { VAT, DUNS, GLN, OVT, REGNO, TENANTID } = require('@opuscapita/field-validators');
 
 module.exports.init = function(db, config) {
   /**
@@ -17,9 +17,8 @@ module.exports.init = function(db, config) {
       allowNull: false,
       validate: {
         isValid(value) {
-          if (value.match(/^[a-zA-Z]+[a-zA-Z0-9-]*[a-zA-Z0-9]+$/g)) return;
-
-          throw new Error('ID is invalid. Only characters, hyphens and numbers are allowed. may not start with number or hyphen.');
+          if (TENANTID.isInvalid(value))
+            throw new Error('ID is invalid. Only characters, hyphens, underscore and numbers are allowed. May not start with number, hyphen or underscore. May not end with hyphen or underscore.');
         }
       },
       field: "ID"
@@ -195,6 +194,12 @@ module.exports.init = function(db, config) {
       allowNull: true,
       type: Sequelize.STRING(30),
       field: 'SubEntityCode'
+    },
+    /** Boolean used to identify if a supplier account is managed by a user or not. */
+    managed: {
+      allowNull: true,
+      type: Sequelize.BOOLEAN,
+      defaultValue : true
     },
     changedBy: {
       type: Sequelize.STRING(60),

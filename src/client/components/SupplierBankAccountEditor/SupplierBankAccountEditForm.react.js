@@ -144,7 +144,7 @@ class SupplierBankAccountEditForm extends Component {
         onBlur={ this.handleBlur.bind(this, fieldName) }
       />;
 
-    let isRequired = fieldNames.some(name => constraints[name] && constraints[name].presence);
+    const isRequired = fieldNames.some(name => constraints[name] && constraints[name].presence);
     let rowErrors = fieldNames.reduce((rez, name) => rez.concat(errors[name] || []), []);
 
     return (
@@ -152,6 +152,7 @@ class SupplierBankAccountEditForm extends Component {
         labelText={ this.context.i18n.getMessage(`Supplier.BankAccount.Label.${fieldName}`) }
         required={ isRequired }
         marked = { attrs.marked }
+        info={ attrs.info }
         rowErrors={ rowErrors }
       >
         { component }
@@ -167,7 +168,11 @@ class SupplierBankAccountEditForm extends Component {
       <div>
         <form className='form-horizontal' onSubmit={this.handleSaveOrUpdate}>
           { this.renderField({ fieldName: 'bankName' }) }
-          { this.renderField({ fieldName: 'accountNumber', marked: true }) }
+          { this.renderField({
+            fieldName: 'accountNumber',
+            marked: true,
+            info: this.context.i18n.getMessage('Supplier.BankAccount.Message.identifierRequired')
+          }) }
           { this.renderField({ fieldName: 'bankIdentificationCode' }) }
           { this.renderField({ fieldName: 'bankCode' }) }
           { this.renderField({
@@ -202,7 +207,7 @@ class SupplierBankAccountEditForm extends Component {
             />
           </div>
         </form>
-        <p>{this.context.i18n.getMessage('Supplier.BankAccount.Message.identifierRequired')}</p>
+        <p>** {this.context.i18n.getMessage('Supplier.BankAccount.Message.identifierRequired')}</p>
       </div>
     );
   }
