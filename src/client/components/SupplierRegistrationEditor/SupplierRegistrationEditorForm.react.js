@@ -188,6 +188,7 @@ class SupplierRegistrationEditorForm extends Component {
         required={ isRequired }
         marked = { attrs.marked }
         info = { attrs.info }
+        helpText = { attrs.helpText }
         rowErrors={ rowErrors }
         onErrorLinkClick={ this.requestSupplierAccess }
       >
@@ -198,6 +199,7 @@ class SupplierRegistrationEditorForm extends Component {
 
   render() {
     const { supplier } = this.state;
+    const { i18n } = this.context;
     const { CountryField, CurrencyField } = this.externalComponents;
 
     return (
@@ -205,9 +207,10 @@ class SupplierRegistrationEditorForm extends Component {
         <div className="row">
           <div className="col-md-6">
             { this.renderField({ fieldName: 'name' }) }
-            { this.renderField({ fieldName: 'cityOfRegistration' }) }
+            { this.renderField({ fieldName: 'cityOfRegistration', helpText: i18n.getMessage('Supplier.Messages.cityOfRegistration.helpText') }) }
             { this.renderField({
               fieldName: 'countryOfRegistration',
+              helpText: i18n.getMessage('Supplier.Messages.countryOfRegistration.helpText'),
               component: (
                 <CountryField
                   actionUrl=''
@@ -219,7 +222,11 @@ class SupplierRegistrationEditorForm extends Component {
                 />
               )
             }) }
-            { this.renderField({ fieldName: 'commercialRegisterNo', info: this.comRegTooltiptext() }) }
+            { this.renderField({
+              fieldName: 'commercialRegisterNo',
+              info: this.comRegTooltiptext(),
+              helpText: i18n.getMessage('Supplier.Messages.companyRegisterNumber.helpText')
+            }) }
             { this.renderField({ fieldName: 'taxIdentificationNo' }) }
             { this.renderField({
               fieldName: 'currencyId',

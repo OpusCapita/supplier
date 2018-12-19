@@ -96,7 +96,14 @@
                 "fi": "Für Finnland bezieht es sich auf die Business ID. Z.B. 1629284-5",
                 "se": "Für Schweden bezieht es sich auf die Organisationsnummer. Z.B. 556691-8065",
                 "us": "In den USA bezieht sich dies auf die Arbeitgeber-Identifikationsnummer. Z.B. 10-5434567",
-                "ch": "Für die Schweiz bezieht es sich auf die Unternehmens-Identifikationsnummer. Z.B. CHE-105.806.117"
+                "ch": "Für die Schweiz bezieht es sich auf die Unternehmens-Identifikationsnummer. Z.B. CHE-105.806.117",
+                "helpText": "Handelsregister-Nummer der Firma, die Sie registrieren."
+            },
+            "cityOfRegistration": {
+                "helpText": "Die Stadt, in der die Firma, die Sie registrieren Ihren Sitz hat."
+            },
+            "countryOfRegistration": {
+                "helpText": "Das Land, in der die Firma, die Sie registrieren Ihren Sitz hat."
             }
         },
         "Error": {
