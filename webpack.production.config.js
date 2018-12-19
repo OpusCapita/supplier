@@ -37,7 +37,8 @@ module.exports = {
   // devtool: 'source-map',
 
   plugins: [
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|de/)
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|de/),
+    new webpack.NoEmitOnErrorsPlugin()
   ],
 
   resolve: {
@@ -69,9 +70,9 @@ module.exports = {
           path.join(__dirname, 'src')
         ],
         options: {
+          compact: true,
           presets: [
-            ['env', {modules: false}],
-            ['es2015', {modules: false}],
+            ['env', {'targets': {'node': 8, 'uglify': true}, 'modules': false}],
             'react',
             'stage-0'
           ],

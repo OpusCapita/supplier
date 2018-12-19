@@ -79,20 +79,6 @@ class SupplierCreator extends Component {
     });
   }
 
-  renderAction() {
-    if (this.userAbilities.canCreateSupplier()) {
-      return (<SupplierCreatorForm
-                {...this.props}
-                supplier={ this.state.supplier }
-                onSupplierCreate={ this.handleUpdate }
-                onChange={ this.handleChange }
-                onCancel={ this.props.onLogout }
-              />);
-    }
-
-    return <div className="alert alert-danger">{this.context.i18n.getMessage('Supplier.Error.notAuthorized')}</div>;
-  }
-
   render() {
     const { hasErrors } = this.state;
 
@@ -102,13 +88,29 @@ class SupplierCreator extends Component {
       );
     }
 
+    if (!this.userAbilities.canCreateSupplier())
+      return <div className="alert alert-danger">{this.context.i18n.getMessage('Supplier.Error.notAuthorized')}</div>;
+
     return (
       <div className="row">
         <div className="col-sm-6">
           <h4 className="tab-description">
             { this.context.i18n.getMessage(`Supplier.Heading.createSupplier`) }
           </h4>
-          {this.renderAction()}
+          <SupplierCreatorForm
+            {...this.props}
+            supplier={ this.state.supplier }
+            onSupplierCreate={ this.handleUpdate }
+            onChange={ this.handleChange }
+            onCancel={ this.props.onLogout }
+          />
+        </div>
+        <div className="col-sm-6">
+          <br />
+          <br />
+          <br />
+          <br />
+          <p>{this.context.i18n.getMessage('Supplier.Messages.identifierRequired')}</p>
         </div>
       </div>
     );

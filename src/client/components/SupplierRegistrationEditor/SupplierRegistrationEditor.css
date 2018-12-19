@@ -14,12 +14,16 @@
 }
 
 #supplier-registration {
-  width: 87%;
   margin-top: 15px;
   padding: 3%;
   text-align: left;
   z-index: 3;
   background-color: white;
+}
+
+#supplier-registration .tooltip .tooltip-inner {
+  text-align: left;
+  min-width: 350px;
 }
 
 .supplier-registration-form-submit {

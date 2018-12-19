@@ -1,6 +1,6 @@
 'use strict';
 const Sequelize = require('sequelize');
-const { VAT, DUNS, GLN, OVT } = require('@opuscapita/field-validators');
+const { VAT, DUNS, GLN, OVT, REGNO, TENANTID } = require('@opuscapita/field-validators');
 
 module.exports.init = function(db, config) {
   /**
@@ -10,20 +10,20 @@ module.exports.init = function(db, config) {
   let Supplier = db.define('Supplier',
   /** @lends Supplier */
   {
-    /** Unique identifier */
+    /** Unique identifier. It is generated based on name field by stripping spaces and invalid special chars and if required, a number is appended for uniqueness, e.g. OpusCapita Software GmbH -> OpuscapitaSoftwareGmbh */
     id: {
       type: Sequelize.STRING(30),
       primaryKey: true,
       allowNull: false,
       validate: {
         isValid(value) {
-          if (value.match(/^[a-zA-Z]+[a-zA-Z0-9-]*[a-zA-Z0-9]+$/g)) return;
-
-          throw new Error('ID is invalid. Only characters, hyphens and numbers are allowed. may not start with number or hyphen.');
+          if (TENANTID.isInvalid(value))
+            throw new Error('ID is invalid. Only characters, hyphens, underscore and numbers are allowed. May not start with number, hyphen or underscore. May not end with hyphen or underscore.');
         }
       },
       field: "ID"
     },
+    /** Deprecated. Same as id. */
     supplierId: {
       type: Sequelize.VIRTUAL,
       get: function() {
@@ -32,16 +32,19 @@ module.exports.init = function(db, config) {
         return id;
       }
     },
+    /** supplier id of parent company */
     parentId: {
       allowNull: true,
       type: Sequelize.STRING(30),
       field: "ParentId"
     },
+    /** supplier ids of all parent companies in descending order, seperated by pipe special character */
     hierarchyId: {
       allowNull: true,
       type: Sequelize.STRING(900),
       field: "HierarchyId"
     },
+    /** Company name */
     name: {
       allowNull: false,
       type: Sequelize.STRING(100),
@@ -50,6 +53,7 @@ module.exports.init = function(db, config) {
         notEmpty: true
       }
     },
+    /** Deprecated. Same as name. */
     supplierName: {
       type: Sequelize.VIRTUAL,
       get: function() {
@@ -58,16 +62,19 @@ module.exports.init = function(db, config) {
         return name;
       }
     },
+    /** Date of establishment */
     foundedOn: {
       allowNull: true,
       type: Sequelize.DATE(),
       field: "FoundedOn"
     },
+    /** company legal form. E.g. Gmbh, AG for Germany */
     legalForm: {
       allowNull: true,
       type: Sequelize.STRING(250),
       field: "LegalForm"
     },
+    /** Companies are usually registered officially into a commercial register or trading register. The actual rules differ by country but generally allow to uniquely identify a company and inspect some of the related information in a public register. */
     commercialRegisterNo: {
       allowNull: true,
       type: Sequelize.STRING(250),
@@ -171,6 +178,7 @@ module.exports.init = function(db, config) {
       type: Sequelize.STRING(100),
       field: "Status"
     },
+    /** Reason for not having a VATID */
     noVatReason: {
       allowNull: true,
       type: Sequelize.STRING(500),
@@ -181,6 +189,7 @@ module.exports.init = function(db, config) {
       type: Sequelize.STRING(2000),
       field: "RejectionReason"
     },
+    /** Code used to identify child companies. Should be used if the child companies have the same VATID */
     subEntityCode: {
       allowNull: true,
       type: Sequelize.STRING(30),
@@ -203,6 +212,14 @@ module.exports.init = function(db, config) {
       field: "ChangedOn"
     }
   }, {
+    validate: {
+      validCommercialRegisterNo() {
+        if (!this.commercialRegisterNo || !this.countryOfRegistration) return;
+
+        if (REGNO.isInvalid(this.commercialRegisterNo, this.countryOfRegistration))
+          throw new Error('commercialRegisterNo value is invalid');
+      }
+    },
     getterMethods: {
       _objectLabel: function() {
         return this.supplierName ? this.supplierName + ' (' + this.supplierId + ')' : this.supplierId

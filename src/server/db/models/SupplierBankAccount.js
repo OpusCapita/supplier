@@ -16,6 +16,7 @@ module.exports.init = function (db, config) {
         autoIncrement: true,
         field: 'ID'
       },
+      /** id of supplier having the bank account */
       supplierId: {
         type: Sequelize.STRING(50),
         allowNull: false,
@@ -56,6 +57,7 @@ module.exports.init = function (db, config) {
         field: 'BankCode',
         type: Sequelize.STRING(12),
       },
+      /** Name of bank */
       bankName: {
         field: 'BankName',
         type: Sequelize.STRING(50)
@@ -70,12 +72,7 @@ module.exports.init = function (db, config) {
         field: 'Plusgiro',
         type: Sequelize.STRING(30)
       },
-      /** A maximum 9-digit ISR party number under Swiss IBAN. Switzerland has special legal banking
-      requirements such as to print ISR Payment Slip from sales Invoices. The ISR Payment Slip is an
-      In-payment Slip with Reference Number (ISR or ESR in Swiss German) to facilitate customer to
-      pay Invoice in Swiss Franc or in Euro in simple manner.
-      References: https://www.six-group.com/interbank-clearing/dam/downloads/en/standardization/iso/swiss-recommendations/archives/swiss-usage-guide.pdf
-      and https://advendio.atlassian.net/wiki/spaces/SO/pages/130195958/6.1.9+Generate+Swiss+ISR+Code+ESR+Code */
+      /** A maximum 9-digit ISR party number under Swiss IBAN. Switzerland has special legal banking requirements such as to print ISR Payment Slip from sales Invoices. The ISR Payment Slip is an In-payment Slip with Reference Number (ISR or ESR in Swiss German) to facilitate customer to pay Invoice in Swiss Franc or in Euro in simple manner. References: https://www.six-group.com/interbank-clearing/dam/downloads/en/standardization/iso/swiss-recommendations/archives/swiss-usage-guide.pdf and https://advendio.atlassian.net/wiki/spaces/SO/pages/130195958/6.1.9+Generate+Swiss+ISR+Code+ESR+Code */
       isrNumber: {
         field: 'ISRNumber',
         type: Sequelize.STRING(11),

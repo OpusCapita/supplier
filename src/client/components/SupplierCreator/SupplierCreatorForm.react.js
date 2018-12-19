@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import './SupplierCreator.css';
 import SupplierCreatorFormRow from '../AttributeValueEditorRow.react.js';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import DateInput from '@opuscapita/react-dates/lib/DateInput';
@@ -151,6 +152,19 @@ class SupplierCreatorForm extends Component {
     this.setState({hasVATId: !this.state.hasVATId});
   };
 
+  comRegTooltiptext() {
+    return (
+      `${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.text')}
+      <ul>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.de')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.fi')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.se')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.ch')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.us')}</li>
+      </ul>`
+    );
+  }
+
   renderField = (attrs) => {
     const { supplier, fieldErrors } = this.state;
     const { fieldName } = attrs;
@@ -176,6 +190,7 @@ class SupplierCreatorForm extends Component {
         labelText={ attrs.labelText || this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }
         required={ isRequired }
         marked = { attrs.marked }
+        info = { attrs.info }
         rowErrors={ rowErrors }
       >
         { component }
@@ -197,7 +212,7 @@ class SupplierCreatorForm extends Component {
 
     return (
       <div>
-        <form className="form-horizontal">
+        <form className="form-horizontal supplier-form">
           {this.renderField({
             fieldName: 'parentId',
             component: (
@@ -232,7 +247,6 @@ class SupplierCreatorForm extends Component {
           }) }
 
           { this.renderField({ fieldName: 'legalForm' }) }
-          { this.renderField({ fieldName: 'commercialRegisterNo' }) }
           { this.renderField({ fieldName: 'cityOfRegistration' }) }
           { this.renderField({
             fieldName: 'countryOfRegistration',
@@ -259,6 +273,7 @@ class SupplierCreatorForm extends Component {
               />
             )
           })}
+          { this.renderField({ fieldName: 'commercialRegisterNo', info: this.comRegTooltiptext() }) }
           { this.renderField({ fieldName: 'taxIdentificationNo' }) }
           { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
           { this.renderField({
@@ -283,7 +298,6 @@ class SupplierCreatorForm extends Component {
             </div>
           </div>
         </form>
-        <p>{this.context.i18n.getMessage('Supplier.Messages.identifierRequired')}</p>
       </div>
     );
   }

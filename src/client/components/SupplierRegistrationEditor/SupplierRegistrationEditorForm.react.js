@@ -148,6 +148,19 @@ class SupplierRegistrationEditorForm extends Component {
     this.setState({hasVATId: !this.state.hasVATId});
   };
 
+  comRegTooltiptext() {
+    return (
+      `${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.text')}
+      <ul>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.de')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.fi')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.se')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.ch')}</li>
+        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.us')}</li>
+      </ul>`
+    );
+  }
+
   renderField = (attrs) => {
     const { supplier, fieldErrors } = this.state;
     const { fieldName } = attrs;
@@ -174,6 +187,7 @@ class SupplierRegistrationEditorForm extends Component {
         labelText={ attrs.labelText || this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }
         required={ isRequired }
         marked = { attrs.marked }
+        info = { attrs.info }
         rowErrors={ rowErrors }
         onErrorLinkClick={ this.requestSupplierAccess }
       >
@@ -188,78 +202,74 @@ class SupplierRegistrationEditorForm extends Component {
 
     return (
       <div className="row">
-        <div className="col-md-8">
-          <form className="form-horizontal">
-            <div className="row">
-              <div className="col-md-12">
-                { this.renderField({ fieldName: 'name' }) }
-                { this.renderField({ fieldName: 'commercialRegisterNo' }) }
-                { this.renderField({ fieldName: 'cityOfRegistration' }) }
-                { this.renderField({
-                  fieldName: 'countryOfRegistration',
-                  component: (
-                    <CountryField
-                      actionUrl=''
-                      value={supplier.countryOfRegistration}
-                      onChange={this.handleChange.bind(this, 'countryOfRegistration')}
-                      onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
-                      optional={true}
-                      locale={this.context.i18n.locale}
-                    />
-                  )
-                }) }
-                { this.renderField({
-                  fieldName: 'currencyId',
-                  component: (
-                    <CurrencyField
-                      actionUrl=''
-                      value={supplier.currencyId}
-                      onChange={this.handleChange.bind(this, 'currencyId')}
-                      onBlur={this.handleBlur.bind(this, 'currencyId')}
-                      optional={true}
-                      locale={this.context.i18n.locale}
-                    />
-                  )
-                }) }
+        <div className="col-md-7">
+          <form className="form-horizontal .supplier-form">
+            { this.renderField({ fieldName: 'name' }) }
+            { this.renderField({ fieldName: 'cityOfRegistration' }) }
+            { this.renderField({
+              fieldName: 'countryOfRegistration',
+              component: (
+                <CountryField
+                  actionUrl=''
+                  value={supplier.countryOfRegistration}
+                  onChange={this.handleChange.bind(this, 'countryOfRegistration')}
+                  onBlur={this.handleBlur.bind(this, 'countryOfRegistration')}
+                  optional={true}
+                  locale={this.context.i18n.locale}
+                />
+              )
+            }) }
+            { this.renderField({
+              fieldName: 'currencyId',
+              component: (
+                <CurrencyField
+                  actionUrl=''
+                  value={supplier.currencyId}
+                  onChange={this.handleChange.bind(this, 'currencyId')}
+                  onBlur={this.handleBlur.bind(this, 'currencyId')}
+                  optional={true}
+                  locale={this.context.i18n.locale}
+                />
+              )
+            }) }
 
-                { this.renderField({ fieldName: 'taxIdentificationNo' }) }
-                { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: Boolean(this.props.supplier.vatIdentificationNo) }) }
-                { this.renderField({
-                  fieldName: 'noVatReason',
-                  labelText: ' ',
-                  component: (
-                    <p>
-                      <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange} disabled={Boolean(this.props.supplier.vatIdentificationNo)}></input>
-                      {this.context.i18n.getMessage('Supplier.Messages.noVatId')}
-                    </p>
-                  )
-                }) }
-                { this.renderField({ fieldName: 'globalLocationNo', marked: true, disabled: Boolean(this.props.supplier.globalLocationNo) }) }
-                { this.renderField({ fieldName: 'dunsNo', marked: true, disabled: Boolean(this.props.supplier.dunsNo)}) }
-                { this.renderField({ fieldName: 'ovtNo', marked: true, disabled: Boolean(this.props.supplier.ovtNo)}) }
-                { this.renderField({ fieldName: 'iban', marked: true }) }
+            { this.renderField({ fieldName: 'commercialRegisterNo', info: this.comRegTooltiptext() }) }
+            { this.renderField({ fieldName: 'taxIdentificationNo' }) }
+            { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: Boolean(this.props.supplier.vatIdentificationNo) }) }
+            { this.renderField({
+              fieldName: 'noVatReason',
+              labelText: ' ',
+              component: (
+                <p>
+                  <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange} disabled={Boolean(this.props.supplier.vatIdentificationNo)}></input>
+                  {this.context.i18n.getMessage('Supplier.Messages.noVatId')}
+                </p>
+              )
+            }) }
+            { this.renderField({ fieldName: 'globalLocationNo', marked: true, disabled: Boolean(this.props.supplier.globalLocationNo) }) }
+            { this.renderField({ fieldName: 'dunsNo', marked: true, disabled: Boolean(this.props.supplier.dunsNo)}) }
+            { this.renderField({ fieldName: 'ovtNo', marked: true, disabled: Boolean(this.props.supplier.ovtNo)}) }
+            { this.renderField({ fieldName: 'iban', marked: true }) }
 
-                <div className='supplier-registration-form-submit'>
-                  <div className='text-right form-submit'>
-                    <ActionButton
-                      id='supplier-registration__cancel'
-                      style='link'
-                      onClick={this.handleCancel}
-                      label={this.context.i18n.getMessage('Supplier.Button.cancel')}
-                    />
-                    <ActionButton
-                      id='supplier-registration__continue'
-                      style='primary'
-                      onClick={this.handleUpdate}
-                      label={this.context.i18n.getMessage('Supplier.Button.continue')}
-                    />
-                  </div>
-                </div>
+            <div className='supplier-registration-form-submit'>
+              <div className='text-right form-submit'>
+                <ActionButton
+                  id='supplier-registration__cancel'
+                  style='link'
+                  onClick={this.handleCancel}
+                  label={this.context.i18n.getMessage('Supplier.Button.cancel')}
+                />
+                <ActionButton
+                  id='supplier-registration__continue'
+                  style='primary'
+                  onClick={this.handleUpdate}
+                  label={this.context.i18n.getMessage('Supplier.Button.continue')}
+                />
               </div>
             </div>
           </form>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-5">
           <p>{this.context.i18n.getMessage('Supplier.Messages.information1')}</p>
           <p>{this.context.i18n.getMessage('Supplier.Messages.information2')}</p>
           <p>{this.context.i18n.getMessage('Supplier.Messages.required')}</p>

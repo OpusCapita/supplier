@@ -12,12 +12,14 @@ export default class AttributeValueEditorRow extends Component {
     required: PropTypes.bool,
     rowErrors: PropTypes.array,
     onErrorLinkClick: PropTypes.func,
-    marked: PropTypes.bool
+    marked: PropTypes.bool,
+    info: PropTypes.string
   };
 
   static defaultProps = {
     required: false,
     marked: false,
+    info: null,
     rowErrors: [],
   };
 
@@ -27,6 +29,29 @@ export default class AttributeValueEditorRow extends Component {
       padding: '6px',
       border: '0px'
     }
+  }
+
+  renderInfo() {
+    return (
+      <a
+        href="#"
+        data-toggle="tooltip"
+        data-placement="auto"
+        data-html="true"
+        data-title={this.props.info}
+      ><i className="fa fa-info-circle fa-fw" /></a>
+    );
+  }
+
+  labelTextString() {
+    const { marked, info, required, labelText } = this.props;
+    let text = labelText;
+
+    if (required) { text = text + '\u00a0*'; }
+    if (marked) { text = text + '\u00a0**'; }
+    if (info) { text = <span>{text}{this.renderInfo()}</span>; }
+
+    return text;
   }
 
   handleOnClick(error, event) {
@@ -41,14 +66,7 @@ export default class AttributeValueEditorRow extends Component {
   }
 
   render() {
-    const { marked, required, rowErrors } = this.props;
-    let labelText = this.props.labelText;
-
-    if (required) {
-      labelText += '\u00a0*';
-    } else if (marked) {
-      labelText += '\u00a0**';
-    }
+    const { rowErrors } = this.props;
 
     return (
       <div
@@ -58,7 +76,7 @@ export default class AttributeValueEditorRow extends Component {
         })}
       >
         <label className={`col-sm-4 control-label`}>
-          {labelText}
+          {this.labelTextString()}
         </label>
 
         <div className={`col-sm-8`}>

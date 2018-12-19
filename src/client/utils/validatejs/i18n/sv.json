@@ -98,7 +98,7 @@
                 "message": "Ett företag med detta namn existerar redan"
             },
             "registerationNumber": {
-                "message": "Ett företag med detta organisationsnummer, stad och land existerar redan"
+                "message": "Ett företag med detta organisationsnummer och land existerar redan"
             },
             "taxIdNumber": {
                 "message": "Ett företag med detta momsregistreringsnummer och land existerar redan"

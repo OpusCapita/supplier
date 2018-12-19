@@ -98,7 +98,7 @@
                 "message": "Tämän niminen yritys on jo olemassa."
             },
             "registerationNumber": {
-                "message": "Yritys on jo olemassa jolla on sama rekisteröintinumero, kaupunki ja maa."
+                "message": "Yritys on jo olemassa jolla on sama rekisteröintinumero ja maa."
             },
             "taxIdNumber": {
                 "message": "Yritys on jo olemassa jolla on sama Tax ID ja maa."

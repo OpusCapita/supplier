@@ -1,16 +1,16 @@
 FROM node:8-alpine
-MAINTAINER patrykkopycinski
+MAINTAINER lasong
 
 WORKDIR /home/node/supplier
 
 RUN chown -Rf node:node .
 
-RUN apk add --no-cache curl
-
 ENV NODE_ENV=development
 
 # Bundle app source by overwriting all WORKDIR content.
 COPY --chown=node:node . .
+
+RUN apk add --no-cache curl
 
 USER node
 

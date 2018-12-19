@@ -130,18 +130,13 @@ class SupplierEditor extends Component {
     });
   }
 
-  renderAction() {
-    if (this.userAbilities.canEditSupplier()) {
-      return (<SupplierEditorForm
-                {...this.props}
-                supplier={ this.state.supplier }
-                onSupplierChange={ this.handleUpdate }
-                onChange={ this.handleChange }
-                onCancel={ this.props.onLogout }
-              />)
-    }
-
-    return <SupplierView supplier={ this.state.supplier } />
+  renderSupplierView() {
+    return <div className="col-sm-6">
+      <h4 className="tab-description">
+        { this.context.i18n.getMessage(`Supplier.Heading.companyInformation`) }
+      </h4>
+      <SupplierView supplier={ this.state.supplier } />
+    </div>;
   }
 
   render() {
@@ -159,13 +154,28 @@ class SupplierEditor extends Component {
       );
     }
 
+    if (!this.userAbilities.canEditSupplier()) return <div className="row">{this.renderSupplierView()}</div>;
+
     return (
       <div className="row">
         <div className="col-sm-6">
           <h4 className="tab-description">
             { this.context.i18n.getMessage(`Supplier.Heading.companyInformation`) }
           </h4>
-          {this.renderAction()}
+          <SupplierEditorForm
+            {...this.props}
+            supplier={ this.state.supplier }
+            onSupplierChange={ this.handleUpdate }
+            onChange={ this.handleChange }
+            onCancel={ this.props.onLogout }
+          />
+        </div>
+        <div className="col-sm-6">
+          <br />
+          <br />
+          <br />
+          <br />
+          <p>{this.context.i18n.getMessage('Supplier.Messages.identifierRequired')}</p>
         </div>
       </div>
     );
