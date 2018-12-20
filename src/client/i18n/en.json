@@ -72,6 +72,7 @@
             "cancel": "Do you really want to cancel?"
         },
         "Messages": {
+            "pageHelpText": "On this page you provide the data for the registration of your company. If you do not have a VAT Identification Number, please fill in one of the fields marked with **.",
             "loading": "Loading...",
             "unableToRender": "Unable to render editor",
             "createSuccess": "Supplier successfully created",

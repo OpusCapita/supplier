@@ -72,6 +72,7 @@
             "cancel": "Wollen Sie den Vorgang wirklich abbrechen?"
         },
         "Messages": {
+            "pageHelpText": "Auf dieser Seite vervollständigen Sie die Daten zur Registrierung Ihrer Firma. Sollten Sie keine Vat ID haben, füllen Sie bitte eines der Felder, die mit ** gekennzeichnet sind, aus.",
             "loading": "Laden...",
             "unableToRender": "Der Editor kann nicht geöffnet werden",
             "createSuccess": "Lieferantenerstellung erfolgreich.",
