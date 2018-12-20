@@ -5,6 +5,7 @@ import './SupplierRegistrationEditor.css';
 import SupplierConstraints from '../../utils/validatejs/supplierConstraints';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
 import validator from '../../utils/validatejs/supplierValidator.js';
+import { Components } from '@opuscapita/service-base-ui';
 
 class SupplierRegistrationEditorForm extends Component {
   static propTypes = {
@@ -188,6 +189,7 @@ class SupplierRegistrationEditorForm extends Component {
         required={ isRequired }
         marked = { attrs.marked }
         info = { attrs.info }
+        helpText = { attrs.helpText }
         rowErrors={ rowErrors }
         onErrorLinkClick={ this.requestSupplierAccess }
       >
@@ -198,6 +200,7 @@ class SupplierRegistrationEditorForm extends Component {
 
   render() {
     const { supplier } = this.state;
+    const { i18n } = this.context;
     const { CountryField, CurrencyField } = this.externalComponents;
 
     return (
@@ -205,9 +208,10 @@ class SupplierRegistrationEditorForm extends Component {
         <div className="row">
           <div className="col-md-6">
             { this.renderField({ fieldName: 'name' }) }
-            { this.renderField({ fieldName: 'cityOfRegistration' }) }
+            { this.renderField({ fieldName: 'cityOfRegistration', helpText: i18n.getMessage('Supplier.Messages.cityOfRegistration.helpText') }) }
             { this.renderField({
               fieldName: 'countryOfRegistration',
+              helpText: i18n.getMessage('Supplier.Messages.countryOfRegistration.helpText'),
               component: (
                 <CountryField
                   actionUrl=''
@@ -219,7 +223,11 @@ class SupplierRegistrationEditorForm extends Component {
                 />
               )
             }) }
-            { this.renderField({ fieldName: 'commercialRegisterNo', info: this.comRegTooltiptext() }) }
+            { this.renderField({
+              fieldName: 'commercialRegisterNo',
+              info: this.comRegTooltiptext(),
+              helpText: i18n.getMessage('Supplier.Messages.companyRegisterNumber.helpText')
+            }) }
             { this.renderField({ fieldName: 'taxIdentificationNo' }) }
             { this.renderField({
               fieldName: 'currencyId',
@@ -234,9 +242,7 @@ class SupplierRegistrationEditorForm extends Component {
                 />
               )
             }) }
-          </div>
-          <div className="col-md-6">
-            { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: Boolean(this.props.supplier.vatIdentificationNo) }) }
+            { this.renderField({ fieldName: 'vatIdentificationNo', disabled: Boolean(this.props.supplier.vatIdentificationNo) }) }
             { this.renderField({
               fieldName: 'noVatReason',
               labelText: ' ',
@@ -247,6 +253,18 @@ class SupplierRegistrationEditorForm extends Component {
                 </p>
               )
             }) }
+          </div>
+          <div className="col-md-6">
+            <div className="row">
+              <div className="col-md-offset-4 col-md-8">
+                <Components.HelpBox>
+                  <Components.HelpBoxItem title={this.context.i18n.getMessage('Supplier.Heading.companyRegistration')}>
+                    <p>{this.context.i18n.getMessage('Supplier.Messages.pageHelpText')}</p>
+                  </Components.HelpBoxItem>
+                </Components.HelpBox>
+              </div>
+            </div>
+            <br />
             { this.renderField({ fieldName: 'globalLocationNo', marked: true, disabled: Boolean(this.props.supplier.globalLocationNo) }) }
             { this.renderField({ fieldName: 'dunsNo', marked: true, disabled: Boolean(this.props.supplier.dunsNo)}) }
             { this.renderField({ fieldName: 'ovtNo', marked: true, disabled: Boolean(this.props.supplier.ovtNo)}) }
