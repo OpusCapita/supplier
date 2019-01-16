@@ -21,10 +21,11 @@ export default class SupplierAutocomplete extends Component {
     disabled: PropTypes.bool,
     value: PropTypes.object,
     onChange: PropTypes.func,
-    onBlur: PropTypes.func
+    onBlur: PropTypes.func,
+    onFilter : PropTypes.func.isRequired
   };
 
-  static defaultProps = { value: null, disabled: false  };
+  static defaultProps = { value: null, disabled: false, onFilter: (val) => val  };
 
   static contextTypes = {
     i18n: React.PropTypes.object.isRequired
@@ -53,7 +54,7 @@ export default class SupplierAutocomplete extends Component {
 
     await this.setState({ suppliers })
 
-    return suppliers.map(sup => getOption(sup)).filter(option => {
+    return suppliers.filter(this.props.onFilter).map(sup => getOption(sup)).filter(option => {
       return option.label.toLowerCase().includes(inputValue.toLowerCase());
     });
   }
