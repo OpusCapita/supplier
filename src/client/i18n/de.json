@@ -42,7 +42,8 @@
             "iban": "IBAN",
             "accessReason": "Zugang Grund",
             "searchInput": "Suche nach Name, Stadt, Umsatzsteuer-ID, Steuernummer, Registrierungsnummer, DUNS-Nummer oder Global Location Number",
-            "capability": "Fähigkeit"
+            "capability": "Fähigkeit",
+            "managed": "Virtuell"
         },
         "Title": {
             "company": "Firma",
