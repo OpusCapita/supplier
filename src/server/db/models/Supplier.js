@@ -82,21 +82,15 @@ module.exports.init = function(db, config) {
     },
     /** A supplier's city of registration */
     cityOfRegistration: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING(250),
-      field: "CityOfRegistration",
-      validate: {
-        notEmpty: true
-      }
+      field: "CityOfRegistration"
     },
     /** A supplier's country of registration as in ISO 3166-1 alpha2 */
     countryOfRegistration: {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.STRING(250),
-      field: "CountryOfRegistration",
-      validate: {
-        notEmpty: true
-      }
+      field: "CountryOfRegistration"
     },
     /** A supplier's default currency as in ISO 4217 ID of currency */
     currencyId: {

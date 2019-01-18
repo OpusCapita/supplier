@@ -27,7 +27,7 @@ class SupplierCreator extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { hasErrors: false, supplier: {} };
+    this.state = { hasErrors: false, supplier: { managed: true } };
     this.supplierApi = new Supplier();
     this.userAbilities = new UserAbilities(props.userRoles);
   }

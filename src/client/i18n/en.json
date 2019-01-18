@@ -42,7 +42,8 @@
             "iban": "IBAN",
             "accessReason": "Access Reason",
             "searchInput": "Search by name, city, VAT id, Tax id, registration number, DUNS number, or Global Location Number",
-            "capability": "Capability"
+            "capability": "Capability",
+            "managed": "Virtual"
         },
         "Title": {
             "company": "Company",

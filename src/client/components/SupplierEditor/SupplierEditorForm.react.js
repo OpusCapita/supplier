@@ -153,6 +153,19 @@ class SupplierEditorForm extends Component {
     this.setState({hasVATId: !this.state.hasVATId});
   };
 
+  handleManagedChange = () => {
+    const managed = !this.state.supplier.managed;
+    if (managed) {
+      this.constraints.addPresence('cityOfRegistration');
+      this.constraints.addPresence('countryOfRegistration');
+    } else {
+      this.constraints.removePresence('cityOfRegistration');
+      this.constraints.removePresence('countryOfRegistration');
+    }
+
+    this.setState({ supplier: { ...this.state.supplier, managed: managed } });
+  };
+
   userIsAdmin = () => {
     return this.props.userRoles.includes('admin');
   };
@@ -210,6 +223,19 @@ class SupplierEditorForm extends Component {
     return this.renderField({ fieldName: 'subEntityCode' });
   };
 
+  renderVirtualField = () => {
+    if (!this.userIsAdmin()) return null;
+
+    return this.renderField({
+      fieldName: 'managed',
+      component: (
+        <div style={{ marginTop: '5px' }}>
+          <input className='fa fa-fw' type='checkbox' onChange={this.handleManagedChange} checked={!this.state.supplier.managed}></input>
+        </div>
+      )
+    });
+  };
+
   render() {
     const i18n = this.context.i18n;
     const { supplier } = this.state;
@@ -219,6 +245,7 @@ class SupplierEditorForm extends Component {
     return (
       <div>
         <form className="form-horizontal supplier-form">
+          {this.renderVirtualField()}
           {this.renderField({
             fieldName: 'parentId',
             component: (
