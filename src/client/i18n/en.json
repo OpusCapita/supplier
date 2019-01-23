@@ -17,6 +17,7 @@
             "requestAccess": "Request Access",
             "approve": "Approve",
             "reject": "Reject",
+            "reset": "Reset",
             "search": "Search",
             "publicProfile": "View public profile"
         },
@@ -41,7 +42,8 @@
             "iban": "IBAN",
             "accessReason": "Access Reason",
             "searchInput": "Search by name, city, VAT id, Tax id, registration number, DUNS number, or Global Location Number",
-            "capability": "Capability"
+            "capability": "Capability",
+            "managed": "Virtual"
         },
         "Title": {
             "company": "Company",
@@ -71,6 +73,7 @@
             "cancel": "Do you really want to cancel?"
         },
         "Messages": {
+            "pageHelpText": "On this page you provide the data for the registration of your company. If you do not have a VAT Identification Number, please fill in one of the fields marked with **.",
             "loading": "Loading...",
             "unableToRender": "Unable to render editor",
             "createSuccess": "Supplier successfully created",
@@ -81,8 +84,8 @@
             "failedCreatingUserSupplier": "Supplier creation failed: you are already associated to a supplier.",
             "identifierRequired": "** Please provide your VAT Registration Number. If you do not have one, then provide your Global Location Number, D-U-N-S number or OVT number.",
             "required": "** Please provide your VAT Registration Number. If you do not have one, then provide your Global Location Number, D-U-N-S number, OVT number or IBAN.",
-            "noVatId": "My Company does not have a VAT Registration Number.",
-            "clickCheckBox": "Please provide your VAT Registration Number.",
+            "noVatId": "My Company does not have a VAT Identification Number.",
+            "clickCheckBox": "Please provide your VAT Identification Number.",
             "accessInformation1": "Here you can request access to company {name}. You should request access only if you are an employee of this company.",
             "accessInformation2": "Please provide a valid business justification for your access.",
             "accessInformation3": "Your request will be forwarded to the administrator managing the company's profile.",
@@ -95,7 +98,14 @@
                 "fi": "For Finland, it refers to the Business ID. E.g. 1629284-5",
                 "se": "For Sweden, it refers to the Organization Number. E.g. 556691-8065",
                 "us": "For the US, it refers to the Employer Identification Number. E.g. 10-5434567",
-                "ch": "For Switzerland, it refers to the Enterprise Identification Number. E.g. CHE-105.806.117"
+                "ch": "For Switzerland, it refers to the Enterprise Identification Number. E.g. CHE-105.806.117",
+                "helpText": "Commercial register number of the company you registering."
+            },
+            "cityOfRegistration": {
+                "helpText": "The city where the company you are registering has its headquarters."
+            },
+            "countryOfRegistration": {
+                "helpText": "The country in which the company you are registering has its headquarters."
             }
         },
         "Error": {

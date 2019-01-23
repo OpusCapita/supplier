@@ -1,5 +1,6 @@
 class SupplierConstraints {
   constructor(i18n) {
+    this.i18n = i18n;
     this.constraints = allConstraints(i18n);
   }
 
@@ -72,6 +73,14 @@ class SupplierConstraints {
       };
 
     return { [fieldName]: this.constraints[fieldName] };
+  }
+
+  addPresence(fieldName) {
+    this.constraints[fieldName].presence = { message: this.i18n.getMessage('SupplierValidatejs.blank.message') };
+  }
+
+  removePresence(fieldName) {
+    this.constraints[fieldName].presence = false;
   }
 }
 

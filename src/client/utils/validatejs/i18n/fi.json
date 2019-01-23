@@ -127,6 +127,6 @@
                 "Date": "Arvon on oltava kelvollinen päivämäärä"
             }
         },
-        "supplierExists": "{message}\r\r\nOta yhteyttä tukeen +49 231 3967 350 tai customerservice.de@opuscapita.com, jotta voit pyytää käyttöoikeutta rekisteröityyn yritykseen."
+        "supplierExists": "{message}\r\r\r\nOta yhteyttä tukeen +49 231 3967 350 tai customerservice.de@opuscapita.com, jotta voit pyytää käyttöoikeutta rekisteröityyn yritykseen."
     }
 }

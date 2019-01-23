@@ -5,11 +5,12 @@ import SupplierRegistrationEditorForm from './SupplierRegistrationEditorForm.rea
 import SupplierAccessRequestForm from './SupplierAccessRequestForm.react.js';
 import SupplierAccessView from './SupplierAccessView.react';
 import { Supplier, Access, Auth, Contact } from '../../api';
+import { Components } from '@opuscapita/service-base-ui';
 
 /**
  * Provide general company information.
  */
-class SupplierRegistrationEditor extends Component {
+class SupplierRegistrationEditor extends Components.ContextComponent {
 
   static propTypes = {
     user: PropTypes.object.isRequired,
@@ -18,11 +19,6 @@ class SupplierRegistrationEditor extends Component {
     onUpdate: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func,
     onLogout: React.PropTypes.func
-  };
-
-  static contextTypes = {
-    i18n : React.PropTypes.object.isRequired,
-    showNotification: React.PropTypes.func
   };
 
   constructor(props) {
@@ -222,8 +218,8 @@ class SupplierRegistrationEditor extends Component {
     }
 
     return (
-      <div className="container supplier-registration-container">
-        <div className='box' id='supplier-registration'>
+      <div className="supplier-registration-container">
+        <div id='supplier-registration'>
           <h2>{this.context.i18n.getMessage('Supplier.Heading.companyRegistration')}</h2>
           {this.toRender()}
         </div>

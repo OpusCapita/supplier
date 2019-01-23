@@ -13,13 +13,15 @@ export default class AttributeValueEditorRow extends Component {
     rowErrors: PropTypes.array,
     onErrorLinkClick: PropTypes.func,
     marked: PropTypes.bool,
-    info: PropTypes.string
+    info: PropTypes.string,
+    helpText: PropTypes.string
   };
 
   static defaultProps = {
     required: false,
     marked: false,
     info: null,
+    helpText: null,
     rowErrors: [],
   };
 
@@ -65,6 +67,12 @@ export default class AttributeValueEditorRow extends Component {
     return <ActionButton onClick={this.handleOnClick.bind(this, error)} label={error.linkMessage} isSmall={true} />;
   }
 
+  renderHelpText() {
+    if (!this.props.helpText) return null;
+
+    return <p>{this.props.helpText}</p>;
+  }
+
   render() {
     const { rowErrors } = this.props;
 
@@ -88,6 +96,7 @@ export default class AttributeValueEditorRow extends Component {
               {this.renderButtonLink(error)}
             </div>
           )}
+          {this.renderHelpText()}
         </div>
       </div>
     );

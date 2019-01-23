@@ -4,11 +4,12 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Supplier } from '../../api';
 import ActionButton from '../ActionButton.react';
+import AttributeValueEditorRow from '../AttributeValueEditorRow.react.js';
 
 export default class SupplierList extends Component  {
   constructor(props) {
     super(props);
-    this.state = { suppliers: [] };
+    this.state = { suppliers: [], supplierName: '', supplierId: '' };
     this.supplierApi = new Supplier();
   }
 
@@ -34,12 +35,40 @@ export default class SupplierList extends Component  {
     this.supplierApi.getSuppliers().then(suppliers => this.setState({ suppliers: suppliers }));
   }
 
+  searchSupplier() {
+    let queryParam = {};
+    if (this.state.supplierName) queryParam.name = this.state.supplierName;
+    if (this.state.supplierId) queryParam.id = this.state.supplierId;
+    this.supplierApi.getSuppliers(queryParam).then(suppliers => this.setState({ suppliers: suppliers }));
+  }
+
+  async handleReset(event) {
+    event.preventDefault();
+    await this.setState({ supplierName: '', supplierId: '' });
+    this.searchSupplier();
+  }
+
+  onSearchChange(fieldValue, event) {
+    this.setState({ [fieldValue]: event.target.value });
+  }
+
   editOnClick(supplierId) {
     this.props.onEdit(supplierId);
   }
 
   createUserOnClick(supplierId) {
     this.props.onCreateUser(supplierId);
+  }
+
+  renderField(attrs) {
+    const { field, fieldName } = attrs;
+    const { i18n } = this.context;
+
+    return (
+      <AttributeValueEditorRow labelText={ i18n.getMessage(`Supplier.Label.${fieldName}`) }>
+        <input value={this.state[field]} onChange={this.onSearchChange.bind(this, field)} className="form-control"/>
+      </AttributeValueEditorRow>
+    );
   }
 
   renderActions(supplierId) {
@@ -82,6 +111,28 @@ export default class SupplierList extends Component  {
     return (
       <div>
         <h1 className="tab-description">{this.context.i18n.getMessage('Supplier.Heading.list')}</h1>
+        <div className="form-horizontal search-list">
+          <div className='row'>
+            <div className='col-sm-6'>
+              { this.renderField({ field: 'supplierName', fieldName: 'name' }) }
+            </div>
+            <div className='col-sm-6'>
+              { this.renderField({ field: 'supplierId', fieldName: 'id' }) }
+            </div>
+          </div>
+          <div className="text-right form-submit" style={{ marginBottom: '30px' }}>
+            <ActionButton
+              style='link'
+              onClick={this.handleReset.bind(this)}
+              label={this.context.i18n.getMessage('Supplier.Button.reset')}
+            />
+            <ActionButton
+              style='primary'
+              onClick={this.searchSupplier.bind(this)}
+              label={this.context.i18n.getMessage('Supplier.Button.search')}
+            />
+          </div>
+        </div>
         <div className='table-responsive'>{this.renderTable(this.state.suppliers)}</div>
       </div>
     );

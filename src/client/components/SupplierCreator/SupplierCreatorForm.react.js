@@ -147,9 +147,22 @@ class SupplierCreatorForm extends Component {
     }
   };
 
-  handleCheckboxChange = () => {
+  handleHasVatidChange = () => {
     this.setFieldErrorsStates({ noVatReason: [] });
     this.setState({hasVATId: !this.state.hasVATId});
+  };
+
+  handleManagedChange = () => {
+    const managed = !this.state.supplier.managed;
+    if (managed) {
+      this.constraints.addPresence('cityOfRegistration');
+      this.constraints.addPresence('countryOfRegistration');
+    } else {
+      this.constraints.removePresence('cityOfRegistration');
+      this.constraints.removePresence('countryOfRegistration');
+    }
+
+    this.setState({ supplier: { ...this.state.supplier, managed: managed } });
   };
 
   comRegTooltiptext() {
@@ -214,6 +227,14 @@ class SupplierCreatorForm extends Component {
       <div>
         <form className="form-horizontal supplier-form">
           {this.renderField({
+            fieldName: 'managed',
+            component: (
+              <div style={{ marginTop: '5px' }}>
+                <input className='fa fa-fw' type='checkbox' onChange={this.handleManagedChange} checked={!supplier.managed}></input>
+              </div>
+            )
+          })}
+          {this.renderField({
             fieldName: 'parentId',
             component: (
               <select
@@ -277,15 +298,15 @@ class SupplierCreatorForm extends Component {
           { this.renderField({ fieldName: 'taxIdentificationNo' }) }
           { this.renderField({ fieldName: 'vatIdentificationNo', marked: true }) }
           { this.renderField({
-                  fieldName: 'noVatReason',
-                  labelText: ' ',
-                  component: (
-                    <p>
-                      <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange} checked={!this.state.hasVATId}></input>
-                      {this.context.i18n.getMessage('Supplier.Messages.noVatId')}
-                    </p>
-                  )
-                }) }
+              fieldName: 'noVatReason',
+              labelText: ' ',
+              component: (
+                <p>
+                  <input className='fa fa-fw' type='checkbox' onChange={this.handleHasVatidChange} checked={!this.state.hasVATId}></input>
+                  {this.context.i18n.getMessage('Supplier.Messages.noVatId')}
+                </p>
+              )
+            }) }
           { this.renderField({ fieldName: 'globalLocationNo', marked: true }) }
           { this.renderField({ fieldName: 'dunsNo', marked: true }) }
           { this.renderField({ fieldName: 'ovtNo', marked: true }) }
