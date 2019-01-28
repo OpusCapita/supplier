@@ -99,6 +99,10 @@
                 "se": "For Sweden, it refers to the Organization Number. E.g. 556691-8065",
                 "us": "For the US, it refers to the Employer Identification Number. E.g. 10-5434567",
                 "ch": "For Switzerland, it refers to the Enterprise Identification Number. E.g. CHE-105.806.117",
+                "at": "For Austria, it refers to the Commercial Register Number. E.g. 973861g or FN 973152s",
+                "no": "For Norway, it refers to the Organization Number. E.g. 973861913 or 973 861 913",
+                "pl": "For Poland, it refers to the Polish register of economic units number. E.g. 192598184",
+                "fr": "For France, it refers to the Company Identification Number. E.g. 306895939 or 306 895 939",
                 "helpText": "Commercial register number of the company you registering."
             },
             "cityOfRegistration": {
