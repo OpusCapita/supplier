@@ -8,7 +8,7 @@ const supplierAddresses = require('./supplier_addresses');
 const supplierBanks = require('./supplier_banks');
 const supplierProfileStrength = require('./supplier_profile_strength');
 const supplierAccess = require('./supplier_access');
-const capabilities = require('./capabilities');
+const Capability = require('./Capability');
 const supplierOrganization = require('./supplierOrganization');
 const supplierVisibility = require('./supplierVisibility');
 
@@ -28,7 +28,7 @@ module.exports.init = function(app, db, config) {
   supplierBanks(app, db, config);
   supplierProfileStrength(app, db, config);
   supplierAccess(app, db, config);
-  capabilities(app, db, config);
+  new Capability(app, db).init();
   supplierOrganization(app, db, config);
   supplierVisibility(app, db, config);
   return Promise.resolve();
