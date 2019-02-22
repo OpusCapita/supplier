@@ -1,0 +1,135 @@
+{
+    "SupplierValidatejs": {
+        "doesnt": {
+            "match": {
+                "message": "Il valore non corrisponde alla configurazione obbligatoria '{limit}'"
+            }
+        },
+        "invalid": {
+            "url": {
+                "message": "Formato URL non valido"
+            },
+            "creditCard": {
+                "message": "Formato di numero di carta di credito non valido"
+            },
+            "email": {
+                "message": "Formato di indirizzo e-mail non valido"
+            },
+            "range": {
+                "message": "Il valore non è nei parametri validi di '{from}' a '{to}'"
+            },
+            "size": {
+                "message": "Il valore non è nei parametri di dimensioni validi di '{from}' a '{to}'"
+            },
+            "max": {
+                "message": "Il valore supera il valore massimo '{limit}'"
+            },
+            "min": {
+                "message": "Il valore è inferiore al valore minimo di '{limit}'"
+            },
+            "maxOrEqual": {
+                "message": "Il valore deve essere inferiore o uguale al valore massimo '{limit}'"
+            },
+            "minOrEqual": {
+                "message": "Il valore deve essere superiore o uguale al valore minimo '{limit}'"
+            },
+            "maxSize": {
+                "message": "Il valore supera le dimensioni massime di '{limit}'"
+            },
+            "minSize": {
+                "message": "Il valore è inferiore alle dimensioni minime di '{limit}'"
+            },
+            "validator": {
+                "message": "Il valore non è valido"
+            },
+            "vatNumber": {
+                "message": "Il valore non è un numero di partita IVA europeo valido"
+            },
+            "dunsNumber": {
+                "message": "Il valore non è un numero D-U-N-S valido"
+            },
+            "ovtNumber": {
+                "message": "Il valore non è un numero OVT valido"
+            },
+            "globalLocationNumber": {
+                "message": "Il valore non è un Global Location Number (GLN) valido"
+            },
+            "iban": {
+                "message": "Il valore non è un IBAN valido"
+            },
+            "bic": {
+                "message": "Il valore non è un BIC valido"
+            },
+            "uniqueIdentifier": {
+                "message": "Deve essere fornito uno dei seguenti: numero di partita IVA, numero D-U-N-S, Global Location Number (GLN) o IBAN"
+            },
+            "uniqueIdentifierBankAccount": {
+                "message": "Deve essere fornito uno dei seguenti: IBAN, bankgiro o plusgiro"
+            },
+            "uniqueIdentifierWithBankAccount": {
+                "message": "Deve essere fornito uno dei seguenti: numero di partita IVA, numero D-U-N-S o Global Location Number (GLN) oppure deve essere aggiunto un Conto Bancario"
+            },
+            "isrNumber": {
+                "message": "Il valore non è valido. Deve contenere un minimo di 9 numeri con formato xx-x{1..6}-x. Es. 02-162-8"
+            },
+            "comRegNumber": {
+                "message": "Il valore non è un numero di Registrazione Impresa valido. Si prega di vedere la descrizione."
+            }
+        },
+        "not": {
+            "inlist": {
+                "message": "Il valore non è nell'elenco '{limit}'"
+            },
+            "equal": {
+                "message": "Il valore non può essere uguale a '{limit}'"
+            },
+            "unique": {
+                "message": "Il valore deve essere unico"
+            }
+        },
+        "blank": {
+            "message": "Questo campo non può essere vuoto",
+            "bic": {
+                "message": "Questo campo non può essere vuoto quando viene fornito un IBAN"
+            }
+        },
+        "null": {
+            "message": "Proprietà non può essere nulla"
+        },
+        "duplicate": {
+            "name": {
+                "message": "Esiste già un'impresa con questo nome."
+            },
+            "registerationNumber": {
+                "message": "Esiste già un'impresa con questo numero di registrazione e nazione."
+            },
+            "taxIdNumber": {
+                "message": "Esiste già un'impresa con questi Codice Fiscale e nazione."
+            },
+            "vatNumber": {
+                "message": "Esiste già un'impresa con questo numero di partita IVA."
+            },
+            "dunsNumber": {
+                "message": "Esiste già un'impresa con questo numero D-U-N-S."
+            },
+            "ovtNumber": {
+                "message": "Esiste già un'impresa con questo numero OVT."
+            },
+            "globalLocationNumber": {
+                "message": "Esiste già un'impresa con questo Global Location Number (GLN)."
+            },
+            "subEntityCode": {
+                "message": "Un'impresa nella vostra organizzazione ha già questo codice"
+            },
+            "iban": {
+                "message": "Esiste già un'impresa con questo IBAN."
+            }
+        },
+        "typeMismatch": {
+            "util": {
+                "Date": "Il valore deve essere una Data valida"
+            }
+        },
+        "supplierExists": "{message}\r\nSi prega di rivolgersi al nostro servizio di assistenza al +49 231 3967 350 o customerservice.de@opuscapita.com per avviare una richiesta di accesso all'impresa registrata."
+    }
+}

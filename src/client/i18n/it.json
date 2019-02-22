@@ -1,0 +1,282 @@
+{
+    "Supplier": {
+        "Button": {
+            "add": "Aggiungi",
+            "edit": "Modifica",
+            "save": "salva",
+            "delete": "Cancella",
+            "view": "Visualizza",
+            "cancel": "Annulla",
+            "close": "Chiudi",
+            "yes": "Sì",
+            "no": "No",
+            "createUser": "Crea Utente",
+            "continue": "Continua",
+            "request": "Richiedi",
+            "access": "Accesso",
+            "requestAccess": "Richiedi Accesso",
+            "approve": "Approva",
+            "reject": "Respingi",
+            "reset": "Resetta",
+            "search": "Cerca",
+            "publicProfile": "Visualizza profilo pubblico"
+        },
+        "Label": {
+            "id": "Identificativo Impresa",
+            "parentId": "Capogruppo",
+            "name": "Nome Impresa",
+            "cityOfRegistration": "Città di registrazione",
+            "homePage": "Homepage",
+            "legalForm": "Forma legale",
+            "foundedOn": "Fondata/Istituita Il",
+            "taxIdNumber": "Codice fiscale",
+            "dunsNo": "N°. D-U-N-S",
+            "ovtNo": "Numero OVT",
+            "commercialRegisterNo": "Numero di Registrazione Impresa",
+            "countryOfRegistration": "Nazione di Registrazione",
+            "currencyId": "Valuta Predefinita",
+            "taxIdentificationNo": "Codice Fiscale",
+            "vatIdentificationNo": "Numero di Partita IVA",
+            "globalLocationNo": "Global Location Number (GLN)",
+            "subEntityCode": "Codice di Sottoentità",
+            "iban": "IBAN",
+            "accessReason": "Ragione di Accesso",
+            "searchInput": "Cerca per nome, città, partita IVA, codice fiscale, numero di registrazione, numero DUNS o Global Location Number (GLN)",
+            "capability": "Capacità",
+            "managed": "Virtuale"
+        },
+        "Title": {
+            "company": "Impresa",
+            "companyIdentifiers": "Identificativi Impresa",
+            "addresses": "Indirizzi",
+            "contacts": "Contatti",
+            "bankAccounts": "Conti Bancari",
+            "type": "Tipo"
+        },
+        "Select": {
+            "type": "Seleziona tipo...",
+            "country": "Seleziona nazione...",
+            "department": "Seleziona dipartimento..."
+        },
+        "Heading": {
+            "createSupplier": "Crea Fornitore",
+            "companyRegistration": "Registrazione Impresa",
+            "companyInformation": "Informazioni sull'Impresa",
+            "list": "Elenco Fornitori",
+            "address": "Si prega di aggiungere qui gli indirizzi della vostra impresa.",
+            "accessApproval": "Si prega di approvare o respingere la richiesta di accesso dell'utente.",
+            "BankAccount": "Si prega di inserire i dati del vostro conto bancario.",
+            "contact": "Si prega di aggiungere qui le persone di contatto della vostra impresa.",
+            "visibility": "Si prega di impostare le preferenze per il vostro profilo pubblico."
+        },
+        "Confirmation": {
+            "cancel": "Si desidera davvero annullare?"
+        },
+        "Messages": {
+            "pageHelpText": "In questa pagina fornite i dati per la registrazione della vostra impresa. Se non avete un Numero di Partita IVA, vi preghiamo di compilare uno dei campi contrassegnati con **.",
+            "loading": "Caricamento in corso...",
+            "unableToRender": "Impossibile rendering dell'editor",
+            "createSuccess": "Fornitore creato con successo",
+            "createFailed": "Creazione del fornitore fallita",
+            "updateSaved": "Dati aggiornati con successo",
+            "updateFailed": "Aggiornamento dati fallito",
+            "failedCreatingExistingSupplier": "Salvataggio dati fallito: un'impresa con lo stesso Nome d'Impresa esiste già",
+            "failedCreatingUserSupplier": "Creazione fornitore fallita: avete già un fornitore associato.",
+            "identifierRequired": "** Vi preghiamo di fornire il vostro Numero di Partita IVA. Se non ne avete uno, fornite il vostro Global Location Number (GLN), numero D-U-N-S o numero OVT.",
+            "required": "** Vi preghiamo di fornire il vostro Numero di Partita IVA. Se non ne avete uno, fornite il vostro Global Location Number (GLN), numero D-U-N-S, numero OVT o IBAN.",
+            "noVatId": "La mia Impresa non ha un Numero di Partita IVA.",
+            "clickCheckBox": "Vi preghiamo di fornire il vostro Numero di Partita IVA.",
+            "accessInformation1": "Qui potete richiedere accesso all'impresa {name}. Dovete richiedere accesso solo se siete dipendenti di questa impresa.",
+            "accessInformation2": "Vi preghiamo di fornire una giustificazione commerciale valida per il vostro accesso.",
+            "accessInformation3": "La vostra richiesta verrà inoltrata all'amministratore che gestisce il profilo dell'azienda.",
+            "accessInformation4": "Una volta che l'amministratore avrà approvato la vostra richiesta di accesso, riceverete una e-mail di notifica al vostro indirizzo e-mail registrato.",
+            "information1": "Vi preghiamo di fornire informazioni che ci aiutino a identificare in maniera esclusiva la vostra impresa e ci consenta di aggiungerla alla nostra directory di partner commerciali.",
+            "information2": "Dopo aver fornito queste informazioni, sarete in grado di accedere.",
+            "companyRegisterNumber": {
+                "text": "Le aziende sono solitamente registrate ufficialmente in un registro delle imprese o in un registro commerciale. Questi differiscono in base al paese, per esempio:",
+                "de": "Per la Germania, si fa riferimento al Numero di Registro Commerciale. Es. Dortmund HRB 1234",
+                "fi": "Per la Finlandia, si fa riferimento all'Identificativo Commerciale. Es. 1629284-5",
+                "se": "Per la Svezia, si fa riferimento al Numero di Organizzazione. Es. 556691-8065",
+                "us": "Per gli USA, si fa riferimento al Numero di Identificazione Datore di Lavoro. Es. 10-5434567",
+                "ch": "Per la Svizzera, si fa riferimento al Numero di Identificazione dell'Impresa. Es. CHE-105.806,117",
+                "helpText": "Numero di registro commerciale dell'impresa che si sta registrando."
+            },
+            "cityOfRegistration": {
+                "helpText": "La città dove l'impresa che si sta registrando ha la sede centrale."
+            },
+            "countryOfRegistration": {
+                "helpText": "La nazione dove l'impresa che si sta registrando ha la sede centrale."
+            }
+        },
+        "Error": {
+            "notUnique": "Questo valore deve essere unico",
+            "notAuthorized": "Non siete autorizzati ad eseguire questa operazione."
+        },
+        "AccessRequest": {
+            "head": "Avete richiesto accesso all'impresa {name}.",
+            "text": "Si prega di rivolgersi al nostro servizio di assistenza al +49 231 3967 350 o customerservice.de@opuscapita.com per ottenere ulteriori informazioni.",
+            "Status": {
+                "text": "Stato corrente",
+                "requested": "richiesto",
+                "rejected": "respinto",
+                "approved": "approvato"
+            }
+        },
+        "AccessApproval": {
+            "Label": {
+                "firstName": "Nome",
+                "lastName": "Cognome",
+                "email": "E-mail",
+                "date": "Richiedi Data",
+                "comment": "Giustificazione",
+                "status": "Stato"
+            },
+            "Status": {
+                "requested": "Richiesto",
+                "approved": "Approvato",
+                "rejected": "Respinto"
+            },
+            "Messages": {
+                "approved": "L'utente è stato approvato con successo.",
+                "rejected": "L'utente è stato respinto con successo."
+            },
+            "Confirmation": {
+                "approve": "Si è sicuri di voler approvare l'utente?",
+                "reject": "Si è sicuri di voler respingere l'utente?"
+            }
+        },
+        "Capabilities": {
+            "name": "Capacità",
+            "Type": {
+                "eInvoice-send": "Fattura - invia",
+                "order": "Ordine D'Acquisto -ricevi"
+            }
+        },
+        "Address": {
+            "Label": {
+                "type": "Tipo",
+                "street": "Via",
+                "zipCode": "Codice postale",
+                "city": "Città",
+                "countryId": "Nazione",
+                "phoneNo": "Telefono",
+                "faxNo": "Fax",
+                "name": "Nome",
+                "street1": "Via",
+                "street2": "Via 2",
+                "street3": "Via 3",
+                "areaCode": "Indicativo Interurbano",
+                "state": "Stato",
+                "pobox": "Casella Postale",
+                "poboxZipCode": "Codice Postale Casella postale",
+                "email": "E-mail"
+            },
+            "Type": {
+                "default": "Predefinito",
+                "invoice": "Fattura",
+                "rma": "RMA",
+                "plant": "Stabilimento"
+            },
+            "Confirmation": {
+                "delete": "Si desidera davvero cancellare questo indirizzo?"
+            },
+            "Messages": {
+                "deleted": "Indirizzo cancellato con successo.",
+                "updated": "Indirizzo aggiornato con successo.",
+                "saved": "Indirizzo salvato con successo."
+            }
+        },
+        "BankAccount": {
+            "Confirmation": {
+                "delete": "Si desidera davvero cancellare questo conto bancario?"
+            },
+            "Label": {
+                "accountNumber": "IBAN",
+                "bankIdentificationCode": "BIC / SWIFT",
+                "bankCountryKey": "Nazione della Banca",
+                "bankCode": "Codice della Banca",
+                "bankName": "Nome della Banca",
+                "extBankControlKey": "Controllo Bancario Esterno",
+                "bankgiro": "Bankgiro",
+                "plusgiro": "Plusgiro",
+                "isrNumber": "Numero ISR"
+            },
+            "Message": {
+                "deleted": "Conto bancario cancellato con successo.",
+                "updated": "Conto bancario aggiornato con successo.",
+                "saved": "Conto bancario salvato con successo.",
+                "deleteFailed": "Cancellazione conto bancario fallita, forse è già in uso.",
+                "saveFailed": "Salvataggio conto bancario fallito.",
+                "updateFailed": "Aggiornamento conto bancario fallito.",
+                "identifierRequired": "Vi preghiamo di fornire il vostro IBAN. Se la vostra impresa è in Svezia e non ne avete uno, fornite invece il vostro bankgiro o plusgiro."
+            }
+        },
+        "Contact": {
+            "Confirmation": {
+                "delete": "Si desidera davvero cancellare questo contatto?",
+                "linkedToUser": "Verrà cancellato solo il contatto. L'utente non sarà cancellato.",
+                "createUser": "Si desidera davvero creare l'utente?"
+            },
+            "Type": {
+                "Default": "Predefinito",
+                "Sales": "Vendite",
+                "Escalation": "Escalation",
+                "Product": "Prodotto",
+                "Technical": "Tecnico"
+            },
+            "Department": {
+                "Management": "Management",
+                "Logistics": "Logistica",
+                "Sales": "Vendite",
+                "Accounting": "Contabilità",
+                "Support": "Assistenza",
+                "IT": "IT",
+                "Others": "Altri"
+            },
+            "Label": {
+                "contactId": "Identificativo Contatto",
+                "contactType": "Tipo Contatto",
+                "firstName": "Nome",
+                "lastName": "Cognome",
+                "email": "E-mail",
+                "phone": "Telefono",
+                "mobile": "Cellulare",
+                "department": "Reparto",
+                "title": "Saluto",
+                "fax": "Fax"
+            },
+            "Message": {
+                "deleted": "Contatto cancellato con successo.",
+                "updated": "Contatto aggiornato con successo.",
+                "saved": "Contatto salvato con successo.",
+                "deleteFailed": "Cancellazione contatto fallita, forse è già in uso.",
+                "saveFailed": "Salvataggio contatto fallita.",
+                "updateFailed": "Aggiornamento contatto fallita.",
+                "userCreated": "Utente creato con successo.",
+                "userCreateFailed": "Creazione utente fallita."
+            },
+            "Error": {
+                "userExists": "L'utente esiste già."
+            }
+        },
+        "Visibility": {
+            "Label": {
+                "contacts": "Contatti",
+                "bankAccounts": "Conti Bancari"
+            },
+            "Type": {
+                "public": "Pubblico",
+                "private": "Privato",
+                "businessPartners": "Partner commerciale"
+            },
+            "Message": {
+                "updateSaved": "Modifiche salvate con successo."
+            }
+        },
+        "Autocomplete": {
+            "placeholder": "Clicca per aggiungere valori",
+            "loadingPlaceholder": "Si prega di attendere...",
+            "noResultsText": "Non è stato trovato nulla. Si prega di modificare i propri criteri di ricerca."
+        }
+    }
+}
