@@ -9,4 +9,4 @@ const it = require('./it.json');
 const pt = require('./pt.json');
 const sv = require('./sv.json');
 
-module.exports = {en, de, es, fi, fr, it, pt, sv };
+module.exports = { en, de, es, fi, fr, it, pt, sv };
