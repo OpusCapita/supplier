@@ -99,6 +99,10 @@
                 "se": "Für Schweden bezieht es sich auf die Organisationsnummer. Z.B. 556691-8065",
                 "us": "In den USA bezieht sich dies auf die Arbeitgeber-Identifikationsnummer. Z.B. 10-5434567",
                 "ch": "Für die Schweiz bezieht es sich auf die Unternehmens-Identifikationsnummer. Z.B. CHE-105.806.117",
+                "at": "Für Österreich beziehtes sich auf die Firmenbuchnummer. Z.B. 973861g or FN 973152s",
+                "no": "Für Norwegen bezieht es sich auf die Organisationsnummer. Z.B. 973861913 or 973 861 913",
+                "pl": "Für Polen bezieht es sich auf das polnisches Register der wirtschaftlichen Einheiten. Z.B. 192598184",
+                "fr": "Für Frankreich bezieht es sich auf die Firmenidentifikationsnummer. Z.B. 306895939 or 306 895 939",
                 "helpText": "Handelsregister-Nummer der Firma, die Sie registrieren."
             },
             "cityOfRegistration": {
