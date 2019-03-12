@@ -53,6 +53,7 @@ module.exports.init = function (db, config) {
         field: 'BankCountryKey',
         type: Sequelize.STRING(2)
       },
+      /** The bank code is a code assigned by a central bank, a bank supervisory body or a Bankers Association in a country to all its licensed member banks or financial institutions. See https://en.wikipedia.org/wiki/Bank_code */
       bankCode: {
         field: 'BankCode',
         type: Sequelize.STRING(12),
@@ -62,12 +63,12 @@ module.exports.init = function (db, config) {
         field: 'BankName',
         type: Sequelize.STRING(50)
       },
-      /** Number which is part of Swedish bank account details */
+      /** The Bankgiro works with bankgiro number, which is an alias for a bank account. The Bankgiro offers structured remittance information. Creditor will be advised by his bank electronically and can enter the structured information for automatic reconciliation of his ledger. By issuing invoices with a Bankgiro number it is possible to pay the invoices for the payer and possible for the beneficiary to receive all the payments electronically and automatically reconcile the account receivables. See https://www.bankgirot.se/en/services/incoming-payments/bankgiro-number/ */
       bankgiro: {
         field: 'Bankgiro',
         type: Sequelize.STRING(30)
       },
-      /** Number which is part of Swedish bank account details */
+      /** PlusGirot is a credit transfer function, which is part of Nordea, and used for mediating payments between accounts held by companies and individuals. The Plusgiro works with Plusgiro numbers, which are an address and a bank account in Nordea. By issuing invoices with a Plusgiro number it is possible to pay the invoices for the payer and possible for the beneficiary to receive all the payments electronically and reconcile the account receivables. */
       plusgiro: {
         field: 'Plusgiro',
         type: Sequelize.STRING(30)
