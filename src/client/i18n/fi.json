@@ -104,7 +104,7 @@
         },
         "AccessRequest": {
             "head": "Olet pyytänyt käyttöoikeutta yritykseen {name}.",
-            "text": "Ota yhteyttä tukeen +49 231 3967 350 tai customerervice.de@opuscapita.com saadaksesi lisätietoja.",
+            "text": "Ota yhteyttä tukeen +49 231 99774525 tai customerervice.de@opuscapita.com saadaksesi lisätietoja.",
             "Status": {
                 "text": "Nykyinen tila",
                 "requested": "pyydetty",

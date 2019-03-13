@@ -39,5 +39,5 @@
     "SupplierValidatejs.duplicate.subEntityCode.message": "Una empresa en su organización ya tiene este código.",
     "SupplierValidatejs.duplicate.iban.message": "Ya existe una empresa con este IBAN.",
     "SupplierValidatejs.typeMismatch.util.Date": "El valor debe ser una fecha válida",
-    "SupplierValidatejs.supplierExists": "{message}\r\nPóngase en contacto con nuestro servicio de asistencia llamando al +49 231 3967 350 o escribiendo a customerservice.de@opuscapita.com para iniciar una solicitud de acceso a la empresa registrada."
+    "SupplierValidatejs.supplierExists": "{message}\r\nPóngase en contacto con nuestro servicio de asistencia llamando al +49 231 99774525 o escribiendo a customerservice.de@opuscapita.com para iniciar una solicitud de acceso a la empresa registrada."
 }

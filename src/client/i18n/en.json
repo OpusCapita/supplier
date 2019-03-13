@@ -118,7 +118,7 @@
         },
         "AccessRequest": {
             "head": "You have requested access to the company {name}.",
-            "text": "Please reach out to our support at +49 231 3967 350 or customerservice.de@opuscapita.com for further information.",
+            "text": "Please reach out to our support at +49 231 99774525 or customerservice.de@opuscapita.com for further information.",
             "Status": {
                 "text": "Current status",
                 "requested": "requested",
