@@ -51,12 +51,6 @@ class SupplierCreator extends Component {
   handleUpdate = newSupplier => {
     if (!newSupplier) return;
 
-    newSupplier = {
-      ...newSupplier,
-      createdBy: this.props.user.id,
-      changedBy: this.props.user.id
-    };
-
     return this.supplierApi.createSupplier(newSupplier).then(createdSupplier => {
       this.setState({ supplier: createdSupplier });
 

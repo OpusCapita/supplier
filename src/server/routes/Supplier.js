@@ -6,6 +6,7 @@ const SupplierContactApi = require('../api/SupplierContact');
 const SupplierCapabilityApi = require('../api/Capability');
 const Supplier2UserApi = require('../api/Supplier2User');
 const userService = require('../services/user');
+const UserData = require('../services/UserData');
 const businessLinkService = require('../services/businessLink');
 const Promise = require('bluebird');
 
@@ -64,48 +65,52 @@ class Supplier {
 
   create(req, res) {
     const newSupplier = req.body;
-    this.supplierApi.recordExists(newSupplier).then(exists =>
-    {
+    let userData = new UserData(req);
+    this.supplierApi.recordExists(newSupplier).then(exists => {
       if (exists) return res.status('409').json({ message : 'A supplier already exists' });
 
-      return userService.get(req.opuscapita.serviceClient, newSupplier.createdBy).then(userObj => {
-        if (userObj.supplierId && !userObj.roles.includes('admin')) return res.status('403').json({ message : 'User already has a supplier' });
+      if (!userData.hasAdminRole()) {
+        if (userData.supplierId) return res.status('403').json({ message : 'User already has a supplier' });
 
-        const iban = newSupplier.iban;
-        delete newSupplier.iban;
+        if (!this.supplierApi.hasUniqueIdentifier(newSupplier)) return res.status('400').json({ message: 'Supplier must have a unique identifier' });
+      }
 
-        newSupplier.status = 'new';
+      const iban = newSupplier.iban;
+      delete newSupplier.iban;
 
-        return this.supplierApi.create(newSupplier).then(supplier => {
-            if (userObj.roles.includes('admin')) return res.status('200').json(supplier);
+      newSupplier.status = 'new';
+      newSupplier.createdBy = userData.id;
+      newSupplier.changedBy = userData.id;
 
-            const supplierId = supplier.id;
-            const user = { supplierId: supplierId, status: 'registered', roles: ['user', 'supplier-admin'] };
+      return this.supplierApi.create(newSupplier).then(supplier => {
+          if (userData.hasAdminRole()) return res.status('200').json(supplier);
 
-            return Promise.all([
-                userService.update(req.opuscapita.serviceClient, supplier.createdBy, user),
-                userService.removeRoleFromUser(req.opuscapita.serviceClient, supplier.createdBy, 'registering_supplier')
-            ]).then(() => {
-                supplier.status = 'assigned';
+          const supplierId = supplier.id;
+          const user = { supplierId: supplierId, status: 'registered', roles: ['user', 'supplier-admin'] };
 
-                const supp1 = Object.assign({ }, supplier.dataValues);
-                const supp2 = Object.assign({ }, supplier.dataValues); // Copy needed as Supplier.update() seems to modify supp which then destroys createBankAccount().
+          return Promise.all([
+              userService.update(req.opuscapita.serviceClient, userData.id, user),
+              userService.removeRoleFromUser(req.opuscapita.serviceClient, userData.id, 'registering_supplier')
+          ]).then(() => {
+              supplier.status = 'assigned';
 
-                return Promise.all([this.supplierApi.update(supplierId, supp1), this.createBankAccount(iban, supp2)]).spread((supplier, account) => {
-                  return res.status('200').json(supplier);
-                });
-              }).catch(error => {
-                this.supplierApi.delete(supplierId).then(() => null);
-                req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
+              const supp1 = Object.assign({ }, supplier.dataValues);
+              const supp2 = Object.assign({ }, supplier.dataValues); // Copy needed as Supplier.update() seems to modify supp which then destroys createBankAccount().
 
-                return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
+              return Promise.all([this.supplierApi.update(supplierId, supp1), this.createBankAccount(iban, supp2)]).spread((supplier, account) => {
+                return res.status('200').json(supplier);
               });
-          }).catch(error => {
-            req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
+            }).catch(error => {
+              this.supplierApi.delete(supplierId).then(() => null);
+              req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
 
-            return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
-          });
-      });
+              return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
+            });
+        }).catch(error => {
+          req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
+
+          return res.status((error.response && error.response.statusCode) || 400).json({ message : error.message });
+        });
     })
     .catch(error => {
       req.opuscapita.logger.error('Error when creating Supplier: %s', error.message);
@@ -115,20 +120,25 @@ class Supplier {
 
   async update(req, res) {
     let supplierId = req.params.id;
+    let editedSupplier = req.body;
 
-    if (supplierId !== req.body.id) {
+    if (supplierId !== editedSupplier.id) {
       const message = 'Inconsistent data';
       req.opuscapita.logger.error('Error when updating Supplier: %s', message);
       return res.status('422').json({ message: message });
     }
+
+    let userData = new UserData(req);
+    if (!userData.hasAdminRole() && !this.supplierApi.hasUniqueIdentifier(editedSupplier)) return res.status('400').json({ message: 'Supplier must have a unique identifier' });
 
     try {
       const exists = await this.supplierApi.exists(supplierId);
 
       if (!exists) return handleSupplierNotExists(supplierId, req, res);
 
-      req.body.status = 'updated';
-      const supplier = await this.supplierApi.update(supplierId, req.body);
+      editedSupplier.status = 'updated';
+      editedSupplier.changedBy = userData.id;
+      const supplier = await this.supplierApi.update(supplierId, editedSupplier);
       await req.opuscapita.eventClient.emit('supplier.supplier.updated', supplier);
 
       return res.status('200').json(supplier);
@@ -212,11 +222,10 @@ class Supplier {
   }
 
   async restrictVisibility(supplier, req) {
-    const roles = req.opuscapita.userData('roles');
-    if (!req.query.public && (roles.some(rol => rol === 'admin' || rol.match('svc_')) )) return supplier;
+    let userData = new UserData(req);
+    if (!req.query.public && userData.hasAdminRole()) return supplier;
 
-    const supplierId = req.opuscapita.userData('supplierId');
-    if (!req.query.public && roles.some(rol => rol.match('supplier')) && supplier.id === supplierId) return supplier;
+    if (!req.query.public && userData.hasSupplierRole() && supplier.id === userData.supplierId) return supplier;
 
     if (!supplier.contacts && !supplier.bankAccounts) return supplier;
 
@@ -228,10 +237,9 @@ class Supplier {
 
     if (visibility.contacts !== 'businessPartners' && visibility.bankAccounts !== 'businessPartners') return supplier;
 
-    const customerId = req.opuscapita.userData('customerId');
     const businessLinks = await businessLinkService.allForSupplierId(req.opuscapita.serviceClient, supplier.id);
 
-    if (businessLinks.every(link => !customerId || link.customerId !== customerId)) {
+    if (businessLinks.every(link => !userData.customerId || link.customerId !== userData.customerId)) {
       ['contacts', 'bankAccounts'].forEach(field => { if (visibility[field] === 'businessPartners') delete supplier[field] });
     }
 
@@ -249,5 +257,7 @@ let handleSupplierNotExists = function(supplierId, req, res)
   req.opuscapita.logger.error('Error when updating Supplier: %s', message);
   return res.status('404').json({ message : message });
 };
+
+let getIdentifier = { vat: 'vatIdentificationNo', gln: 'globalLocationNo', ovt: 'ovtNo' };
 
 module.exports = Supplier;
