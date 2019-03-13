@@ -90,7 +90,7 @@
     "Supplier.Error.notUnique": "O valor deve ser exclusivo",
     "Supplier.Error.notAuthorized": "Você não está autorizado a realizar esta ação.",
     "Supplier.AccessRequest.head": "Você solicitou acesso à empresa {name}.",
-    "Supplier.AccessRequest.text": "Fale com o nosso suporte, pelo número +49 231 3967 350 ou customerservice.de@opuscapita.com para obter mais informações.",
+    "Supplier.AccessRequest.text": "Fale com o nosso suporte, pelo número +49 231 99774525 ou customerservice.de@opuscapita.com para obter mais informações.",
     "Supplier.AccessRequest.Status.text": "Status atual",
     "Supplier.AccessRequest.Status.requested": "solicitado",
     "Supplier.AccessRequest.Status.rejected": "rejeitado",
