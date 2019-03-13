@@ -1,4 +1,4 @@
-const SupplierApi = require('../queries/Supplier');
+const SupplierApi = require('../api/Supplier');
 
 class SupplierOrganization {
   constructor(app, db) {

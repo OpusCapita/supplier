@@ -1,5 +1,5 @@
-const SupplierApi = require('../queries/Supplier');
-const Supplier2UserApi = require('../queries/Supplier2User');
+const SupplierApi = require('../api/Supplier');
+const Supplier2UserApi = require('../api/Supplier2User');
 const notification = require('../services/notification');
 const userService = require('../services/user');
 

@@ -1,4 +1,4 @@
-const SupplierContactApi = require('../queries/SupplierContact');
+const SupplierContactApi = require('../api/SupplierContact');
 const userService = require('../services/user');
 const authService = require('../services/auth');
 

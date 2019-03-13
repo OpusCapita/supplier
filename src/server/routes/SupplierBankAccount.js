@@ -1,4 +1,4 @@
-const SupplierBankAccountApi = require('../queries/SupplierBankAccount');
+const SupplierBankAccountApi = require('../api/SupplierBankAccount');
 
 class SupplierBankAccount {
   constructor(app, db) {
