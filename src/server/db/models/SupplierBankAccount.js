@@ -48,7 +48,7 @@ module.exports.init = function (db, config) {
           }
         }
       },
-      /** The bank's country as in ISO 3166-1 alpha2 */
+      /** Bank Country Key. It specifies the country in which the bank is located, as in ISO 3166-1 alpha2. E.g. DE for Germany. */
       bankCountryKey: {
         field: 'BankCountryKey',
         type: Sequelize.STRING(2)
@@ -104,6 +104,7 @@ module.exports.init = function (db, config) {
         type: Sequelize.STRING(60),
         allowNull: false
       },
+      /** External bank control key. It is the first two digits of the bank account number (IBAN). */
       extBankControlKey: {
         field: 'ExtBankControlKey',
         type: Sequelize.STRING(2)
