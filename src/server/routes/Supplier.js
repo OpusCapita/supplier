@@ -5,7 +5,7 @@ const SupplierAddressApi = require('../api/SupplierAddress');
 const SupplierContactApi = require('../api/SupplierContact');
 const SupplierCapabilityApi = require('../api/Capability');
 const Supplier2UserApi = require('../api/Supplier2User');
-const userService = require('../services/user');
+const User = require('../services/User');
 const UserData = require('../services/UserData');
 const businessLinkService = require('../services/businessLink');
 const Promise = require('bluebird');
@@ -88,9 +88,10 @@ class Supplier {
           const supplierId = supplier.id;
           const user = { supplierId: supplierId, status: 'registered', roles: ['user', 'supplier-admin'] };
 
+          const userService = new User(req.opuscapita.serviceClient);
           return Promise.all([
-              userService.update(req.opuscapita.serviceClient, userData.id, user),
-              userService.removeRoleFromUser(req.opuscapita.serviceClient, userData.id, 'registering_supplier')
+              userService.update(userData.id, user),
+              userService.removeRoleFromUser(userData.id, 'registering_supplier')
           ]).then(() => {
               supplier.status = 'assigned';
 

@@ -1,7 +1,7 @@
 const SupplierApi = require('../api/Supplier');
 const Supplier2UserApi = require('../api/Supplier2User');
 const notification = require('../services/notification');
-const userService = require('../services/user');
+const User = require('../services/User');
 
 class SupplierAccess {
   constructor(app, db) {
@@ -26,7 +26,8 @@ class SupplierAccess {
     if (req.query.include !== 'user') return res.json(supplier2users);
 
     const userIds = supplier2users.map(supplier2user => supplier2user.userId);
-    const users = await userService.allForUserIds(req.opuscapita.serviceClient, userIds);
+    const userService = new User(req.opuscapita.serviceClient);
+    const users = await userService.allForUserIds(userIds);
 
     const supplier2usersWithUsers = supplier2users.map(supplier2user => {
       let data = supplier2user.dataValues;
@@ -53,11 +54,11 @@ class SupplierAccess {
 
     attributes.status = 'requested';
     return this.supplier2UserApi.create(attributes).then(async supplier2user => {
-      const serviceClient = req.opuscapita.serviceClient;
-      const requestUser = await userService.getProfile(serviceClient, supplier2user.userId);
+      const userService = new User(req.opuscapita.serviceClient);
+      const requestUser = await userService.getProfile(supplier2user.userId);
       const supplier = await this.supplierApi.find(supplier2user.supplierId);
 
-      return userService.allForSupplierId(serviceClient, supplier2user.supplierId).then(users => {
+      return userService.allForSupplierId(supplier2user.supplierId).then(users => {
         const userIds = users.reduce((arr, user) => {
           if (user.roles.includes('supplier-admin')) arr.push(user.id);
           return arr;
@@ -121,8 +122,9 @@ class SupplierAccess {
       }
 
       const user = { supplierId: supplierId, roles: ['supplier'] };
+      const userService = new User(req.opuscapita.serviceClient);
 
-      return userService.update(req.opuscapita.serviceClient, req.body.userId, user).then(() => {
+      return userService.update(req.body.userId, user).then(() => {
         return res.status('200').json({ message: 'Supplier successfully added to user' });
       }).catch(error => {
         req.opuscapita.logger.error('Error when adding Supplier to User: %s', error.message);
