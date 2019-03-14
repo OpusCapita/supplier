@@ -1,6 +1,7 @@
 const stringHelper = require('../utils/string');
 const SqlString = require('sequelize/lib/sql-string');
 const utils = require('../utils/lib');
+const uniqueIdentifier = require('../utils/validators/uniqueIdentifier');
 
 class Supplier {
   constructor(db) {
@@ -213,6 +214,20 @@ class Supplier {
     delete rawAttributes.supplierId;
     delete rawAttributes.supplierName;
     return Object.keys(rawAttributes).map(fieldName => `Supplier.${rawAttributes[fieldName].field} AS ${fieldName}`).join(', ');
+  }
+
+  hasUniqueIdentifier(supplier) {
+    const fields = [
+      supplier.vatIdentificationNo,
+      supplier.dunsNo,
+      supplier.globalLocationNo,
+      supplier.ovtNo,
+      supplier.iban
+    ];
+
+    if (uniqueIdentifier.isValid(fields)) return true;
+
+    return false;
   }
 };
 
