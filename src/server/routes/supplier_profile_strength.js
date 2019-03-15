@@ -1,4 +1,4 @@
-const SupplierApi = require('../queries/Supplier');
+const SupplierApi = require('../api/Supplier');
 
 module.exports = function(app, db, config) {
   app.get('/api/suppliers/:supplierId/profile_strength', (req, res) => {

@@ -1,4 +1,4 @@
-const SupplierAddressApi = require('../queries/SupplierAddress');
+const SupplierAddressApi = require('../api/SupplierAddress');
 
 class SupplierAddress {
   constructor(app, db) {

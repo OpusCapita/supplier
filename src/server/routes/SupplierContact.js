@@ -1,5 +1,5 @@
-const SupplierContactApi = require('../queries/SupplierContact');
-const userService = require('../services/user');
+const SupplierContactApi = require('../api/SupplierContact');
+const User = require('../services/User');
 const authService = require('../services/auth');
 
 class SupplierContact {
@@ -58,7 +58,8 @@ class SupplierContact {
     return this.supplierContactApi.exists(req.params.supplierId, contact.id).then(exists => {
       if (!exists) return handleContactNotExistError(res, contact.id, req.opuscapita.logger);
 
-      return userService.get(req.opuscapita.serviceClient, contact.email).then(() => {
+      const userService = new User(req.opuscapita.serviceClient);
+      return userService.get(contact.email).then(() => {
         return res.status('409').json({ message : 'User already exists' });
       }).catch(error => {
         if (error.response && error.response.statusCode == '404') {

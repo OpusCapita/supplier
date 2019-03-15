@@ -1,4 +1,4 @@
-const SupplierVisibilityApi = require('../queries/SupplierVisibility');
+const SupplierVisibilityApi = require('../api/SupplierVisibility');
 
 class SupplierVisibility {
   constructor(app, db) {

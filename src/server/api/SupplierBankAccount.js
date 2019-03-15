@@ -1,3 +1,5 @@
+const uniqueIdentifier = require('../utils/validators/uniqueIdentifier');
+
 class SupplierBankAccount {
   constructor(db) {
     this.supplierBankAccount = db.models.SupplierBankAccount;
@@ -31,6 +33,18 @@ class SupplierBankAccount {
 
   exists(supplierId, bankAccountId) {
     return this.find(supplierId, bankAccountId).then(accounts => Boolean(accounts));
+  }
+
+  hasUniqueIdentifier(bankAccount) {
+    const fields = [
+      bankAccount.accountNumber,
+      bankAccount.bankgiro,
+      bankAccount.plusgiro
+    ];
+
+    if (uniqueIdentifier.isValid(fields)) return true;
+
+    return false;
   }
 };
 

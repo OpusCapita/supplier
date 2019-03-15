@@ -1,4 +1,4 @@
-const CapabilityApi = require('../queries/Capability');
+const CapabilityApi = require('../api/Capability');
 
 class Capability {
   constructor(app, db) {
