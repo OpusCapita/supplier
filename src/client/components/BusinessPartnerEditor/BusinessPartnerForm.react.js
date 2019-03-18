@@ -1,11 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import BusinessPartnerFormRow from '../AttributeValueEditorRow.react.js';
 import './BusinessPartner.css';
-import Constraints from '../../utils/validatejs/supplierConstraints';
+import Constraints from './BusinessPartnerConstraints';
 import DateInput from '@opuscapita/react-dates/lib/DateInput';
 import { BusinessPartner } from '../../api';
 import serviceComponent from '@opuscapita/react-loaders/lib/serviceComponent';
-import validator from '../../utils/validatejs/supplierValidator.js';
+import validator from './formValidator.js';
 
 class BusinessPartnerForm extends Component {
   static propTypes = {
@@ -130,7 +130,7 @@ class BusinessPartnerForm extends Component {
     const constraints = { ...this.constraints.forUpdate(), id: {}, parentId: {} };
 
     if (!businessPartner.vatIdentificationNo && this.state.hasVATId) {
-      this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('Supplier.Messages.clickCheckBox')] });
+      this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('BusinessPartner.Messages.clickCheckBox')] });
     } else {
       const success = () => {
         businessPartner.noVatReason = businessPartner.vatIdentificationNo ? null : 'No VAT Registration Number';
@@ -172,17 +172,17 @@ class BusinessPartnerForm extends Component {
 
   comRegTooltiptext() {
     return (
-      `${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.text')}
+      `${this.context.i18n.getMessage('BusinessPartner.Messages.companyRegisterNumber.text')}
       <ul>
-        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.de')}</li>
-        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.at')}</li>
-        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.fi')}</li>
-        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.se')}</li>
-        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.no')}</li>
-        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.ch')}</li>
-        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.us')}</li>
-        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.pl')}</li>
-        <li>${this.context.i18n.getMessage('Supplier.Messages.companyRegisterNumber.fr')}</li>
+        <li>${this.context.i18n.getMessage('BusinessPartner.Messages.companyRegisterNumber.de')}</li>
+        <li>${this.context.i18n.getMessage('BusinessPartner.Messages.companyRegisterNumber.at')}</li>
+        <li>${this.context.i18n.getMessage('BusinessPartner.Messages.companyRegisterNumber.fi')}</li>
+        <li>${this.context.i18n.getMessage('BusinessPartner.Messages.companyRegisterNumber.se')}</li>
+        <li>${this.context.i18n.getMessage('BusinessPartner.Messages.companyRegisterNumber.no')}</li>
+        <li>${this.context.i18n.getMessage('BusinessPartner.Messages.companyRegisterNumber.ch')}</li>
+        <li>${this.context.i18n.getMessage('BusinessPartner.Messages.companyRegisterNumber.us')}</li>
+        <li>${this.context.i18n.getMessage('BusinessPartner.Messages.companyRegisterNumber.pl')}</li>
+        <li>${this.context.i18n.getMessage('BusinessPartner.Messages.companyRegisterNumber.fr')}</li>
       </ul>`
     );
   }
@@ -210,7 +210,7 @@ class BusinessPartnerForm extends Component {
 
     return (
       <BusinessPartnerFormRow
-        labelText={ attrs.labelText || this.context.i18n.getMessage(`Supplier.Label.${fieldName}`) }
+        labelText={ attrs.labelText || this.context.i18n.getMessage(`BusinessPartner.Label.${fieldName}`) }
         required={ isRequired }
         marked={ attrs.marked }
         info={ attrs.info }
@@ -244,7 +244,6 @@ class BusinessPartnerForm extends Component {
     const i18n = this.context.i18n;
     const { businessPartner } = this.state;
     const { CountryField, CurrencyField } = this.externalComponents;
-    const foundedOn = businessPartner['foundedOn'] ? new Date(businessPartner['foundedOn']) : '';
 
     return (
       <div>
@@ -275,7 +274,7 @@ class BusinessPartnerForm extends Component {
                 className="form-control"
                 locale={['en', 'de'].includes(i18n.locale) ? i18n.locale : 'en'}
                 dateFormat={i18n.dateFormat}
-                value={foundedOn}
+                value={businessPartner.foundedOn ? new Date(businessPartner.foundedOn) : ''}
                 onChange={this.handleChange.bind(this, 'foundedOn')}
                 onBlur={this.handleBlur.bind(this, 'foundedOn')}
                 variants={[]}
@@ -319,7 +318,7 @@ class BusinessPartnerForm extends Component {
                   component: (
                     <p>
                       <input className='fa fa-fw' type='checkbox' onChange={this.handleCheckboxChange} checked={!this.state.hasVATId} disabled={!this.userIsAdmin()}></input>
-                      {this.context.i18n.getMessage('Supplier.Messages.noVatId')}
+                      {this.context.i18n.getMessage('BusinessPartner.Messages.noVatId')}
                     </p>
                   )
                 }) }
@@ -330,7 +329,7 @@ class BusinessPartnerForm extends Component {
           <div className='business-partner-form-submit'>
             <div className='text-right form-submit'>
               <button id='business-partner-editor__form-submit' className="btn btn-primary" onClick={ this.handleUpdate }>
-                { i18n.getMessage('Supplier.Button.save') }
+                { i18n.getMessage('BusinessPartner.Button.save') }
               </button>
             </div>
           </div>

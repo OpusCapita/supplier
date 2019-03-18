@@ -11,6 +11,14 @@ class UserAbilities {
     }
   }
 
+  canCreateBusinessPartner() {
+    return this.abilitiesForRole['supplier']['actions'].includes('create');
+  }
+
+  canEditBusinessPartner() {
+    return this.abilitiesForRole['supplier']['actions'].includes('edit');
+  }
+
   canCreateSupplier() {
     return this.abilitiesForRole['supplier']['actions'].includes('create');
   }

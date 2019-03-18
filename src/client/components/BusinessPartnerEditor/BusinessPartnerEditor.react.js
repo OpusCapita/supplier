@@ -1,6 +1,7 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import validationMessages from '../../utils/validatejs/i18n';
 import i18nMessages from '../../i18n';
+import { Components } from '@opuscapita/service-base-ui';
 import BusinessPartnerForm from './BusinessPartnerForm.react.js';
 import BusinessPartnerView from './BusinessPartnerView.react.js';
 import { BusinessPartner } from '../../api';
@@ -9,24 +10,17 @@ import UserAbilities from '../../UserAbilities';
 /**
  * Provide general company information.
  */
-class BusinessPartner extends Component {
+class BusinessPartnerEditor extends Components.ContextComponent {
 
   static propTypes = {
     businessPartnerId: PropTypes.string.isRequired,
-    username: React.PropTypes.string.isRequired,
-    userRoles: React.PropTypes.array.isRequired,
     onChange: React.PropTypes.func,
     onUpdate: React.PropTypes.func,
     onUnauthorized: React.PropTypes.func,
     onLogout: React.PropTypes.func
   };
 
-  static contextTypes = {
-    i18n : React.PropTypes.object.isRequired,
-    showNotification: React.PropTypes.func
-  };
-
-  constructor(props) {
+  constructor(props, context) {
     super(props);
 
     this.state = {
@@ -36,12 +30,12 @@ class BusinessPartner extends Component {
     };
 
     this.api = new BusinessPartner();
-    this.userAbilities = new UserAbilities(props.userRoles);
+    this.userAbilities = new UserAbilities(context.userData.roles);
   }
 
   componentWillMount() {
-    this.context.i18n.register('SupplierValidatejs', validationMessages);
-    this.context.i18n.register('Supplier', i18nMessages);
+    this.context.i18n.register('BusinessPartnerValidatejs', validationMessages);
+    this.context.i18n.register('BusinessPartner', i18nMessages);
   }
 
   componentDidMount() {
@@ -73,8 +67,8 @@ class BusinessPartner extends Component {
   componentWillReceiveProps(nextProps, nextContext) {
 
     if(nextContext.i18n){
-      nextContext.i18n.register('SupplierValidatejs', validationMessages);
-      nextContext.i18n.register('Supplier', i18nMessages);
+      nextContext.i18n.register('BusinessPartnerValidatejs', validationMessages);
+      nextContext.i18n.register('BusinessPartner', i18nMessages);
     }
   }
 
@@ -92,11 +86,6 @@ class BusinessPartner extends Component {
       });
     }
 
-    newBusinessPartner = {  // eslint-disable-line no-param-reassign
-      ...newBusinessPartner,
-      changedBy: this.props.username
-    };
-
     delete newBusinessPartner.changedOn;  // eslint-disable-line no-param-reassign
     delete newBusinessPartner.createdOn;  // eslint-disable-line no-param-reassign
 
@@ -104,7 +93,7 @@ class BusinessPartner extends Component {
       this.setState({ businessPartner: businessPartner });
 
       if(this.context.showNotification)
-        this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.updateSaved'), 'info')
+        this.context.showNotification(this.context.i18n.getMessage('BusinessPartner.Messages.updateSaved'), 'info')
 
       if (this.props.onUpdate && this.props.businessPartnerId !== businessPartner.id) {
         this.props.onUpdate({ id: businessPartner.id, name: businessPartner.name });
@@ -121,11 +110,11 @@ class BusinessPartner extends Component {
           break;
         case 409:
           if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.failedCreatingExistingSupplier'), 'error')
+            this.context.showNotification(this.context.i18n.getMessage('BusinessPartner.Messages.failedCreatingExistingBusinessPartner'), 'error')
           break;
         default:
           if(this.context.showNotification)
-            this.context.showNotification(this.context.i18n.getMessage('Supplier.Messages.updateFailed'), 'error')
+            this.context.showNotification(this.context.i18n.getMessage('BusinessPartner.Messages.updateFailed'), 'error')
       }
     });
   }
@@ -133,7 +122,7 @@ class BusinessPartner extends Component {
   renderBusinessPartnerView() {
     return <div className="col-sm-6">
       <h4 className="tab-description">
-        { this.context.i18n.getMessage(`Supplier.Heading.companyInformation`) }
+        { this.context.i18n.getMessage(`BusinessPartner.Heading.companyInformation`) }
       </h4>
       <BusinessPartnerView businessPartner={ this.state.businessPartner } />
     </div>;
@@ -144,28 +133,28 @@ class BusinessPartner extends Component {
 
     if (!isLoaded) {
       return (
-        <div>{ this.context.i18n.getMessage('Supplier.Messages.loading') }</div>
+        <div>{ this.context.i18n.getMessage('BusinessPartner.Messages.loading') }</div>
       );
     }
 
     if (hasErrors) {
       return (
-        <div>{ this.context.i18n.getMessage('Supplier.Messages.unableToRender')  } <a className="btn btn-link" href="/bnp/supplierRegistration">{this.context.i18n.getMessage('SupplierEditor.Messages.register')}</a> </div>
+        <div>{ this.context.i18n.getMessage('BusinessPartner.Messages.unableToRender')  } <a className="btn btn-link" href="/bnp/supplierRegistration">{this.context.i18n.getMessage('SupplierEditor.Messages.register')}</a> </div>
       );
     }
 
-    if (!this.userAbilities.canEditSupplier()) return <div className="row">{this.renderBusinessPartnerView()}</div>;
+    if (!this.userAbilities.canEditBusinessPartner()) return <div className="row">{this.renderBusinessPartnerView()}</div>;
 
     return (
       <div className="row">
         <div className="col-sm-6">
           <h4 className="tab-description">
-            { this.context.i18n.getMessage(`Supplier.Heading.companyInformation`) }
+            { this.context.i18n.getMessage(`BusinessPartner.Heading.companyInformation`) }
           </h4>
-          <SupplierEditorForm
+          <BusinessPartnerForms
             {...this.props}
-            supplier={ this.state.supplier }
-            onSupplierChange={ this.handleUpdate }
+            businessPartner={ this.state.businessPartner }
+            onBusinessPartnerChange={ this.handleUpdate }
             onChange={ this.handleChange }
             onCancel={ this.props.onLogout }
           />
@@ -175,11 +164,11 @@ class BusinessPartner extends Component {
           <br />
           <br />
           <br />
-          <p>{this.context.i18n.getMessage('Supplier.Messages.identifierRequired')}</p>
+          <p>{this.context.i18n.getMessage('BusinessPartner.Messages.identifierRequired')}</p>
         </div>
       </div>
     );
   }
 }
 
-export default BusinessPartner;
+export default BusinessPartnerEditor;
