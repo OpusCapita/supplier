@@ -1,6 +1,6 @@
-const custom = require('.../../utils/validatejs/custom');
-const customAsync = require('.../../utils/validatejs/customAsync');
-const formatters = require('.../../utils/validatejs/formatters');
+const custom = require('../../utils/validatejs/custom.js');
+const customAsync = require('../../utils/validatejs/customAsync.js');
+const formatters = require('../../utils/validatejs/formatters');
 const validatejs = require('validate.js');
 
 module.exports.forRegistration = function() {

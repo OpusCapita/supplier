@@ -14,9 +14,10 @@ import SupplierList from '../src/client/components/SupplierList';
 import SupplierOrganization from '../src/client/components/SupplierOrganization';
 import SupplierCreator from '../src/client/components/SupplierCreator';
 import SupplierVisibilityPreference from '../src/client/components/SupplierVisibilityPreference';
+import BusinessPartnerEditor from '../src/client/components/BusinessPartnerEditor';
 
 const username = 'john.doe@ncc.com';
-const userRoles = ['supplier-admin', 'user'];
+const userRoles = ['admin', 'user'];
 
 const supplierId = "hard001";
 
@@ -109,6 +110,13 @@ let organization = <SupplierOrganization supplierId={supplierId} />
 
 let visibility = <SupplierVisibilityPreference supplierId={supplierId} />
 
+let businessPartnerEditor = (
+  <BusinessPartnerEditor
+    key='businessPartner'
+    businessPartnerId={supplierId}
+  />
+);
+
 var tabData = [
   { name: 'Registration', isActive: true },
   { name: 'Create', isActive: true },
@@ -122,7 +130,8 @@ var tabData = [
   { name: 'Autocomplete', isActive: false },
   { name: 'List', isActive: false },
   { name: 'Organization', isActive: false },
-  { name: 'Visibility', isActive: false }
+  { name: 'Visibility', isActive: false },
+  { name: 'BP Editor', isActive: false }
 ];
 
 class Tabs extends React.Component
@@ -169,6 +178,7 @@ class Content extends React.Component
         {this.props.activeTab.name === 'List' ? list : null}
         {this.props.activeTab.name === 'Organization' ? organization : null}
         {this.props.activeTab.name === 'Visibility' ? visibility : null}
+        {this.props.activeTab.name === 'BP Editor' ? businessPartnerEditor : null}
       </div>
     );
   }

@@ -16,7 +16,8 @@ class BusinessPartnerForm extends Component {
   };
 
   static contextTypes = {
-    i18n: React.PropTypes.object.isRequired
+    i18n: React.PropTypes.object.isRequired,
+    userData: React.PropTypes.object
   };
 
   constructor(props) {
@@ -167,7 +168,7 @@ class BusinessPartnerForm extends Component {
   };
 
   userIsAdmin = () => {
-    return this.props.userRoles.includes('admin');
+    return this.context.userData.roles.includes('admin');
   };
 
   comRegTooltiptext() {

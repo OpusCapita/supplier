@@ -139,7 +139,7 @@ class BusinessPartnerEditor extends Components.ContextComponent {
 
     if (hasErrors) {
       return (
-        <div>{ this.context.i18n.getMessage('BusinessPartner.Messages.unableToRender')  } <a className="btn btn-link" href="/bnp/supplierRegistration">{this.context.i18n.getMessage('SupplierEditor.Messages.register')}</a> </div>
+        <div>{ this.context.i18n.getMessage('BusinessPartner.Messages.unableToRender')  } </div>
       );
     }
 
@@ -151,7 +151,7 @@ class BusinessPartnerEditor extends Components.ContextComponent {
           <h4 className="tab-description">
             { this.context.i18n.getMessage(`BusinessPartner.Heading.companyInformation`) }
           </h4>
-          <BusinessPartnerForms
+          <BusinessPartnerForm
             {...this.props}
             businessPartner={ this.state.businessPartner }
             onBusinessPartnerChange={ this.handleUpdate }
