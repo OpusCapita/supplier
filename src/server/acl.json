@@ -66,11 +66,6 @@
         "type": "rest",
         "resourceId": "/api/suppliers/[^/]+/capabilities",
         "actions": ["view"]
-      },
-      {
-        "type": "ui",
-        "resourceId": "^/",
-        "actions": ["view"]
       }
     ]
   },
@@ -107,6 +102,11 @@
         "type": "rest",
         "resourceId": "/api/supplier_access",
         "actions": ["create", "view", "edit"]
+      },
+      {
+        "type": "ui",
+        "resourceId": "^/",
+        "actions": ["view"]
       }
     ]
   },
