@@ -66,6 +66,11 @@
         "type": "rest",
         "resourceId": "/api/suppliers/[^/]+/capabilities",
         "actions": ["view"]
+      },
+      {
+        "type": "ui",
+        "resourceId": "^/",
+        "actions": ["view"]
       }
     ]
   },
