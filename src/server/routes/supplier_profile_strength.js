@@ -1,11 +1,10 @@
-const Supplier = require('../queries/suppliers');
+const SupplierApi = require('../api/Supplier');
 
 module.exports = function(app, db, config) {
   app.get('/api/suppliers/:supplierId/profile_strength', (req, res) => {
-    const supplierId = req.params.supplierId;
-    const includes = ['contacts', 'bankAccounts', 'addresses'];
+    const supplierApi = new SupplierApi(db);
 
-    Supplier.init(db, config).then(() => Supplier.find(supplierId, includes)).then(supplier => {
+    supplierApi.find(req.params.supplierId, ['contacts', 'bankAccounts', 'addresses']).then(supplier => {
       if (!supplier) return res.json(0);
 
       const averages = recordsArray(supplier).map(records => {
@@ -22,7 +21,7 @@ module.exports = function(app, db, config) {
   });
 };
 
-function recordsArray(supplier) {
+let recordsArray = function(supplier) {
   const addresses = supplier.addresses ? supplier.addresses.map(record => record.dataValues) : [];
   const contacts = supplier.contacts ? supplier.contacts.map(record => record.dataValues) : [];
   const bankAccounts = supplier.bankAccounts ? supplier.bankAccounts.map(record => record.dataValues) : [];
@@ -34,7 +33,7 @@ function recordsArray(supplier) {
   return [[supplier], addresses, contacts, bankAccounts];
 }
 
-function recordAverage(record) {
+let recordAverage = function(record) {
   let recordAttributes = Object.keys(record);
   return recordAttributes.filter(attr => Boolean(record[attr])).length / recordAttributes.length;
 };

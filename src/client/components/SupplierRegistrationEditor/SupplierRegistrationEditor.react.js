@@ -117,12 +117,6 @@ class SupplierRegistrationEditor extends Components.ContextComponent {
   handleUpdate = newSupplier => {
     if (!newSupplier) return;
 
-    newSupplier = {  // eslint-disable-line no-param-reassign
-      ...newSupplier,
-      createdBy: this.props.user.id,
-      changedBy: this.props.user.id
-    };
-
     return this.supplierApi.createSupplier(newSupplier).then(createdSupplier => {
       this.setState({ supplier: createdSupplier });
 

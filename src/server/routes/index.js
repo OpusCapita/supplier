@@ -2,15 +2,15 @@
 
 const Promise = require('bluebird');
 
-const suppliers = require('./suppliers');
-const supplierContacts = require('./supplier_contacts');
-const supplierAddresses = require('./supplier_addresses');
-const supplierBanks = require('./supplier_banks');
+const Supplier = require('./Supplier');
+const SupplierContact = require('./SupplierContact');
+const SupplierAddress = require('./SupplierAddress');
+const SupplierBankAccount = require('./SupplierBankAccount');
 const supplierProfileStrength = require('./supplier_profile_strength');
-const supplierAccess = require('./supplier_access');
-const capabilities = require('./capabilities');
-const supplierOrganization = require('./supplierOrganization');
-const supplierVisibility = require('./supplierVisibility');
+const SupplierAccess = require('./SupplierAccess');
+const Capability = require('./Capability');
+const SupplierOrganization = require('./SupplierOrganization');
+const SupplierVisibility = require('./SupplierVisibility');
 
 /**
  * Initializes all routes for RESTful access.
@@ -22,14 +22,14 @@ const supplierVisibility = require('./supplierVisibility');
  * @see [Minimum setup]{@link https://github.com/OpusCapitaBusinessNetwork/web-init#minimum-setup}
  */
 module.exports.init = function(app, db, config) {
-  suppliers(app, db, config);
-  supplierContacts(app, db, config);
-  supplierAddresses(app, db, config);
-  supplierBanks(app, db, config);
+  new Supplier(app, db).init();
+  new SupplierContact(app, db).init();
+  new SupplierAddress(app, db).init();
+  new SupplierBankAccount(app, db).init();
   supplierProfileStrength(app, db, config);
-  supplierAccess(app, db, config);
-  capabilities(app, db, config);
-  supplierOrganization(app, db, config);
-  supplierVisibility(app, db, config);
+  new SupplierAccess(app, db).init();
+  new Capability(app, db).init();
+  new SupplierOrganization(app, db).init();
+  new SupplierVisibility(app, db).init();
   return Promise.resolve();
 };
