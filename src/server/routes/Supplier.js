@@ -259,6 +259,12 @@ let handleSupplierNotExists = function(supplierId, req, res)
   return res.status('404').json({ message : message });
 };
 
-let getIdentifier = { vat: 'vatIdentificationNo', gln: 'globalLocationNo', ovt: 'ovtNo' };
+let getIdentifier = {
+  vat: 'vatIdentificationNo',
+  gln: 'globalLocationNo',
+  ovt: 'ovtNo',
+  orgnr: 'commercialRegisterNo',
+  org: 'commercialRegisterNo'
+};
 
 module.exports = Supplier;
