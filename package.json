@@ -31,7 +31,7 @@
   "readme": "README.md",
   "dependencies": {
     "@opuscapita/db-init": "^2.0.24",
-    "@opuscapita/electronic-address": "^0.0.2",
+    "@opuscapita/electronic-address": "^0.0.4",
     "@opuscapita/field-validators": "^0.1.8",
     "@opuscapita/i18n": "^1.2.4",
     "@opuscapita/react-dates": "^0.2.16",
