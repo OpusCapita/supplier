@@ -33,7 +33,7 @@
     "@opuscapita/db-init": "^2.0.30",
     "@opuscapita/electronic-address": "^0.0.4",
     "@opuscapita/field-validators": "^0.1.8",
-    "@opuscapita/i18n": "^1.2.13",
+    "@opuscapita/i18n": "1.2.1",
     "@opuscapita/react-dates": "^0.2.16",
     "@opuscapita/react-loaders": "^0.1.9",
     "@opuscapita/react-select": "2.0.8",
