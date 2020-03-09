@@ -29,6 +29,8 @@ class SupplierEditorForm extends Component {
       hasVATId: Boolean(this.props.supplier.vatIdentificationNo)
     };
     this.supplierApi = new Supplier();
+    this.taxIdentificationNoFieldName = 'taxIdentificationNo';
+    this.commercialRegisterNoFieldName = 'commercialRegisterNo';
   }
 
   componentWillMount() {
@@ -74,6 +76,11 @@ class SupplierEditorForm extends Component {
       }), this.state.fieldErrors)
     });
   };
+
+  hasAlternativeSupplierId() {
+    return this.state.supplier[this.commercialRegisterNoFieldName] ||
+      this.state.supplier[this.taxIdentificationNoFieldName];
+  }
 
   handleChange = (fieldName, event) => {
     let newValue;
@@ -127,7 +134,11 @@ class SupplierEditorForm extends Component {
 
     const { onSupplierChange } = this.props;
     const supplier = this.state.supplier;
-    const constraints = { ...this.constraints.forUpdate(), id: {}, parentId: {} };
+    const constraints = {
+      ...this.constraints.forUpdateOfSupplierForm(this.state.hasVATId, this.hasAlternativeSupplierId()),
+      id: {},
+      parentId: {}
+    };
 
     if (!supplier.vatIdentificationNo && this.state.hasVATId) {
       this.setFieldErrorsStates({ noVatReason: [this.context.i18n.getMessage('Supplier.Messages.clickCheckBox')] });
@@ -191,7 +202,8 @@ class SupplierEditorForm extends Component {
     const { supplier, fieldErrors } = this.state;
     const { fieldName } = attrs;
     const fieldNames = attrs.fieldNames || [fieldName];
-    const constraints = this.constraints.forUpdate();
+    const constraints =
+      this.constraints.forUpdateOfSupplierForm(this.state.hasVATId, this.hasAlternativeSupplierId());
 
     let component = attrs.component ||
       <input className="form-control"
@@ -310,9 +322,9 @@ class SupplierEditorForm extends Component {
               />
             )
           })}
-          { this.renderField({ fieldName: 'commercialRegisterNo', info: this.comRegTooltiptext() }) }
-          { this.renderField({ fieldName: 'taxIdentificationNo' }) }
-          { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: !this.userIsAdmin() }) }
+          { this.renderField({ fieldName: this.commercialRegisterNoFieldName, info: this.comRegTooltiptext() }) }
+          { this.renderField({ fieldName: this.taxIdentificationNoFieldName }) }
+          { this.renderField({ fieldName: 'vatIdentificationNo', marked: true, disabled: !(this.userIsAdmin() && this.state.hasVATId) }) }
           { this.renderField({
                   fieldName: 'noVatReason',
                   labelText: ' ',
@@ -323,9 +335,9 @@ class SupplierEditorForm extends Component {
                     </p>
                   )
                 }) }
-          { this.renderField({ fieldName: 'globalLocationNo', marked: true, disabled: !this.userIsAdmin() }) }
-          { this.renderField({ fieldName: 'dunsNo', marked: true, disabled: !this.userIsAdmin() }) }
-          { this.renderField({ fieldName: 'ovtNo', marked: true, disabled: !this.userIsAdmin() }) }
+          { this.renderField({ fieldName: 'globalLocationNo', marked: true, disabled: !(this.userIsAdmin() && !this.state.hasVATId) }) }
+          { this.renderField({ fieldName: 'dunsNo', marked: true, disabled: !(this.userIsAdmin() && !this.state.hasVATId) }) }
+          { this.renderField({ fieldName: 'ovtNo', marked: true, disabled: !(this.userIsAdmin() && !this.state.hasVATId) }) }
 
           <div className='supplier-form-submit'>
             <div className='text-right form-submit'>

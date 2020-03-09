@@ -30,6 +30,20 @@ class SupplierConstraints {
     return constraints;
   }
 
+  forUpdateOfSupplierForm(hasVATId, hasAlternativeSupplierIdentification) {
+    let constraints = this.constraints;
+    delete constraints.iban;
+    if (!hasVATId || hasAlternativeSupplierIdentification) {
+      delete constraints.vatIdentificationNo.uniqueIdentifier;
+    }
+    if (hasVATId || hasAlternativeSupplierIdentification) {
+      delete constraints.globalLocationNo.uniqueIdentifier;
+      delete constraints.dunsNo.uniqueIdentifier;
+      delete constraints.ovtNo.uniqueIdentifier;
+    }
+    return constraints;
+  }
+
   forRegistration() {
     let constraints = this.constraints;
 
