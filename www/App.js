@@ -15,8 +15,9 @@ import SupplierOrganization from '../src/client/components/SupplierOrganization'
 import SupplierCreator from '../src/client/components/SupplierCreator';
 import SupplierVisibilityPreference from '../src/client/components/SupplierVisibilityPreference';
 
+// If you want to test (locally) roles/users, you have to change roles/users here
 const username = 'john.doe@ncc.com';
-const userRoles = ['supplier-admin', 'user'];
+const userRoles = ['supplier-admin', 'user', 'admin'];
 
 const supplierId = "hard001";
 
