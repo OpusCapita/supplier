@@ -26,6 +26,10 @@ class SupplierConstraints {
     delete constraints.globalLocationNo.uniqueIdentifier;
     delete constraints.dunsNo.uniqueIdentifier;
     delete constraints.ovtNo.uniqueIdentifier;
+    delete constraints.vatIdentificationNo.uniqueIdentifierWithBankAccount;
+    delete constraints.globalLocationNo.uniqueIdentifierWithBankAccount;
+    delete constraints.dunsNo.uniqueIdentifierWithBankAccount;
+    delete constraints.ovtNo.uniqueIdentifierWithBankAccount;
 
     return constraints;
   }
