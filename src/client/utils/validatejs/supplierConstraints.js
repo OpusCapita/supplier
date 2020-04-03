@@ -34,6 +34,21 @@ class SupplierConstraints {
     return constraints;
   }
 
+  forUpdateWithoutCompanyIdentifiers() {
+    let constraints = this.constraints;
+    delete constraints.iban;
+    delete constraints.vatIdentificationNo;
+    delete constraints.globalLocationNo;
+    delete constraints.dunsNo;
+    delete constraints.ovtNo;
+    delete constraints.vatIdentificationNo;
+    delete constraints.globalLocationNo;
+    delete constraints.dunsNo;
+    delete constraints.ovtNo;
+
+    return constraints;
+  }
+
   forRegistration() {
     let constraints = this.constraints;
 
@@ -77,6 +92,14 @@ class SupplierConstraints {
       };
 
     return { [fieldName]: this.constraints[fieldName] };
+  }
+
+  forFieldWithoutCompanyIdentifier(fieldName, hasCompanyIdentifier) {
+    if (!hasCompanyIdentifier &&
+      ['vatIdentificationNo', 'dunsNo', 'globalLocationNo', 'iban', 'ovtNo'].includes(fieldName)) {
+      return { [fieldName]: this.constraints[fieldName] };
+    }
+    return this.forField(fieldName);
   }
 
   addPresence(fieldName) {

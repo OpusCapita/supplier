@@ -17,7 +17,7 @@ import SupplierVisibilityPreference from '../src/client/components/SupplierVisib
 
 // If you want to test (locally) roles/users, you have to change roles/users here
 const username = 'john.doe@ncc.com';
-const userRoles = ['supplier-admin', 'admin', 'user'];
+const userRoles = ['supplier-admin', 'user', 'admin'];
 
 const supplierId = "hard001";
 
