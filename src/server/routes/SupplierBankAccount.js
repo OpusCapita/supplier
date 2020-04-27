@@ -1,5 +1,7 @@
 const SupplierBankAccountApi = require('../api/SupplierBankAccount');
 
+const { Middlewares } = require('../helper');
+
 class SupplierBankAccount {
   constructor(app, db) {
     this.app = app;
@@ -7,21 +9,27 @@ class SupplierBankAccount {
   }
 
   init() {
-    this.app.get('/api/suppliers/:supplierId/bank_accounts', (req, res) => this.index(req, res));
+
+    const provideStringDescriptor = Middlewares.provideStringDescriptor(true);
+
+    this.app.get('/api/suppliers/:supplierId/bank_accounts', [provideStringDescriptor], (req, res) => this.index(req, res));
     this.app.post('/api/suppliers/:supplierId/bank_accounts', (req, res) => this.create(req, res));
-    this.app.get('/api/suppliers/:supplierId/bank_accounts/:bankAccountId', (req, res) => this.show(req, res));
+    this.app.get('/api/suppliers/:supplierId/bank_accounts/:bankAccountId', [provideStringDescriptor], (req, res) => this.show(req, res));
     this.app.put('/api/suppliers/:supplierId/bank_accounts/:bankAccountId', (req, res) => this.update(req, res));
     this.app.delete('/api/suppliers/:supplierId/bank_accounts/:bankAccountId', (req, res) => this.delete(req, res));
   }
 
   index(req, res) {
-    return this.api.all(req.params.supplierId).then(accounts => res.json(accounts));
+    return this.api.all(req.params.supplierId).then(accounts => {
+      if (req.params.provideSringDescriptor) accounts.forEach(this.addStringDescriptor.bind(this))
+      return res.json(accounts);
+    });
   }
 
   show(req, res) {
     return this.api.find(req.params.supplierId, req.params.bankAccountId).then(account => {
       if (!account) return res.status('404').json({ message: 'Not found' });
-
+      if (req.params.provideSringDescriptor) this.addStringDescriptor(account);
       return res.json(account);
     });
   }
@@ -54,6 +62,22 @@ class SupplierBankAccount {
     this.api.delete(req.params.supplierId, req.params.bankAccountId).then(() => res.json(null))
       .catch(e => res.status('400').json({message: e.message}));
   }
+
+  // create a property (JSON object) on bankaccount with all the necessary properties which should be composed
+  // into an String representation by the consuming service
+  addStringDescriptor(bankAccount) {
+    // Fields that will be used for string representation
+    const mandatoryFields = ['accountNumber','bankgiro','plusgiro','isrNumber'];
+    bankAccount.dataValues.stringDescriptor = {};
+    Object.keys(bankAccount.dataValues).forEach(property => {
+      // check if value is truthy and mandatory
+      if (bankAccount.dataValues[property] && mandatoryFields.includes(property)) {
+        // add property to descriptor object
+        bankAccount.dataValues.stringDescriptor[property] = bankAccount.dataValues[property];
+      }
+    })
+  }
+
 };
 
 let emitEvent = function(req, payload, type)
