@@ -21,7 +21,7 @@ class SupplierBankAccount {
 
   index(req, res) {
     return this.api.all(req.params.supplierId).then(accounts => {
-      if (req.params.provideSringDescriptor) accounts.forEach(this.addStringDescriptor.bind(this))
+      if (req.params.provideSringDescriptor) accounts.forEach(this.addStringRepresentation.bind(this, req.opuscapita.i18n))
       return res.json(accounts);
     });
   }
@@ -29,7 +29,7 @@ class SupplierBankAccount {
   show(req, res) {
     return this.api.find(req.params.supplierId, req.params.bankAccountId).then(account => {
       if (!account) return res.status('404').json({ message: 'Not found' });
-      if (req.params.provideSringDescriptor) this.addStringDescriptor(account);
+      if (req.params.provideSringDescriptor) this.addStringRepresentation(req.opuscapita.i18n, account);
       return res.json(account);
     });
   }
@@ -63,19 +63,21 @@ class SupplierBankAccount {
       .catch(e => res.status('400').json({message: e.message}));
   }
 
-  // create a property (JSON object) on bankaccount with all the necessary properties which should be composed
-  // into an String representation by the consuming service
-  addStringDescriptor(bankAccount) {
+  // create a string representation of a bankacocunt and add it as a property to the bankaccount
+  addStringRepresentation(i18n, bankAccount) {
+    console.log(bankAccount.dataValues)
     // Fields that will be used for string representation
     const mandatoryFields = ['accountNumber','bankgiro','plusgiro','isrNumber'];
-    bankAccount.dataValues.stringDescriptor = {};
+    const stringRepresentation = [];
     Object.keys(bankAccount.dataValues).forEach(property => {
       // check if value is truthy and mandatory
       if (bankAccount.dataValues[property] && mandatoryFields.includes(property)) {
         // add property to descriptor object
-        bankAccount.dataValues.stringDescriptor[property] = bankAccount.dataValues[property];
+        const label = `Labels.${property}`;
+        stringRepresentation.push(`${i18n.getMessage(label)}: ${bankAccount.dataValues[property]}`)
       }
     })
+    bankAccount.dataValues.stringRepresentation = stringRepresentation.join(', ');
   }
 
 };
