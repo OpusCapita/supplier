@@ -1,6 +1,9 @@
 # supplier
 Supplier Microservice
 
+DEPRECATED
+Functionality moved to service `business-partner`
+
 This currently provides backend api and react components using the backend.
 The components are being embedded in bnp service frontend SPA.
 
