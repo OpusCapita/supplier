@@ -1,0 +1,8 @@
+{
+    "notification.accessRequest.title": "OpusCapita - Żądanie dostępu użytkownika",
+    "notification.accessRequest.description": "\"Użytkownik <strong>{firstName} {ostateczna nazwa} ({email})</strong> zwrócił się o dostęp do konta firmowego <strong>{nazwa dostawcy}</strong>.<br />.\r\n    <br /> Proszę kliknąć ten <a href=\"\"{link}\"\"> link </a>, aby zobaczyć szczegóły zgłoszenia. \"",
+    "notification.accessApproval.title": "OpusCapita - Zatwierdzony dostęp użytkownika",
+    "notification.accessApproval.description": "Twój wniosek o dostęp do firmy <strong>{nazwa dostawcy}</strong> został zatwierdzony.<br />\r\n     <br /> Proszę kliknąć ten <a href=\"{link}\"> link </a> poniżej, aby zakończyć dostęp.",
+    "notification.accessRejection.title": "OpusCapita - dostęp dla użytkowników odzyskany",
+    "notification.accessRejection.description": "Niestety wniosek o dostęp do firmy <strong>{nazwa dostawcy}</strong> został odrzucony."
+}
