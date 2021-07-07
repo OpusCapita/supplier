@@ -130,7 +130,6 @@ class Supplier {
     }
 
     let userData = new UserData(req);
-    if (!userData.hasAdminRole() && !this.supplierApi.hasUniqueIdentifier(editedSupplier)) return res.status('400').json({ message: 'Supplier must have a unique identifier' });
 
     try {
       const exists = await this.supplierApi.exists(supplierId);
